@@ -1,0 +1,27 @@
+﻿@model Foundation.Cms.ViewModels.Header.HeaderViewModel
+
+@if (Model.IsReadonlyMode)
+{
+    @Html.RenderReadonlyMessage()
+}
+else
+{
+    <div class="top-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="top-header__banner-text">
+                        @Html.PropertyFor(x => x.HomePage.BannerText)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<header class="header">
+    <div class="header__wrapper">
+        @Html.Partial("_MobileNavigation", Model)
+        @Html.Partial("_Navigation", Model)
+    </div>
+</header>

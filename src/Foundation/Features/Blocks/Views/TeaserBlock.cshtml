@@ -1,0 +1,92 @@
+@model IBlockViewModel<TeaserBlock>
+
+@Html.FullRefreshPropertiesMetaData(new[] { "Image" })
+@{
+    string imagePosition, headingPosition, descriptionPosition;
+
+    switch (Model.CurrentBlock.ElementsOrder)
+    {
+        case "ImageHeadingDescriptionText":
+            imagePosition = "order: 0";
+            headingPosition = "order: 1";
+            descriptionPosition = "order: 2";
+            break;
+        case "ImageDescriptionHeadingText":
+            imagePosition = "order: 0";
+            descriptionPosition = "order: 1";
+            headingPosition = "order: 2";
+            break;
+        case "HeadingImageDescriptionText":
+            headingPosition = "order: 0";
+            imagePosition = "order: 1";
+            descriptionPosition = "order: 2";
+            break;
+        case "HeadingDescriptionImageText":
+            headingPosition = "order: 0";
+            descriptionPosition = "order: 1";
+            imagePosition = "order: 2";
+            break;
+        case "DescriptionImageHeadingText":
+            descriptionPosition = "order: 0";
+            imagePosition = "order: 1";
+            headingPosition = "order: 2";
+            break;
+        case "DescriptionHeadingImageText":
+            descriptionPosition = "order: 0";
+            headingPosition = "order: 1";
+            imagePosition = "order: 2";
+            break;
+        default:
+            imagePosition = string.Empty;
+            headingPosition = string.Empty;
+            descriptionPosition = string.Empty;
+            break;
+    }
+}
+
+@using (Html.BeginConditionalLink(!ContentReference.IsNullOrEmpty(Model.CurrentBlock.Link),
+    Url.PageLinkUrl(Model.CurrentBlock.Link),
+    Model.CurrentBlock.Heading))
+{
+
+    <div class="teaser-block @(Model.CurrentBlock.Padding + " " + Model.CurrentBlock.Margin)" style="@Model.CurrentBlock.ElementsAlignment; background-color: @Model.CurrentBlock.BackgroundColor; @Model.CurrentBlock.HeadingColor; opacity:@Model.CurrentBlock.BlockOpacity;">
+      
+            @if (!Model.CurrentBlock.Description.IsNullOrEmpty())
+            {
+                <div class="row">
+                    <div class="col-12">
+                        <div class="teaser-block__description" style="@descriptionPosition" @Html.EditAttributes(x => x.CurrentBlock.Description)>@Model.CurrentBlock.Description</div>
+                    </div>
+
+                </div>
+            }
+            <div class="row mt-3 mb-3 teaser-heading">
+                <div class="col-4">
+                    <div @Html.EditAttributes(x => x.CurrentBlock.Image) class="teaser-block__image" style="@imagePosition;">
+                        <img class="img-fluid" style="width: @(Model.CurrentBlock.ImageSize)%" src="@Url.ContentUrl(Model.CurrentBlock.Image)" />
+                    </div>
+                </div>
+                <div class="col-6">
+                    <h2 class="" style="@headingPosition; font-size: @(Model.CurrentBlock.HeadingSize)px; @Model.CurrentBlock.HeadingStyle" @Html.EditAttributes(x => x.CurrentBlock.Heading)>@Model.CurrentBlock.Heading</h2>
+
+                </div>
+            </div>
+       
+
+        @if (Model.CurrentBlock.Text != null)
+        {
+    <div class="row teaser-bottom">
+        <div class="col-4">
+            <div @Html.EditAttributes(x => x.CurrentBlock.SecondImage) class="teaser-block__image" style="@imagePosition;">
+                <img class="img-fluid" style="width: @(Model.CurrentBlock.SecondImageSize)%" src="@Url.ContentUrl(Model.CurrentBlock.SecondImage)" />
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="teaser-block__text" style="@Model.CurrentBlock.TextColor;order: 4" @Html.EditAttributes(x => x.CurrentBlock.Text)>@Html.Raw(Model.CurrentBlock.Text)</div>
+
+        </div>
+    </div>
+
+                }
+            </div>
+        }

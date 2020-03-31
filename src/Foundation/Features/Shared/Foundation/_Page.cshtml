@@ -1,0 +1,72 @@
+@using EPiServer.Web
+@using EPiServer.Web.Routing.Segments.Internal
+@using Foundation.Helpers
+@model FoundationPageData
+
+@{
+    var textStyle = "";
+    if (!string.IsNullOrEmpty(Model.TeaserColorTheme))
+    {
+        if (Model.TeaserColorTheme.Equals("Light"))
+        {
+            textStyle = "teaser-text--white";
+        }
+        else
+        {
+            textStyle = "teaser-text--black";
+        }
+    }
+
+    var teaserRatio = string.Empty;
+    switch (Model.TeaserRatio)
+    {
+        case "10-2":
+            teaserRatio = "padding-bottom: 20%";
+            break;
+        case "10-3":
+            teaserRatio = "padding-bottom: 30%";
+            break;
+        case "10-10":
+            teaserRatio = "padding-bottom: 100%";
+            break;
+        case "10-12.5":
+            teaserRatio = "padding-bottom: 125%";
+            break;
+        case "10-15":
+            teaserRatio = "padding-bottom: 150%";
+            break;
+        case "10-17.5":
+            teaserRatio = "padding-bottom: 175%";
+            break;
+        default:
+            teaserRatio = "padding-bottom: 50%";
+            break;
+    }
+}
+<div class="@Model.Padding @Model.Margin">
+    <div class="teaser @Model.ThemeCssClass @Model.AlignmentCssClass @(Model.ApplyHoverEffect && RequestSegmentContext.CurrentContextMode != ContextMode.Edit ? "teaser--hover-effect" : "teaser--show-details")" style="@teaserRatio">
+        <div class="screen-width-wrapper">
+            <div class="teaser-text @textStyle screen-width-container">
+                <h2 @Html.EditAttributes(x => x.PageName)>@Model.PageName</h2>
+                <div class="teaser-text__details">
+                    @if (!String.IsNullOrWhiteSpace(Model.TeaserText))
+                    {
+                         <p @Html.EditAttributes(x => x.TeaserText)>@Model.TeaserText</p>
+                    }
+                    @if (!String.IsNullOrWhiteSpace(Model.TeaserButtonText))
+                    {
+                        <a class="@Model.TeaserButtonStyle" href="@Url.ContentUrl(Model.ContentLink)" @Html.EditAttributes(x => x.TeaserButtonText)>@Model.TeaserButtonText</a>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="teaser-image" style="background-image: url('@Url.WebPFallbackImageUrl(Model.PageImage, 1440, null)'">
+            @if (Model.TeaserVideo != null)
+            {
+                <video class="teaser-video" autoplay loop playsinline muted @Html.EditAttributes(x => x.TeaserVideo)>
+                    <source src="@Url.ContentUrl(Model.TeaserVideo)" type="video/mp4">
+                </video>
+            }
+        </div>
+    </div>
+</div>

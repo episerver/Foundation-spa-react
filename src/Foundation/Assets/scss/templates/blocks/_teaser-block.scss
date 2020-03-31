@@ -1,0 +1,26 @@
+﻿.teaser-block {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    height: 260px;
+
+    &__image {
+        width: 100%;
+        text-align: center;
+        /*padding: 5px 0 5px 0;*/
+    }
+
+    &__heading {
+        /*padding: 5px 0 5px 0;*/
+    }
+
+    &__description {
+        padding: 5px 0 5px 0;
+    }
+
+    &__text {
+        /*padding: 5px 0 5px 0;*/
+        text-align: initial;
+        color: initial;
+    }
+}

@@ -1,0 +1,75 @@
+﻿@charset 'UTF-8';
+
+// 1. Configuration and helpers
+@import
+    'utils/variables';
+
+// 2. Vendors
+@import
+    'vendors/bootstrap-4.3.1/bootstrap';
+
+// 3. Base stuff
+@import
+    'base/typography',
+    'base/helpers';
+
+// 4. Layout-related sections
+@import
+    'layout/header',
+    'layout/footer',
+    'layout/navigation-bar';
+
+// 5. Components
+@import
+    'components/buttons',
+    'components/textbox',
+    'components/checkbox',
+    'components/select-menu',
+    'components/icon-menu',
+    'components/hamburger-menu',
+    'components/navigation',
+    'components/mobile-navigation',
+    'components/loading-box',
+    'components/list-group',
+    'components/dropdown',
+    'components/table',
+    'components/icon-buttons',
+    'components/easy-autocomplete',
+    'components/teaser';
+
+// 6. Template specific styles
+@import
+    'templates/widgets/login-users',
+    'templates/widgets/profile-sidebar',
+    'templates/widgets/toolbar',
+    'templates/widgets/breadcrumb',
+    'templates/widgets/searchbox';
+
+@import
+    'templates/blocks/hero-block',
+    'templates/blocks/button-block',
+    'templates/blocks/calendar-block',
+    'templates/blocks/featurebox-block',
+    'templates/blocks/vimeo-block',
+    'templates/blocks/teaser-block',
+    'templates/blocks/video-block',
+    'templates/blocks/breadcrumb-block',
+    'templates/blocks/text-block';
+
+@import
+    'templates/forms/form';
+
+@import
+    'templates/pages/home',
+    'templates/pages/standard-page',
+    'templates/pages/my-account-pages',
+    'templates/pages/location',
+    'templates/pages/search-page',
+    'templates/pages/blog-list',
+    'templates/pages/blog-item',
+    'templates/pages/login',
+    'templates/pages/collection';
+
+// 7. Themes
+@import
+    'themes/default';
