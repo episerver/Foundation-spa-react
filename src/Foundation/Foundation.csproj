@@ -608,6 +608,8 @@
     <Compile Include="Features\Api\PublicApiController.cs" />
     <Compile Include="Features\Blocks\BreadcrumbBlockController.cs" />
     <Compile Include="Features\Blocks\CarouselBlockController.cs" />
+    <Compile Include="Features\Blocks\Healthbot\HealthBotBlockController.cs" />
+    <Compile Include="Features\Blocks\Healthbot\HealthChatbotBlock.cs" />
     <Compile Include="Features\Blocks\NavigationBlockController.cs" />
     <Compile Include="Features\Blog\BlogItem\BlogItemController.cs" />
     <Compile Include="Features\Blog\BlogListPage\BlogListPageController.cs" />
@@ -1289,6 +1291,7 @@
     <Content Include="modules\_protected\BVNetwork.404Handler\BVNetwork.404Handler.zip" />
     <Content Include="modules\_protected\geta-epicategories\geta-epicategories.zip" />
     <Content Include="Features\Blocks\Views\PageListBlock\_CarouselTemplate.cshtml" />
+    <Content Include="Features\Blocks\Healthbot\HealthChatBotBlock.cshtml" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
