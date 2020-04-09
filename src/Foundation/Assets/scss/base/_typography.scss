@@ -23,7 +23,11 @@ body {
 }
 
 .color-light {
-    color: white;
+    color: $color-lightgrey;
+}
+
+.color-dark {
+    color: $text-color;
 }
 
 .font-italic {

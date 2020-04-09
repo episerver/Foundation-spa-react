@@ -866,6 +866,12 @@
     <Content Include="Assets\js\vendors\mvc-grid\mvc-grid.js" />
     <Content Include="Assets\js\vendors\pdfobject\PdfObject.js" />
     <Content Include="Assets\js\vendors\popper\popper.min.js" />
+    <Content Include="Assets\js\vendors\slick\ajax-loader.gif" />
+    <Content Include="Assets\js\vendors\slick\fonts\slick.svg" />
+    <Content Include="Assets\js\vendors\slick\slick-theme.css" />
+    <Content Include="Assets\js\vendors\slick\slick.css" />
+    <Content Include="Assets\js\vendors\slick\slick.js" />
+    <Content Include="Assets\js\vendors\slick\slick.min.js" />
     <Content Include="Assets\js\vendors\spur-admin\spur.js" />
     <Content Include="Assets\scss\templates\blocks\_hero-block.scss" />
     <Content Include="Assets\scss\templates\pages\_standard-page.scss" />
@@ -1292,6 +1298,14 @@
     <Content Include="modules\_protected\geta-epicategories\geta-epicategories.zip" />
     <Content Include="Features\Blocks\Views\PageListBlock\_CarouselTemplate.cshtml" />
     <Content Include="Features\Blocks\Healthbot\HealthChatBotBlock.cshtml" />
+    <Content Include="Assets\js\vendors\slick\config.rb" />
+    <Content Include="Assets\js\vendors\slick\fonts\slick.eot" />
+    <Content Include="Assets\js\vendors\slick\fonts\slick.ttf" />
+    <Content Include="Assets\js\vendors\slick\fonts\slick.woff" />
+    <Content Include="Assets\js\vendors\slick\slick-theme.less" />
+    <Content Include="Assets\js\vendors\slick\slick-theme.scss" />
+    <Content Include="Assets\js\vendors\slick\slick.less" />
+    <Content Include="Assets\js\vendors\slick\slick.scss" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

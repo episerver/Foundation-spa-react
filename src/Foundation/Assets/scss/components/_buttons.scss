@@ -1,6 +1,6 @@
 %button-base {
     display: inline-block;
-    border-radius: 0;
+    border-radius: 2px;
     min-width: 100px;
     font-size: $text-font-size;
     line-height: $text-font-size;
@@ -9,7 +9,7 @@
     text-align: center;
     vertical-align: middle;
     padding: 12px 20px;
-    border: 1px solid black;
+    border: none;
     user-select: none;
     background-color: transparent;
     transition: color 0.15s;
@@ -18,7 +18,7 @@
     min-width: 100px;
 
     &:active {
-        border-color: #d3d9df;
+        border-color: none;
     }
 
     &:focus {
@@ -27,7 +27,7 @@
 
     &:hover {
         color: #fff;
-        background: #333;
+        background: #61A0A8;
         border: 1px solid black;
         text-decoration: none;
     }
@@ -71,7 +71,7 @@
 
 .button-black {
     @extend %button-base;
-    background-color: black;
+    background-color: #61A0A8;
     color: white;
 
     &--icon {
@@ -83,10 +83,12 @@
 .button-white {
     @extend %button-base;
     background: white;
-    color: black;
+    color: #004564;
 
     &:hover {
-        border-color: white;
+        border-color: none;
+        background: #61A0A8;
+        color: white;
     }
 }
 

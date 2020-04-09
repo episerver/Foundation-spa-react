@@ -65,7 +65,7 @@ namespace Foundation.Features.Blog.BlogItem
                     {
                         Title = cat.Name,
                         Url = _blogTagFactory.GetTagUrl(currentPage, cat.ContentLink),
-                        DisplayName = (cat as StandardCategory)?.Description,
+                        DisplayName = (cat as StandardCategory)?.Name,
                     }).ToList();
             }
             return new List<BlogItemPageModel.TagItem>();
