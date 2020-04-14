@@ -1,0 +1,4 @@
+{
+  "service": "http://spa-react/api/episerver/v3/model",
+  "target": "/src/Models/Content/"
+}
