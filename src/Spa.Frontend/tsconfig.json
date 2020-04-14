@@ -1,0 +1,28 @@
+{
+    "compileOnSave": false,
+    "files": ["./src/index.tsx","./server/server.tsx"],
+    "compilerOptions": {
+        "baseUrl": "./src/",
+        "jsx": "react",
+        //"diagnostics": true,
+        "esModuleInterop": true,
+        "module": "ES2020",
+        "noImplicitAny": true,
+        "outDir": "./build/",
+        "removeComments": true,
+        "skipLibCheck": true,
+        "target": "ES6",
+        "paths": {
+            "Episerver/*": [ "../lib/Episerver/*" ],
+            "Foundation/*": [ "../lib/Foundation/*" ],
+            "app/*": [ "../src/*" ],
+            "server/*": [ "../server/*" ],
+            "EPiServer.ContentApi.Forms/*": [ "../../Foundation/Scripts/EPiServer.ContentApi.Forms/*" ]
+        },
+        "moduleResolution": "node"
+    },
+    "include": [
+        "./src",
+        "./server"
+    ]
+}

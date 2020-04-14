@@ -1,0 +1,23 @@
+@import "styles/_custom.scss";
+@import "~bootstrap/scss/bootstrap";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/brands";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+
+.dropdown-menu
+{
+    &.mega-menu.show {
+        border-style: none none solid none;
+        margin-left: -1 * ($grid-gutter-width / 2);
+        margin-right: -1 * ($grid-gutter-width / 2);
+
+        @include media-breakpoint-up(lg) {
+            min-width: 960px;
+            margin-top: $spacer / 2;
+        }
+        @include media-breakpoint-up(xl) {
+            min-width: 1410px;
+        }
+    }
+}

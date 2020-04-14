@@ -1,0 +1,320 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <Name>RemkoJ.Foundation.Spa.Frontend</Name>
+    <RootNamespace>RemkoJ.Foundation.Spa.Frontend</RootNamespace>
+    <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
+    <EnableTypeScript>true</EnableTypeScript>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>d1f43c87-64a9-4812-9944-716139d542db</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>dist\server.js</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <NodejsPort>1337</NodejsPort>
+    <StartWebBrowser>True</StartWebBrowser>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include=".env.dist" />
+    <Content Include=".gitignore" />
+    <Content Include="global.config.js" />
+    <Content Include="libman.json" />
+    <Content Include="lib\EmptyLoader.js" />
+    <Content Include="lib\Episerver\Util\StringUtils.js" />
+    <Content Include="lib\PreLoadLoader.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="package.json" />
+    <Content Include="README.md" />
+    <Content Include="server.webpack.config.js" />
+    <Content Include="server\index.html" />
+    <Content Include="server\tsconfig.json" />
+    <Content Include="src\Components\Block\FormContainerBlock.scss" />
+    <Content Include="src\Components\Block\HeroBlock.scss" />
+    <Content Include="src\Components\Block\Media\Image\ImageMediaData.scss" />
+    <Content Include="src\Components\Block\PageListBlock\GridView.scss" />
+    <Content Include="src\Components\Block\Page\LandingPage.scss" />
+    <Content Include="src\Components\Block\Page\StandardPage.scss" />
+    <Content Include="src\Components\Page\StandardPage.scss" />
+    <Content Include="src\favicon.ico" />
+    <Content Include="src\index.html" />
+    <Content Include="src\robots.txt" />
+    <Content Include="src\styles.scss" />
+    <Content Include="src\styles\_custom.scss" />
+    <Content Include="src\tsconfig.json" />
+    <Content Include="src\web.config" />
+    <Content Include="tsconfig.json" />
+    <Content Include="webpack.config.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="lib\" />
+    <Folder Include="lib\Episerver\" />
+    <Folder Include="lib\Episerver\Components\" />
+    <Folder Include="lib\Episerver\Components\Errors\" />
+    <Folder Include="lib\Episerver\Loaders\" />
+    <Folder Include="lib\Episerver\Models\" />
+    <Folder Include="lib\Episerver\Repository\" />
+    <Folder Include="lib\Episerver\Routing\" />
+    <Folder Include="lib\Episerver\ServerSideRendering\" />
+    <Folder Include="lib\Episerver\Util\" />
+    <Folder Include="server\" />
+    <Folder Include="src\" />
+    <Folder Include="src\Components\" />
+    <Folder Include="src\Components\Block\" />
+    <Folder Include="src\Components\Block\Media\" />
+    <Folder Include="src\Components\Block\Media\Image\" />
+    <Folder Include="src\Components\Block\PageListBlock\" />
+    <Folder Include="src\Components\Block\Page\" />
+    <Folder Include="src\Components\Media\" />
+    <Folder Include="src\Components\Media\Image\" />
+    <Folder Include="src\Components\Media\Video\" />
+    <Folder Include="src\Components\Page\" />
+    <Folder Include="src\Components\Page\Errors\" />
+    <Folder Include="src\Components\Page\Error\" />
+    <Folder Include="src\Components\Shared\" />
+    <Folder Include="src\Models\" />
+    <Folder Include="src\Models\Content\" />
+    <Folder Include="src\styles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="lib\Episerver\AppConfig.ts" />
+    <TypeScriptCompile Include="lib\Episerver\Components\CmsComponent.tsx" />
+    <TypeScriptCompile Include="lib\Episerver\Components\CmsSite.tsx" />
+    <TypeScriptCompile Include="lib\Episerver\Components\ContentArea.tsx" />
+    <TypeScriptCompile Include="lib\Episerver\Components\Errors\ComponentNotFound.tsx" />
+    <TypeScriptCompile Include="lib\Episerver\Components\Layout.tsx" />
+    <TypeScriptCompile Include="lib\Episerver\Components\Link.tsx" />
+    <TypeScriptCompile Include="lib\Episerver\Components\Property.tsx" />
+    <TypeScriptCompile Include="lib\Episerver\Components\Spinner.tsx" />
+    <TypeScriptCompile Include="lib\Episerver\ContentDeliveryAPI.ts" />
+    <TypeScriptCompile Include="lib\Episerver\EpiComponent.tsx" />
+    <TypeScriptCompile Include="lib\Episerver\EventEngine.ts" />
+    <TypeScriptCompile Include="lib\Episerver\Global.ts" />
+    <TypeScriptCompile Include="lib\Episerver\InitBrowser.tsx" />
+    <TypeScriptCompile Include="lib\Episerver\InitServer.tsx" />
+    <TypeScriptCompile Include="lib\Episerver\Loaders\ComponentLoader.tsx" />
+    <TypeScriptCompile Include="lib\Episerver\Loaders\ComponentPreLoader.ts" />
+    <TypeScriptCompile Include="lib\Episerver\Models\ActionResponse.ts" />
+    <TypeScriptCompile Include="lib\Episerver\Models\ContentLink.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="lib\Episerver\Models\ContentRootList.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="lib\Episerver\Models\ContentTypePath.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="lib\Episerver\Models\ErrorPage.ts" />
+    <TypeScriptCompile Include="lib\Episerver\Models\IContent.ts" />
+    <TypeScriptCompile Include="lib\Episerver\Models\Language.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="lib\Episerver\Models\LanguageList.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="lib\Episerver\Models\Website.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="lib\Episerver\Models\WebsiteList.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="lib\Episerver\Page.tsx" />
+    <TypeScriptCompile Include="lib\Episerver\PathProvider.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="lib\Episerver\Property.ts" />
+    <TypeScriptCompile Include="lib\Episerver\Repository\AbstractRepostory.ts" />
+    <TypeScriptCompile Include="lib\Episerver\Repository\IContent.ts" />
+    <TypeScriptCompile Include="lib\Episerver\Repository\ViewContext.ts" />
+    <TypeScriptCompile Include="lib\Episerver\Routing\History.ts" />
+    <TypeScriptCompile Include="lib\Episerver\Routing\Route.ts" />
+    <TypeScriptCompile Include="lib\Episerver\Routing\Router.ts" />
+    <TypeScriptCompile Include="lib\Episerver\ServerSideRendering\ContentDeliveryAPI.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="lib\Episerver\ServerSideRendering\Context.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="lib\Episerver\ServerSideRendering\PathProvider.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="lib\Episerver\ServerSideRendering\Response.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="lib\Episerver\ServerSideRendering\ServerContext.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="lib\Episerver\Sites.ts" />
+    <TypeScriptCompile Include="lib\Episerver\Spa.ts" />
+    <TypeScriptCompile Include="lib\Episerver\Util\StringUtils.d.ts" />
+    <TypeScriptCompile Include="server\server.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\Components\Block\BreadcrumbBlock.tsx" />
+    <TypeScriptCompile Include="src\Components\Block\HeroBlock.tsx" />
+    <TypeScriptCompile Include="src\Components\Block\Media\Image\ImageMediaData.tsx" />
+    <TypeScriptCompile Include="src\Components\Block\MenuItemBlock.tsx" />
+    <TypeScriptCompile Include="src\Components\Block\PageListBlock.tsx" />
+    <TypeScriptCompile Include="src\Components\Block\Page\LandingPage.tsx" />
+    <TypeScriptCompile Include="src\Components\Block\Page\StandardPage.tsx" />
+    <TypeScriptCompile Include="src\Components\Block\TextBlock.tsx" />
+    <TypeScriptCompile Include="src\Components\Block\YouTubeBlock.tsx" />
+    <TypeScriptCompile Include="src\Components\Media\Image\ImageMediaData.tsx" />
+    <TypeScriptCompile Include="src\Components\Media\Video\VideoFile.tsx" />
+    <TypeScriptCompile Include="src\Components\Page\CmsHomePage.tsx" />
+    <TypeScriptCompile Include="src\Components\Page\Errors\ComponentError.tsx" />
+    <TypeScriptCompile Include="src\Components\Page\Errors\Navigation.tsx" />
+    <TypeScriptCompile Include="src\Components\Page\Error\Navigation.tsx" />
+    <TypeScriptCompile Include="src\Components\Page\LandingPage.tsx" />
+    <TypeScriptCompile Include="src\Components\Page\StandardPage.tsx" />
+    <TypeScriptCompile Include="src\Components\Shared\Breadcrumbs.tsx" />
+    <TypeScriptCompile Include="src\Components\Shared\Footer.tsx" />
+    <TypeScriptCompile Include="src\Components\Shared\Header.tsx" />
+    <TypeScriptCompile Include="src\Components\Shared\MoseyLayout.tsx" />
+    <TypeScriptCompile Include="src\Components\Shared\MoseyLoader.tsx" />
+    <TypeScriptCompile Include="src\Config.tsx" />
+    <TypeScriptCompile Include="src\index.tsx" />
+    <TypeScriptCompile Include="src\Models\Content\BlogCommentBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\BlogItemPageData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\BlogListPageData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\BookmarksPageData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\BreadcrumbBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\ButtonBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\CalendarBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\CalendarEventPageData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\CallToActionBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\CaptchaElementBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\CarouselBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\CategoryRootData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\ChoiceElementBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\CmsHomePageData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\ContainerBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\ContentRecommendationsBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\CookieDropBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\CustomizedSearchAdvancedSettingsData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\CustomizedSearchBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\CustomizedSearchSettingsData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\DateTimeElementBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\DateTimeRangeElementBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\ExistsFilterBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\FacebookBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\FileUploadElementBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\FilterActivitiesBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\FilterContinentsBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\FilterDistancesBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\FilterTemperaturesBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\FolderPageData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\FormContainerBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\FormStepBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\FoundationPdfFileData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\GoogleMapsEmbedBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\HeroBlockCalloutData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\HeroBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\ImageChoiceElementBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\ImageMediaDataData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\LandingPageData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\LinkedInCompanyBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\LocationItemPageData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\LocationListPageData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\MenuItemBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\NavigationBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\NumberElementBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\NumericFilterBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\PageListBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\ParagraphTextElementBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\PdfFileData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\PredefinedHiddenElementBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\ProfilePageData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\RangeElementBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\RecaptchaElementBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\RecentPageCategoryRecommendationBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\ResetButtonElementBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\ResetPasswordMailPageData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\ResetPasswordPageData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\RssReaderBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\SearchResultPageData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\SelectionElementBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\StandardCategoryData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\StandardFileData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\StandardPageData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\StringFilterBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\SubmitButtonElementBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\SysContentAssetFolderData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\SysContentFolderData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\SysRecycleBinData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\SysRootData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\TagPageData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\TeaserBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\TextareaElementBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\TextBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\TextboxElementBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\ThreeColumnLandingPageData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\TwitterBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\TwoColumnLandingPageData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\UrlElementBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\VideoBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\VideoFileData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\VimeoBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\VirtualTemplateContentData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\VirtualTemplateRootData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\VisitorDataHiddenElementBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\Content\YouTubeBlockData.ts" />
+    <TypeScriptCompile Include="src\Models\IContentWithTeaser.ts" />
+  </ItemGroup>
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:48022/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost:1337</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
