@@ -46,6 +46,19 @@ namespace Foundation.Cms.EditorDescriptors
         }
     }
 
+    class TeaserBlockHeightStyleSelectionFactory : ISelectionFactory
+    {
+        public IEnumerable<ISelectItem> GetSelections(ExtendedMetadata metadata)
+        {
+            return new ISelectItem[]
+            {
+                new SelectItem { Text = "Small", Value = "height: 260px" },
+                new SelectItem { Text = "Medium", Value = "height: 400px" },
+                new SelectItem { Text = "Tall", Value = "height:550px" },
+            };
+        }
+    }
+
     class TeaserBlockTextColorSelectionFactory : ISelectionFactory
     {
         public IEnumerable<ISelectItem> GetSelections(ExtendedMetadata metadata)

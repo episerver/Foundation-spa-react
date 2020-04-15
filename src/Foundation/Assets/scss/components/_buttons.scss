@@ -2,14 +2,13 @@
     display: inline-block;
     border-radius: 2px;
     min-width: 100px;
-    font-size: $text-font-size;
-    line-height: $text-font-size;
+    font-size: .875rem;
+    line-height: 1em;
     font-weight: 400;
     text-transform: uppercase;
     text-align: center;
     vertical-align: middle;
     padding: 12px 20px;
-    border: none;
     user-select: none;
     background-color: transparent;
     transition: color 0.15s;
@@ -28,7 +27,6 @@
     &:hover {
         color: #fff;
         background: #61A0A8;
-        border: 1px solid black;
         text-decoration: none;
     }
 
@@ -78,7 +76,11 @@
         @extend .button-black;
         @extend %button-base--icon;
     }
+    &:hover {
+        background: #004564;
+    }
 }
+
 
 .button-white {
     @extend %button-base;

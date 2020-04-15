@@ -1,8 +1,7 @@
 ﻿.teaser-block {
-    display: flex;
+    display: block;
     flex-wrap: wrap;
-    flex-direction: column;
-    height: 260px;
+   
 
     &__image {
         width: 100%;

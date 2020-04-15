@@ -3,13 +3,10 @@
 @model PageListBlockViewModel
 
 
-
-<link rel="stylesheet" type="text/css" href="~/Assets/js/vendors/slick/slick.css">
-<link rel="stylesheet" type="text/css" href="~/Assets/js/vendors/slick/slick-theme.css">
 <style type="text/css">
     .slider {
         width: 100%;
-        margin: 100px auto;
+        margin: 50px auto;
     }
 
     .slick-slide {
@@ -26,16 +23,18 @@
 
     .slick-slide {
         transition: all ease-in-out .3s;
-        opacity: .2;
+        /* opacity: .2;*/
     }
 
     .slick-active {
-        opacity: .5;
+        opacity: 1;
     }
 
+    *
     .slick-current {
         opacity: 1;
     }
+
 </style>
 
 
@@ -63,7 +62,7 @@
                             }
                             else
                             {
-                                <picture style="width: 100%">
+                                <picture style="width: 100% ">
                                     @if (page != null && !ContentReference.IsNullOrEmpty(foundationPage.PageImage))
                                     {
                                         <img class="img-fluid preview--image-top__image" src="@Url.WebPFallbackImageUrl(foundationPage.PageImage, 1200)" />
@@ -74,7 +73,7 @@
 
                         <div class="card--bottom">
                             <div class="card--bottom__title">
-                                <a class="account-link">
+                                <a class="color-ltGreen article-title">
                                     <h4>  @Html.Raw(page != null ? foundationPage.MetaTitle : page.Page.Name)</h4>
                                 </a>
                                 @if (page != null && !String.IsNullOrEmpty(foundationPage.TeaserText))
@@ -133,41 +132,3 @@
 
 
 }
-
-@*<div class="regular slider">
-    <div>
-        <img src="http://placehold.it/350x300?text=1">
-    </div>
-    <div>
-        <img src="http://placehold.it/350x300?text=2">
-    </div>
-    <div>
-        <img src="http://placehold.it/350x300?text=3">
-    </div>
-    <div>
-        <img src="http://placehold.it/350x300?text=4">
-    </div>
-    <div>
-        <img src="http://placehold.it/350x300?text=5">
-    </div>
-    <div>
-        <img src="http://placehold.it/350x300?text=6">
-    </div>
-</div>*@
-
-
-
-
-<script src="~/Assets/js/vendors/slick/slick.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript">
-    jQuery(document).ready(function ($) {
-
-        $(".regular").slick({
-            dots: true,
-            infinite: true,
-            slidesToShow: 3,
-            slidesToScroll: 1
-        });
-
-    });
-</script>

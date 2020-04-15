@@ -6,11 +6,11 @@ body {
 }
 
 .title {
-    color: $text-light-color;
+    color: $text-color;
 }
 
 .sub-title {
-    color: $text-light-color;
+    color: $text-color;
     font-size: 80%;
 }
 
@@ -28,6 +28,10 @@ body {
 
 .color-dark {
     color: $text-color;
+}
+
+.color-ltGreen {
+    color: #61A0A8;
 }
 
 .font-italic {

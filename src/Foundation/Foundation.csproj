@@ -931,7 +931,6 @@
     <Content Include="lang\CookieVisitorGroupCriteria.xml" />
     <Content Include="lang\Display_EN.xml" />
     <Content Include="lang\EPiServer.ContentApi.OAuth.UI_en.xml" />
-    <Content Include="lang\Facets.xml" />
     <Content Include="lang\Foundation.Core_EN.xml" />
     <Content Include="lang\geta.epicategories.xml" />
     <Content Include="modules\_protected\CookieDropBlock\Images\block-type-thumbnail-cookiedrop.png" />

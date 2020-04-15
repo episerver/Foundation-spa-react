@@ -56,11 +56,12 @@
         display: flex;
         align-items: center;
         text-transform: uppercase;
-        
+        font-size: .875rem;
+
 
 
         &:hover {
-            border-bottom: 3px solid black;
+            border-bottom: 3px solid #004564;
 
             .mega-container {
                 visibility: visible;
@@ -70,7 +71,7 @@
         }
 
         > a {
-            color: #000;
+            color: #004564;
             text-decoration: none;
             padding-left: 15px;
             padding-right: 15px;

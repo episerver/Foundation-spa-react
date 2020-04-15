@@ -1,4 +1,4 @@
-@charset 'UTF-8';
+﻿@charset 'UTF-8';
 /* Slider */
 .slick-loading .slick-list
 {
@@ -201,4 +201,25 @@
 {
     opacity: .75;
     color: black;
+}
+
+
+a.article-title h4 {
+    font-size: 1.5rem;
+}
+
+a.article-title:hover {
+    color: #004564;
+}
+
+@media (max-width: 1050px) {
+    a.article-title h4 {
+        font-size: 1.25rem;
+    }
+}
+
+@media (min-width: 1051px) {
+    a.article-title h4 {
+        font-size: 1.5rem;
+    }
 }

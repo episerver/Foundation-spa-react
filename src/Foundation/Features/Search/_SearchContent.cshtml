@@ -5,6 +5,11 @@
     Layout = null;
 }
 <div class="row">
+    <div class="col-12">
+        <h1>Search Results</h1>
+    </div>
+</div>
+<div class="row">
     <div class="col-12" id="contentResult">
         @if (Model != null && Model.ContentSearchResult.Hits != null && Model.ContentSearchResult.Hits.Any())
         {

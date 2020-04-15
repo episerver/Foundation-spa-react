@@ -25,8 +25,8 @@ namespace Foundation.Cms.EditorDescriptors
             {
                 new SelectItem { Text = _localizationService.GetString("None", "None"), Value = "p-0" },
                 new SelectItem { Text = _localizationService.GetString("Small", "Small"), Value = "p-1" },
-                new SelectItem { Text = _localizationService.GetString("Medium", "Medium"), Value = "p-lg-3" },
-                new SelectItem { Text = _localizationService.GetString("Large", "Large"), Value = "p-lg-5" },
+                new SelectItem { Text = _localizationService.GetString("Medium", "Medium"), Value = "p-3" },
+                new SelectItem { Text = _localizationService.GetString("Large", "Large"), Value = "p-5" },
             };
         }
     }

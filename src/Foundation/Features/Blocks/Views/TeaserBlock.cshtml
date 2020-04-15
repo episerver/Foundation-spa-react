@@ -51,7 +51,7 @@
 
 
 
-    <div class="teaser-block @(Model.CurrentBlock.Padding + " " + Model.CurrentBlock.Margin)" style="@Model.CurrentBlock.ElementsAlignment; background-color: @Model.CurrentBlock.BackgroundColor; @Model.CurrentBlock.HeadingColor; opacity:@Model.CurrentBlock.BlockOpacity;">
+    <div class="teaser-block @(Model.CurrentBlock.Padding + " " + Model.CurrentBlock.Margin)" style="@Model.CurrentBlock.ElementsAlignment; background-color: @Model.CurrentBlock.BackgroundColor; @Model.CurrentBlock.HeadingColor; opacity:@Model.CurrentBlock.BlockOpacity;@Model.CurrentBlock.Height;">
 
         @if (!Model.CurrentBlock.Description.IsNullOrEmpty())
         {

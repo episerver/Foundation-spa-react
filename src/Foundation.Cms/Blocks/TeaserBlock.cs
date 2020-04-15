@@ -73,6 +73,10 @@ namespace Foundation.Cms.Blocks
         [Display(Name = "Elements alignment (except Text)", GroupName = SystemTabNames.Content, Order = 81)]
         public virtual string ElementsAlignment { get; set; }
 
+        [SelectOne(SelectionFactoryType = typeof(TeaserBlockHeightStyleSelectionFactory))]
+        [Display(Name = "Height", GroupName = CmsTabNames.BlockStyling, Order = 12)]
+        public virtual string Height { get; set; }
+
         [Display(GroupName = SystemTabNames.Content, Order = 90)]
         public virtual PageReference Link { get; set; }
 
@@ -87,6 +91,7 @@ namespace Foundation.Cms.Blocks
             ElementsAlignment = "text-align: center";
             BackgroundColor = "transparent";
             TextColor = "color: black";
+            Height = "height: 260px";
         }
     }
 }

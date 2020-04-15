@@ -917,10 +917,9 @@
       <Message>Get {0} % off the following products on a recurring order.</Message>
     </BoughtFrequenty>
     <Locations>
-      <Activities>Activities</Activities>
-      <AllActivities>All activities</AllActivities>
-      <Continents>Continents</Continents>
-      <AllContinents>All continents</AllContinents>
+      <Activities>Categories</Activities>
+      <AllActivities>All Categories</AllActivities>
+     
       <Distance>Distance</Distance>
       <AllDistances>All distances</AllDistances>
       <Temperature>Temperature</Temperature>
