@@ -65,7 +65,6 @@ export default class PageListBlock extends EpiComponent<PageListBlockData, PageL
         let template : string = this.props.data.template?.value || "defaultComponents";
         let previewOption : string = this.props.data.previewOption?.value || "1/3";
 
-        console.log("PageListBlock props", this.props.data);
         let pages : ReactNode | ReactNodeArray = null;
         switch (template) {
             case "Grid":
@@ -87,6 +86,10 @@ export default class PageListBlock extends EpiComponent<PageListBlockData, PageL
     protected renderGridTemplate(pages: Array<IContent>, keyPrefix: string = 'plb_i_', previewOption: string = "1/3") : ReactNode
     {
         let items : ReactNodeArray = [];
+
+        if (typeof(pages) != "object") {
+            return items;
+        }
         
         if (pages.length > 0) {
             items.push(pages.slice(0,1).map(iContent => this.renderGridTemplateTile(iContent as IContentWithTeaser, ['col-12', 'col-md-6'])));

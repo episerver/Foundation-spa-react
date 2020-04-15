@@ -12,8 +12,8 @@ const Config : AppConfig = {
     autoExpandRequests: true, //Should all properties be expanded by default
 
     //Connection details
-    basePath: "", //There's no prefix, set to /spa if the spa is located at https://your.domain/spa/ - this should match your webpack configuration
-    epiBaseUrl: "http://spa-react", //The main URL where Episerver is running
+    basePath: process.env.WEB_PATH, //There's no prefix, set to /spa if the spa is located at https://your.domain/spa/ - this should match your webpack configuration
+    epiBaseUrl: process.env.EPI_URL, //The main URL where Episerver is running
     defaultLanguage: "en", //The language to send to Episerver
     
     //Site layout (i.e. wrapper for routed IContent)

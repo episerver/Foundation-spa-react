@@ -2,10 +2,13 @@ const fs = require('fs');
 const https = require('https');
 const http = require('http');
 const url = require("url");
+const path = require("path");
 const StringUtils = require('../Util/StringUtils');
+const dotenv = require('dotenv');
 
+dotenv.config();
 let cwd = process.cwd();
-let configFile = cwd + "/epi-models.json";
+let configFile = path.join(cwd, ".env");
 
 console.log("Starting Episerver Content Cloud model synchronization");
 console.log("  - Installation directory: " + process.cwd());
@@ -16,8 +19,11 @@ if (!fs.existsSync(configFile)) {
     return;
 }
 
-let config = JSON.parse(fs.readFileSync(configFile));
-let targetFolder = cwd +'/' + config.target;
+let config = {
+    "service": getEnvVariable('EPI_URL','') + "/api/episerver/v3/model",
+    "target": path.join(cwd, getEnvVariable('EPI_MODEL_PATH','src/Models/Content'))
+};
+let targetFolder = config.target;
 console.log("  - Using Episerver Running at: " + config.service);
 console.log("  - Writing new & updated model files to: " + targetFolder);
 
@@ -33,7 +39,7 @@ function generateContentTypes() {
     let prot = (arg1, arg2) => {
         console.error("Unsupported protocol", url);
     };
-   prot = http.get;
+    prot = serviceUrl.protocol == 'https:' ? https.get : http.get;
    
     prot(serviceUrl, (res) => {
         if (res.statusCode != 200) {
@@ -61,13 +67,12 @@ function generateContentTypes() {
 }
 
 function loadAndWriteContentType(typeName, allItemNames) {
-    let infoUrl = config.service + '/' + typeName.Name;
+    let infoUrl = url.parse(config.service + '/' + typeName.Name);
     let prot = (arg1, arg2) => {
         console.error("Unsupported protocol", url);
     };
-   prot = http.get;
+    prot = infoUrl.protocol == 'https:' ? https.get : http.get;
    
-
     prot(infoUrl, (res) => {
         if (res.statusCode != 200) {
             return;
@@ -114,7 +119,7 @@ function writeDefinition(info, allItemNames) {
     iface += "export interface " + processInterfaceName(info.Name+"Props") + " extends ComponentProps<"+interfaceName+"> {}\n";
 
     //Write interface
-    let fullTarget = targetFolder + "/" + fileName;
+    let fullTarget = path.join(targetFolder,fileName);
     fs.writeFileSync(fullTarget, iface);
     console.log("    - " + interfaceName + " written to " + fullTarget);
 }
@@ -161,3 +166,16 @@ function processFieldName(originalName)
     processedName = processedName.charAt(0).toLowerCase() + processedName.slice(1);
     return processedName;
 }
+
+/**
+ * Read a value from the NodeJS Environment
+ * 
+ * @param {string} key              The name of the environment variable
+ * @param {string} defaultValue     The default value
+ * @param {object} overrides        Overrides for the environment
+ * @returns {string}                The value of the environment variable, or the defaultValue if it evaluates to false
+ */
+function getEnvVariable(key, defaultValue = null, overrides = undefined) {
+    let env = overrides ? Object.assign({}, process.env, overrides) : process.env;
+    return env[key] || defaultValue
+} 
