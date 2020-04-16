@@ -8,18 +8,28 @@ import Link from 'Episerver/Components/Link';
 import Property from 'Episerver/Components/Property';
 import './PageListBlock/GridView.scss';
 
+interface PageListPreviewViewModel {
+    page: IContent
+    template: string
+    previewOption: string
+    showIntroduction: boolean
+    showPublishDate : boolean
+}
+
 interface PageListBlockViewModel {
     heading: string
-    pages: Array<IContent>
+    pages: Array<PageListPreviewViewModel>
     showIntroduction: boolean
     showPublishDate: boolean
     padding: string
     currentBlock: PageListBlockData
 }
 
+
+
 interface PageListBlockState {
     isLoading: boolean
-    pages: Array<IContent>
+    pages: Array<PageListPreviewViewModel>
 }
 
 export default class PageListBlock extends EpiComponent<PageListBlockData, PageListBlockState>
@@ -68,13 +78,13 @@ export default class PageListBlock extends EpiComponent<PageListBlockData, PageL
         let pages : ReactNode | ReactNodeArray = null;
         switch (template) {
             case "Grid":
-                pages = this.renderGridTemplate(this.state.pages, 'plb_i_', previewOption);
+                pages = this.renderGridTemplate(this.state.pages.map(viewModel => viewModel.page), 'plb_i_', previewOption);
                 break;
             case "Top":
-                pages = this.renderTopTemplate(this.state.pages, 'plb_i_', previewOption);
+                pages = this.renderTopTemplate(this.state.pages.map(viewModel => viewModel.page), 'plb_i_', previewOption);
                 break;
             default:
-                pages = this.renderDefaultTemplate(this.state.pages, 'plb_i_', previewOption);
+                pages = this.renderDefaultTemplate(this.state.pages.map(viewModel => viewModel.page), 'plb_i_', previewOption);
                 break;
         }
         return <div className={ classes.join(" ") }>
@@ -132,7 +142,7 @@ export default class PageListBlock extends EpiComponent<PageListBlockData, PageL
                 let cssClasses: Array<string> = [];
                 cssClasses.push(this.previewOptionToCssClass(previewOption));
                 let teaser: IContentWithTeaser = iContent as IContentWithTeaser;
-                return <div key={`${key}${iContent.contentLink.id}`} className={cssClasses.join(" ")}>
+                return <div key={`${key}${teaser.contentLink.id}`} className={cssClasses.join(" ")}>
                     <div className="card mb-4">
                         <CmsComponent contentLink={teaser.pageImage?.value} expandedValue={teaser.pageImage?.expandedValue} context={this.getContext()} className="card-img-top w-100" />
                         <div className="card-body">

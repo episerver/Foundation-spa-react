@@ -17,9 +17,10 @@ if "%~1" == "" goto loop
 for /f "tokens=1-5*" %%a in ("%*") do (
 	set APPNAME=%%a
 	set FOUNDATIONDOMAIN=%%b
-	set LICENSEPATH=%%c
-	set SQLSERVER=%%d
-	set ADDITIONAL_SQLCMD=%%e
+	set HTMLDOMAIN=%%c
+	set LICENSEPATH=%%d
+	set SQLSERVER=%%e
+	set ADDITIONAL_SQLCMD=%%f
 )
 goto main
 
@@ -31,6 +32,7 @@ set SQLSERVER=
 set ADDITIONAL_SQLCMD=
 set /p APPNAME=Enter your application name (required):
 set /p FOUNDATIONDOMAIN=Enter your public domain name for foundation(optional, press Enter to leave it blank):
+set /p HTMLDOMAIN=Enter your public domain name for the html only headless site(optional, press Enter to leave it blank):
 set /p LICENSEPATH=Enter your LICENSE path (optional, press Enter to leave it blank):
 set /p SQLSERVER=Enter your SQL server name (optional, press Enter for default (.) local server):
 set /p ADDITIONAL_SQLCMD=Enter your sqlcmd command (optional, press Enter for default (-E) windows auth):
@@ -46,6 +48,7 @@ if "%check%"=="true" (
 
 :main
 if "%FOUNDATIONDOMAIN%"=="" (set FOUNDATIONDOMAIN="%APPNAME%")
+if "%HTMLDOMAIN%"=="" (set HTMLDOMAIN="%APPNAME-html%")
 if "%SQLSERVER%"=="" (set SQLSERVER=.)
 if "%ADDITIONAL_SQLCMD%"=="" (set ADDITIONAL_SQLCMD=-E)
 if "%LICENSEPATH%"=="" (set LICENSEPATH="")
@@ -53,6 +56,7 @@ if "%LICENSEPATH%"=="" (set LICENSEPATH="")
 cls
 echo Your application name is: %APPNAME%
 echo Your foundation domain name is: %FOUNDATIONDOMAIN%
+echo Your html headless domain name is: %HTMLDOMAIN%
 echo Your LICENSE path is: %LICENSEPATH%
 echo Your SQL server name is: %SQLSERVER%
 echo Your SQLCMD command is: sqlcmd -S %SQLSERVER% %ADDITIONAL_SQLCMD%
@@ -106,6 +110,12 @@ icacls "%ROOTPATH%\\" /grant *S-1-1-0:(OI)(CI)F /T > Build\Logs\Build.log
 echo ## Restoring Nuget packages ##
 echo ## Restoring Nuget packages ## >> Build\Logs\Build.log
 .\build\nuget restore "%ROOTPATH%\Foundation.sln" >> Build\Logs\Build.log
+
+echo ## Creating env file ##
+echo ## Creating env file ## >> Build\Logs\Build.log
+call copy "%SOURCEPATH%\Spa.Frontend\.env.dist" "%SOURCEPATH%\Spa.Frontend\.env" /Y >> Build\Logs\IIS.log
+call "%ROOTDIR%\build\jrepl" "{epiurl}" "http://%FOUNDATIONDOMAIN%" /f "%SOURCEPATH%\Spa.Frontend\.env" /L /o -
+call "%ROOTDIR%\build\jrepl" "{epicorsurl}" "http://%HTMLDOMAIN%" /f "%SOURCEPATH%\Spa.Frontend\.env" /L /o -
 
 echo ## NPM Install and build ##  
 echo ## NPM Install and build >> Build\Logs\Build.log
@@ -226,22 +236,46 @@ IF "%ERRORLEVEL%" EQU "0" (
 %APPCMD% add apppool /name:%APPNAME% >> Build\Logs\IIS.log
 %APPCMD% set config -section:applicationPools "/[name='%APPNAME%'].processModel.loadUserProfile:true" >> Build\Logs\IIS.log
 
+%APPCMD%  list site /name:"%APPNAME%-html"
+IF "%ERRORLEVEL%" EQU "0" (
+     %APPCMD% delete site "%APPNAME%-html"
+) 
+
+%APPCMD% list apppool /name:"%APPNAME%-html"
+IF "%ERRORLEVEL%" EQU "0" (
+     %APPCMD% delete apppool "%APPNAME%-html"
+) 
+
+%APPCMD%  add apppool /name:%APPNAME%-html >> Build\Logs\IIS.log
+%APPCMD%  set config -section:applicationPools "/[name='%APPNAME%-html'].processModel.loadUserProfile:true" >> Build\Logs\IIS.log
+
 echo ## Creating IIS applications ##
 echo ## Creating IIS applications ## >> Build\Logs\IIS.log
 %windir%\system32\inetsrv\appcmd add site /name:%APPNAME% /physicalPath:"%SOURCEPATH%\Foundation" /bindings:http/*:80:%APPNAME% >> Build\Logs\IIS.log
-if "%FOUNDATIONDOMAIN%"=="" GOTO finish
+if "%FOUNDATIONDOMAIN%"=="%APPNAME%" GOTO htmlbinding
 %windir%\system32\inetsrv\appcmd set site "%APPNAME%"  /+bindings.[protocol='http',bindingInformation='*:80:%FOUNDATIONDOMAIN%'] >> Build\Logs\IIS.log
+
+:htmlbinding
+%windir%\system32\inetsrv\appcmd add site /name:%APPNAME%-html /physicalPath:"%SOURCEPATH%\Foundation\Spa" /bindings:http/*:80:%APPNAME%-html >> Build\Logs\IIS.log
+if "%HTMLDOMAIN%"=="%APPNAME%-html" GOTO finish
+%windir%\system32\inetsrv\appcmd set site "%APPNAME%-html"  /+bindings.[protocol='http',bindingInformation='*:80:%HTMLDOMAIN%'] >> Build\Logs\IIS.log
 
 :finish
 echo ## Adding site to app pool ##
 echo ## Adding site to app pool ## >> Build\Logs\IIS.log
 %systemroot%\system32\inetsrv\APPCMD set app "%APPNAME%/" /applicationPool:%APPNAME% >> Build\Logs\IIS.log
+%systemroot%\system32\inetsrv\APPCMD set app "%APPNAME%-html/" /applicationPool:%APPNAME%-html >> Build\Logs\IIS.log
 
 echo ## Updating host file ##
 find /C /I "%APPNAME%" %WINDIR%\system32\drivers\etc\hosts
 if %ERRORLEVEL% NEQ 0 (
 	echo: >> %WINDIR%\System32\drivers\etc\hosts
 	echo 127.0.0.1 %APPNAME% >> %WINDIR%\System32\drivers\etc\hosts
+)
+
+find /C /I "%APPNAME%-html" %WINDIR%\system32\drivers\etc\hosts
+if %ERRORLEVEL% NEQ 0 (
+	echo|set /p=127.0.0.1 %APPNAME%-html >> %WINDIR%\System32\drivers\etc\hosts
 )
 
 echo ## Copying licence file ##
@@ -261,6 +295,8 @@ echo --^>
 echo ^</connectionStrings^>
 ) > "%SOURCEPATH%\Foundation\connectionStrings.config"
 
+
+
 start http://%FOUNDATIONDOMAIN%/
 :error
 if NOT "%errorMessage%"=="" echo %errorMessage%
@@ -279,6 +315,6 @@ echo echo #       Crtl+C NOW if you are unsure!                                #
 echo echo #                                                                    # >> resetup.cmd
 echo echo ###################################################################### >> resetup.cmd
 echo pause >> resetup.cmd
-echo setup %APPNAME% %FOUNDATIONDOMAIN% %LICENSEPATH% %SQLSERVER% %ADDITIONAL_SQLCMD% >> resetup.cmd
+echo setup %APPNAME% %FOUNDATIONDOMAIN% %HTMLDOMAIN% %LICENSEPATH% %SQLSERVER% %ADDITIONAL_SQLCMD% >> resetup.cmd
 
 pause

@@ -33,7 +33,8 @@ echo ## Clean and build ##
 IF %errorlevel% NEQ 0 EXIT /B %errorlevel%
 
 REM Build Client
-IF "%CONFIGURATION%"=="Release" ( call gulp -b "%SOURCEPATH%\Foundation" --color --gulpfile "%SOURCEPATH%\Foundation\Gulpfile.js" ) ELSE ( call gulp -b "%SOURCEPATH%\Foundation" --color --gulpfile "%SOURCEPATH%\Foundation\Gulpfile.js" )
+cd %SOURCEPATH%\Spa.Frontend
+call npm run build
 IF %errorlevel% NEQ 0 EXIT /B %errorlevel%
 
 pause

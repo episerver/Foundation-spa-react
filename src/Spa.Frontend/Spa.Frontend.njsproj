@@ -37,6 +37,7 @@
     <Content Include="global.config.js" />
     <Content Include="libman.json" />
     <Content Include="lib\EmptyLoader.js" />
+    <Content Include="lib\Episerver\Scripts\sync_models.js" />
     <Content Include="lib\Episerver\Util\StringUtils.js" />
     <Content Include="lib\PreLoadLoader.js">
       <SubType>Code</SubType>
@@ -72,6 +73,7 @@
     <Folder Include="lib\Episerver\Models\" />
     <Folder Include="lib\Episerver\Repository\" />
     <Folder Include="lib\Episerver\Routing\" />
+    <Folder Include="lib\Episerver\Scripts\" />
     <Folder Include="lib\Episerver\ServerSideRendering\" />
     <Folder Include="lib\Episerver\Util\" />
     <Folder Include="server\" />
