@@ -36,7 +36,6 @@ You can request a demo of the project by one of our Episerver experts on [Get a 
 * Microsoft SQL Server Management Studio - [Download](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15)
 * Nodejs - [Download](https://nodejs.org/en/download/)
 * Microsoft Internet Information Server (IIS) - [Download](https://www.iis.net/downloads)
-* Git-LFS [Download](https://github.com/git-lfs/git-lfs/releases/download/v2.10.0/git-lfs-windows-v2.10.0.exe)
 
 See also the general [Episerver system requirements](https://world.episerver.com/documentation/system-requirements/) on Episerver World.
 
