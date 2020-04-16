@@ -2,10 +2,21 @@ import ViewContext from '../Repository/ViewContext';
 import EpiContext, { IEpiserverSpaContext } from "../Spa";
 
 export default class History {
+    /**
+     * Create the needed bindings to the page in order to control over the
+     * address bar (i.e. URL changes & back/forward).
+     * 
+     * @param   {IEpiserverSpaContext}      context     The application context to use
+     */
     public static setupPageBinding(context: IEpiserverSpaContext) {
         const config = context.config();
         const events = context.events();
 
+        /**
+         * Listen to all unhandled click events, ensuring that even clicks links
+         * that are generated using the HTML WYSIWYG editor will be caught by the
+         * SPA.
+         */
         jQuery(window).on('click', (event) => {
             let target : HTMLElement = event.target as any as HTMLElement;
             let link : JQuery<HTMLElement>;
@@ -49,10 +60,13 @@ export default class History {
                 return false;
             }
         });
+
+        //Handle browser back / forward buttons
         window.onpopstate = (event: PopStateEvent) => {
             let newPath : string = window.location.pathname;
-            if (config.basePath && newPath.substr(0, config.basePath.length) == config.basePath) {
-                newPath = newPath.substr(config.basePath.length);
+            let basePath = context.getSpaBasePath() || '';
+            if (basePath.length > 0 && newPath.substr(0, basePath.length) == basePath) {
+                newPath = newPath.substr(basePath.length);
             }
             context.loadContentByPath(newPath).then((iContent) => {
                 context.dispatch(ViewContext.updateCurrentPath(newPath));

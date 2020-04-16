@@ -65,16 +65,21 @@ export default class BreadcrumbBlock extends EpiComponent<BreadcrumbBlockData, B
         </Breadcrumb>;
     }
 
+    /**
+     * Refresh the ancestors, as shown by the breadcrumb block
+     */
     protected refreshData()
     {
         let destinationLink = this.getDestinationLink();
         this.setState({isLoading: true, destination: destinationLink, ancestors: []});
+
         //@ToDo - get this to go through store so it can be done off-line as well
+        let startPage : ContentLink = this.getContext().getContentByRef("startPage")?.contentLink;
+        let startPageId : string = startPage ? ContentLinkService.createApiId(startPage) : '';
         this.getContext().contentDeliveryApi().getContentAncestors(destinationLink).then((list) => {
             list = list.reverse();
-            list = list.filter((i) => {
-                return i.contentLink.url != null;
-            })
+            let startPageIdx = list.findIndex(i => ContentLinkService.createApiId(i.contentLink) == startPageId);
+            if (startPageIdx > 0) list = list.slice(startPageIdx);
             if (!this._unmounted) this.setState({
                 isLoading: false,
                 ancestors: list
@@ -82,7 +87,11 @@ export default class BreadcrumbBlock extends EpiComponent<BreadcrumbBlockData, B
         });
     }
 
-    protected getDestinationLink()
+    /**
+     * Retrieve the destination of the Breadcrumb block, if none set, it'll
+     * take the path to the current page.
+     */
+    protected getDestinationLink() : ContentLink
     {
         return this.props.data.destinationPage.value || this.getContext().getRoutedContent()?.contentLink;
     }

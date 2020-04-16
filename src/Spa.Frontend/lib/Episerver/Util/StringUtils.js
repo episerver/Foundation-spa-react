@@ -13,7 +13,7 @@ module.exports = {
     SafeModelName(modelName) {
         let processedName = modelName;
         processedName = processedName.replace("(","_").replace(")", "_");
-        processedName = this.trimRight('_', processedName);
+        processedName = this.TrimRight('_', processedName);
         return processedName;
     },
 
@@ -24,7 +24,7 @@ module.exports = {
      * @param {string} subject  The string to manipulate
      * @returns {string}        The manipulated string
      */
-    trimRight(char, subject)
+    TrimRight(char, subject)
     {
         if (typeof(char) != "string" || char.length < 1) {
             throw "Char must be a string of minimal one char"
@@ -41,6 +41,33 @@ module.exports = {
         let out = subject;
         while (out.slice(length) == char) {
             out = out.substr(0, out.length + length);
+        }
+        return out;
+    },
+
+    /**
+     * Trim all occurences of a string of the start of another string
+     * 
+     * @param {string} char     The string to search
+     * @param {string} subject  The string to manipulate
+     * @returns {string}        The manipulated string
+     */
+    TrimLeft(char, subject)
+    {
+        if (typeof(char) != "string" || char.length < 1) {
+            throw "Char must be a string of minimal one char"
+        }
+        if (typeof(subject) != "string") {
+            throw "Subject must be a string";
+        }
+
+        if (char.length > subject.length) {
+            return subject;
+        }
+
+        let out = subject;
+        while (out.slice(0, char.length) == char) {
+            out = out.substr(char.length);
         }
         return out;
     } 

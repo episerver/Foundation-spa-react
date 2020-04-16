@@ -16,10 +16,11 @@ import AppConfig from './AppConfig';
 import IContent from './Models/IContent';
 import Website from './Models/Website';
 import History from './Routing/History';
+import StringUtils from './Util/StringUtils';
 
 //Create context
 declare let global : any;
-declare let window : any;
+declare let window : Window;
 let ctx : any = window || global || {};
 ctx.EpiserverSpa = ctx.EpiserverSpa || {};
 ctx.epi = ctx.epi || {};
@@ -156,6 +157,9 @@ export interface IEpiserverSpaContext {
     isInEditMode() : boolean
     isEditable() : boolean
 
+    /**
+     * Retrieve the current path
+     */
     getCurrentPath() : string
 
     /**
@@ -169,6 +173,31 @@ export interface IEpiserverSpaContext {
      * @param ref The content reference to load
      */
     getContentByContentRef(ref: ContentReference): IContent
+
+    /**
+     * Get the domain where the SPA is running. If it's configured to be 
+     * running at https://example.com/spa/, this method returns: https://example.com
+     */
+    getSpaDomain() : string
+
+    /*
+     * Get the base path where the SPA is running. If it's configured to be
+     * running at https://example.com/spa/, this method returns /spa. If it's
+     * running at https://example.com/, this method will return an empty 
+     * string.
+     * 
+     * It's preferred to use this method over accessing the config directly as
+     * this method sanitizes the configuration value;
+     * 
+     * @returns {string}    The base path of the SPA
+     */
+    getSpaBasePath() : string
+
+    /**
+     * Get the URL where Episerver is running, without trailing slash, so that
+     * all paths can start with a traling slash.
+     */
+    getEpiserverURL() : string
 }
 
 interface EpiContentSavedEvent {
@@ -467,6 +496,51 @@ export class EpiserverSpaContext implements IEpiserverSpaContext {
     {
         let id : string = ContentLinkService.createApiId(ref);
         return this.getContentById(id);
+    }
+
+    /**
+     * Get the base path where the SPA is running. If it's configured to be
+     * running at https://example.com/spa/, this method returns /spa. If it's
+     * running at https://example.com/, this method will return an empty 
+     * string.
+     * 
+     * It's preferred to use this method over accessing the config directly as
+     * this method sanitizes the configuration value;
+     * 
+     * @returns {string}    The base path of the SPA
+     */
+    public getSpaBasePath() : string
+    {
+        if (typeof(this._sanitizedSpaBasePath) == 'string') {
+            return this._sanitizedSpaBasePath;
+        }
+        let configBasePath = this.config()?.basePath || '';
+        if (configBasePath.length > 0) {
+            configBasePath = StringUtils.TrimRight('/', StringUtils.TrimLeft('/', configBasePath));
+            configBasePath = configBasePath.length > 0 ? '/' + configBasePath : '';
+        }
+        this._sanitizedSpaBasePath = configBasePath;
+        return this._sanitizedSpaBasePath;
+    }
+
+    private _sanitizedSpaBasePath : string = null;
+
+    /**
+     * Get the domain where the SPA is running. If it's configured to be 
+     * running at https://example.com/spa/, this method returns: https://example.com
+     */
+    public getSpaDomain() : string
+    {
+        return window.location.protocol + '//' + window.location.hostname;
+    }
+
+    /**
+     * Get the location where Episerver is running, whithout a trailing slash.
+     */
+    public getEpiserverURL() : string
+    {
+        let epiUrl = this.config().epiBaseUrl;
+        return StringUtils.TrimRight('/', epiUrl);
     }
 }
 

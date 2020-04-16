@@ -20,7 +20,7 @@ module.exports = (env) => {
         },
         output: {
             filename: path.join(filePath,'[name].js'),
-            chunkFilename: path.join(filePath,'[name].chunk.js'),
+            chunkFilename: path.join(filePath,'server.[name].chunk.js'),
             path: path.resolve(__dirname, epiPath),
             publicPath: webPath
         },
