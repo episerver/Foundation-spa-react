@@ -6,6 +6,8 @@ using Foundation.Cms;
 using Foundation.Cms.Extensions;
 using Foundation.Cms.Identity;
 using Foundation.Cms.Users;
+using Foundation.Features.Login;
+using Foundation.Helpers;
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
@@ -44,24 +46,6 @@ namespace Foundation.Features.Api
             _userService.SignOut();
             TrackingCookieManager.SetTrackingCookie(Guid.NewGuid().ToString());
             return RedirectToAction("Index", new { node = ContentReference.StartPage });
-        }
-
-        [HttpGet]
-        public ActionResult Login(string userName, string returnUrl)
-        {
-            _userService.SignOut();
-            var user = _userService.UserManager().FindByEmailAsync(userName).GetAwaiter().GetResult();
-            if (user == null)
-            {
-                return new EmptyResult();
-            }
-
-            _userService.SignInManager().SignIn(user, true, true);
-
-            //set tracking cookie
-            //TrackingCookieManager.SetTrackingCookie(_pageTrackingService.GetUserTrackingId(userName));
-
-            return Redirect(returnUrl);
         }
 
         [HttpPost]
@@ -108,24 +92,19 @@ namespace Foundation.Features.Api
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> InternalLogin(LoginViewModel viewModel)
+        public async Task<ActionResult> InternalLogin(UserViewModel viewModel)
         {
+            
             var returnUrl = GetSafeReturnUrl(Request.UrlReferrer);
 
             if (!ModelState.IsValid)
             {
-                return Json(new
-                {
-                    success = false,
-                    errors = ModelState.Keys
-                        .SelectMany(k => ModelState[k].Errors)
-                        .Select(m => m.ErrorMessage).ToArray()
-                });
+                return View("~/Features/Login/Index.cshtml", Url.GetUserViewModel(returnUrl));
             }
-            var user = _userService.GetSiteUser(viewModel.Email);
+            var user = _userService.GetSiteUser(viewModel.LoginViewModel.Email);
             if (user != null)
             {
-                var result = await _userService.SignInManager().PasswordSignInAsync(user.UserName, viewModel.Password, viewModel.RememberMe, shouldLockout: true);
+                var result = await _userService.SignInManager().PasswordSignInAsync(user.UserName, viewModel.LoginViewModel.Password, viewModel.LoginViewModel.RememberMe, shouldLockout: true);
                 switch (result)
                 {
                     case SignInStatus.Success:
@@ -136,30 +115,14 @@ namespace Foundation.Features.Api
 
                     default:
                         ModelState.AddModelError("LoginViewModel.Password", _localizationService.GetString("/Login/Form/Error/WrongPasswordOrEmail", "You have entered wrong username or password"));
-                        return Json(new
-                        {
-                            success = false,
-                            errors = ModelState.Keys
-                             .SelectMany(k => ModelState[k].Errors)
-                             .Select(m => m.ErrorMessage).ToArray()
-                        });
+                        return View("~/Features/Login/Index.cshtml", Url.GetUserViewModel(returnUrl));
                 }
 
-                return Json(new
-                {
-                    success = true,
-                    returnUrl = viewModel.ReturnUrl
-                });
+                return Redirect(returnUrl);
             }
 
             ModelState.AddModelError("LoginViewModel.Password", _localizationService.GetString("/Login/Form/Error/WrongPasswordOrEmail", "You have entered wrong username or password"));
-            return Json(new
-            {
-                success = false,
-                errors = ModelState.Keys
-                 .SelectMany(k => ModelState[k].Errors)
-                 .Select(m => m.ErrorMessage).ToArray()
-            });
+            return View("~/Features/Login/Index.cshtml", Url.GetUserViewModel(returnUrl));
         }
 
         [HttpPost]

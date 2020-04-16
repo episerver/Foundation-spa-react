@@ -8,7 +8,7 @@
             <div class="navigation">
 
                 <div class="navigation__logo @(Model.HomePage.HeaderMenuStyle == "LeftLogo" ? "flex-start" : "flex-center")"
-                     style="@(Model.HomePage.HeaderMenuStyle == "LeftLogo" ? "order: -1; width: 60%;" : "")">
+                     style="@(Model.HomePage.HeaderMenuStyle == "LeftLogo" ? "order: -1; width: 75%;" : "")">
                     <a href="/">
                         <img class="img-fluid" src="@Url.ContentUrl(Model.HomePage.SiteLogo)" @Html.EditAttributes(x => x.HomePage.SiteLogo) />
                     </a>

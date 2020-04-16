@@ -33,6 +33,9 @@
                     <div class="col-12">
                         @Html.PasswordFor(x => x.LoginViewModel.Password, new { @class = "login__input", placeholder = "Password" })
                     </div>
+                    <div class="col-12">
+                        @Html.ValidationMessageFor(x => x.LoginViewModel.Password)
+                    </div>
                 </div>
                 <br />
                 <div class="row">
