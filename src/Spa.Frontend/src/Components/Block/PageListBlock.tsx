@@ -59,7 +59,21 @@ export default class PageListBlock extends EpiComponent<PageListBlockData, PageL
         if (this.state.isLoading) return; //Do not start loading again if we're already loading
         this.setState({isLoading: true});
         this.invokeTyped<any, PageListBlockViewModel>("Index").then(i => {
+            if (i.data.pages) {
+                let me = this;
+                new Promise((resolve, reject) => {
+                    try {
+                        i.data.pages.forEach(p => {
+                            me.getContext().injectContent(p.page);
+                        });
+                        resolve(true);
+                    } catch (e) {
+                        reject(e);
+                    }
+                });
+            }
             this.setState({
+                isLoading: false,
                 pages: i.data.pages
             });
         });
