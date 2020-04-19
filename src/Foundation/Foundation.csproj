@@ -637,6 +637,7 @@
     <Compile Include="Features\Preview\PreviewController.cs" />
     <Compile Include="Features\Preview\PreviewModel.cs" />
     <Compile Include="Features\Search\Search\SearchController.cs" />
+    <Compile Include="Features\Shared\Foundation\ErrorController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1238,7 +1239,6 @@
     <Content Include="Assets\scss\templates\blocks\_text-block.scss" />
     <Content Include="Features\Blocks\Views\CarouselBlock.cshtml" />
     <Content Include="Assets\scss\templates\blocks\_category-block.scss" />
-    <Content Include="Assets\scss\templates\pages\_collection.scss" />
     <Content Include="modules\_protected\Geta.SEO.Sitemaps\Geta.SEO.Sitemaps.zip" />
     <Content Include="Features\Media\VideoFile.cshtml" />
     <Content Include="Features\Media\Index.cshtml" />
@@ -1306,6 +1306,8 @@
     <Content Include="Assets\js\vendors\slick\slick-theme.scss" />
     <Content Include="Assets\js\vendors\slick\slick.less" />
     <Content Include="Assets\js\vendors\slick\slick.scss" />
+    <Content Include="Features\Shared\Foundation\ErrorPage.cshtml" />
+    <Content Include="Assets\scss\templates\pages\_error.scss" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

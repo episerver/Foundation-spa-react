@@ -16,6 +16,7 @@ namespace Foundation.Cms.Pages
         Description = "Used for home page of all sites",
         AvailableInEditMode = true,
         GroupName = CmsGroupNames.Content)]
+    [ImageUrl("~/assets/icons/cms/pages/home.png")]
     public class CmsHomePage : FoundationPageData
     {
         #region Content

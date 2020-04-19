@@ -97,7 +97,7 @@ namespace Foundation.Cms.Blocks
                         new ValidationError()
                         {
                              ErrorMessage = "The property Count must be divisible by 6 (with Template is Card or Insight)",
-                             PropertyName = block.GetPropertyName<PageListBlock>(p => p.Count),
+                             PropertyName = block.GetPropertyName(p => p.Count),
                              Severity = ValidationErrorSeverity.Error,
                              ValidationType = ValidationErrorType.StorageValidation
                         }

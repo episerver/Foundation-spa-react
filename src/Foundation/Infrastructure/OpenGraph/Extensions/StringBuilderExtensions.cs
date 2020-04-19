@@ -35,7 +35,7 @@ namespace Foundation.Infrastructure.OpenGraph.Extensions
         {
             if (content != null)
             {
-                AppendMetaNameContent<T>(stringBuilder, name, content);
+                AppendMetaNameContent(stringBuilder, name, content);
             }
         }
 
@@ -113,7 +113,7 @@ namespace Foundation.Infrastructure.OpenGraph.Extensions
         {
             if (content != null)
             {
-                AppendMetaPropertyContent<T>(stringBuilder, property, content);
+                AppendMetaPropertyContent(stringBuilder, property, content);
             }
         }
 

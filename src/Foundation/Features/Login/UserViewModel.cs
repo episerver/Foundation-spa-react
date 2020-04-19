@@ -6,6 +6,8 @@ namespace Foundation.Features.Login
     {
         public string Logo { get; set; }
         public string Title { get; set; }
+        public string ErrorMessage { get; set; }
+        public string StackTrace { get; set; }
         public string ResetPasswordUrl { get; set; }
         public string ReturnUrl { get; set; }
         public LoginViewModel LoginViewModel { get; set; }

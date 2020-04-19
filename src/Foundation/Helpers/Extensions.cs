@@ -14,13 +14,13 @@ namespace Foundation.Helpers
         private static readonly Lazy<IContentLoader> ContentLoader =
             new Lazy<IContentLoader>(() => ServiceLocator.Current.GetInstance<IContentLoader>());
 
-        public static UserViewModel GetUserViewModel(this UrlHelper urlHelper, string returnUrl)
+        public static UserViewModel GetUserViewModel(this UrlHelper urlHelper, string returnUrl, string title = "Login")
         {
             var model = new UserViewModel();
             ContentLoader.Value.TryGet(ContentReference.StartPage, out CmsHomePage homePage);
             model.Logo = urlHelper.ContentUrl(homePage?.SiteLogo);
             model.ResetPasswordUrl = urlHelper.ContentUrl(homePage?.ResetPasswordPage);
-            model.Title = "Login";
+            model.Title = title;
             model.LoginViewModel.ReturnUrl = returnUrl;
             return model;
         }
