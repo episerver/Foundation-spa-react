@@ -1,12 +1,13 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Barlow:300,300i,400,400i,500,500i,700,700i&display=swap');
 
 /* Override Bootstrap Colors */
-$primary: #20bd67;
+$primary: #199450;
+$secondary: #0a3b20;
 
 /* Configure generic look & feel */
 $enable-rounded:                  true;
 $enable-responsive-font-sizes:    true;
-$font-family-sans-serif:          "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-family-sans-serif:          "Barlow", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
 /* Configure grid */
 $grid-breakpoints: (

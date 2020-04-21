@@ -4,6 +4,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const globalConfig = require('./global.config');
+const TerserPlugin = require('terser-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const PreloadWebpackPlugin = require('preload-webpack-plugin');
 
 module.exports = (env) => {
     const srcPath = globalConfig.getEnvVariable('SRC_PATH', 'src', env);
@@ -27,19 +30,16 @@ module.exports = (env) => {
 				maxInitialRequests: Infinity,
 				minSize: 0,
 				cacheGroups: {
-				vendor: {
-					test: /[\\/]node_modules[\\/]/,
-					name(module) {
-					// get the name. E.g. node_modules/packageName/not/this/part.js
-					// or node_modules/packageName
-					const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-		
-					// npm package names are URL-safe, but some servers don't like @ symbols
-					return `lib.${packageName.replace('@', '')}`;
-					},
-				},
+					lib: {
+						test: /[\\/]node_modules[\\/]/,
+						name(module) {
+							return 'lib';
+						}
+					}
 				},
 			},
+			minimize: fullEnv.NODE_ENV != 'development',
+			minimizer: [new TerserPlugin({}), new OptimizeCSSAssetsPlugin({})]
 		},
 		output: {
 			filename: path.join(filePath,'Scripts','[name].js'),
@@ -74,7 +74,7 @@ module.exports = (env) => {
 				{
 					loader: MiniCssExtractPlugin.loader,
 					options: {
-						hmr: process.env.NODE_ENV === 'development',
+						hmr: fullEnv.NODE_ENV === 'development',
 						outputPath: path.join(filePath,'Styles/')
 					},
 				},{
@@ -112,6 +112,8 @@ module.exports = (env) => {
 					title: 'Episerver Single Page Application',
 					filename: path.join(filePath,'index.html')
 				}),
+
+			//new PreloadWebpackPlugin(),
 				
 			new CopyWebpackPlugin(
 				[

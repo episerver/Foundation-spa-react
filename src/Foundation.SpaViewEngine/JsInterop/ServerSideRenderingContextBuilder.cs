@@ -54,6 +54,7 @@ namespace Foundation.SpaViewEngine.JsInterop
             var ssrContext = ServiceLocator.Current.GetInstance<ServerSideRenderingContext>();
             ssrContext.IContent = AsJson(iContent);
             ssrContext.ContentLink = AsJson(BuildContentLink(iContent));
+            ssrContext.ContextInfo = context.Controller.GetType().FullName;
             return ssrContext;
         }
 

@@ -31,6 +31,7 @@ const Config : AppConfig = {
             'displaymode-half': 'col-12 col-md-6',
             'displaymode-one-third': 'col-12 col-md-4'
         },
+        defaultRowClass: 'row no-gutters',
         defaultBlockClass: 'col-12',
         containerBreakBlockClass: 'screen'
     },

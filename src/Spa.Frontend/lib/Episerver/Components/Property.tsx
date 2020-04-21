@@ -3,7 +3,7 @@ import IContentProperty, { ContentReferenceProperty } from '../Property';
 import IContent, { IContentData, GenericProperty} from '../Models/IContent';
 import { IEpiserverSpaContext } from '../Spa';
 import { ContentLinkService } from 'Episerver/Models/ContentLink';
-import { CmsComponent } from './CmsComponent';
+import CmsComponent from './CmsComponent';
 
 export interface PropertyProps
 {

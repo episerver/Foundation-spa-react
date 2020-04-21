@@ -137,6 +137,8 @@ namespace Foundation.SpaViewEngine.JsInterop.Models
             };
         }
 
+        public virtual string ContextInfo { get; set; } = "";
+
         public virtual string ToJson()
         {
             var builder = new StringBuilder();
@@ -146,7 +148,8 @@ namespace Foundation.SpaViewEngine.JsInterop.Models
             builder.Append("\"IContent\":" + IContent.Replace("</script>", "<\\/script>") + ",");
             builder.Append("\"ContentLink\": " + ContentLink.Replace("</script>", "<\\/script>") + ",");
             builder.Append("\"Website\": " + Website.Replace("</script>", "<\\/script>") + ",");
-            builder.Append("\"StartPageData\": " + StartPageData.Replace("</script>", "<\\/script>") + "");
+            builder.Append("\"StartPageData\": " + StartPageData.Replace("</script>", "<\\/script>") + ",");
+            builder.Append("\"ContextInfo\": " + Json.Encode(ContextInfo) + "");
             builder.Append("}");
             return builder.ToString();
         }

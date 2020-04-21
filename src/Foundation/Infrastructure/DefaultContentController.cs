@@ -6,7 +6,7 @@ using System.Web.Mvc;
 namespace Foundation.Infrastructure
 {
     [TemplateDescriptor(Default = true, Inherited = true)]
-    public class DefaultContentController : ContentController<IContent>
+    public class DefaultContentController : ContentController<PageData>
     {
         public ActionResult Index(IContent currentContent)
         {

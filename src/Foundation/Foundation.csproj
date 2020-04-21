@@ -646,6 +646,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\DefaultMediaController.cs" />
     <Compile Include="Infrastructure\InitializeSite.cs" />
     <Compile Include="Infrastructure\PageListBlockController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

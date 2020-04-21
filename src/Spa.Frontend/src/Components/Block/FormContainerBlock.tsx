@@ -16,6 +16,7 @@ export default class FormContainerBlock extends EpiComponent<FormContainerBlockD
 
     componentDidMount()
     {
+        console.log(this.props.data);
         if (this._container) {
             try {
                 FormRenderingService.render(this.props.data.formModel, this._container);
