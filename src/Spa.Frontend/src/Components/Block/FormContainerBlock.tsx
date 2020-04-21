@@ -1,14 +1,14 @@
 import React, { ReactNode, ReactNodeArray } from 'react';
 
 import EpiComponent from 'Episerver/EpiComponent';
-import FormRenderingService, { ContentApiFormModel } from 'EPiServer.ContentApi.Forms/FormRenderingService';
+//import FormRenderingService, { ContentApiFormModel } from 'EPiServer.ContentApi.Forms/FormRenderingService';
 
 import BaseFormContainerBlockData from 'app/Models/Content/FormContainerBlockData';
 import './FormContainerBlock.scss';
 
 interface FormContainerBlockData extends BaseFormContainerBlockData {
     name: string
-    formModel?: ContentApiFormModel
+    formModel?: any //ContentApiFormModel
 }
 
 export default class FormContainerBlock extends EpiComponent<FormContainerBlockData> {
@@ -17,9 +17,9 @@ export default class FormContainerBlock extends EpiComponent<FormContainerBlockD
     componentDidMount()
     {
         console.log(this.props.data);
-        if (this._container) {
+        if (false && this._container) {
             try {
-                FormRenderingService.render(this.props.data.formModel, this._container);
+                //FormRenderingService.render(this.props.data.formModel, this._container);
             } catch (e) {
                 if (this.isDebugActive()) {
                     console.error("Form error:", e);

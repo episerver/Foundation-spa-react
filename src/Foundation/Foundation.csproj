@@ -880,7 +880,6 @@
     <Content Include="modules\_protected\VisualCompareMode\EpiServerOverridenLibs\CustomCompareCommandProvider.js" />
     <Content Include="modules\_protected\VisualCompareMode\EpiServerOverridenLibs\customWidgetSwitcher.js" />
     <Content Include="NotFound.aspx" />
-    <Content Include="Scripts\EPiServer.ContentApi.Forms\FormRenderingService.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Views\AdvancedTask\Index.ascx" />
     <Content Include="Views\AdvancedTask\Pager.ascx" />
@@ -1005,9 +1004,6 @@
       <Project>{09942bce-61b3-4926-b104-b328795f479a}</Project>
       <Name>Foundation.SpaViewEngine</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="Scripts\EPiServer.ContentApi.Forms\FormRenderingService.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
