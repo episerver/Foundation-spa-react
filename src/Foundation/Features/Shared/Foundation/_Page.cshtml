@@ -1,6 +1,7 @@
 @using EPiServer.Web
 @using EPiServer.Web.Routing.Segments.Internal
 @using Foundation.Helpers
+@using ImageProcessor.Web.Episerver
 @model FoundationPageData
 
 @{
@@ -60,7 +61,7 @@
                 </div>
             </div>
         </div>
-        <div class="teaser-image" style="background-image: url('@Url.WebPFallbackImageUrl(Model.PageImage, 1440, null)'">
+        <div class="teaser-image lazyload" data-bgset="@Url.ContentUrl(Model.PageImage)?width=1440" >
             @if (Model.TeaserVideo != null)
             {
                 <video class="teaser-video" autoplay loop playsinline muted @Html.EditAttributes(x => x.TeaserVideo)>

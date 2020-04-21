@@ -16,7 +16,10 @@
                 </div>
                 <div class="mobile-navigation__item">
                     <a href="/" class="mobile-navigation__logo">
-                        <img class="img-fluid" src="@Url.ContentUrl(Model.HomePage.SiteLogo)" @Html.EditAttributes(x => x.HomePage.SiteLogo) />
+                        <picture class="img-fluid">
+                            <source data-srcset="@Url.ContentUrl(Model.HomePage.SiteLogo)?format=webp&width=225" type="image/webp">
+                            <img data-src="@Url.ContentUrl(Model.HomePage.SiteLogo)?width=225" class="img-fluid lazyload" @Html.EditAttributes(x => x.HomePage.SiteLogo)/>
+                        </picture>
                     </a>
                 </div>
                 

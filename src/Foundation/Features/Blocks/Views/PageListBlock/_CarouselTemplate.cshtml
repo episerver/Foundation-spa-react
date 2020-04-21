@@ -65,7 +65,10 @@
                                 <picture style="width: 100% ">
                                     @if (page != null && !ContentReference.IsNullOrEmpty(foundationPage.PageImage))
                                     {
-                                        <img class="img-fluid preview--image-top__image" src="@Url.WebPFallbackImageUrl(foundationPage.PageImage, 1200)" />
+                                        <picture class="img-fluid preview--image-top__image">
+                                            <source data-srcset="@Url.ContentUrl(foundationPage.PageImage)?format=webp&width=1200" type="image/webp">
+                                            <img class="img-fluid preview--image-top__image lazyload" data-src="@Url.ContentUrl(foundationPage.PageImage)?width=1200" loading="lazy" />
+                                        </picture>
                                     }
                                 </picture>
                             }

@@ -23,7 +23,32 @@ gulp.task('js', () => {
     return gulp.src(['./assets/js/features/*.js', './assets/js/plugins/notify.js'])
         .pipe(sourcemaps.init())
         .pipe(js_concat('main.min.js'))
-        //.pipe(js_minify())
+        .pipe(js_minify())
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('./assets/js/'));
+});
+
+gulp.task('js', () => {
+    return gulp.src([
+            './Assets/js/vendors/jquery/jquery-3.4.0.min.js',
+            './Assets/js/vendors/jquery/jquery.validate.min.js',
+            './Assets/js/vendors/jquery/jquery.validate.unobtrusive.min.js',
+            './Assets/js/vendors/jquery/jquery.zoom.js',
+            './Assets/js/vendors/jquery/jquery.easy-autocomplete.min.js',
+            './Assets/js/vendors/popper/popper.min.js',
+            './Assets/js/vendors/bootstrap-4.3.1/bootstrap.min.js',
+            './Assets/js/vendors/mvc-grid/mvc-grid.js',
+            './Assets/js/vendors/feather-icons/feather.min.js',
+            './Assets/js/vendors/axios/axios.min.js',
+            './Assets/js/vendors/pdfobject/PdfObject.js',
+            './Assets/js/main.min.js',
+            './Assets/js/vendors/slick/slick.js',
+            './Assets/js/plugins/ls.bgset.min.js',
+            './Assets/js/plugins/lazysizes.min.js'
+        ])
+        .pipe(sourcemaps.init())
+        .pipe(js_concat('footer.min.js'))
+        .pipe(js_minify())
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./assets/js/'));
 });

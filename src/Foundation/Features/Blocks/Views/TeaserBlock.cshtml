@@ -68,7 +68,10 @@
             <div class="row mt-3 mb-3 teaser-heading">
                 <div class="col-4">
                     <div @Html.EditAttributes(x => x.CurrentBlock.Image) class="teaser-block__image" style="@imagePosition;">
-                        <img class="img-fluid" style="width: @(Model.CurrentBlock.ImageSize)%" src="@Url.ContentUrl(Model.CurrentBlock.Image)" />
+                        <picture class="img-fluid">
+                            <source data-srcset="@Url.ContentUrl(Model.CurrentBlock.Image)?format=webp" type="image/webp">
+                            <img class="img-fluid lazyload" style="width: @(Model.CurrentBlock.ImageSize)%" data-src="@Url.ContentUrl(Model.CurrentBlock.Image)" loading="lazy"/>
+                        </picture>
                     </div>
                 </div>
                 <div class="col-6">
@@ -79,7 +82,10 @@
             <div class="row teaser-bottom">
                 <div class="col-4">
                     <div @Html.EditAttributes(x => x.CurrentBlock.SecondImage) class="teaser-block__image" style="@imagePosition;">
-                        <img class="img-fluid" style="width: @(Model.CurrentBlock.SecondImageSize)%" src="@Url.ContentUrl(Model.CurrentBlock.SecondImage)" />
+                        <picture class="img-fluid">
+                            <source data-srcset="@Url.ContentUrl(Model.CurrentBlock.Image)?format=webp" type="image/webp">
+                            <img class="img-fluid lazyload" style="width: @(Model.CurrentBlock.SecondImageSize)%" data-src="@Url.ContentUrl(Model.CurrentBlock.SecondImage)" />
+                        </picture>
                     </div>
                 </div>
                 <div class="col-6">

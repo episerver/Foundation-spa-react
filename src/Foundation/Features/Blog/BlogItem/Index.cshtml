@@ -41,15 +41,18 @@
             @* Header Image *@
             <!--<div class="col-12">
 
-            @if (PageEditing.PageIsInEditMode)
-            {
-                <img class="blog-item__image img-fluid" src="@Url.ContentUrl(Model.CurrentContent.PageImage)" @Html.EditAttributes(x => x.CurrentContent.PageImage) />
-            }
-            else if (!ContentReference.IsNullOrEmpty(Model.CurrentContent.PageImage))
-            {
-                <img class="blog-item__image img-fluid" src="@Url.ContentUrl(Model.CurrentContent.PageImage)" />
-            }
-        </div>-->
+        @if (PageEditing.PageIsInEditMode)
+        {
+            <img class="blog-item__image img-fluid lazyload" data-src="@Url.ContentUrl(Model.CurrentContent.PageImage)" @Html.EditAttributes(x => x.CurrentContent.PageImage) />
+        }
+        else if (!ContentReference.IsNullOrEmpty(Model.CurrentContent.PageImage))
+        {
+            <picture class="blog-item__image img-fluid">
+                <source data-srcset="@Url.ContentUrl(Model.CurrentContent.PageImage)?format=webp" type="image/webp">
+                <img class="blog-item__image img-fluid lazyload" data-src="@Url.ContentUrl(Model.CurrentContent.PageImage)" />
+            </picture>
+        }
+    </div>-->
         </div>
 
         <div class="row pb-5 text-center" style="border-bottom: 5px solid #E6F3EF;">

@@ -1,4 +1,5 @@
 ﻿@using Foundation.Helpers
+@using ImageProcessor.Web.Episerver
 
 @model IBlockViewModel<HeroBlock>
 
@@ -42,7 +43,7 @@
 
 <div blockId="@(((IContent)Model.CurrentBlock).ContentLink.ID)" id="heroBlock-@(((IContent)Model.CurrentBlock).ContentLink.ID)" name="@(((IContent)Model.CurrentBlock).Name)" class="@(Model.CurrentBlock.Padding + " " + Model.CurrentBlock.Margin)">
     <div class="hero-block" style="@blockRatio">
-        <div class="hero-block__image" style="background-image: url('@Url.WebPFallbackImageUrl(Model.CurrentBlock.BackgroundImage, 1440, null)'">
+        <div class="hero-block__image lazyload" data-bgset="@Html.ProcessImage(Url.ContentUrl(Model.CurrentBlock.BackgroundImage)).Resize(1440, null)">
         </div>
         @if (!ContentReference.IsNullOrEmpty(Model.CurrentBlock.MainBackgroundVideo))
         {
