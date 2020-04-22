@@ -29,6 +29,10 @@ export default class MoseyLayout extends Layout
     renderLayout() : Array<ReactNode> | ReactNode | null
     {
         if (this.props.context.isDebugActive()) { console.debug('Rendering Mosey Layout'); }
+        if (!this.isPage())
+        {
+            return <CmsComponent context={ this.props.context } contentLink={this.props.page} expandedValue={this.props.expandedValue} key={`website-body`} actionName={this.props.actionName} actionData={this.props.actionData} />;
+        }
         if (this.props.page) {
             let page : Array<ReactNode> = [];
             let pageData = this.props.expandedValue as FoundationPageData;
@@ -50,6 +54,10 @@ export default class MoseyLayout extends Layout
             console.warn('No main content link provided to layout', this.props);
         }
         return null;
+    }
+
+    protected isPage() {
+        return this.props.expandedValue.contentType[0] == 'Page';
     }
 
     protected getCurrentPageTitle(page: FoundationPageData)

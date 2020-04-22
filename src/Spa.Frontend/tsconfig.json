@@ -16,8 +16,8 @@
             "Episerver/*": [ "../lib/Episerver/*" ],
             "Foundation/*": [ "../lib/Foundation/*" ],
             "app/*": [ "../src/*" ],
-            "server/*": [ "../server/*" ]/*,
-            "EPiServer.ContentApi.Forms/*": [ "../../Foundation/Scripts/EPiServer.ContentApi.Forms/*" ]*/
+            "server/*": [ "../server/*" ],
+            "EPiServer.ContentApi.Forms/*": [ "../../Foundation/Scripts/EPiServer.ContentApi.Forms/*" ]
         },
         "moduleResolution": "node"
     },

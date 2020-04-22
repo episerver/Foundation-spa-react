@@ -38,7 +38,7 @@ module.exports = (env) => {
 					}
 				},
 			},
-			minimize: fullEnv.NODE_ENV != 'development',
+			minimize: fullEnv.NODE_ENV == 'production',
 			minimizer: [new TerserPlugin({}), new OptimizeCSSAssetsPlugin({})]
 		},
 		output: {

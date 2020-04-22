@@ -1,9 +1,10 @@
 import React, { Component, ReactNode, ReactNodeArray } from 'react';
-import IContentProperty, { ContentReferenceProperty } from '../Property';
+import IContentProperty, { ContentReferenceProperty, ContentAreaProperty } from '../Property';
 import IContent, { IContentData, GenericProperty} from '../Models/IContent';
 import { IEpiserverSpaContext } from '../Spa';
 import { ContentLinkService } from 'Episerver/Models/ContentLink';
 import CmsComponent from './CmsComponent';
+import ContentArea from './ContentArea';
 
 export interface PropertyProps
 {
@@ -58,8 +59,12 @@ export default class Property extends Component<PropertyProps>
                 const expValue = (prop as ContentReferenceProperty).expandedValue;
                 const item = <CmsComponent contentLink={link} expandedValue={expValue} context={this.props.context} className={this.props.className} />
                 return this.isEditable() ? <div data-epi-edit={ this.props.property }>{item}</div> : item;
+            case 'PropertyContentArea':
+                return this.isEditable() ? 
+                    <ContentArea data={ prop as ContentAreaProperty} context={ this.props.context } propertyName={ this.props.property } /> :
+                    <ContentArea data={ prop as ContentAreaProperty} context={ this.props.context } />;
         }
-        return this.props.context.isDebugActive() ? <div>Property type <span>{ propType }</span> not supported</div> : null;
+        return this.props.context.isDebugActive() ? <div className="alert alert-warning">Property type <span>{ propType }</span> not supported</div> : null;
     }
 
     /**

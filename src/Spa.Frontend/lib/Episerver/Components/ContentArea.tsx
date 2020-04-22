@@ -37,6 +37,28 @@ export interface ContentAreaSiteConfig {
      * to break to enable going full width
      */
     containerBreakBlockClass?: string
+
+    /**
+     * Set the type of component for the items within this area, this gets passed to the 
+     * contentType attribute of the CmsComponent. The CmsComponent will prefix the reported 
+     * type from Episerver with this value, if it does not start with this value already.
+     * 
+     * Defaults to: Block
+     */
+    itemContentType?: string
+
+    /**
+     * If set to "true", the components will not be wrapped in div elements and directly
+     * outputted.
+     */
+    noWrap?: boolean
+
+    /**
+     * If set to "true", the components will also be wrapped in a container div, defaulting
+     * to the bootstrap "container"-class. If noWrap has been set to true, setting this has
+     * no effect
+     */
+    addContainer?: boolean
 }
 
 /**
@@ -65,19 +87,6 @@ interface ContentAreaProps extends ContentAreaSiteConfig {
      * the content-area.
      */
     propertyName?: string
-
-    /**
-     * If set to "true", the components will not be wrapped in div elements and directly
-     * outputted.
-     */
-    noWrap?: boolean
-
-    /**
-     * Of set to "true", the components will also be wrapped in a container div, defaulting
-     * to the bootstrap "container"-class. If noWrap has been set to true, setting this has
-     * no effect
-     */
-    addContainer?: boolean
 }
 
 export default class ContentArea extends Component<ContentAreaProps> 
@@ -162,7 +171,7 @@ export default class ContentArea extends Component<ContentAreaProps>
         }
 
         //Build component
-        let component = <CmsComponent context={this.props.context} contentLink={ item.contentLink } contentType="Block" key={ item.contentLink.guidValue } expandedValue={ expandedValue } />;
+        let component = <CmsComponent context={this.props.context} contentLink={ item.contentLink } contentType={ this.getComponentType() } key={ item.contentLink.guidValue } expandedValue={ expandedValue } />;
 
         //Return if no wrapping
         if (this.props.noWrap === true) {
@@ -224,5 +233,11 @@ export default class ContentArea extends Component<ContentAreaProps>
             return cfg[propName]
         }
         return defaultValue
+    }
+
+    protected getComponentType()
+    {
+        let cfg = this.getConfig();
+        return cfg.itemContentType || "Block";
     }
 }
