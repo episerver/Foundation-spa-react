@@ -32,7 +32,6 @@
     <PackageReference Include="EPiServer.ServiceLocation.StructureMap" Version="2.0.3" />
     <PackageReference Include="JavaScriptEngineSwitcher.V8" Version="3.5.1" />
     <PackageReference Include="JavaScriptEngineSwitcher.V8.Native.win-x64" Version="3.5.1" />
-    <PackageReference Include="JavaScriptEngineSwitcher.V8.Native.win-x86" Version="3.5.1" />
     <PackageReference Include="JSPool" Version="4.0.0" />
     <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
