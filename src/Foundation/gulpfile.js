@@ -28,7 +28,7 @@ gulp.task('js', () => {
         .pipe(gulp.dest('./assets/js/'));
 });
 
-gulp.task('js', () => {
+gulp.task('jsfooter', () => {
     return gulp.src([
             './Assets/js/vendors/jquery/jquery-3.4.0.min.js',
             './Assets/js/vendors/jquery/jquery.validate.min.js',
@@ -58,4 +58,4 @@ gulp.task('watch', () => {
     gulp.watch('./assets/js/features/**/*.js', gulp.series('js'));
 });
 
-gulp.task('default', gulp.parallel('sass', 'js'));
+gulp.task('default', gulp.series('sass', 'js', 'jsfooter'));
