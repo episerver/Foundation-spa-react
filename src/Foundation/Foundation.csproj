@@ -824,6 +824,7 @@
     <Content Include="Assets\js\features\SearchBox.js" />
     <Content Include="Assets\js\features\Selection.js" />
     <Content Include="Assets\js\features\selective\Locations.js" />
+    <Content Include="Assets\js\footer.min.js" />
     <Content Include="Assets\js\main.min.js" />
     <Content Include="Assets\js\plugins\fontawesomeicons.js" />
     <Content Include="Assets\js\features\notifyHelper.js" />
@@ -1309,6 +1310,7 @@
     <Content Include="Assets\js\vendors\slick\slick.scss" />
     <Content Include="Features\Shared\Foundation\ErrorPage.cshtml" />
     <Content Include="Assets\scss\templates\pages\_error.scss" />
+    <Content Include="Assets\js\footer.min.js.map" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
