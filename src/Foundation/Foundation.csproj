@@ -1207,8 +1207,6 @@
     <Content Include="Features\Locations\TagPage\Index.cshtml" />
     <Content Include="Features\Locations\TagPage\CarouselSimple.cshtml" />
     <Content Include="Features\Search\_FacetContent.cshtml" />
-    <Content Include="Features\Search\_RecentlyBrowsed.cshtml" />
-    <Content Include="Features\Search\_Toolbar.cshtml" />
     <Content Include="modules\_protected\EPiServer.Forms\Forms.config" />
     <Content Include="module.config" />
     <Content Include="Features\Blocks\Views\MenuItemBlock.cshtml" />
