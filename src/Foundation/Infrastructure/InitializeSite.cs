@@ -6,6 +6,7 @@ using EPiServer.ContentApi.Core.Configuration;
 using EPiServer.ContentApi.Search;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
+using EPiServer.Labs.GridView;
 using EPiServer.ServiceLocation;
 using Foundation.Cms.Extensions;
 using Foundation.Find.Cms;
@@ -23,7 +24,6 @@ namespace Foundation.Infrastructure
     {
         public void ConfigureContainer(ServiceConfigurationContext context)
         {
-            ;
             context.ConfigureFoundationCms();
             context.Services.AddSingleton<IEnvReader, EnvReader>();
             AddEnv(builder =>
@@ -65,7 +65,6 @@ namespace Foundation.Infrastructure
                 .SetMaximumSearchResults(200)
                 .SetSearchCacheDuration(TimeSpan.FromMinutes(60));
             });
-
         }
 
         public void Initialize(InitializationEngine context)

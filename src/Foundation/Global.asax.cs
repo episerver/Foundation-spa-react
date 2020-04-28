@@ -14,10 +14,6 @@ namespace Foundation
             DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(LocalizedRegularExpressionAttribute), typeof(RegularExpressionAttributeAdapter));
             DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(LocalizedEmailAttribute), typeof(RegularExpressionAttributeAdapter));
             DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(LocalizedStringLengthAttribute), typeof(StringLengthAttributeAdapter));
-            ScriptManager.ScriptResourceMapping.AddDefinition("jquery", new ScriptResourceDefinition
-            {
-                Path = "~/Assets/js/vendors/jquery/jquery-3.4.0.min.js",
-            });
         }
 
         protected override void RegisterRoutes(RouteCollection routes)
