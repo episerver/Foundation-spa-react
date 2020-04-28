@@ -2,6 +2,7 @@ using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using EPiServer.Framework.DataAnnotations;
+using EPiServer.Labs.ContentManager.ViewConfiguration.blocksConfiguration;
 using EPiServer.Shell.ObjectEditing;
 using EPiServer.SpecializedProperties;
 using EPiServer.Web;
@@ -115,5 +116,9 @@ namespace Foundation.Cms.Pages
         [Display(Name = "Menu style", GroupName = CmsTabNames.Header, Order = 30)]
         public virtual string HeaderMenuStyle { get; set; }
         #endregion
+
+        [Display(Name = "Content Manager", GroupName = CmsTabNames.ContentManager, Order = 190)]
+        [AllowedTypes(AllowedTypes = new[] { typeof(CustomViewConfigurationBlock) })]
+        public virtual ContentArea ContentManager { get; set; }
     }
 }

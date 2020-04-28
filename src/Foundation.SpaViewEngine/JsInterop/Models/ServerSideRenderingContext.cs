@@ -4,7 +4,7 @@ using EPiServer.DataAbstraction;
 using EPiServer.ServiceLocation;
 using EPiServer.Web;
 using EPiServer.Web.Routing;
-using Foundation.ContentDeliveryApi.Models;
+using Foundation.ContentDelivery.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

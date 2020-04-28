@@ -1,7 +1,5 @@
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
-using EPiServer.Labs.ContentManager.Cards;
-using EPiServer.Labs.ContentManager.Dashboard;
 using EPiServer.Shell.ObjectEditing;
 using Foundation.Cms.EditorDescriptors;
 using Geta.EpiCategories;

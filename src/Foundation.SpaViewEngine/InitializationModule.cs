@@ -9,7 +9,7 @@ using System.Linq;
 namespace Foundation.SpaViewEngine
 {
     [InitializableModule]
-    public class InitializationModule : IConfigurableModule, IInitializableModule
+    public class InitializationModule : IConfigurableModule
     {
         /// <summary>
         /// Setup the container to use the ClearScript.V8 JavaScript engine by default. All instances
