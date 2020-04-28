@@ -1,4 +1,4 @@
-import React, { Component, ReactNode, ReactNodeArray } from 'react';
+import React, { Component, ReactNode, ReactNodeArray, HTMLAttributes, HTMLProps, AnchorHTMLAttributes } from 'react';
 import IContentProperty, { ContentReferenceProperty, ContentAreaProperty } from '../Property';
 import IContent, { IContentData, GenericProperty} from '../Models/IContent';
 import { IEpiserverSpaContext } from '../Spa';
@@ -6,7 +6,7 @@ import { ContentLinkService } from 'Episerver/Models/ContentLink';
 import CmsComponent from './CmsComponent';
 import ContentArea from './ContentArea';
 
-export interface PropertyProps
+export interface PropertyProps extends HTMLAttributes<HTMLElement>
 {
     iContent: IContent
     property: string
@@ -48,13 +48,32 @@ export default class Property extends Component<PropertyProps>
         switch (propType) {
             case 'string':
                 return this.isEditable() ? <span className={this.props.className} data-epi-edit={ this.props.property }>{ prop }</span> : (this.props.className ? <span className={ this.props.className }>{ prop }}</span> : prop);
+            case 'PropertyString':
             case 'PropertyLongString':
                 stringValue = (prop as IContentProperty<string>).value;
                 return this.isEditable() ? <span className={this.props.className} data-epi-edit={ this.props.property }>{ stringValue }</span> : (this.props.className ? <span className={ this.props.className }>{ stringValue }</span> : stringValue);
+            case 'PropertyUrl':
+                let propUrlValue = (prop as IContentProperty<string>).value;
+                let props : AnchorHTMLAttributes<HTMLAnchorElement> = {
+                    className: this.props.className,
+                    href: propUrlValue,
+                    children: this.props.children || propUrlValue
+                };
+                if (this.isEditable()) {
+                    (props as any)['data-epi-edit'] = this.props.property;
+                }
+                return React.createElement('a', props);
+            case 'PropertyDecimal':
+            case 'PropertyNumber':
+            case 'PropertyFloatNumber':
+                let propNumberValue : number = (prop as IContentProperty<number>).value;
+                let className : string = `number ${this.props.className}`;
+                return this.isEditable() ? <span className={ className } data-epi-edit={ this.props.property }>{ propNumberValue }</span> : <span className={ className }>{ propNumberValue }</span>;
             case 'PropertyXhtmlString':
                 stringValue = (prop as IContentProperty<string>).value;
                 return this.isEditable() ? <div className={this.props.className} data-epi-edit={ this.props.property } dangerouslySetInnerHTML={ {__html: stringValue} }></div> : <div className={ this.props.className } dangerouslySetInnerHTML={ {__html: stringValue} } />;
             case 'PropertyContentReference':
+            case 'PropertyPageReference':
                 const link = (prop as ContentReferenceProperty).value;
                 const expValue = (prop as ContentReferenceProperty).expandedValue;
                 const item = <CmsComponent contentLink={link} expandedValue={expValue} context={this.props.context} className={this.props.className} />

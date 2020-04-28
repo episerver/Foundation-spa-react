@@ -133,6 +133,7 @@ function ConvertTypeToSpaProperty(typeName, allItemNames)
         case "Number":
         case "FloatNumber":
             return "NumberProperty";
+        case "String":
         case "string":
         case "LongString":
         case "XhtmlString":

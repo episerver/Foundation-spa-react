@@ -23,7 +23,7 @@ export default interface LocationItemPageData extends IContent {
      *
      * No description available
      */
-    continent: Property<any> // Original type: String
+    continent: StringProperty
 
     /**
      * Categories
@@ -37,7 +37,7 @@ export default interface LocationItemPageData extends IContent {
      *
      * No description available
      */
-    country: Property<any> // Original type: String
+    country: StringProperty
 
     /**
      * Latitude
@@ -72,7 +72,7 @@ export default interface LocationItemPageData extends IContent {
      *
      * No description available
      */
-    airportInitials: Property<any> // Original type: String
+    airportInitials: StringProperty
 
     /**
      * Yearly passengers
