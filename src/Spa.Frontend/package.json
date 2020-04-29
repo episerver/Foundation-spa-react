@@ -9,7 +9,8 @@
     "clean": "echo \"Clean: not implemented\" && exit 0",
     "build": "echo \"Development: Not synchronizing models prior to build!\" && webpack --env.NODE_ENV=development --mode development --config webpack.config.js && webpack --env.NODE_ENV=development --mode development --config server.webpack.config.js",
     "release": "node ./lib/Episerver/Scripts/sync_models.js && webpack --env.NODE_ENV=production --mode production --config webpack.config.js && webpack --env.NODE_ENV=production --mode production --config server.webpack.config.js",
-    "watch": "node ./lib/Episerver/Scripts/sync_models.js && webpack --watch",
+    "watch-browser": "node ./lib/Episerver/Scripts/sync_models.js && webpack --watch --progress --env.NODE_ENV=development --mode development --config webpack.config.js",
+    "watch-server": "node ./lib/Episerver/Scripts/sync_models.js && webpack --watch --progress --env.NODE_ENV=development --mode development --config server.webpack.config.js",
     "compile": "node ./lib/Episerver/Scripts/sync_models.js && tsc -p .\\tsconfig.json"
   },
   "author": "Remko Jantzen",
