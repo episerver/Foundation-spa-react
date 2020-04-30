@@ -215,6 +215,13 @@ export default interface CmsHomePageData extends IContent {
     topContentArea: ContentAreaProperty
 
     /**
+     * Content Manager
+     *
+     * No description available
+     */
+    contentManager: ContentAreaProperty
+
+    /**
      * Main content area
      *
      * No description available

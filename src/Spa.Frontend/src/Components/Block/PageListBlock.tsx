@@ -8,6 +8,7 @@ import Link from 'Episerver/Components/Link';
 import Property from 'Episerver/Components/Property';
 import './PageListBlock/GridView.scss';
 import Teaser from 'app/Components/Shared/Teaser';
+import { ContentLinkService } from 'Episerver/Models/ContentLink';
 
 interface PageListPreviewViewModel {
     page: IContent
@@ -141,7 +142,7 @@ export default class PageListBlock extends EpiComponent<PageListBlockData, PageL
         cssClasses = cssClasses || [];
         cssClasses.push('tile');
 
-        return <Teaser content={teaser} className={ cssClasses.join(' ') } context={ this.getContext() } />;
+        return <Teaser content={teaser} className={ cssClasses.join(' ') } context={ this.getContext() } key={ "teaser-"+ContentLinkService.createApiId(teaser.contentLink) } />;
     }
 
     protected renderTopTemplate(pages: Array<IContent>, key: string, previewOption: string = "1/3")
