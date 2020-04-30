@@ -206,7 +206,12 @@ interface EpiContentSavedEvent {
     hasContentLinkChanged: boolean
     savedContentLink: string
     publishedContentLink: string
-    properties: Array<any>
+    properties: Array<{
+        name: string
+        successful: boolean
+        validationErrors: any
+        value: any
+    }>
     validationErrors: Array<any>
     oldContentLink: string
 }
@@ -248,12 +253,22 @@ export class EpiserverSpaContext implements IEpiserverSpaContext {
         //EpiEditMode init
         if (!this._isServerSideRendering) {
             this.events().addListener('beta/epiReady', 'EpiSpaReady', (() => {
-                if (this.isDebugActive()) console.log('Episerver Ready, setting edit mode to', this.isInEditMode() ? 'true' : 'false');
+                if (this.isDebugActive()) console.info('Episerver Ready, setting edit mode to', this.isInEditMode() ? 'true' : 'false');
                 this._contentApi.setInEditMode(this.isInEditMode());
             }).bind(this), true);
             this.events().addListener('beta/contentSaved', 'EpiContentSaved', ((event: EpiContentSavedEvent) => {
-                console.log(event);
+                if (this.isDebugActive()) console.info('Received updated content from the Episerver Shell', event);
                 if (event.successful) {
+                    let baseId = event.savedContentLink.split('_')[0];
+                    let baseContent = this.getContentById(baseId);
+                    event.properties.forEach(prop => {
+                        this.dispatch(IContentActionFactory.updateContentProperty(
+                           baseContent,
+                           prop.name,
+                           prop.value
+                        ));
+                    });
+
                     //Full refresh as we don't support partials yet....
                     this.loadContentById(event.savedContentLink);
                 }

@@ -1,7 +1,11 @@
 import React, { Component, ReactNode, ReactNodeArray } from 'react';
-import CmsHomePageData from 'app/Models/Content/CmsHomePageData';
+import { connect } from 'react-redux';
+import Property from 'Episerver/Components/Property';
 import ContentArea from 'Episerver/Components/ContentArea';
-import { IEpiserverSpaContext } from 'Episerver/Spa';
+import EpiContext, { IEpiserverSpaContext } from 'Episerver/Spa';
+
+import CmsHomePageData from 'app/Models/Content/CmsHomePageData';
+import { ContentLinkService } from 'Episerver/Models/ContentLink';
 
 export interface FooterProps {
     startPage: CmsHomePageData
@@ -30,17 +34,8 @@ export default class Footer extends Component<FooterProps, FooterState> {
 
     render() : ReactNode
     {
-        let links : ReactNodeArray = [];
         let socialLinks : ReactNodeArray = [];
-
-        try {
-            links = this.props.startPage.links.value.map(link => {
-                let uri : string = link.href.substr(0,5) == 'http:' ? 'https' + link.href.substr(4) : link.href;
-                return <a className="nav-item" href={ uri } title={ link.title } target={ link.target } key={ "footer-link-"+link.href }>{ link.text}</a>
-            });
-        } catch (e) { 
-            //Intentionally ignored
-        }
+        
         try {
             socialLinks = this.props.startPage.socialLinks.value.map(link => {
                 let uri : string = link.href.substr(0,5) == 'http:' ? 'https' + link.href.substr(4) : link.href;
@@ -54,40 +49,110 @@ export default class Footer extends Component<FooterProps, FooterState> {
             <div className="container">
                 <div className="row">
                     <div className="col text-center mt-4 mb-3">
-                        <p className="h4">{ this.props.startPage.introduction.value }</p>
+                        <p className="h4"><Property iContent={ this.props.startPage } property="introduction" context={ this.props.context }/></p>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-12 col-lg-4">
-                        <h3 className="h5 text-uppercase">{ this.props.startPage.companyHeader.value }</h3>
+                        <h3 className="h5 text-uppercase"><Property iContent={ this.props.startPage } property="companyHeader" context={ this.props.context }/></h3>
                         <dl className="row">
                             <dt className="col-3">Phone:</dt>
-                            <dd className="col-9">{ this.props.startPage.companyPhone.value }</dd>
+                            <dd className="col-9"><Property iContent={ this.props.startPage } property="companyPhone" context={ this.props.context }/></dd>
                             <dt className="col-3">Email:</dt>
-                            <dd className="col-9">{ this.props.startPage.companyEmail.value }</dd>
+                            <dd className="col-9"><Property iContent={ this.props.startPage } property="companyEmail" context={ this.props.context }/></dd>
                         </dl>
-                        <p>{ this.props.startPage.companyAddress.value }</p>
+                        <p><Property iContent={ this.props.startPage } property="companyAddress" context={ this.props.context }/></p>
                     </div>
                     <div className="col-6 col-lg-2">
-                        <h3 className="h5 text-uppercase">{ this.props.startPage.linksHeader.value }</h3>
-                        <nav className="nav flex-column">
-                            { links }
-                        </nav>
+                        <h3 className="h5 text-uppercase"><Property iContent={ this.props.startPage } property="linksHeader" context={ this.props.context }/></h3>
+                        { this.renderLinks() }
                     </div>
                     <div className="col-6 col-lg-2">
-                        <h3 className="h5 text-uppercase">Follow us</h3>
-                        <nav className="nav flex-column">
-                            { socialLinks }
-                        </nav>
+                        <h3 className="h5 text-uppercase"><Property iContent={ this.props.startPage } property="socialHeader" context={ this.props.context }/></h3>
+                        { this.renderSocialLinks() }
                     </div>
                     <div className="col-12 col-lg-4">
-                        <ContentArea context={ this.props.context } data={ this.props.startPage.contentArea } noWrap={ true } />
+                        { this.renderContentArea() }
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col my-3"><p className="font-weight-lighter">&copy; <span>{ (new Date()).getFullYear() }</span> <span>{ this.props.startPage.footerCopyrightText.value }</span></p></div>
+                    <div className="col my-3"><p className="font-weight-lighter">&copy; <span>{ (new Date()).getFullYear() }</span> <span><Property iContent={ this.props.startPage } property="footerCopyrightText" context={ this.props.context }/></span></p></div>
                 </div>
             </div>
         </footer>;
     }
+
+    protected renderLinks()
+    {
+        let links : ReactNodeArray = [];
+        try {
+            links = this.props.startPage.links.value.map(link => {
+                let uri : string = link.href.substr(0,5) == 'http:' ? 'https' + link.href.substr(4) : link.href;
+                return <a className="nav-item" href={ uri } title={ link.title } target={ link.target } key={ "footer-link-"+link.href }>{ link.text}</a>
+            });
+        } catch (e) { 
+            //Intentionally ignored
+        }
+        let props : any = {
+            className: 'nav flex-column',
+            children: links
+        }
+        if (this.isEditable() && this.currentPageIsStartPage()) {
+            props['data-epi-edit'] = 'links';
+        }
+        return React.createElement('nav', props);
+    }
+
+    protected renderSocialLinks()
+    {
+        let links : ReactNodeArray = [];
+        try {
+            links = this.props.startPage.socialLinks.value.map(link => {
+                let uri : string = link.href.substr(0,5) == 'http:' ? 'https' + link.href.substr(4) : link.href;
+                return <a className="nav-item" href={ uri } title={ link.title } target={ link.target } key={ "footer-link-"+link.href }>{ link.text}</a>
+            });
+        } catch (e) { 
+            //Intentionally ignored
+        }
+        let props : any = {
+            className: 'nav flex-column',
+            children: links
+        }
+        if (this.isEditable() && this.currentPageIsStartPage()) {
+            props['data-epi-edit'] = 'socialLinks';
+        }
+        return React.createElement('nav', props);
+    }
+
+    protected renderContentArea()
+    {
+        let props : any = {
+            context: this.props.context,
+            data: this.props.startPage.contentArea,
+            noWrap: true
+        }
+        if (this.currentPageIsStartPage()) {
+            props['propertyName'] = 'contentArea';
+        }
+        return React.createElement(ContentArea, props);
+    }
+
+    protected isEditable()
+    {
+        return this.props.context.isEditable();
+    }
+
+    protected currentPageIsStartPage()
+    {
+        let routedId = ContentLinkService.createApiId(this.props.context.getRoutedContent());
+        let startPageId = ContentLinkService.createApiId(this.props.startPage.contentLink);
+        return routedId == startPageId;
+    }
+}
+
+/**
+ * Helper intrface to describe the static side of the Footer component
+ */
+export interface FooterType {
+	new (props : FooterProps) : Footer
 }

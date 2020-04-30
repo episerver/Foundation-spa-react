@@ -7,5 +7,17 @@
         height: 100%;
         top: 0px;
         left: 0px;
+
+        .callout-content {
+            font-size: 2rem;
+
+            h1 {
+                font-size: 5rem;
+            }
+
+            &.text-light {
+            text-shadow: -2px 2px 6px rgba(0, 0, 0, 0.75);
+            }
+        }
     }
 }

@@ -71,10 +71,10 @@ class EventEngine implements IEventEngine
         if (event.data.id) {
             if (this.registerEvent(event.data.id)) {
                 this.dispatch(event.data.id, event.data.data);
-            }
+            }/*
             if (event.data.id != '/site/checksize') {
                 console.log("POSTMESSAGEEVENT", event);
-            }
+            }*/
         }
     }
 

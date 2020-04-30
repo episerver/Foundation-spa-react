@@ -1,5 +1,5 @@
 import IContentModel from '../Models/IContent';
-import { RepositoryAction, DispatchMethod, DispatchableMethod, RepositoryActions } from './AbstractRepostory';
+import { RepositoryAction, DispatchMethod, DispatchableMethod } from './AbstractRepostory';
 import { AnyAction } from 'redux';
 import ContentDeliveryAPI, {PathResponseIsIContent} from '../ContentDeliveryAPI';
 import EpiserverSpaContext from '../Spa';
@@ -67,7 +67,8 @@ enum IContentRepoActions {
     FINISH_FETCH_ERROR   = "FINISH_ICONTENT_FETCH_ERROR",
     REPLACE_WEBSITES     = "ICONTENT_REPLACE_WEBSITES",
     SET_CURRENT_WEBSITE  = "ICONTENT_SET_CURRENT_WEBSITE",
-    REGISTER_PATH        = "ICONTENT_REGISTER_PATH"
+    REGISTER_PATH        = "ICONTENT_REGISTER_PATH",
+    UPDATE_ITEM_PROPERTY = "ICONTENT_UPDATE_ITEM_PROPERTY"
 }
 
 export class IContentActionFactory
@@ -150,6 +151,15 @@ export class IContentActionFactory
             type: IContentRepoActions.REGISTER_PATH,
             item: content,
             args: [paths]
+        }
+    }
+
+    public static updateContentProperty(content: IContent, property: string, value: any) : IContentAction
+    {
+        return {
+            type: IContentRepoActions.UPDATE_ITEM_PROPERTY,
+            item: content,
+            args: [property, value]
         }
     }
 }
@@ -253,6 +263,8 @@ export default class IContentRepository
                 return this.setCurrentWebsite(action.item, state);
             case IContentRepoActions.REGISTER_PATH:
                 return this.addIContentToState(action.item, state, null, action.args[0]);
+            case IContentRepoActions.UPDATE_ITEM_PROPERTY:
+                return this.updateIContentProperty(action.item, state, action.args[0], action.args[1]);
             default:
                 if (!isSystemAction && EpiserverSpaContext.isDebugActive()) {
                     console.debug("No action specified within the iContent Repo for", action.type);
@@ -260,6 +272,24 @@ export default class IContentRepository
                 break;
         }
         return Object.assign({}, state);
+    }
+
+    protected static updateIContentProperty(content: IContent, state: Readonly<IContentRepoState>, property: string, value: any) : IContentRepoState
+    {
+        let newItems = { ...state.items }; //Start by copying items
+
+        const contentId = ContentLinkService.createApiId(content.contentLink);
+        if (newItems[contentId]) {
+            let newContent : any = { ...newItems[contentId].content };
+            newContent[property] = { ...newContent[property], value: value };
+            newItems[contentId] = {
+                content: newContent,
+                id: ContentLinkService.createApiId(newContent),
+                path: (newContent as IContent).url
+            };
+        }
+
+        return { ...state, items: newItems };
     }
 
     protected static setCurrentWebsite(website: Website, state: Readonly<IContentRepoState>) : IContentRepoState

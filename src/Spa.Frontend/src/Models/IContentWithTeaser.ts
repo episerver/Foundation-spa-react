@@ -59,3 +59,11 @@ export default interface IContentWithTeaser extends IContent
      */
     teaserButtonStyle: StringProperty
 }
+
+export function isIContentWithTeaser(contentItem : IContent|IContentWithTeaser) : contentItem is IContentWithTeaser
+{
+    if ((contentItem as IContentWithTeaser)?.pageImage) {
+        return true;
+    }
+    return false;
+}

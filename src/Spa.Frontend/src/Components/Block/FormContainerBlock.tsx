@@ -35,8 +35,6 @@ export default class FormContainerBlock extends EpiComponent<FormContainerBlockD
 
     render() : ReactNode | ReactNodeArray
     {
-        return <div className="form-container" ref={container => this._container = container}></div>
-
         //Render using React - Not yet supported by ContentDeliveryAPI
         return <div className="episerver-form">
             <h3><Property context={ this.getContext() } iContent={ this.props.data } property="title" /></h3>

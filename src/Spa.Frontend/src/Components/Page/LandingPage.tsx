@@ -15,7 +15,7 @@ export default class LandingPage extends Page<LandingPageData>
     {
         return [
             <Helmet key="landingpage-helmet"></Helmet>,
-            <div className="container" key="landingpage-container">
+            <div className="container pt-3" key="landingpage-container">
                 <div className="row">
                     <div className="col-12">
                         <h1><Property iContent={ this.props.data } property="name" context={ this.getContext() } /></h1>

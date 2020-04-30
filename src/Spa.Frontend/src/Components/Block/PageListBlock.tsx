@@ -3,10 +3,11 @@ import EpiComponent from 'Episerver/EpiComponent';
 import IContent from 'Episerver/Models/IContent';
 import PageListBlockData, { PageListBlockProps } from 'app/Models/Content/PageListBlockData';
 import { CmsComponent } from 'Episerver/Components/CmsComponent';
-import IContentWithTeaser from 'Models/IContentWithTeaser';
+import IContentWithTeaser, { isIContentWithTeaser } from 'Models/IContentWithTeaser';
 import Link from 'Episerver/Components/Link';
 import Property from 'Episerver/Components/Property';
 import './PageListBlock/GridView.scss';
+import Teaser from 'app/Components/Shared/Teaser';
 
 interface PageListPreviewViewModel {
     page: IContent
@@ -81,7 +82,7 @@ export default class PageListBlock extends EpiComponent<PageListBlockData, PageL
 
     public render() : ReactNode | ReactNodeArray | null
     {
-        let classes : Array<string> = ["row","PageListBlock"];
+        let classes : Array<string> = ["row","PageListBlock","w-100"];
         if (this.props.className) classes.push(this.props.className);
         if (this.props.data.margin?.value) classes.push(this.props.data.margin.value);
         if (this.props.data.padding?.value) classes.push(this.props.data.padding.value);
@@ -132,20 +133,15 @@ export default class PageListBlock extends EpiComponent<PageListBlockData, PageL
             items.push(pages.slice(9).map(iContent => this.renderGridTemplateTile(iContent as IContentWithTeaser, ['col-12'])));
         }
 
-        return <div className="row no-gutters page-list-grid">{items}</div>
+        return <div className="row no-gutters page-list-grid w-100">{items}</div>
     }
 
     protected renderGridTemplateTile(teaser: IContentWithTeaser, cssClasses: Array<string> = []) : ReactNode {
+
         cssClasses = cssClasses || [];
         cssClasses.push('tile');
-        return <div className={cssClasses.join(' ')} key={ `pagelist-grid-item-${teaser.contentLink.id}` }>
-            <Property iContent={teaser} property="pageImage" context={this.getContext()} className="image w-100" />
-            <div className="overlay p-3">
-                <h5><Property iContent={teaser} property="name" context={this.getContext()} /></h5>
-                <p><Property iContent={teaser} property="teaserText" context={this.getContext()} /></p>
-                <Link href={ teaser } className="btn btn-primary">Read more</Link>
-            </div>
-        </div>
+
+        return <Teaser content={teaser} className={ cssClasses.join(' ') } context={ this.getContext() } />;
     }
 
     protected renderTopTemplate(pages: Array<IContent>, key: string, previewOption: string = "1/3")

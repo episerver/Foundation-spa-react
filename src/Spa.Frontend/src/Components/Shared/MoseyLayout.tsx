@@ -28,7 +28,6 @@ export default class MoseyLayout extends Layout
 {
     renderLayout() : Array<ReactNode> | ReactNode | null
     {
-        if (this.props.context.isDebugActive()) { console.debug('Rendering Mosey Layout'); }
         if (!this.isPage())
         {
             return <CmsComponent context={ this.props.context } contentLink={this.props.page} expandedValue={this.props.expandedValue} key={`website-body`} actionName={this.props.actionName} actionData={this.props.actionData} />;
@@ -47,7 +46,7 @@ export default class MoseyLayout extends Layout
             </Helmet>);
             page.push(<Header context={this.props.context} path={this.props.path} startPage={this.props.startPage as CmsHomePageData } key={`website-header`} />);
             page.push(<CmsComponent context={ this.props.context } contentLink={this.props.page} expandedValue={this.props.expandedValue} key={`website-body`} actionName={this.props.actionName} actionData={this.props.actionData} />);
-            page.push(<Footer context={this.props.context} startPage={this.props.startPage as CmsHomePageData } key={`website-footer`} />);
+            page.push(<Footer context={ this.props.context } startPage={ this.props.startPage as CmsHomePageData } key='website-footer'/>);
             return page;
         }
         if (this.props.context.isDebugActive()) {

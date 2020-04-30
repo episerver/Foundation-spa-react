@@ -15,13 +15,14 @@ export default class HeroBlock extends EpiComponent<HeroBlockData> {
         let cssClasses : Array<string> = ['hero-block'];
         if (this.props.data.margin?.value) cssClasses.push(this.props.data.margin.value);
         if (this.props.data.padding?.value) cssClasses.push(this.props.data.padding.value);
+        if (this.props.data.blockRatio?.value) cssClasses.push(`r-${this.props.data.blockRatio.value}`);
 
         return <div className={cssClasses.join(' ')}>
-            <CmsComponent context={this.props.context} contentLink={ background.value } className="d-block w-100" expandedValue={ background.expandedValue } />
+            <CmsComponent context={this.props.context} contentLink={ background.value } className="d-cover" expandedValue={ background.expandedValue } />
             <div className="callout">
                 <div className="container">
                     <div className="row">
-                        <div className="col">
+                        <div className="col d-flex">
                         { this.renderCallOut() }
                         </div>
                     </div>
@@ -32,7 +33,7 @@ export default class HeroBlock extends EpiComponent<HeroBlockData> {
 
     protected renderCallOut() : ReactNode
     {
-        let callOutClasses : Array<string> = ['callout-content'];
+        let callOutClasses : Array<string> = ['callout-content','mt-5'];
         let callOutStyles : any = {
             opacity: this.props.data.callout.calloutOpacity.value
         };
@@ -40,18 +41,21 @@ export default class HeroBlock extends EpiComponent<HeroBlockData> {
             callOutStyles.backgroundColor = this.props.data.callout.backgroundColor;
         }
         switch (this.props.data.callout.calloutContentAlignment.value) {
-            case "Right":
+            case "right":
                 callOutClasses.push('mr-0');
                 callOutClasses.push('ml-auto');
+                callOutClasses.push('text-right');
                 break;
-            case "Center":
+            case "center":
                 callOutClasses.push('mr-auto');
                 callOutClasses.push('ml-auto');
+                callOutClasses.push('text-center');
                 break;
-            case "Left":
+            case "left":
             default:
                 callOutClasses.push('mr-auto');
                 callOutClasses.push('ml-0');
+                callOutClasses.push('text-left');
                 break;
         }
         switch (this.props.data.callout.calloutTextColor.value) {
@@ -60,7 +64,6 @@ export default class HeroBlock extends EpiComponent<HeroBlockData> {
                 break;
             default:
                 callOutClasses.push('text-light');
-                callOutClasses.push('bg-dark');
                 break;
         }
         return <div className={ callOutClasses.join(' ') } style={ callOutStyles } dangerouslySetInnerHTML={ this.htmlObject(this.props.data.callout.calloutContent.value) } ></div>;
