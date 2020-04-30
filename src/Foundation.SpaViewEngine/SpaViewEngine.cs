@@ -14,9 +14,14 @@ namespace Foundation.SpaViewEngine
 
         public SpaViewEngine(SpaSettings settings) => Settings = settings;
 
-        public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache) => new ViewEngineResult(new List<string>());
+        public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache) => CreateSpaView(controllerContext);
 
         public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
+        {
+            return CreateSpaView(controllerContext);
+        }
+
+        private ViewEngineResult CreateSpaView(ControllerContext controllerContext)
         {
             var content = controllerContext.RequestContext.RouteData.DataTokens.FirstOrDefault(x => x.Key.Equals("routedData")).Value as IContent;
             if (content == null) //Only route iContent, or defined routes
@@ -24,7 +29,7 @@ namespace Foundation.SpaViewEngine
                 return new ViewEngineResult(new List<string>());
             }
             string script = HttpContext.Current.Server.MapPath(Settings.GetConfigValue("server:script", "~\\Spa\\server.js"));
-            string index =  HttpContext.Current.Server.MapPath(Settings.GetConfigValue("server:template", "~\\Spa\\index.html"));
+            string index = HttpContext.Current.Server.MapPath(Settings.GetConfigValue("server:template", "~\\Spa\\index.html"));
 
             if (!(File.Exists(script) && File.Exists(index)))
             {

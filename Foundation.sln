@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		default.ruleset = default.ruleset
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundation.ContentDeliveryApi", "src\Foundation.ContentDeliveryApi\Foundation.ContentDeliveryApi.csproj", "{298347D6-3C36-4FD1-9E3A-97B44D109ADA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundation.ContentDelivery", "src\Foundation.ContentDelivery\Foundation.ContentDelivery.csproj", "{298347D6-3C36-4FD1-9E3A-97B44D109ADA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundation.SpaViewEngine", "src\Foundation.SpaViewEngine\Foundation.SpaViewEngine.csproj", "{09942BCE-61B3-4926-B104-B328795F479A}"
 EndProject

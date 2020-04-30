@@ -3,7 +3,7 @@ using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
-using Foundation.ContentDeliveryApi.Models;
+using Foundation.ContentDelivery.Models;
 using Foundation.SpaViewEngine.JsInterop.Models;
 using System.Linq;
 using System.Web.Mvc;

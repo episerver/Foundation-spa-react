@@ -65,5 +65,9 @@ namespace Foundation.Cms
         [Display(Name = "Mail templates", Order = 78)]
         [RequiredAccess(AccessLevel.Edit)]
         public const string MailTemplates = "MailTemplates";
+
+        [Display(Name = "Content Manager", Order = 79)]
+        [RequiredAccess(AccessLevel.Edit)]
+        public const string ContentManager = "ContentManager";
     }
 }

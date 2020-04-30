@@ -170,12 +170,15 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\Components\Block\BreadcrumbBlock.tsx" />
+    <TypeScriptCompile Include="src\Components\Block\ContentRecommendationsBlock.tsx" />
+    <TypeScriptCompile Include="src\Components\Block\FormContainerBlock.tsx" />
     <TypeScriptCompile Include="src\Components\Block\HeroBlock.tsx" />
     <TypeScriptCompile Include="src\Components\Block\Media\Image\ImageMediaData.tsx" />
     <TypeScriptCompile Include="src\Components\Block\MenuItemBlock.tsx" />
     <TypeScriptCompile Include="src\Components\Block\PageListBlock.tsx" />
     <TypeScriptCompile Include="src\Components\Block\Page\LandingPage.tsx" />
     <TypeScriptCompile Include="src\Components\Block\Page\StandardPage.tsx" />
+    <TypeScriptCompile Include="src\Components\Block\TeaserBlock.tsx" />
     <TypeScriptCompile Include="src\Components\Block\TextBlock.tsx" />
     <TypeScriptCompile Include="src\Components\Block\YouTubeBlock.tsx" />
     <TypeScriptCompile Include="src\Components\Media\Image\ImageMediaData.tsx" />

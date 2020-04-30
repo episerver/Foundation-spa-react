@@ -64,11 +64,11 @@
     <Reference Include="Advanced.CMS.Forms, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Advanced.CMS.Forms.0.1.0\lib\net45\Advanced.CMS.Forms.dll</HintPath>
     </Reference>
-    <Reference Include="AdvancedApprovalReviews, Version=0.5.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Advanced.CMS.AdvancedReviews.0.5.4\lib\net45\AdvancedApprovalReviews.dll</HintPath>
+    <Reference Include="AdvancedApprovalReviews, Version=0.5.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Advanced.CMS.AdvancedReviews.0.5.6\lib\net45\AdvancedApprovalReviews.dll</HintPath>
     </Reference>
-    <Reference Include="AdvancedExternalReviews, Version=0.5.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Advanced.CMS.AdvancedReviews.0.5.4\lib\net45\AdvancedExternalReviews.dll</HintPath>
+    <Reference Include="AdvancedExternalReviews, Version=0.5.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Advanced.CMS.AdvancedReviews.0.5.6\lib\net45\AdvancedExternalReviews.dll</HintPath>
     </Reference>
     <Reference Include="AdvancedTask, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\AdvancedTaskManager.1.0.0\lib\net461\AdvancedTask.dll</HintPath>
@@ -200,8 +200,8 @@
     <Reference Include="EPiServer.Forms.Core, Version=4.28.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.Forms.Core.4.28.0\lib\EPiServer.Forms.Core.dll</HintPath>
     </Reference>
-    <Reference Include="EPiServer.Forms.Samples, Version=3.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EPiServer.Forms.Samples.3.5.0\Lib\EPiServer.Forms.Samples.dll</HintPath>
+    <Reference Include="EPiServer.Forms.Samples, Version=3.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EPiServer.Forms.Samples.3.6.0\lib\EPiServer.Forms.Samples.dll</HintPath>
     </Reference>
     <Reference Include="EPiServer.Forms.UI, Version=4.28.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.Forms.UI.4.28.0\lib\EPiServer.Forms.UI.dll</HintPath>
@@ -218,11 +218,11 @@
     <Reference Include="EPiServer.ImageLibrary, Version=11.15.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.CMS.AspNet.11.15.0\lib\net461\EPiServer.ImageLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="EPiServer.Insight.Cms, Version=1.14.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EPiServer.Insight.Cms.1.14.0\lib\net461\EPiServer.Insight.Cms.dll</HintPath>
+    <Reference Include="EPiServer.Insight.Cms, Version=1.15.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EPiServer.Insight.Cms.1.15.0\lib\net461\EPiServer.Insight.Cms.dll</HintPath>
     </Reference>
-    <Reference Include="EPiServer.Insight.UI, Version=1.14.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EPiServer.Insight.UI.1.14.0\lib\net461\EPiServer.Insight.UI.dll</HintPath>
+    <Reference Include="EPiServer.Insight.UI, Version=1.15.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EPiServer.Insight.UI.1.15.0\lib\net461\EPiServer.Insight.UI.dll</HintPath>
     </Reference>
     <Reference Include="EPiServer.Labs.BlockEnhancements, Version=0.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.Labs.BlockEnhancements.0.8.0\lib\net45\EPiServer.Labs.BlockEnhancements.dll</HintPath>
@@ -284,11 +284,11 @@
     <Reference Include="EPiServer.Personalization.MaxMindGeolocation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.Personalization.MaxMindGeolocation.1.0.0\lib\net461\EPiServer.Personalization.MaxMindGeolocation.dll</HintPath>
     </Reference>
-    <Reference Include="EPiServer.Profiles.Client, Version=1.14.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EPiServer.Profiles.Client.1.14.0\lib\net461\EPiServer.Profiles.Client.dll</HintPath>
+    <Reference Include="EPiServer.Profiles.Client, Version=1.15.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EPiServer.Profiles.Client.1.15.0\lib\net461\EPiServer.Profiles.Client.dll</HintPath>
     </Reference>
-    <Reference Include="EPiServer.Profiles.Client.Common, Version=1.14.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EPiServer.Profiles.Client.Common.1.14.0\lib\net461\EPiServer.Profiles.Client.Common.dll</HintPath>
+    <Reference Include="EPiServer.Profiles.Client.Common, Version=1.15.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EPiServer.Profiles.Client.Common.1.15.0\lib\net461\EPiServer.Profiles.Client.Common.dll</HintPath>
     </Reference>
     <Reference Include="EPiServer.ServiceLocation.StructureMap, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.ServiceLocation.StructureMap.2.0.3\lib\net461\EPiServer.ServiceLocation.StructureMap.dll</HintPath>
@@ -302,8 +302,8 @@
     <Reference Include="EPiServer.Shell.UI, Version=11.24.1.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.CMS.UI.Core.11.24.1\lib\net461\EPiServer.Shell.UI.dll</HintPath>
     </Reference>
-    <Reference Include="EPiServer.Tracking.Core, Version=1.14.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EPiServer.Tracking.Core.1.14.0\lib\net461\EPiServer.Tracking.Core.dll</HintPath>
+    <Reference Include="EPiServer.Tracking.Core, Version=1.15.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EPiServer.Tracking.Core.1.15.0\lib\net461\EPiServer.Tracking.Core.dll</HintPath>
     </Reference>
     <Reference Include="EPiServer.Turnstile.Contracts.Hmac, Version=4.0.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.Turnstile.Contracts.Hmac.4.0.0\lib\net461\EPiServer.Turnstile.Contracts.Hmac.dll</HintPath>
@@ -338,8 +338,8 @@
     <Reference Include="ImageProcessor.Web, Version=4.11.0.152, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ImageProcessor.Web.4.11.0\lib\net452\ImageProcessor.Web.dll</HintPath>
     </Reference>
-    <Reference Include="ImageProcessor.Web.Episerver, Version=5.6.0.29590, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ImageProcessor.Web.Episerver.5.6.0.29590\lib\net461\ImageProcessor.Web.Episerver.dll</HintPath>
+    <Reference Include="ImageProcessor.Web.Episerver, Version=5.6.1.25074, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageProcessor.Web.Episerver.5.6.1.25074\lib\net461\ImageProcessor.Web.Episerver.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -656,16 +656,9 @@
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ItemGroup>
-    <Compile Include="Infrastructure\DefaultBlockController.cs" />
-    <Compile Include="Infrastructure\DefaultContentController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\DefaultMediaController.cs" />
-    <Compile Include="Infrastructure\InitializeSite.cs" />
-    <Compile Include="Infrastructure\PageListBlockController.cs" />
-    <Compile Include="Infrastructure\DefaultPreviewController.cs" />
-    <Compile Include="Infrastructure\DefaultPreviewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -822,6 +815,7 @@
     <Content Include="Assets\icons\cms\pages\search.png" />
     <Content Include="Assets\icons\cms\pages\sitemap.png" />
     <Content Include="Assets\icons\mosey-logo.svg" />
+    <Content Include="Assets\js\plugins\fontawesomeicons.js" />
     <Content Include="ClientResources\Scripts\MenuChildItems.js" />
     <Content Include="ClientResources\Scripts\ContentEditing\CreateContent.js" />
     <Content Include="ClientResources\Scripts\Initialize.js" />
@@ -838,40 +832,41 @@
     <Content Include="modules\_protected\CookieDropBlock\Images\block-type-thumbnail-cookiedrop.png" />
     <Content Include="lang\Episerver.Marketing.Automation.Forms_EN.xml" />
     <Content Include="modules\_protected\EPiServer.ContentDeliveryApi.OAuth\ContentApiUserSettings.ascx" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\Criteria\SubmittedValue.js" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\epi-formssamples\FormsSamplesModule.js" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\epi-formssamples\themes\sleek\FormsSamples.css" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\epi-formssamples\themes\sleek\images\contenttypes\AddressesElementBlock.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\epi-formssamples\themes\sleek\images\contenttypes\DateTimeElementBlock.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\epi-formssamples\themes\sleek\images\contenttypes\DateTimeRangeElementBlock.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\epi-formssamples\themes\sleek\images\contenttypes\RecaptchaElementBlock.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\epi-formssamples\themes\sleek\images\formIcons16x16.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\AddressesElementBlock.js" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\DateTimeElementBlock.js" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\datetimepicker.modified.js" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\EPiServerFormsSamples.css" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\EPiServerFormsSamples.js" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\images\ui-bg_flat_10_000000_40x100.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\images\ui-bg_glass_100_f6f6f6_1x400.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\images\ui-bg_glass_100_fdf5ce_1x400.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\images\ui-icons_222222_256x240.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\images\ui-icons_228ef1_256x240.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\images\ui-icons_ef8c08_256x240.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\images\ui-icons_ffd27a_256x240.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\images\ui-icons_ffffff_256x240.png" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\jquery-ui.min.css" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\jquery-ui.modified.js" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\jquery-ui.structure.min.css" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\jquery-ui.theme.min.css" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.5.0\ClientResources\ViewMode\RecaptchaElementBlock.js" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\Criteria\SubmittedValue.js" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\epi-formssamples\FormsSamplesModule.js" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\epi-formssamples\themes\sleek\FormsSamples.css" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\epi-formssamples\themes\sleek\images\contenttypes\AddressesElementBlock.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\epi-formssamples\themes\sleek\images\contenttypes\DateTimeElementBlock.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\epi-formssamples\themes\sleek\images\contenttypes\DateTimeRangeElementBlock.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\epi-formssamples\themes\sleek\images\contenttypes\RecaptchaElementBlock.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\epi-formssamples\themes\sleek\images\formIcons16x16.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\AddressesElementBlock.js" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\DateTimeElementBlock.js" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\datetimepicker.modified.js" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\EPiServerFormsSamples.css" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\EPiServerFormsSamples.js" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\images\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\images\ui-icons_222222_256x240.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\images\ui-icons_228ef1_256x240.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\images\ui-icons_ef8c08_256x240.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\images\ui-icons_ffd27a_256x240.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\jquery-ui.min.css" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\jquery-ui.modified.js" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\jquery-ui.structure.min.css" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\jquery-ui.theme.min.css" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\3.6.0\ClientResources\ViewMode\RecaptchaElementBlock.js" />
     <Content Include="modules\_protected\EPiServer.Forms.Samples\EmbeddedLangFiles\EPiServer.Forms.Samples_DA.xml" />
     <Content Include="modules\_protected\EPiServer.Forms.Samples\EmbeddedLangFiles\EPiServer.Forms.Samples_DE.xml" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\EmbeddedLangFiles\EPiServer.Forms.Samples_EN - new.xml" />
     <Content Include="modules\_protected\EPiServer.Forms.Samples\EmbeddedLangFiles\EPiServer.Forms.Samples_EN.xml" />
     <Content Include="modules\_protected\EPiServer.Forms.Samples\EmbeddedLangFiles\EPiServer.Forms.Samples_ES.xml" />
     <Content Include="modules\_protected\EPiServer.Forms.Samples\EmbeddedLangFiles\EPiServer.Forms.Samples_FI.xml" />
@@ -921,13 +916,10 @@
     <Content Include="modules\_protected\CookieDropBlock\Views\web.config" />
     <Content Include="modules\_protected\CookieDropBlock\Views\CookieDropBlock.cshtml" />
     <Content Include="modules\_protected\AddOn.Edit.ContextMenuOpenInNewTab\AddOn.Edit.ContextMenuOpenInNewTab.zip" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\Views\ElementBlocks\Web.config" />
-    <Content Include="modules\_protected\EPiServer.Forms.Samples\module.config" />
     <Content Include="modules\_protected\EPiServer.VisitorGroupsCriteriaPack\EPiServer.VisitorGroupsCriteriaPack.zip" />
     <Content Include="modules\_protected\VisualCompareMode\Views\Web.config" />
     <Content Include="modules\_protected\VisualCompareMode\Views\GetDiffBootstrapper.cshtml" />
     <Content Include="modules\_protected\VisualCompareMode\module.config" />
-    <Content Include="package.json" />
     <Content Include="modules\_protected\EPiServer.Forms\Forms.config" />
     <Content Include="module.config" />
     <Content Include="modules\_protected\Foundation.Cms\module.config" />
@@ -948,7 +940,8 @@
     <Content Include="modules\_protected\EPiServer.Cms.TinyMce\EPiServer.Cms.TinyMce.zip" />
     <Content Include="modules\_protected\geta-epicategories\geta-epicategories.zip" />
     <Content Include="modules\_protected\Episerver.Marketing.Connector\module.config" />
-    <Content Include="modules\_protected\EPiServer.Insight.UI\module.config" />
+    <Content Include="modules\_protected\Shell\Shell.zip" />
+    <Content Include="modules\_protected\CMS\CMS.zip" />
     <Content Include="modules\_protected\EPiServer.Labs.LanguageManager\module.config" />
     <Content Include="modules\_protected\EPiServer.Labs.LanguageManager\EPiServer.LanguageManager.config" />
     <Content Include="modules\_protected\EPiServer.Labs.LanguageManager\EPiServer.Labs.LanguageManager.zip" />
@@ -965,24 +958,25 @@
     <Content Include="modules\_protected\CmsAudit\Views\BlockTypes\BlockTypeAudit.cshtml" />
     <Content Include="modules\_protected\CmsAudit\module.config" />
     <Content Include="modules\_protected\EPiServer.Personalization.Content.UI\EPiServer.Personalization.Content.UI.zip" />
-    <Content Include="modules\_protected\advanced-cms.Reviews\web.config" />
-    <Content Include="modules\_protected\advanced-cms.Reviews\advanced-cms.Reviews.zip" />
-    <Content Include="modules\_protected\advanced-cms.ExternalReviews\web.config" />
-    <Content Include="modules\_protected\advanced-cms.ExternalReviews\advanced-cms.ExternalReviews.zip" />
     <Content Include="modules\_protected\EPiServer.Forms.UI\module.config" />
     <Content Include="modules\_protected\EPiServer.Forms.UI\EPiServer.Forms.UI.zip" />
     <Content Include="modules\_protected\EPiServer.Forms\Views\ElementBlocks\Web.config" />
     <Content Include="modules\_protected\EPiServer.Forms\EPiServer.Forms.zip" />
     <Content Include="modules\_protected\Shell\web.config" />
-    <Content Include="modules\_protected\Shell\Shell.zip" />
     <Content Include="modules\_protected\CMS\web.config" />
-    <Content Include="modules\_protected\CMS\CMS.zip" />
     <Content Include="modules\_protected\episerver-labs-block-enhancements\web.config" />
     <Content Include="modules\_protected\episerver-labs-block-enhancements\episerver-labs-block-enhancements.zip" />
     <Content Include="modules\_protected\episerver-labs-content-manager\web.config" />
     <Content Include="modules\_protected\episerver-labs-content-manager\episerver-labs-content-manager.zip" />
     <Content Include="modules\_protected\episerver-labs-grid-view\web.config" />
     <Content Include="modules\_protected\episerver-labs-grid-view\episerver-labs-grid-view.zip" />
+    <Content Include="modules\_protected\advanced-cms.Reviews\web.config" />
+    <Content Include="modules\_protected\advanced-cms.Reviews\advanced-cms.Reviews.zip" />
+    <Content Include="modules\_protected\advanced-cms.ExternalReviews\web.config" />
+    <Content Include="modules\_protected\advanced-cms.ExternalReviews\advanced-cms.ExternalReviews.zip" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\Views\ElementBlocks\Web.config" />
+    <Content Include="modules\_protected\EPiServer.Forms.Samples\module.config" />
+    <Content Include="modules\_protected\EPiServer.Insight.UI\module.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -1002,7 +996,6 @@
     <Content Include="Views\VirtualTemplates\Buttons\Edit.cshtml" />
     <Content Include="Views\VirtualTemplates\Buttons\Compare.cshtml" />
     <Content Include="Spa\**" />
-    <Content Include="Views\Shared\ElementBlocks\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1015,9 +1008,9 @@
       <Project>{c9638f52-7402-446d-bf89-993686e26a52}</Project>
       <Name>Foundation.Cms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Foundation.ContentDeliveryApi\Foundation.ContentDeliveryApi.csproj">
+    <ProjectReference Include="..\Foundation.ContentDelivery\Foundation.ContentDelivery.csproj">
       <Project>{298347d6-3c36-4fd1-9e3a-97b44d109ada}</Project>
-      <Name>Foundation.ContentDeliveryApi</Name>
+      <Name>Foundation.ContentDelivery</Name>
     </ProjectReference>
     <ProjectReference Include="..\Foundation.Find.Cms\Foundation.Find.Cms.csproj">
       <Project>{07c19549-7028-4cba-ba73-fadd93be8e5a}</Project>

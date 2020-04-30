@@ -38,6 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Foundation.ContentDeliveryApi\Foundation.ContentDeliveryApi.csproj" />
+    <ProjectReference Include="..\Foundation.ContentDelivery\Foundation.ContentDelivery.csproj" />
   </ItemGroup>
 </Project>
