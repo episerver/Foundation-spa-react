@@ -1,4 +1,4 @@
-import React, {ReactNode, ReactNodeArray} from 'react';
+import React, {ReactNode, ReactNodeArray, CSSProperties} from 'react';
 import EpiComponent from 'Episerver/EpiComponent';
 import IContent from 'Episerver/Models/IContent';
 import PageListBlockData, { PageListBlockProps } from 'app/Models/Content/PageListBlockData';
@@ -104,7 +104,8 @@ export default class PageListBlock extends EpiComponent<PageListBlockData, PageL
                 break;
         }
         return <div className={ classes.join(" ") }>
-            <h2>{ this.props.data.heading.value }</h2>
+            <div className="justify-content-center p-3">
+            <h2 >{ this.props.data.heading.value }</h2></div>
             { pages }
         </div>
     }

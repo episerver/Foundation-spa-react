@@ -40,6 +40,7 @@ namespace Foundation.ContentDelivery.Controller
                 Pages = pages.Select(x => new PageListPreviewViewModel(x, currentBlock))
             };
 
+
             ViewData.GetEditHints<PageListBlockViewModel, PageListBlock>()
                 .AddConnection(x => x.Heading, x => x.Heading);
 

@@ -18,6 +18,7 @@ export default class HeroBlock extends EpiComponent<HeroBlockData> {
         if (this.props.data.blockRatio?.value) cssClasses.push(`r-${this.props.data.blockRatio.value}`);
 
         return <div className={cssClasses.join(' ')}>
+            <div className="hero-block__overlay"></div>
             <CmsComponent context={this.props.context} contentLink={ background.value } className="d-cover" expandedValue={ background.expandedValue } />
             <div className="callout">
                 <div className="container">

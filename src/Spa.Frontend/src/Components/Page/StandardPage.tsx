@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, CSSProperties } from 'react';
 import {Helmet} from 'react-helmet';
 import CmsComponent from 'Episerver/Components/CmsComponent';
 import ContentArea from 'Episerver/Components/ContentArea';
@@ -25,7 +25,8 @@ export default class StandardPage extends Page<StandardPageData>
             </Helmet>,
             <div className="standardpage-bg" key="standardpage-background-container">
                 <CmsComponent context={ this.props.context } contentLink={ this.props.data.pageImage.value } expandedValue={ this.props.data.pageImage.expandedValue } className="w-100"/>
-                <div className="overlay w-100"></div>
+               
+                <div className="overlay w-100" style={ this.getBlockStyles() }></div>
             </div>,
             <div className="container standardpage-container pt-3 bg-white" key="standardpage-container">
                 <div className="row">
@@ -37,5 +38,12 @@ export default class StandardPage extends Page<StandardPageData>
                 <ContentArea context={ this.props.context } data={ this.props.data.mainContentArea } />
             </div>,
         ]
+    } 
+    protected getBlockStyles() : CSSProperties
+    {
+        return {
+            "backgroundColor": this.props.data.backgroundColor?.value || "transparent",
+            "opacity": this.props.data.backgroundOpacity?.value || 1
+        }
     }
 }
