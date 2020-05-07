@@ -79,7 +79,7 @@ export default class ComponentLoader
     {
         if (this.isPreLoaded(component)) {
             let c : TComponentType = this.cache["app/Components/" + component];
-            c.displayName = component;
+            if (!c.displayName) c.displayName = component;
             return c;
         }
         if (throwOnUnknown) {
@@ -110,11 +110,11 @@ export default class ComponentLoader
         } catch (e) {
             //Ignored on purpose
         }
-        this.loading["component"] = this.doLoadComponent(component).then(c => {
-            delete this.loading["component"];
+        this.loading[component] = this.doLoadComponent(component).then(c => {
+            delete this.loading[component];
             return c;
         });
-        return this.loading["component"];
+        return this.loading[component];
     }
 
     protected async doLoadComponent(component: string) : TComponentTypePromise

@@ -3,40 +3,21 @@ import React, { ReactNode, ReactNodeArray } from 'react';
 import EpiComponent from 'Episerver/EpiComponent';
 import Property from 'Episerver/Components/Property';
 import ContentArea from 'Episerver/Components/ContentArea';
-import FormRenderingService, { ContentApiFormModel } from 'EPiServer.ContentApi.Forms/FormRenderingService';
 
 import BaseFormContainerBlockData from 'app/Models/Content/FormContainerBlockData';
 import './FormContainerBlock.scss';
 
 interface FormContainerBlockData extends BaseFormContainerBlockData {
     name: string
-    formModel?: ContentApiFormModel
+    formModel?: any
 }
 
 export default class FormContainerBlock extends EpiComponent<FormContainerBlockData> {
-    private _container : HTMLElement;
-
-    componentDidMount()
-    {
-        console.log(this.props.data);
-        if (this._container && this.props.data.formModel) {
-            try {
-                FormRenderingService.render(this.props.data.formModel, this._container);
-            } catch (e) {
-                if (this.isDebugActive()) {
-                    console.error("Form error:", e);
-                }
-                this._container.innerHTML=`<div class="alert alert-danger" role="alert">Error rendering form: ${e}</div>`;
-            }
-        } else {
-            if (this.isDebugActive()) console.info("Could not embed the Episerver form.");
-        }
-    }
-
     render() : ReactNode | ReactNodeArray
     {
-        //Render using React - Not yet supported by ContentDeliveryAPI
+        //Render using React - Not yet fully supported by ContentDeliveryAPI
         return <div className="episerver-form">
+            <div className="alert alert-warning">Episerver Forms support is experimental and incomplete!</div>
             <h3><Property context={ this.getContext() } iContent={ this.props.data } property="title" /></h3>
             <p><Property context={ this.getContext() } iContent={ this.props.data } property="description" /></p>
             <form>

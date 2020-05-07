@@ -10,6 +10,9 @@ export default class VideoFile extends EpiComponent<VideoFileData>
         let vidUrl = this.getContext().getEpiserverUrl(this.props.data.contentLink.url);
         //let imgUrl = "";//this.getContext().getEpiserverUrl(this.props.data.previewImage.value.url);
 
-        return <video autoPlay loop playsInline muted className="img-fluid w-100"><source src={vidUrl} type="video/mp4" />The video tag is not supported</video>
+        let classes : Array<string> = ['img-fluid'];
+        if (this.props.className) { classes.push(this.props.className); }
+
+        return <video autoPlay loop playsInline muted className={ classes.join(' ') }><source src={vidUrl} type="video/mp4" />The video tag is not supported</video>
     }
 }

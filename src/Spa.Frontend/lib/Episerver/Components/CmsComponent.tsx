@@ -167,11 +167,11 @@ export class CmsComponent extends Component<CmsComponentProps, CmsComponentState
 		}
 	}
 
-	public componentDidUpdate(prevProps: CmsComponentProps)
+	public componentDidUpdate(prevProps: CmsComponentProps, prevState: CmsComponentState)
 	{
-		if (this.state.componentIsUpdating) return;
-		let mustUpdate : boolean = (prevProps.contentLink?.id != this.props.contentLink.id) && (this.state.component?.displayName == 'Epi/ComponentNotFound');
-		if (mustUpdate || (this.isExpandedValueValid() && !this.isComponentValid())) {
+		if (this.state.componentIsUpdating || prevState.componentIsUpdating) return; 
+		let mustUpdate : boolean = prevProps.contentLink?.id != this.props.contentLink.id;
+		if (mustUpdate || !this.isComponentValid()) {
 			if(this.props.context.isDebugActive()) console.info('Invalid component; updating', this.state.component?.displayName, this.buildComponentName(this.props.expandedValue), this.props.contentLink.id);
 			this.setState({component: null, componentName: null, componentIsUpdating: true });
 			let componentName : string = this.buildComponentName(this.props.expandedValue);
@@ -208,7 +208,6 @@ export class CmsComponent extends Component<CmsComponentProps, CmsComponentState
 				component: ComponentNotFound,
 				componentIsUpdating: false
 			};
-			state.component.displayName = componentName;
 			if (!me._unmounted) me.setState(state)
 		});
 	}

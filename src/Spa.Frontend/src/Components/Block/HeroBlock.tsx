@@ -18,23 +18,39 @@ export default class HeroBlock extends EpiComponent<HeroBlockData> {
         if (this.props.data.blockRatio?.value) cssClasses.push(`r-${this.props.data.blockRatio.value}`);
 
         return <div className={cssClasses.join(' ')}>
-            <div className="hero-block__overlay"></div>
+            <div className="hero-block__overlay"/>
             <CmsComponent context={this.props.context} contentLink={ background.value } className="d-cover" expandedValue={ background.expandedValue } />
             <div className="callout">
-                <div className="container">
-                    <div className="row">
-                        <div className="col d-flex">
-                        { this.renderCallOut() }
-                        </div>
+                <div className="container h-100">
+                    <div className="row h-100">
+                        { this.renderCallOutColumn() }
                     </div>
                 </div>
             </div>
         </div>;
     }
 
+    protected renderCallOutColumn() : ReactNode
+    {
+        let columnClasses : Array<string> = ['col', 'd-flex', 'align-items-center'];
+        switch (this.props.data.callout.calloutContentAlignment.value) {
+            case "right":
+                columnClasses.push('justify-right');
+                break;
+            case "center":
+                columnClasses.push('justify-content-center');
+                break;
+            case "left":
+            default:
+                columnClasses.push('justify-content-left');
+                break;
+        }
+        return <div className={ columnClasses.join(' ') }>{ this.renderCallOut() }</div>
+    }
+
     protected renderCallOut() : ReactNode
     {
-        let callOutClasses : Array<string> = ['callout-content','mt-5'];
+        let callOutClasses : Array<string> = ['callout-content'];
         let callOutStyles : any = {
             opacity: this.props.data.callout.calloutOpacity.value
         };
@@ -43,19 +59,13 @@ export default class HeroBlock extends EpiComponent<HeroBlockData> {
         }
         switch (this.props.data.callout.calloutContentAlignment.value) {
             case "right":
-                callOutClasses.push('mr-0');
-                callOutClasses.push('ml-auto');
                 callOutClasses.push('text-right');
                 break;
             case "center":
-                callOutClasses.push('mr-auto');
-                callOutClasses.push('ml-auto');
                 callOutClasses.push('text-center');
                 break;
             case "left":
             default:
-                callOutClasses.push('mr-auto');
-                callOutClasses.push('ml-0');
                 callOutClasses.push('text-left');
                 break;
         }
