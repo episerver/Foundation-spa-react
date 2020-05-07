@@ -103,9 +103,15 @@ export default class PageListBlock extends EpiComponent<PageListBlockData, PageL
                 pages = this.renderDefaultTemplate(this.state.pages.map(viewModel => viewModel.page), 'plb_i_', previewOption);
                 break;
         }
+
+        let heading : ReactNode = null;
+        if (this.props.data.heading?.value || this.getContext().isEditable()) {
+            heading = <div className="d-flex justify-content-center p-3 w-100">
+                <h2><Property iContent={this.props.data} property="heading" context={ this.getContext() } /></h2>
+            </div>;
+        }
         return <div className={ classes.join(" ") }>
-            <div className="justify-content-center p-3">
-            <h2 >{ this.props.data.heading.value }</h2></div>
+            { heading }
             { pages }
         </div>
     }
