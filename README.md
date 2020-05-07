@@ -7,9 +7,6 @@ Including as of now projects for CMS, Commerce, Personalization, Find and Social
 
 You can request a demo of the project by one of our Episerver experts on [Get a demo](https://www.episerver.com/get-a-demo/).
 
-[![Build status](https://dev.azure.com/episerver-foundation/Foundation/_apis/build/status/Foundation-Release)](https://dev.azure.com/episerver-foundation/Foundation/_build/latest?definitionId=1)
-[![License](http://img.shields.io/:license-apache-blue.svg?style=flat-square)](http://www.apache.org/licenses/LICENSE-2.0.html)
-
 ---
 
 ## Table of Contents
@@ -24,7 +21,6 @@ You can request a demo of the project by one of our Episerver experts on [Get a 
 - [Troubleshooting](#troubleshooting)
   - [The installation fails](#the-installation-fails)
   - [The site does not start](#the-site-does-not-start)
-- [Modular set-up](#modular-set-up)
 - [Contributing](#contributing)
 
 ---
@@ -108,7 +104,7 @@ Or clone project using Git
 |-----------|-------------|
 |Application name: | The name of the application. Note: The application name should contain only letters and numbers as it used as the prefix to create the website and database components.|
 |Public domain name for foundation:| Domain name for the application, for example, foundation.com.|
-|Public domain name for Commerce Manager: | Domain name for the Commerce Manager application, for example, commerce.foundation.com.|
+|Public domain name for static html site: | Domain name for the static html  application, for example, html.foundation.com.|
 |License path:| If you have a license file, add the path to it. Otherwise you can add that later.|
 |SQL server name:| SQL server instance name. Add the same server name as the one you connected to in the [Pre-installation set-up](#pre-installation-set-up) steps for the SQL server. If using Azure SQL, provide the full dns name for your Azure SQL instance |
 |sqlcmd command: | SQL command to execute, by default ```-S . -E ```. This can generally be left as is. If using Azure SQL, pass username and password as ```-U <user> -P <password>```|
@@ -127,7 +123,6 @@ Or clone project using Git
 •	Create two websites
 •	Update host file
 •	Copy License file
-•	Update commerce manager url for access from cms
 •	create connectionstrings files
 •	Start the site to finish setup in browser
 ```
@@ -137,17 +132,10 @@ Or clone project using Git
 6.	If the setup page throws an error, open your host file, found under **C:\Windows\System32\drivers\etc**, and add the two domain names you entered during the installation. Reload the page in your browser.
 ![Example host file](https://i.ibb.co/Ss79b55/Host-File-Example.png)
 
-7.	In the setup page under Import Content, select **Remote Site File: Mosey** and **Remote Catalog File: Foundation_Fashion** to import the Mosey demo site content.
-![Demo content import](https://i.ibb.co/WG6bVcx/Demo-Content-Import.png)
+7.	Log in with user: **admin@example.com** and password: **store** to access the Episerver user interface.  
+ **_Note:_** A **resetup.cmd** file has been created in your project which you can run to re-install the database.
 
-8.	Click **Submit** and the Mosey demo site is displayed.
-![Mosey start page](https://i.ibb.co/F5BHtb3/Mosey-Start-Page.png)
-
-9.	Log in with user: **admin@example.com** and password: **store** to access the Episerver user interface.  
-
-> **_Note:_** A **resetup.cmd** file has been created in your project which you can run to re-install the database.
-
-10. Developer licenses for evaluation purposes can be obtained from the [Episerver License Center](https://license.episerver.com/). Place the **License.config** file in your webroot. 
+8. Developer licenses for evaluation purposes can be obtained from the [Episerver License Center](https://license.episerver.com/). Place the **License.config** file in your webroot. 
 
 ## Troubleshooting
 ### The installation fails
@@ -165,11 +153,7 @@ Or clone project using Git
 * Foundation does not include any website, pages or catalogs in its initial state, so it is not possible to start a site until you have imported or created content. Go to URL http://_yourdomainname_/setup to import content.
 * Check that the site is actually running by navigating to http://_yourdomainname_/episerver/cms.
 
-## Modular set-up
-
-The Foundation project is set up to include all Episerver’s main products. Each product is set up as a project of its own inside the main project, so if you don’t want all products, you can simply remove their projects.
-
 ## Contributing
-As this is an open-source project, we encourage you to contribute to the source code and the documentation. See the [Contribution guidelines for this project](docs/CONTRIBUTING.md).
+As this is an open-source project, we encourage you to contribute to the source code and the documentation. 
 
 ---
