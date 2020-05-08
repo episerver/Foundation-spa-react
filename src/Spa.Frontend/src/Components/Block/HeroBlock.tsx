@@ -32,17 +32,29 @@ export default class HeroBlock extends EpiComponent<HeroBlockData> {
 
     protected renderCallOutColumn() : ReactNode
     {
-        let columnClasses : Array<string> = ['col', 'd-flex', 'align-items-center'];
+        let columnClasses : Array<string> = ['col', 'd-flex'];
         switch (this.props.data.callout.calloutContentAlignment.value) {
             case "right":
-                columnClasses.push('justify-right');
+                columnClasses.push('justify-content-end');
                 break;
             case "center":
                 columnClasses.push('justify-content-center');
                 break;
             case "left":
             default:
-                columnClasses.push('justify-content-left');
+                columnClasses.push('justify-content-start');
+                break;
+        }
+        switch (this.props.data.callout.calloutPosition.value) {
+            case "flex-start":
+                columnClasses.push('align-items-start');
+                break;
+            case "flex-end":
+                columnClasses.push('align-items-end');
+                break;
+            case "center":
+            default:
+                columnClasses.push('align-items-center');
                 break;
         }
         return <div className={ columnClasses.join(' ') }>{ this.renderCallOut() }</div>
@@ -77,6 +89,6 @@ export default class HeroBlock extends EpiComponent<HeroBlockData> {
                 callOutClasses.push('text-light');
                 break;
         }
-        return <div className={ callOutClasses.join(' ') } style={ callOutStyles } dangerouslySetInnerHTML={ this.htmlObject(this.props.data.callout.calloutContent.value) } ></div>;
+        return <div className={ callOutClasses.join(' ') } style={ callOutStyles } dangerouslySetInnerHTML={ this.htmlObject(this.props.data.callout.calloutContent.value) } />;
     }
 }
