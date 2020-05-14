@@ -1,5 +1,5 @@
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -66,3 +66,69 @@ export default interface MenuItemBlockData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface MenuItemBlockProps extends ComponentProps<MenuItemBlockData> {}
+
+export class MenuItemBlockType extends BaseIContent<MenuItemBlockData> implements MenuItemBlockData {
+    protected _typeName : string = "MenuItemBlock";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'name': 'LongString',
+        'link': 'Url',
+        'menuImage': 'ContentReference',
+        'teaserText': 'XhtmlString',
+        'buttonText': 'LongString',
+        'buttonLink': 'Url',
+        'childItems': 'GroupLinkCollectionProperty',
+    }
+
+    /**
+     * Name
+     *
+     * Name in menu
+     */
+    public name: StringProperty;
+
+    /**
+     * Link
+     *
+     * Link
+     */
+    public link: StringProperty;
+
+    /**
+     * Menu item image
+     *
+     * No description available
+     */
+    public menuImage: ContentReferenceProperty;
+
+    /**
+     * Teaser text
+     *
+     * No description available
+     */
+    public teaserText: StringProperty;
+
+    /**
+     * Label
+     *
+     * No description available
+     */
+    public buttonText: StringProperty;
+
+    /**
+     * Button link
+     *
+     * No description available
+     */
+    public buttonLink: StringProperty;
+
+    /**
+     * Child items
+     *
+     * No description available
+     */
+    public childItems: Property<any> // Original type: GroupLinkCollectionProperty;
+
+}

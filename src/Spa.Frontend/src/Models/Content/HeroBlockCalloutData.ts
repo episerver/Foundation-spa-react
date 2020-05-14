@@ -1,5 +1,5 @@
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -73,3 +73,77 @@ export default interface HeroBlockCalloutData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface HeroBlockCalloutProps extends ComponentProps<HeroBlockCalloutData> {}
+
+export class HeroBlockCalloutType extends BaseIContent<HeroBlockCalloutData> implements HeroBlockCalloutData {
+    protected _typeName : string = "HeroBlockCallout";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'calloutContent': 'XhtmlString',
+        'calloutContentAlignment': 'LongString',
+        'calloutTextColor': 'LongString',
+        'backgroundColor': 'LongString',
+        'calloutOpacity': 'FloatNumber',
+        'calloutPosition': 'LongString',
+        'padding': 'LongString',
+        'margin': 'LongString',
+    }
+
+    /**
+     * Text
+     *
+     * No description available
+     */
+    public calloutContent: StringProperty;
+
+    /**
+     * Text placement
+     *
+     * No description available
+     */
+    public calloutContentAlignment: StringProperty;
+
+    /**
+     * Text color
+     *
+     * Sets text color of callout content
+     */
+    public calloutTextColor: StringProperty;
+
+    /**
+     * Background color
+     *
+     * No description available
+     */
+    public backgroundColor: StringProperty;
+
+    /**
+     * Callout opacity (0 to 1)
+     *
+     * No description available
+     */
+    public calloutOpacity: NumberProperty;
+
+    /**
+     * Callout position
+     *
+     * No description available
+     */
+    public calloutPosition: StringProperty;
+
+    /**
+     * Padding
+     *
+     * No description available
+     */
+    public padding: StringProperty;
+
+    /**
+     * Margin
+     *
+     * No description available
+     */
+    public margin: StringProperty;
+
+}

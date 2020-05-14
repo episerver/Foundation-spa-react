@@ -1,5 +1,5 @@
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -52,3 +52,53 @@ export default interface BlogCommentBlockData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface BlogCommentBlockProps extends ComponentProps<BlogCommentBlockData> {}
+
+export class BlogCommentBlockType extends BaseIContent<BlogCommentBlockData> implements BlogCommentBlockData {
+    protected _typeName : string = "BlogCommentBlock";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'paddingTop': 'Number',
+        'paddingRight': 'Number',
+        'paddingBottom': 'Number',
+        'paddingLeft': 'Number',
+        'commentsPerPage': 'Number',
+    }
+
+    /**
+     * Padding top
+     *
+     * No description available
+     */
+    public paddingTop: NumberProperty;
+
+    /**
+     * Padding right
+     *
+     * No description available
+     */
+    public paddingRight: NumberProperty;
+
+    /**
+     * Padding bottom
+     *
+     * No description available
+     */
+    public paddingBottom: NumberProperty;
+
+    /**
+     * Padding left
+     *
+     * No description available
+     */
+    public paddingLeft: NumberProperty;
+
+    /**
+     * Comments per page
+     *
+     * Number of comments per page
+     */
+    public commentsPerPage: NumberProperty;
+
+}

@@ -1,5 +1,5 @@
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -73,3 +73,77 @@ export default interface YouTubeBlockData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface YouTubeBlockProps extends ComponentProps<YouTubeBlockData> {}
+
+export class YouTubeBlockType extends BaseIContent<YouTubeBlockData> implements YouTubeBlockData {
+    protected _typeName : string = "YouTubeBlock";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'categories': 'ContentReferenceList',
+        'padding': 'LongString',
+        'margin': 'LongString',
+        'backgroundColor': 'LongString',
+        'blockOpacity': 'FloatNumber',
+        'youTubeLink': 'LongString',
+        'heading': 'LongString',
+        'mainBody': 'XhtmlString',
+    }
+
+    /**
+     * Categories
+     *
+     * Categories associated with this content
+     */
+    public categories: Property<Array<ContentLink>>;
+
+    /**
+     * Padding
+     *
+     * No description available
+     */
+    public padding: StringProperty;
+
+    /**
+     * Margin
+     *
+     * No description available
+     */
+    public margin: StringProperty;
+
+    /**
+     * Background color
+     *
+     * No description available
+     */
+    public backgroundColor: StringProperty;
+
+    /**
+     * Block opacity (0 to 1)
+     *
+     * No description available
+     */
+    public blockOpacity: NumberProperty;
+
+    /**
+     * YouTube link
+     *
+     * URL link to YouTube video
+     */
+    public youTubeLink: StringProperty;
+
+    /**
+     * Heading
+     *
+     * No description available
+     */
+    public heading: StringProperty;
+
+    /**
+     * Main body
+     *
+     * Descriptive text for the video
+     */
+    public mainBody: StringProperty;
+
+}

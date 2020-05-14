@@ -1,5 +1,5 @@
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -24,3 +24,21 @@ export default interface StandardFileData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface StandardFileProps extends ComponentProps<StandardFileData> {}
+
+export class StandardFileType extends BaseIContent<StandardFileData> implements StandardFileData {
+    protected _typeName : string = "StandardFile";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'fileSize': 'LongString',
+    }
+
+    /**
+     * FileSize
+     *
+     * No description available
+     */
+    public fileSize: StringProperty;
+
+}

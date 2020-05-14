@@ -1,5 +1,5 @@
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -87,3 +87,93 @@ export default interface RssReaderBlockData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface RssReaderBlockProps extends ComponentProps<RssReaderBlockData> {}
+
+export class RssReaderBlockType extends BaseIContent<RssReaderBlockData> implements RssReaderBlockData {
+    protected _typeName : string = "RssReaderBlock";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'categories': 'ContentReferenceList',
+        'padding': 'LongString',
+        'margin': 'LongString',
+        'backgroundColor': 'LongString',
+        'blockOpacity': 'FloatNumber',
+        'rssUrl': 'Url',
+        'maxCount': 'Number',
+        'includePublishDate': 'Boolean',
+        'heading': 'LongString',
+        'mainBody': 'XhtmlString',
+    }
+
+    /**
+     * Categories
+     *
+     * Categories associated with this content
+     */
+    public categories: Property<Array<ContentLink>>;
+
+    /**
+     * Padding
+     *
+     * No description available
+     */
+    public padding: StringProperty;
+
+    /**
+     * Margin
+     *
+     * No description available
+     */
+    public margin: StringProperty;
+
+    /**
+     * Background color
+     *
+     * No description available
+     */
+    public backgroundColor: StringProperty;
+
+    /**
+     * Block opacity (0 to 1)
+     *
+     * No description available
+     */
+    public blockOpacity: NumberProperty;
+
+    /**
+     * RSS feed URL
+     *
+     * URL for RSS feed
+     */
+    public rssUrl: StringProperty;
+
+    /**
+     * Number of results
+     *
+     * Maximum number of items to display
+     */
+    public maxCount: NumberProperty;
+
+    /**
+     * Include publish date
+     *
+     * Include publish date for each item in list
+     */
+    public includePublishDate: BooleanProperty;
+
+    /**
+     * Heading
+     *
+     * No description available
+     */
+    public heading: StringProperty;
+
+    /**
+     * Main body
+     *
+     * Descriptive text for the RSS feed
+     */
+    public mainBody: StringProperty;
+
+}

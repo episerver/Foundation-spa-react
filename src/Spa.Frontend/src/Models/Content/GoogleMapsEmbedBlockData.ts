@@ -1,5 +1,5 @@
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -73,3 +73,77 @@ export default interface GoogleMapsEmbedBlockData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface GoogleMapsEmbedBlockProps extends ComponentProps<GoogleMapsEmbedBlockData> {}
+
+export class GoogleMapsEmbedBlockType extends BaseIContent<GoogleMapsEmbedBlockData> implements GoogleMapsEmbedBlockData {
+    protected _typeName : string = "GoogleMapsEmbedBlock";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'categories': 'ContentReferenceList',
+        'padding': 'LongString',
+        'margin': 'LongString',
+        'backgroundColor': 'LongString',
+        'blockOpacity': 'FloatNumber',
+        'apiKey': 'LongString',
+        'searchTerm': 'LongString',
+        'height': 'FloatNumber',
+    }
+
+    /**
+     * Categories
+     *
+     * Categories associated with this content
+     */
+    public categories: Property<Array<ContentLink>>;
+
+    /**
+     * Padding
+     *
+     * No description available
+     */
+    public padding: StringProperty;
+
+    /**
+     * Margin
+     *
+     * No description available
+     */
+    public margin: StringProperty;
+
+    /**
+     * Background color
+     *
+     * No description available
+     */
+    public backgroundColor: StringProperty;
+
+    /**
+     * Block opacity (0 to 1)
+     *
+     * No description available
+     */
+    public blockOpacity: NumberProperty;
+
+    /**
+     * API Key
+     *
+     * No description available
+     */
+    public apiKey: StringProperty;
+
+    /**
+     * Search term
+     *
+     * No description available
+     */
+    public searchTerm: StringProperty;
+
+    /**
+     * Height
+     *
+     * No description available
+     */
+    public height: NumberProperty;
+
+}

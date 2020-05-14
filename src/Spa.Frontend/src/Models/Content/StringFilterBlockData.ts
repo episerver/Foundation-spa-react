@@ -1,5 +1,5 @@
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -31,3 +31,29 @@ export default interface StringFilterBlockData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface StringFilterBlockProps extends ComponentProps<StringFilterBlockData> {}
+
+export class StringFilterBlockType extends BaseIContent<StringFilterBlockData> implements StringFilterBlockData {
+    protected _typeName : string = "StringFilterBlock";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'fieldName': 'LongString',
+        'fieldValue': 'LongString',
+    }
+
+    /**
+     * Name
+     *
+     * Name of field in index
+     */
+    public fieldName: StringProperty;
+
+    /**
+     * Value
+     *
+     * The value to filter search results on
+     */
+    public fieldValue: StringProperty;
+
+}

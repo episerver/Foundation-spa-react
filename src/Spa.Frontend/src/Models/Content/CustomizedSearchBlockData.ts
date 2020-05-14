@@ -1,7 +1,7 @@
 import CustomizedSearchAdvancedSettingsData from './CustomizedSearchAdvancedSettingsData'
 import CustomizedSearchSettingsData from './CustomizedSearchSettingsData'
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -40,3 +40,37 @@ export default interface CustomizedSearchBlockData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface CustomizedSearchBlockProps extends ComponentProps<CustomizedSearchBlockData> {}
+
+export class CustomizedSearchBlockType extends BaseIContent<CustomizedSearchBlockData> implements CustomizedSearchBlockData {
+    protected _typeName : string = "CustomizedSearchBlock";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'heading': 'LongString',
+        'customizedSearchSettings': 'CustomizedSearchSettings',
+        'customizedSearchAdvancedSettings': 'CustomizedSearchAdvancedSettings',
+    }
+
+    /**
+     * Heading
+     *
+     * No description available
+     */
+    public heading: StringProperty;
+
+    /**
+     * CustomizedSearchSettings
+     *
+     * No description available
+     */
+    public customizedSearchSettings: CustomizedSearchSettingsData;
+
+    /**
+     * CustomizedSearchAdvancedSettings
+     *
+     * No description available
+     */
+    public customizedSearchAdvancedSettings: CustomizedSearchAdvancedSettingsData;
+
+}

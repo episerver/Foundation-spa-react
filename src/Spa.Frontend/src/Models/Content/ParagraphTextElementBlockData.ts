@@ -1,5 +1,5 @@
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -52,3 +52,53 @@ export default interface ParagraphTextElementBlockData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface ParagraphTextElementBlockProps extends ComponentProps<ParagraphTextElementBlockData> {}
+
+export class ParagraphTextElementBlockType extends BaseIContent<ParagraphTextElementBlockData> implements ParagraphTextElementBlockData {
+    protected _typeName : string = "ParagraphTextElementBlock";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'paragraphText': 'XhtmlString',
+        'satisfiedAction': 'LongString',
+        'conditionCombination': 'Number',
+        'conditions': 'Dependency conditions collection',
+        'formSubmissionId': 'LongString',
+    }
+
+    /**
+     * ParagraphText
+     *
+     * No description available
+     */
+    public paragraphText: StringProperty;
+
+    /**
+     * SatisfiedAction
+     *
+     * No description available
+     */
+    public satisfiedAction: StringProperty;
+
+    /**
+     * ConditionCombination
+     *
+     * No description available
+     */
+    public conditionCombination: NumberProperty;
+
+    /**
+     * Conditions
+     *
+     * No description available
+     */
+    public conditions: Property<any> // Original type: Dependency conditions collection;
+
+    /**
+     * FormSubmissionId
+     *
+     * No description available
+     */
+    public formSubmissionId: StringProperty;
+
+}

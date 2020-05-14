@@ -1,5 +1,5 @@
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -45,3 +45,45 @@ export default interface CustomizedSearchAdvancedSettingsData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface CustomizedSearchAdvancedSettingsProps extends ComponentProps<CustomizedSearchAdvancedSettingsData> {}
+
+export class CustomizedSearchAdvancedSettingsType extends BaseIContent<CustomizedSearchAdvancedSettingsData> implements CustomizedSearchAdvancedSettingsData {
+    protected _typeName : string = "CustomizedSearchAdvancedSettings";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'rootContent': 'ContentReference',
+        'contentTypes': 'LongString',
+        'includeBestBets': 'Boolean',
+        'useSynonyms': 'Boolean',
+    }
+
+    /**
+     * RootContent
+     *
+     * No description available
+     */
+    public rootContent: ContentReferenceProperty;
+
+    /**
+     * ContentTypes
+     *
+     * No description available
+     */
+    public contentTypes: StringProperty;
+
+    /**
+     * IncludeBestBets
+     *
+     * No description available
+     */
+    public includeBestBets: BooleanProperty;
+
+    /**
+     * UseSynonyms
+     *
+     * No description available
+     */
+    public useSynonyms: BooleanProperty;
+
+}

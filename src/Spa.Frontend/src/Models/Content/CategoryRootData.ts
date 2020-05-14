@@ -1,5 +1,5 @@
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -31,3 +31,29 @@ export default interface CategoryRootData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface CategoryRootProps extends ComponentProps<CategoryRootData> {}
+
+export class CategoryRootType extends BaseIContent<CategoryRootData> implements CategoryRootData {
+    protected _typeName : string = "CategoryRoot";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'description': 'LongString',
+        'isSelectable': 'Boolean',
+    }
+
+    /**
+     * Description
+     *
+     * No description available
+     */
+    public description: StringProperty;
+
+    /**
+     * IsSelectable
+     *
+     * No description available
+     */
+    public isSelectable: BooleanProperty;
+
+}

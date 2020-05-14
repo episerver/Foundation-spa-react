@@ -1,6 +1,6 @@
 import HeroBlockCalloutData from './HeroBlockCalloutData'
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -88,3 +88,93 @@ export default interface HeroBlockData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface HeroBlockProps extends ComponentProps<HeroBlockData> {}
+
+export class HeroBlockType extends BaseIContent<HeroBlockData> implements HeroBlockData {
+    protected _typeName : string = "HeroBlock";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'categories': 'ContentReferenceList',
+        'padding': 'LongString',
+        'margin': 'LongString',
+        'backgroundColor': 'LongString',
+        'blockOpacity': 'FloatNumber',
+        'blockRatio': 'LongString',
+        'backgroundImage': 'ContentReference',
+        'mainBackgroundVideo': 'ContentReference',
+        'link': 'Url',
+        'callout': 'HeroBlockCallout',
+    }
+
+    /**
+     * Categories
+     *
+     * Categories associated with this content
+     */
+    public categories: Property<Array<ContentLink>>;
+
+    /**
+     * Padding
+     *
+     * No description available
+     */
+    public padding: StringProperty;
+
+    /**
+     * Margin
+     *
+     * No description available
+     */
+    public margin: StringProperty;
+
+    /**
+     * Background color
+     *
+     * No description available
+     */
+    public backgroundColor: StringProperty;
+
+    /**
+     * Block opacity (0 to 1)
+     *
+     * No description available
+     */
+    public blockOpacity: NumberProperty;
+
+    /**
+     * Block ratio (width-height)
+     *
+     * No description available
+     */
+    public blockRatio: StringProperty;
+
+    /**
+     * Image
+     *
+     * No description available
+     */
+    public backgroundImage: ContentReferenceProperty;
+
+    /**
+     * Video
+     *
+     * No description available
+     */
+    public mainBackgroundVideo: ContentReferenceProperty;
+
+    /**
+     * Link
+     *
+     * No description available
+     */
+    public link: StringProperty;
+
+    /**
+     * Callout
+     *
+     * No description available
+     */
+    public callout: HeroBlockCalloutData;
+
+}

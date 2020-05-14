@@ -1,5 +1,5 @@
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -38,3 +38,37 @@ export default interface PredefinedHiddenElementBlockData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface PredefinedHiddenElementBlockProps extends ComponentProps<PredefinedHiddenElementBlockData> {}
+
+export class PredefinedHiddenElementBlockType extends BaseIContent<PredefinedHiddenElementBlockData> implements PredefinedHiddenElementBlockData {
+    protected _typeName : string = "PredefinedHiddenElementBlock";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'predefinedValue': 'LongString',
+        'forms_ExternalSystemsFieldMappings': 'Property Field Mapping Collection',
+        'validatorMessages': 'Validator with message collection',
+    }
+
+    /**
+     * PredefinedValue
+     *
+     * No description available
+     */
+    public predefinedValue: StringProperty;
+
+    /**
+     * External system field mapping
+     *
+     * No description available
+     */
+    public forms_ExternalSystemsFieldMappings: Property<any> // Original type: Property Field Mapping Collection;
+
+    /**
+     * ValidatorMessages
+     *
+     * No description available
+     */
+    public validatorMessages: Property<any> // Original type: Validator with message collection;
+
+}

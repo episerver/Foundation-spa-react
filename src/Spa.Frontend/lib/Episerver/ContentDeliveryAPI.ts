@@ -1,3 +1,4 @@
+import Axios, { AxiosRequestConfig, Method, AxiosResponse } from 'axios';
 import AppConfig from './AppConfig';
 import IContent from './Models/IContent';
 import ContentLink, { ContentReference, ContentLinkService } from './Models/ContentLink';
@@ -85,9 +86,10 @@ export default class ContentDeliveryAPI
      * @param verb    The HTTP verb to use when invoking the controller
      * @param data    The data (if any) to send to the controller for the method
      */
-    public async invokeControllerMethod(content: ContentLink, method: string, verb?: string, data?: object) : Promise<any>
+    public async invokeControllerMethod(content: ContentLink, method: string, verb?: Method, data?: object) : Promise<any>
     {
-        let options : RequestInit = this.getRequestSettings(verb, data);
+        let options = this.getRequestSettings(verb);
+        options.data = data;
         return await this.doRequest<any>(this.getMethodServiceUrl(content, method), options);
     }
 
@@ -100,9 +102,10 @@ export default class ContentDeliveryAPI
      * @param verb    The HTTP verb to use when invoking the controller
      * @param data    The data (if any) to send to the controller for the method
      */
-    public async invokeTypedControllerMethod<TypeOut, TypeIn>(content: ContentLink, method: string, verb?: string, data?: TypeIn) : Promise<ActionResponse<TypeOut>>
+    public async invokeTypedControllerMethod<TypeOut, TypeIn>(content: ContentLink, method: string, verb?: Method, data?: TypeIn) : Promise<ActionResponse<TypeOut>>
     {
-        let options : RequestInit = this.getRequestSettings(verb, data);
+        let options = this.getRequestSettings(verb);
+        options.data = data;
         return await this.doRequest<ActionResponse<TypeOut>>(this.getMethodServiceUrl(content, method), options);
     }
 
@@ -208,7 +211,7 @@ export default class ContentDeliveryAPI
      * @param url The URL to request the data from
      * @param options The Request options to use
      */
-    protected async doRequest<T>(url: string, options?: RequestInit): Promise<T | undefined>
+    protected async doRequest<T>(url: string, options?: AxiosRequestConfig): Promise<T | undefined>
     {
         if (this.isDisabled()) {
             return null;
@@ -225,22 +228,14 @@ export default class ContentDeliveryAPI
 
         options = options ? options : this.getRequestSettings();
         if (this.debug) console.debug('Requesting: ' + url);
-        const response : Response = await fetch(url, options).catch(reason => {
+        options.url = url;
+        return Axios.request<any, AxiosResponse<T>>(options).then(response => {
+            if (this.debug) console.debug(`Response from ${url}:`,response.data);
+            return response.data;
+        }).catch(reason => {
             if (this.debug) console.error(`Response from ${url}: HTTP Fetch error `, reason);
             return undefined;
         });
-        if (!response.ok) {
-            if (this.debug) console.error(`Response from ${url}: HTTP ${response.status}: ${response.statusText}`);
-            return Promise.reject<any>(`HTTP ${response.status}: ${response.statusText}`);
-        }
-        if (this.debug) {
-            let data : any = await response.json();
-            if (this.debug) {
-                console.debug(`Response from ${url}:`, data);
-            }
-            return data;
-        }
-        return response.json();
     }
 
     protected getMethodServiceUrl(content: ContentLink, method: string) : string
@@ -251,25 +246,28 @@ export default class ContentDeliveryAPI
         return contentUrl;
     }
 
-    protected getRequestSettings(verb?: string, data?: any) : RequestInit
+    /**
+     * Build the request parameters needed to perform the call to the Content Delivery API
+     * 
+     * @param verb The verb for the generated configuration
+     */
+    protected getRequestSettings(verb?: Method) : AxiosRequestConfig
     {
-        let options: RequestInit = {
+        let options: AxiosRequestConfig = {
             method: verb ? verb : 'get',
-            referrer: this.config.epiBaseUrl,
-            mode: "cors",
-            credentials: "include"
-        }
-        if (data) {
-            options.body = JSON.stringify(data);
-            options.headers = {
-                ...this.getHeaders({
-                    'Content-Type': 'application/json'
-                })
-            };
-        } else {
-            options.headers = {
-                ...this.getHeaders()
-            };
+            baseURL: this.config.epiBaseUrl,
+            withCredentials: true,
+            headers: {...this.getHeaders()},
+            transformRequest: [
+                (data: any, headers: any) => {
+                    if (data) {
+                        headers['Content-Type'] = 'application/json';
+                        return JSON.stringify(data);
+                    }
+                    return data;
+                }
+            ],
+            responseType: 'json'
         }
         return options;
     }

@@ -1,5 +1,5 @@
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -24,3 +24,21 @@ export default interface ExistsFilterBlockData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface ExistsFilterBlockProps extends ComponentProps<ExistsFilterBlockData> {}
+
+export class ExistsFilterBlockType extends BaseIContent<ExistsFilterBlockData> implements ExistsFilterBlockData {
+    protected _typeName : string = "ExistsFilterBlock";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'fieldName': 'LongString',
+    }
+
+    /**
+     * Name
+     *
+     * Name of field in index
+     */
+    public fieldName: StringProperty;
+
+}

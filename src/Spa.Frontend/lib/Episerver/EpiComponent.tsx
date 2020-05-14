@@ -1,4 +1,5 @@
 import { Component, ReactText } from 'react';
+import { Method } from 'axios';
 import IContent from './Models/IContent';
 import ActionResponse from './Models/ActionResponse';
 import ContentLink from './Models/ContentLink';
@@ -150,7 +151,7 @@ export abstract class BaseEpiComponent<P extends ComponentProps<IContent>, S = {
      * @param verb The HTTP method to use when invoking, defaults to 'GET'
      * @param args The data to send (will be converted to JSON)
      */
-    protected invokeTyped<TypeIn, TypeOut>(method: string, verb?: string, args?: TypeIn) : Promise<ActionResponse<TypeOut>>
+    protected invokeTyped<TypeIn, TypeOut>(method: string, verb?: Method, args?: TypeIn) : Promise<ActionResponse<TypeOut>>
     {
         return this.getContext().contentDeliveryApi().invokeTypedControllerMethod<TypeOut, TypeIn>(this.getCurrentContentLink(), method, verb, args);
     }
@@ -162,7 +163,7 @@ export abstract class BaseEpiComponent<P extends ComponentProps<IContent>, S = {
      * @param verb The HTTP method to use when invoking, defaults to 'GET'
      * @param args The data to send (will be converted to JSON)
      */
-    protected invoke(method: string, verb?: string, args?: object) : Promise<ActionResponse<any>>
+    protected invoke(method: string, verb?: Method, args?: object) : Promise<ActionResponse<any>>
     {
         return this.getContext().contentDeliveryApi().invokeControllerMethod(this.getCurrentContentLink(), method, verb, args);
     }

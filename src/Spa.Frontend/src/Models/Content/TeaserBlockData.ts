@@ -1,5 +1,5 @@
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -150,3 +150,165 @@ export default interface TeaserBlockData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface TeaserBlockProps extends ComponentProps<TeaserBlockData> {}
+
+export class TeaserBlockType extends BaseIContent<TeaserBlockData> implements TeaserBlockData {
+    protected _typeName : string = "TeaserBlock";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'categories': 'ContentReferenceList',
+        'padding': 'LongString',
+        'margin': 'LongString',
+        'backgroundColor': 'LongString',
+        'blockOpacity': 'FloatNumber',
+        'heading': 'LongString',
+        'headingSize': 'Number',
+        'headingStyle': 'LongString',
+        'description': 'LongString',
+        'text': 'XhtmlString',
+        'image': 'ContentReference',
+        'secondImage': 'ContentReference',
+        'imageSize': 'Number',
+        'secondImageSize': 'Number',
+        'textColor': 'LongString',
+        'headingColor': 'LongString',
+        'elementsOrder': 'LongString',
+        'elementsAlignment': 'LongString',
+        'link': 'PageReference',
+    }
+
+    /**
+     * Categories
+     *
+     * Categories associated with this content
+     */
+    public categories: Property<Array<ContentLink>>;
+
+    /**
+     * Padding
+     *
+     * No description available
+     */
+    public padding: StringProperty;
+
+    /**
+     * Margin
+     *
+     * No description available
+     */
+    public margin: StringProperty;
+
+    /**
+     * Background color
+     *
+     * No description available
+     */
+    public backgroundColor: StringProperty;
+
+    /**
+     * Block opacity (0 to 1)
+     *
+     * No description available
+     */
+    public blockOpacity: NumberProperty;
+
+    /**
+     * Heading
+     *
+     * No description available
+     */
+    public heading: StringProperty;
+
+    /**
+     * Heading size
+     *
+     * No description available
+     */
+    public headingSize: NumberProperty;
+
+    /**
+     * Heading style
+     *
+     * No description available
+     */
+    public headingStyle: StringProperty;
+
+    /**
+     * Description
+     *
+     * No description available
+     */
+    public description: StringProperty;
+
+    /**
+     * Text
+     *
+     * No description available
+     */
+    public text: StringProperty;
+
+    /**
+     * Image
+     *
+     * No description available
+     */
+    public image: ContentReferenceProperty;
+
+    /**
+     * SecondImage
+     *
+     * No description available
+     */
+    public secondImage: ContentReferenceProperty;
+
+    /**
+     * Image size (%)
+     *
+     * No description available
+     */
+    public imageSize: NumberProperty;
+
+    /**
+     * Second Image size (%)
+     *
+     * No description available
+     */
+    public secondImageSize: NumberProperty;
+
+    /**
+     * Text color
+     *
+     * No description available
+     */
+    public textColor: StringProperty;
+
+    /**
+     * Heading color
+     *
+     * No description available
+     */
+    public headingColor: StringProperty;
+
+    /**
+     * Elements order
+     *
+     * No description available
+     */
+    public elementsOrder: StringProperty;
+
+    /**
+     * Elements alignment (except Text)
+     *
+     * No description available
+     */
+    public elementsAlignment: StringProperty;
+
+    /**
+     * Link
+     *
+     * No description available
+     */
+    public link: ContentReferenceProperty;
+
+}

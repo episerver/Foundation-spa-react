@@ -1,5 +1,5 @@
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -52,3 +52,53 @@ export default interface CustomViewConfigurationBlockData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface CustomViewConfigurationBlockProps extends ComponentProps<CustomViewConfigurationBlockData> {}
+
+export class CustomViewConfigurationBlockType extends BaseIContent<CustomViewConfigurationBlockData> implements CustomViewConfigurationBlockData {
+    protected _typeName : string = "CustomViewConfigurationBlock";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'root': 'ContentReference',
+        'sortOrder': 'Number',
+        'enabled': 'Boolean',
+        'newContentRoot': 'ContentReference',
+        'allowedTypesToAddString': 'LongString',
+    }
+
+    /**
+     * Content root
+     *
+     * Root ContentLink for view
+     */
+    public root: ContentReferenceProperty;
+
+    /**
+     * Sort order
+     *
+     * Sort order in menu
+     */
+    public sortOrder: NumberProperty;
+
+    /**
+     * Enabled
+     *
+     * When true, then view is used by views provider
+     */
+    public enabled: BooleanProperty;
+
+    /**
+     * Newly created content
+     *
+     * ContentLink to container where contents should be added. It should be subfolder of the Content Root
+     */
+    public newContentRoot: ContentReferenceProperty;
+
+    /**
+     * Allowed types to add
+     *
+     * Types that editor can add when using external grid view
+     */
+    public allowedTypesToAddString: StringProperty;
+
+}

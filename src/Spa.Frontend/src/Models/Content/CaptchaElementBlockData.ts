@@ -1,5 +1,5 @@
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -66,3 +66,69 @@ export default interface CaptchaElementBlockData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface CaptchaElementBlockProps extends ComponentProps<CaptchaElementBlockData> {}
+
+export class CaptchaElementBlockType extends BaseIContent<CaptchaElementBlockData> implements CaptchaElementBlockData {
+    protected _typeName : string = "CaptchaElementBlock";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'label': 'LongString',
+        'description': 'LongString',
+        'validators': 'LongString',
+        'imageWidth': 'Number',
+        'imageHeight': 'Number',
+        'textLength': 'Number',
+        'validatorMessages': 'Validator with message collection',
+    }
+
+    /**
+     * Label
+     *
+     * No description available
+     */
+    public label: StringProperty;
+
+    /**
+     * Description
+     *
+     * No description available
+     */
+    public description: StringProperty;
+
+    /**
+     * Validators
+     *
+     * No description available
+     */
+    public validators: StringProperty;
+
+    /**
+     * ImageWidth
+     *
+     * No description available
+     */
+    public imageWidth: NumberProperty;
+
+    /**
+     * ImageHeight
+     *
+     * No description available
+     */
+    public imageHeight: NumberProperty;
+
+    /**
+     * TextLength
+     *
+     * No description available
+     */
+    public textLength: NumberProperty;
+
+    /**
+     * ValidatorMessages
+     *
+     * No description available
+     */
+    public validatorMessages: Property<any> // Original type: Validator with message collection;
+
+}

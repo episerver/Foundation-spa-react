@@ -1,5 +1,5 @@
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -38,3 +38,37 @@ export default interface VisitorDataHiddenElementBlockData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface VisitorDataHiddenElementBlockProps extends ComponentProps<VisitorDataHiddenElementBlockData> {}
+
+export class VisitorDataHiddenElementBlockType extends BaseIContent<VisitorDataHiddenElementBlockData> implements VisitorDataHiddenElementBlockData {
+    protected _typeName : string = "VisitorDataHiddenElementBlock";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'visitorDataSources': 'LongString',
+        'forms_ExternalSystemsFieldMappings': 'Property Field Mapping Collection',
+        'validatorMessages': 'Validator with message collection',
+    }
+
+    /**
+     * VisitorDataSources
+     *
+     * No description available
+     */
+    public visitorDataSources: StringProperty;
+
+    /**
+     * External system field mapping
+     *
+     * No description available
+     */
+    public forms_ExternalSystemsFieldMappings: Property<any> // Original type: Property Field Mapping Collection;
+
+    /**
+     * ValidatorMessages
+     *
+     * No description available
+     */
+    public validatorMessages: Property<any> // Original type: Validator with message collection;
+
+}

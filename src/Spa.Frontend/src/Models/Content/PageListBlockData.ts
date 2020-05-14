@@ -1,5 +1,5 @@
 import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent from 'Episerver/Models/IContent'
+import IContent, { BaseIContent } from 'Episerver/Models/IContent'
 import ContentLink from 'Episerver/Models/ContentLink'
 import { ComponentProps } from 'Episerver/EpiComponent'
 
@@ -143,3 +143,157 @@ export default interface PageListBlockData extends IContent {
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
 export interface PageListBlockProps extends ComponentProps<PageListBlockData> {}
+
+export class PageListBlockType extends BaseIContent<PageListBlockData> implements PageListBlockData {
+    protected _typeName : string = "PageListBlock";
+    /**
+     * Map of all property types within this content type.
+     */
+    protected _propertyMap : { [propName: string]: string } = {
+        'categories': 'ContentReferenceList',
+        'padding': 'LongString',
+        'margin': 'LongString',
+        'backgroundColor': 'LongString',
+        'blockOpacity': 'FloatNumber',
+        'heading': 'LongString',
+        'includePublishDate': 'Boolean',
+        'includeTeaserText': 'Boolean',
+        'count': 'Number',
+        'sortOrder': 'Number',
+        'root': 'PageReference',
+        'pageTypeFilter': 'PageType',
+        'categoryListFilter': 'ContentReferenceList',
+        'recursive': 'Boolean',
+        'template': 'LongString',
+        'previewOption': 'LongString',
+        'overlayColor': 'LongString',
+        'overlayTextColor': 'LongString',
+    }
+
+    /**
+     * Categories
+     *
+     * Categories associated with this content
+     */
+    public categories: Property<Array<ContentLink>>;
+
+    /**
+     * Padding
+     *
+     * No description available
+     */
+    public padding: StringProperty;
+
+    /**
+     * Margin
+     *
+     * No description available
+     */
+    public margin: StringProperty;
+
+    /**
+     * Background color
+     *
+     * No description available
+     */
+    public backgroundColor: StringProperty;
+
+    /**
+     * Block opacity (0 to 1)
+     *
+     * No description available
+     */
+    public blockOpacity: NumberProperty;
+
+    /**
+     * Heading
+     *
+     * No description available
+     */
+    public heading: StringProperty;
+
+    /**
+     * Include publish date
+     *
+     * No description available
+     */
+    public includePublishDate: BooleanProperty;
+
+    /**
+     * Include teaser text
+     *
+     * No description available
+     */
+    public includeTeaserText: BooleanProperty;
+
+    /**
+     * Number of results
+     *
+     * No description available
+     */
+    public count: NumberProperty;
+
+    /**
+     * Sort order
+     *
+     * No description available
+     */
+    public sortOrder: NumberProperty;
+
+    /**
+     * Root
+     *
+     * No description available
+     */
+    public root: ContentReferenceProperty;
+
+    /**
+     * Filter by page type
+     *
+     * No description available
+     */
+    public pageTypeFilter: Property<any> // Original type: PageType;
+
+    /**
+     * Filter by category
+     *
+     * Categories to filter the list on
+     */
+    public categoryListFilter: Property<Array<ContentLink>>;
+
+    /**
+     * Include all levels
+     *
+     * No description available
+     */
+    public recursive: BooleanProperty;
+
+    /**
+     * Template of pages listing
+     *
+     * No description available
+     */
+    public template: StringProperty;
+
+    /**
+     * Preview option (not available in the Grid template)
+     *
+     * No description available
+     */
+    public previewOption: StringProperty;
+
+    /**
+     * Overlay color (hex or rgba)
+     *
+     * Apply for Card template
+     */
+    public overlayColor: StringProperty;
+
+    /**
+     * Overlay text color (hex or rgba)
+     *
+     * Apply for Card template
+     */
+    public overlayTextColor: StringProperty;
+
+}

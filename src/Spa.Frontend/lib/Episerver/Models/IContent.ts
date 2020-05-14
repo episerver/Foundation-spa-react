@@ -37,3 +37,51 @@ export interface IContentData extends IContent
 {
     [name: string]: GenericProperty
 }
+
+export abstract class BaseIContent<T extends IContent> implements IContent {
+    public contentLink: ContentLink;
+    public name: NameProperty;
+    public language?: Language;
+    public existingLanguages?: LanguageList;
+    public masterLanguage?: Language;
+    public contentType: ContentTypePath;
+    public parentLink?: ContentLink;
+    public routeSegment?: string | null;
+    public url?: string | null;
+    public changed?: string | null;
+    public created?: string | null;
+    public startPublish?: string | null;
+    public stopPublish?: string | null;
+    public saved?: string | null;
+    public status?: string | null;
+
+    protected abstract _typeName : string;
+    protected abstract _propertyMap : { [propName: string]: string };
+
+    public constructor(baseData: T) {
+        Object.assign(this, baseData);
+    }
+
+    public getTypeName() {
+        return this._typeName;
+    }
+
+    public getProperty<K extends keyof T>(prop: K) : T[K]
+    {
+        let data = this as unknown as T;
+        return data[prop];
+    }
+
+    public getPropertyType<K extends keyof T>(prop: K) : string
+    {
+        return this._propertyMap[prop.toString()];
+    }
+}
+
+/**
+ * Static definition for the IContent instance class, so that
+ * it can be autoloaded using strong typing using TypeScript.
+ */
+export interface IContentType {
+    new<T extends IContent>(baseData: T) : BaseIContent<T>
+}

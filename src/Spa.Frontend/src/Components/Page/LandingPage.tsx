@@ -18,12 +18,12 @@ export default class LandingPage extends Page<LandingPageData>
             <div className="container pt-3" key="landingpage-container">
                 <div className="row">
                     <div className="col-12">
-                        <h1><Property iContent={ this.props.data } property="name" context={ this.getContext() } /></h1>
+                        <h1><Property iContent={ this.props.data } propName="name" context={ this.getContext() } /></h1>
                     </div>
                 </div>
                 <ContentArea context={ this.getContext() } data={ this.props.data.topContentArea } propertyName="topContentArea" />
                 <div className="row">
-                    <Property iContent={ this.props.data } property="mainBody" context={ this.getContext() } className="col-12" />
+                    <Property iContent={ this.props.data } propName="mainBody" context={ this.getContext() } className="col-12" />
                 </div>
                 <ContentArea context={ this.getContext() } data={ this.props.data.mainContentArea } propertyName="mainContentArea" />
             </div>
