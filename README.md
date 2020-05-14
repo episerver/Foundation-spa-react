@@ -28,9 +28,10 @@ You can request a demo of the project by one of our Episerver experts on [Get a 
 ## System requirements
 
 * Visual Studio 2017 or higher - [Download](https://visualstudio.microsoft.com/downloads/)
+  * With the Node.js development package installed
 * SQL Server Express or Developer or SQL Azure Server - [Download](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) (If using SQL Azure [download sqlcmd](https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility?view=sql-server-2017))
 * Microsoft SQL Server Management Studio - [Download](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15)
-* Nodejs - [Download](https://nodejs.org/en/download/)
+* Node.js LTS (12.16.3) - [Download](https://nodejs.org/en/download/)
 * Microsoft Internet Information Server (IIS) - [Download](https://www.iis.net/downloads)
 * IIS Url Rewrite module - [Download](https://www.iis.net/downloads/microsoft/url-rewrite)
 

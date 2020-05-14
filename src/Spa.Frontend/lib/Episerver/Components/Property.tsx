@@ -47,7 +47,7 @@ export default class Property extends Component<PropertyProps>
         let stringValue : string;
         switch (propType) {
             case 'string':
-                return this.isEditable() ? <span className={this.props.className} data-epi-edit={ this.props.property }>{ prop }</span> : (this.props.className ? <span className={ this.props.className }>{ prop }}</span> : prop);
+                return this.isEditable() ? <span className={this.props.className} data-epi-edit={ this.props.property }>{ prop }</span> : (this.props.className ? <span className={ this.props.className }>{ prop }</span> : prop);
             case 'PropertyString':
             case 'PropertyLongString':
                 stringValue = (prop as IContentProperty<string>).value;

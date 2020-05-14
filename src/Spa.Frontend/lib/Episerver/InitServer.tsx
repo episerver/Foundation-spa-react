@@ -1,6 +1,6 @@
 //Global Libraries
 import ReactDOMServer from 'react-dom/server';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import React from 'react';
 
 //Episerver Libraries

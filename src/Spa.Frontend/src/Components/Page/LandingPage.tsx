@@ -1,5 +1,5 @@
 import React, { ReactNode, ReactNodeArray } from 'react';
-import Helmet from 'react-helmet';
+import {Helmet} from 'react-helmet';
 
 import ContentArea from 'Episerver/Components/ContentArea';
 import Property from 'Episerver/Components/Property';

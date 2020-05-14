@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import Helmet from 'react-helmet';
+import {Helmet} from 'react-helmet';
 import Layout from 'Episerver/Components/Layout';
 import CmsComponent from 'Episerver/Components/CmsComponent';
 import Header from 'app/Components/Shared/Header';

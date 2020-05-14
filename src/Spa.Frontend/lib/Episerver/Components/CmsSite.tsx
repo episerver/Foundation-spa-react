@@ -1,6 +1,6 @@
 //Import libraries
 import React, {ReactNode, ReactNodeArray, Component} from 'react';
-import Helmet from 'react-helmet';
+import {Helmet} from 'react-helmet';
 import { Provider, connect } from 'react-redux';
 
 //Import Episerver CMS
@@ -12,7 +12,6 @@ import { IEpiserverSpaContext } from '../Spa';
 import IContentRepository, { IContentRepoState, IContentActionFactory } from '../Repository/IContent';
 import ServerContext, { isSerializedIContent, isSerializedWebsite, isSerializedContentLink } from '../ServerSideRendering/ServerContext';
 import Spinner from './Spinner';
-import ComponentPreLoader, { IComponentPreloadList } from 'Episerver/Loaders/ComponentPreLoader';
 
 /**
  * Declare the context created by the Episerver Javascript ViewEngine, for both
