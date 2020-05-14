@@ -652,6 +652,7 @@
     </Compile>
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\HtmlHelpers.cs" />
+    <Compile Include="Helpers\ImageUrlHelpers.cs" />
     <Compile Include="Helpers\WebPHelper.cs" />
     <Compile Include="Infrastructure\Jobs\BlobJob.cs" />
     <Compile Include="Infrastructure\Kpi\FilledInFormKpi.cs" />
@@ -1041,8 +1042,8 @@
     <Content Include="Assets\scss\components\_checkbox.scss" />
     <Content Include="Assets\scss\components\_hamburger-menu.scss" />
     <Content Include="Assets\scss\components\_icon-menu.scss" />
-    <Content Include="Assets\scss\components\_mobile-navigation.scss" />
-    <Content Include="Assets\scss\components\_navigation.scss" />
+    <Content Include="Assets\scss\layout\_mobile-navigation.scss" />
+    <Content Include="Assets\scss\layout\_navigation.scss" />
     <Content Include="Assets\scss\components\_select-menu.scss" />
     <Content Include="Assets\scss\components\_textbox.scss" />
     <Content Include="Assets\scss\layout\_footer.scss" />
@@ -1064,7 +1065,7 @@
     <Content Include="Assets\scss\vendors\font-awesome-5.9.0\webfonts\fa-solid-900.woff" />
     <Content Include="Assets\scss\vendors\font-awesome-5.9.0\webfonts\fa-solid-900.woff2" />
     <Content Include="Assets\scss\vendors\font-awesome-5.9.0\font-awesome-list.json" />
-    <Content Include="Assets\scss\components\_teaser.scss" />
+    <Content Include="Assets\scss\templates\widgets\_teaser.scss" />
     <Content Include="Assets\scss\components\_easy-autocomplete.scss" />
     <Content Include="Assets\js\features\foundation.cms.js" />
     <Content Include="Assets\scss\templates\forms\_form.scss" />

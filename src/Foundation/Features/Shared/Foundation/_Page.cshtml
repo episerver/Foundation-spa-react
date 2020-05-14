@@ -1,8 +1,10 @@
 @using EPiServer.Web
 @using EPiServer.Web.Routing.Segments.Internal
 @using Foundation.Helpers
-@using ImageProcessor.Web.Episerver
+
 @model FoundationPageData
+
+@Html.FullRefreshPropertiesMetaData(new[] { "PageImage" })
 
 @{
     var textStyle = "";
@@ -21,22 +23,25 @@
     var teaserRatio = string.Empty;
     switch (Model.TeaserRatio)
     {
-        case "10-2":
+        case "5:1":
             teaserRatio = "padding-bottom: 20%";
             break;
-        case "10-3":
-            teaserRatio = "padding-bottom: 30%";
+        case "16:9":
+            teaserRatio = "padding-bottom: 55%";
             break;
-        case "10-10":
+        case "3:2":
+            teaserRatio = "padding-bottom: 65%";
+            break;
+        case "4:3":
+            teaserRatio = "padding-bottom: 75%";
+            break;
+        case "1:1":
             teaserRatio = "padding-bottom: 100%";
             break;
-        case "10-12.5":
-            teaserRatio = "padding-bottom: 125%";
-            break;
-        case "10-15":
+        case "2:3":
             teaserRatio = "padding-bottom: 150%";
             break;
-        case "10-17.5":
+        case "9:16":
             teaserRatio = "padding-bottom: 175%";
             break;
         default:
@@ -44,15 +49,30 @@
             break;
     }
 }
+
 <div class="@Model.Padding @Model.Margin">
     <div class="teaser @Model.ThemeCssClass @Model.AlignmentCssClass @(Model.ApplyHoverEffect && RequestSegmentContext.CurrentContextMode != ContextMode.Edit ? "teaser--hover-effect" : "teaser--show-details")" style="@teaserRatio">
+        @if (ContentReference.IsNullOrEmpty(Model.TeaserVideo))
+        {
+            <div class="teaser__image" @Html.EditAttributes(m => m.PageImage)
+                 style="background-image: url('@Url.WebPFallbackImageUrl(Model.PageImage, 1440, null)'">
+            </div>
+        }
+        else
+        {
+            <div class="teaser__video">
+                <video autoplay loop playsinline muted>
+                    <source src="@Url.ContentUrl(Model.TeaserVideo)" type="video/mp4">
+                </video>
+            </div>
+        }
         <div class="screen-width-wrapper">
             <div class="teaser-text @textStyle screen-width-container">
                 <h2 @Html.EditAttributes(x => x.PageName)>@Model.PageName</h2>
                 <div class="teaser-text__details">
                     @if (!String.IsNullOrWhiteSpace(Model.TeaserText))
                     {
-                         <p @Html.EditAttributes(x => x.TeaserText)>@Model.TeaserText</p>
+                        <p @Html.EditAttributes(x => x.TeaserText)>@Model.TeaserText</p>
                     }
                     @if (!String.IsNullOrWhiteSpace(Model.TeaserButtonText))
                     {
@@ -60,14 +80,6 @@
                     }
                 </div>
             </div>
-        </div>
-        <div class="teaser-image lazyload" data-bgset="@Url.ContentUrl(Model.PageImage)?width=1440" >
-            @if (Model.TeaserVideo != null)
-            {
-                <video class="teaser-video" autoplay loop playsinline muted @Html.EditAttributes(x => x.TeaserVideo)>
-                    <source src="@Url.ContentUrl(Model.TeaserVideo)" type="video/mp4">
-                </video>
-            }
         </div>
     </div>
 </div>

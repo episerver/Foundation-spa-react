@@ -16,11 +16,11 @@ namespace Foundation.Cms.Pages
     public class StandardPage : FoundationPageData
     {
         [CultureSpecific]
-        [SelectOne(SelectionFactoryType = typeof(HeroBlockTextColorSelectionFactory))]
+        [ClientEditor(ClientEditingClass = "dijit/ColorPalette")]
         [Display(Name = "Title color", GroupName = SystemTabNames.Content, Order = 203)]
         public virtual string TitleColor
         {
-            get { return this.GetPropertyValue(page => page.TitleColor) ?? ColorThemes.Light; }
+            get { return this.GetPropertyValue(page => page.TitleColor) ?? "white"; }
             set { this.SetPropertyValue(page => page.TitleColor, value); }
         }
 

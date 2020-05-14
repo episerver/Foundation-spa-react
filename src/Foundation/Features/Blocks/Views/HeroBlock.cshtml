@@ -1,38 +1,32 @@
 ﻿@using Foundation.Helpers
-@using ImageProcessor.Web.Episerver
 
 @model IBlockViewModel<HeroBlock>
 
-@{
-    var calloutTextColor = string.Empty;
-    if (Model.CurrentBlock.Callout.CalloutTextColor.Equals("Light"))
-    {
-        calloutTextColor = "color: white";
-    }
-    else if (Model.CurrentBlock.Callout.CalloutTextColor.Equals("Dark"))
-    {
-        calloutTextColor = "color: black";
-    }
+@Html.FullRefreshPropertiesMetaData(new[] { "BackgroundImage" })
 
+@{
     var blockRatio = string.Empty;
     switch (Model.CurrentBlock.BlockRatio)
     {
-        case "10-2":
+        case "5:1":
             blockRatio = "padding-bottom: 20%";
             break;
-        case "10-3":
-            blockRatio = "padding-bottom: 30%";
+        case "16:9":
+            blockRatio = "padding-bottom: 55%";
             break;
-        case "10-7":
-            blockRatio = "padding-bottom: 70%";
+        case "3:2":
+            blockRatio = "padding-bottom: 65%";
             break;
-        case "10-12.5":
-            blockRatio = "padding-bottom: 125%";
+        case "4:3":
+            blockRatio = "padding-bottom: 75%";
             break;
-        case "10-15":
+        case "1:1":
+            blockRatio = "padding-bottom: 100%";
+            break;
+        case "2:3":
             blockRatio = "padding-bottom: 150%";
             break;
-        case "10-17.5":
+        case "9:16":
             blockRatio = "padding-bottom: 175%";
             break;
         default:
@@ -43,9 +37,13 @@
 
 <div blockId="@(((IContent)Model.CurrentBlock).ContentLink.ID)" id="heroBlock-@(((IContent)Model.CurrentBlock).ContentLink.ID)" name="@(((IContent)Model.CurrentBlock).Name)" class="@(Model.CurrentBlock.Padding + " " + Model.CurrentBlock.Margin)">
     <div class="hero-block" style="@blockRatio">
-        <div class="hero-block__image lazyload" data-bgset="@Html.ProcessImage(Url.ContentUrl(Model.CurrentBlock.BackgroundImage)).Resize(1440, null)&format=webp | @Html.ProcessImage(Url.ContentUrl(Model.CurrentBlock.BackgroundImage)).Resize(1440, null)">
-        </div>
-        @if (!ContentReference.IsNullOrEmpty(Model.CurrentBlock.MainBackgroundVideo))
+        @if (ContentReference.IsNullOrEmpty(Model.CurrentBlock.MainBackgroundVideo))
+        {
+            <div class="hero-block__image" @Html.EditAttributes(m => m.CurrentBlock.BackgroundImage)
+                 style="background-image: url('@Url.WebPFallbackImageUrl(Model.CurrentBlock.BackgroundImage, 1440, null)'">
+            </div>
+        }
+        else
         {
             <div class="hero-block__video">
                 <video autoplay loop playsinline muted>
@@ -53,7 +51,6 @@
                 </video>
             </div>
         }
-
         <div class="hero-block__overlay" style="background-color: @Model.CurrentBlock.BackgroundColor; opacity: @Model.CurrentBlock.BlockOpacity"></div>
         <div class="screen-width-wrapper">
             <div class="hero-block__callout screen-width-container" style="justify-content: @Model.CurrentBlock.Callout.CalloutPosition;">
@@ -61,7 +58,7 @@
                 {
                     <div class="hero-block-link" onclick="location.href='@Url.ContentUrl(Model.CurrentBlock.Link)'"></div>
                 }
-                <div class="callout m-1 p-1 @(Model.CurrentBlock.Callout.Padding + " " + Model.CurrentBlock.Callout.Margin)" style="@calloutTextColor; text-align: @Model.CurrentBlock.Callout.CalloutContentAlignment;">
+                <div class="callout @(Model.CurrentBlock.Callout.Padding + " " + Model.CurrentBlock.Callout.Margin)" style="color: @Model.CurrentBlock.Callout.CalloutTextColor; text-align: @Model.CurrentBlock.Callout.CalloutContentAlignment;">
                     @Html.PropertyFor(m => m.CurrentBlock.Callout)
                 </div>
             </div>
