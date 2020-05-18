@@ -1,7 +1,7 @@
 {
-  "name": "jsfrontend",
+  "name": "foundation-spa-frontend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Frontend for Episerver Foundation CMS built using TypeScript & React",
   "private": true,
   "scripts": {
     "sync-models": "node ./lib/Episerver/Scripts/sync_models.js",
@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
-    "@types/bootstrap": "^4.3.2",
+    "@types/bootstrap": "^4.3.3",
     "@types/core-js": "^2.5.3",
     "@types/jquery": "^3.3.38",
     "@types/node": "^12.12.39",
@@ -42,7 +42,7 @@
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.5.3",
-    "dotenv": "^8.2.0",
+    "episerver-webpack": "file:lib/episerver-webpack",
     "file-loader": "^4.3.0",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.8.2",

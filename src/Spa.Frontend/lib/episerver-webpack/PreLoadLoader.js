@@ -18,7 +18,7 @@ const schema = {
 /**
  *
  */
-module.exports = function (source, map, meta) {
+module.exports = function (source) {
     const options = loaderUtils.getOptions(this);
     validateOptions(schema, options, 'PreLoad loader');
     var test = /\@PreLoad\("(.*)"\,"(.*)"\,"(.*)"\)/;

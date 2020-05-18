@@ -1,6 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
-const globalConfig = require('./global.config');
+const GlobalConfig = require('episerver-webpack/Config');
 
 /**
  * Webpack configuration module which generates the .Net based
@@ -8,12 +8,13 @@ const globalConfig = require('./global.config');
  * containing all resources
  */
 module.exports = (env) => {
-    const serverPath = globalConfig.getEnvVariable('SERVER_PATH', 'server', env);
-    const filePath = globalConfig.getEnvVariable('SPA_PATH', 'Spa', env);
-    const epiPath = globalConfig.getEnvVariable('EPI_PATH', '../Foundation', env);
-    const webPath = globalConfig.getEnvVariable('WEB_PATH', '/', env);
+    const config     = new GlobalConfig(__dirname);
+    const serverPath = config.getServerPath(env);
+    const filePath   = config.getSpaPath(env);
+    const epiPath    = config.getEpiPath(env);
+    const webPath    = config.getWebPath(env);
 
-    const config = {
+    const webpackConfig = {
         target: 'node',
         entry: {
             server: path.resolve(__dirname, serverPath, 'server.tsx')
@@ -28,14 +29,14 @@ module.exports = (env) => {
             __dirname: false,
             __filename: false
         },
-        resolve: globalConfig.getResolveConfig(env),
+        resolve: config.getResolveConfig(env),
         module: {
             rules: [{
                 test: /\.(ts|tsx)$/,
                 use: [{
                     loader: 'ts-loader'
                 }, {
-                    loader: path.resolve('lib/PreLoadLoader.js'),
+                    loader: 'episerver-webpack/PreLoadLoader',
                     options: {
                         pattern: '**/*.tsx',
                         extension: '.tsx'
@@ -43,10 +44,10 @@ module.exports = (env) => {
                 }]
             }, {
                 test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-                use: [{ loader: path.resolve('lib/EmptyLoader.js') }]
+                use: [{ loader: 'episerver-webpack/EmptyLoader' }]
             }, {
                 test: /\.(s[ca]ss)$/,
-                use: [{ loader: path.resolve('lib/EmptyLoader.js') }]
+                use: [{ loader: 'episerver-webpack/EmptyLoader' }]
             }]
         },
         plugins: [
@@ -65,13 +66,8 @@ module.exports = (env) => {
             }),
 
 			//Expose ENV variables
-			new webpack.DefinePlugin({
-				'process.env.NODE_ENV': JSON.stringify(globalConfig.getEnvVariable("NODE_ENV","development",env)),
-				'process.env.DEBUG': JSON.stringify(globalConfig.getEnvVariable("DEBUG","1",env)),
-				'process.env.EPI_URL': JSON.stringify(globalConfig.getEnvVariable("EPI_URL","/",env)),
-				'process.env.WEB_PATH': JSON.stringify(globalConfig.getEnvVariable("WEB_PATH","",env))
-			})
+			new webpack.DefinePlugin(config.getDefineConfig(env))
         ]
     }
-    return config;
+    return webpackConfig;
 };

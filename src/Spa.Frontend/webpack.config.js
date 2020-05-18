@@ -3,24 +3,23 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const globalConfig = require('./global.config');
+const GlobalConfig = require('episerver-webpack/Config');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = (env) => {
-    const srcPath = globalConfig.getEnvVariable('SRC_PATH', 'src', env);
-    const filePath = globalConfig.getEnvVariable('SPA_PATH', 'Spa', env);
-    const epiPath = globalConfig.getEnvVariable('EPI_PATH', '../Foundation', env);
-	const webPath = globalConfig.getEnvVariable('WEB_PATH', '/', env);
-	
-	const fullEnv = env ? Object.assign({}, process.env, env) : process.env;
+	const config   = new GlobalConfig(__dirname);
+    const srcPath  = config.getSourcePath(env);
+    const filePath = config.getSpaPath(env);
+    const epiPath  = config.getEpiPath(env);
+	const webPath  = config.getWebPath(env);
 
-	const config = {
+	const webpackConfig = {
 		target: 'web',
 		entry: {
 			app: path.resolve(__dirname,srcPath,'index.tsx'),
 		},
-		resolve: globalConfig.getResolveConfig(env),
+		resolve: config.getResolveConfig(env),
 		optimization: {
 			mergeDuplicateChunks: true,
 			runtimeChunk: 'single',
@@ -37,7 +36,7 @@ module.exports = (env) => {
 					}
 				},
 			},
-			minimize: fullEnv.NODE_ENV == 'production',
+			minimize: config.getNodeEnv(env) == 'production',
 			minimizer: [new TerserPlugin({}), new OptimizeCSSAssetsPlugin({})]
 		},
 		output: {
@@ -73,7 +72,7 @@ module.exports = (env) => {
 				{
 					loader: MiniCssExtractPlugin.loader,
 					options: {
-						hmr: fullEnv.NODE_ENV === 'development',
+						hmr: config.getNodeEnv() === 'development',
 						outputPath: path.join(filePath,'Styles/')
 					},
 				},{
@@ -143,13 +142,8 @@ module.exports = (env) => {
 			}),
 
 			//Expose ENV variables
-			new webpack.DefinePlugin({
-				'process.env.NODE_ENV': JSON.stringify(globalConfig.getEnvVariable("NODE_ENV","development",env)),
-				'process.env.DEBUG': JSON.stringify(globalConfig.getEnvVariable("DEBUG","1",env)),
-				'process.env.EPI_URL': JSON.stringify(globalConfig.getEnvVariable("EPI_URL","/",env)),
-				'process.env.WEB_PATH': JSON.stringify(globalConfig.getEnvVariable("WEB_PATH","",env))
-			})
+			new webpack.DefinePlugin(config.getDefineConfig(env))
 		]
 	};
-	return config;
+	return webpackConfig;
 };
