@@ -24,14 +24,15 @@
         });
         $(".jsSearchText").each(function (i, e) {
             inst.boxContent = $($(e).data('result-container'))[0];
+
+            inst.AutoSearch(e);
             $(e).on("keyup", function () {
                 clearTimeout(typingTimer);
                 const val = $(this).val();
-                const container = $(this).data('result-container');
-                const divParent = "#" + $(this).parent().attr('id');
                 typingTimer = setTimeout(function () {
-                    inst.Search(val, divParent, container);
-                }, 1000);
+                    var e = $.Event("keypress", { which: 13 });
+                    $('#js-searchbox-input').trigger(e);
+                }, 5000);
             });
 
             $(e).on('keypress',
@@ -149,6 +150,36 @@
         }
     }
 
+    AutoSearch(e) {
+        var options = {
+            url: function (phrase) {
+                return "/find_v2/_autocomplete?prefix=" + phrase;
+            },
+            requestDelay: 500,
+            list: {
+                match: {
+                    enabled: false
+                },
+                onChooseEvent: function () {
+                    var keyword = $(e).getSelectedItemData().query;
+                    $(e).val(keyword);
+                    var e = $.Event("keypress", { which: 13 });
+                    $(e).trigger(e);
+                }
+            },
+            listLocation: "hits",
+            getValue: "query",
+            template: {
+                type: "custom",
+                method: function (value, item) {
+                    return value;
+                }
+            },
+            adjustWidth: false
+        };
+        $(e).easyAutocomplete(options);
+    }
+
     ShowPopover(containerPopover) {
         $(containerPopover).show();
     }
@@ -157,9 +188,7 @@
         $('.searchbox-popover').hide();
     }
 
-
     // Search Image
-    
     ProcessImage() {
         var inst = this;
         $('.jsSearchImage').each(function (i, e) {

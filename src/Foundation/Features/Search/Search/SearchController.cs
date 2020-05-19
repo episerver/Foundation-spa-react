@@ -1,11 +1,11 @@
-﻿using EPiServer;
+﻿using Castle.Core.Internal;
+using EPiServer;
 using EPiServer.Core;
 using EPiServer.Web.Mvc;
 using EPiServer.Web.Mvc.Html;
 using Foundation.Cms.Pages;
 using Foundation.Find.Cms;
 using Foundation.Find.Cms.ViewModels;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -34,7 +34,7 @@ namespace Foundation.Features.Search
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult Index(SearchResultPage currentPage, CmsFilterOptionViewModel filterOptions)
         {
-            if (filterOptions == null)
+            if (filterOptions == null || filterOptions.Q.IsNullOrEmpty())
             {
                 return Redirect(Url.ContentUrl(ContentReference.StartPage));
             }
@@ -66,7 +66,6 @@ namespace Foundation.Features.Search
                 IncludeImagesContent = true
             });
             model.ContentSearchResult = contentResult;
-            model.FilterOption.TotalCount = contentResult?.Hits.Count() ?? 0;
 
             return View("_QuickSearchAll", model);
         }
