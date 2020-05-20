@@ -31,8 +31,8 @@ export default class StandardPage extends Page<StandardPageData>
             <div className="container standardpage-container pt-3 bg-white" key="standardpage-container">
                 <div className="row">
                     <div className="col">
-                        <h1><Property iContent={this.props.data} property="name" context={this.props.context} /></h1>
-                        <Property iContent={this.props.data} property="mainBody" context={this.props.context} />
+                        <h1><Property iContent={this.props.data} field="name" context={this.props.context} /></h1>
+                        <Property iContent={this.props.data} field="mainBody" context={this.props.context} />
                     </div>
                 </div>
                 <ContentArea context={ this.props.context } data={ this.props.data.mainContentArea } />

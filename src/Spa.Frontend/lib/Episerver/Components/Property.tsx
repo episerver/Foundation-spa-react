@@ -6,25 +6,25 @@ import { ContentLinkService } from 'Episerver/Models/ContentLink';
 import CmsComponent from './CmsComponent';
 import ContentArea from './ContentArea';
 
-export interface PropertyProps extends HTMLAttributes<HTMLElement>
+export interface PropertyProps<T extends IContent> extends HTMLAttributes<HTMLElement>
 {
-    iContent: IContent
-    property: string
+    iContent: T
+    field: keyof T
     context: IEpiserverSpaContext
     className?: string
 }
 
-export default class Property extends Component<PropertyProps>
+export default class Property<T extends IContent> extends Component<PropertyProps<T>>
 {
     protected hasProperty(): boolean
     {
-        return (this.props.iContent as IContentData)[this.props.property] ? true : false;
+        return this.props.iContent[this.props.field] ? true : false;
     }
 
     protected getProperty() : GenericProperty
     {
         if (this.hasProperty()) {
-            return (this.props.iContent as IContentData)[this.props.property];
+            return this.props.iContent[this.props.field] as unknown as GenericProperty;
         }
         return null;
     }

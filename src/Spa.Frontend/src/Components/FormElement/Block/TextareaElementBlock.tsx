@@ -13,10 +13,10 @@ export default class TextareaElementBlock extends AbstractElementBlock<TextareaE
         let fieldInfoId : string = `${ fieldId }_Description`;
 
         return <div className="form-group">
-            <label htmlFor={ fieldId }><Property iContent={this.props.data} property="label" context={ this.getContext() }/></label>
+            <label htmlFor={ fieldId }><Property iContent={this.props.data} field="label" context={ this.getContext() }/></label>
             <textarea id={ fieldId } name={ fieldName } className="form-control" placeholder={ this.props.data.placeHolder?.value } aria-describedby={ fieldInfoId }>
             </textarea>
-            <small id={ fieldInfoId } className="form-text text-muted"><Property iContent={this.props.data} property="description" context={ this.getContext() }/></small>
+            <small id={ fieldInfoId } className="form-text text-muted"><Property iContent={this.props.data} field="description" context={ this.getContext() }/></small>
         </div>
     }
 }
