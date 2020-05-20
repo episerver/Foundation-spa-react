@@ -11,8 +11,6 @@ export default class TextBlock extends EpiComponent<TextBlockData>
         if (this.props.data.padding?.value) cssClasses.push(this.props.data.padding?.value);
         if (this.props.data.margin?.value) cssClasses.push(this.props.data.margin?.value);
 
-        return <div>
-            <Property className={ cssClasses.join(" ") } iContent={this.props.data} field="mainBody" context={ this.getContext() }/>
-        </div>
+        return <Property className={ cssClasses.join(" ") } iContent={ this.props.data } field="mainBody" context={ this.getContext() }/>
     }
 }
