@@ -19,9 +19,7 @@ export interface LayoutState {
     isContextLoading: boolean
 }
 
-export interface LayoutComponent {
-    new (props: LayoutProps) : Layout
-}
+export type LayoutComponent = new (props: LayoutProps) => Layout
 
 export interface EpiserverLayout {
     componentDidMount() : void
@@ -47,29 +45,22 @@ export default class Layout extends Component<LayoutProps, LayoutState> implemen
 
     public readonly componentDidMount = (): void => 
     {
-        if (!this.isPageValid()) {
-            console.log("Layout mount: no valid page", this.props.page, this.props.path);
-        }
         if (!this.hasStartPage()) {
-            console.log("Layout mount: no start page", this.props.startPage);
-            throw("No start page");
+            throw(new Error("No start page has been defined"));
         }
 
-        if ((this as EpiserverLayout).layoutDidMount) (this as EpiserverLayout).layoutDidMount();
+        const l = this as EpiserverLayout;
+        if (l.layoutDidMount) l.layoutDidMount();
     }
 
     public readonly componentDidUpdate = (prevProps: LayoutProps, prevState: LayoutState): void => 
     {
-        if (!this.isPageValid()) {
-            console.log("Layout update: no valid page", this.props.page, this.props.path);
-            //throw("No valid page");
-        }
         if (!this.hasStartPage()) {
-            console.log("Layout update: no start page", this.props.startPage);
-            throw("No start page");
+            throw(new Error("No start page has been defined"));
         }
 
-        if ((this as EpiserverLayout).layoutDidUpdate) (this as EpiserverLayout).layoutDidUpdate(prevProps, prevState);
+        const l = this as EpiserverLayout;
+        if (l.layoutDidUpdate) l.layoutDidUpdate(prevProps, prevState);
     }
 
     public readonly render = () : ReactNodeArray | ReactNode | null =>
@@ -85,7 +76,15 @@ export default class Layout extends Component<LayoutProps, LayoutState> implemen
 
     public renderLayout() : ReactNodeArray | ReactNode | null
     {
-        return <CmsComponent context={this.props.context} contentLink={this.props.page} expandedValue={this.props.expandedValue} actionName={this.props.actionName} actionData={this.props.actionData} />
+        let contentLink : ContentLink;
+        if (this.props.page) {
+            contentLink = this.props.page as ContentLink;
+            return <CmsComponent context={this.props.context} contentLink={ contentLink } expandedValue={this.props.expandedValue} actionName={this.props.actionName} actionData={this.props.actionData} />
+        } else if (this.props.expandedValue) {
+            contentLink = (this.props.expandedValue as IContent).contentLink;
+            return <CmsComponent context={this.props.context} contentLink={ contentLink } expandedValue={this.props.expandedValue} actionName={this.props.actionName} actionData={this.props.actionData} />
+        }
+        return this.renderEmpty();
     }
 
     public renderSpinner() : ReactNodeArray | ReactNode | null
@@ -100,13 +99,13 @@ export default class Layout extends Component<LayoutProps, LayoutState> implemen
 
     protected isPageValid() : boolean
     {
-        if (this.props.path == "/") return true; //Do not validate homepage
+        if (this.props.path === "/") return true; // Do not validate homepage
         if (this.props.path && this.props.page)
         {
-            let pagePath = EpiContext.getEpiserverUrl(this.props.page, this.props.actionName);
-            let path = EpiContext.getEpiserverUrl(this.props.path, this.props.actionName);
+            const pagePath = EpiContext.getEpiserverUrl(this.props.page, this.props.actionName);
+            const path = EpiContext.getEpiserverUrl(this.props.path, this.props.actionName);
 
-            return pagePath == path;
+            return pagePath === path;
         }
         return false;
     }

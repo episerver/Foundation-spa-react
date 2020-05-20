@@ -24,7 +24,7 @@ export default class Spinner extends Component<SpinnerProps>
 	 * 
 	 * @param 	props 	The properties of the spinner
 	 */
-	static CreateInstance(props: SpinnerProps) : Spinner
+	static CreateInstance(props: SpinnerProps) : Spinner | null
 	{
 		if (!EpiContext.config().enableSpinner) {
 			return null;

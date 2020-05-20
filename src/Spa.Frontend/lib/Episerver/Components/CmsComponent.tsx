@@ -8,12 +8,13 @@ import ComponentLoader from "../Loaders/ComponentLoader";
 import ComponentNotFound from "./Errors/ComponentNotFound";
 import EpiContext, { IEpiserverSpaContext } from "../Spa";
 import StringUtils from '../Util/StringUtils';
+import { TComponentType } from '../Loaders/ComponentLoader';
 
 interface CmsComponentState { 
 	hasError: boolean
-	errorObject: any
-	component: ComponentType<ComponentProps<IContent>>
-	componentName: string
+	errorObject?: any
+	component?: TComponentType
+	componentName?: string
 	componentIsUpdating: boolean
 }
 
@@ -86,11 +87,11 @@ export class CmsComponent extends Component<CmsComponentProps, CmsComponentState
 	public constructor(props : CmsComponentProps) {
 		super(props);
 		this.componentLoader = this.props.context.componentLoader();
-		let componentName : string = null;
-		let component: ComponentType<ComponentProps<IContent>> = null;
+		let componentName : string = '';
+		let component: TComponentType | null = null;
 
 		if (this.isExpandedValueValid()) {
-			componentName = this.buildComponentName(this.props.expandedValue);
+			componentName = this.buildComponentName(this.props.expandedValue as IContent);
 			component = this.componentLoader.getPreLoadedType(componentName, false);
 		} else {
 			if (!this.props.context.isServerSideRendering() && this.props.contentLink?.id) {
@@ -98,19 +99,31 @@ export class CmsComponent extends Component<CmsComponentProps, CmsComponentState
 			}
 		}
 
-		this.state = {
-			hasError: false,
-			errorObject: null,
-			componentName: componentName,
-			component: component,
-			componentIsUpdating: false
+		const hasError: boolean = false;
+		const componentIsUpdating: boolean = false;
+
+		if (component) {
+			this.state = {
+				hasError,
+				componentName,
+				component,
+				componentIsUpdating
+			}
+		} else {
+			this.state = {
+				hasError,
+				componentIsUpdating
+			}
 		}
 	}
 
 	protected async loadComponent(iContent ?: IContent) : Promise<ComponentType<ComponentProps<IContent>>>
 	{
-		let content = iContent || this.props.expandedValue;
-		let componentName : string = this.buildComponentName(content);
+		const content = iContent || this.props.expandedValue;
+		if (!content) {
+			Promise.reject("No content to be loaded specified");
+		}
+		const componentName : string = this.buildComponentName(content as IContent);
 		return this.componentLoader.LoadType(componentName);
 	}
 
@@ -144,7 +157,7 @@ export class CmsComponent extends Component<CmsComponentProps, CmsComponentState
 	 */
 	protected buildComponentName(item : IContent) : string
 	{
-		let context : string = this.props.contentType;
+		const context : string = this.props.contentType || '';
 		let baseName = item.contentType.map((s) => {
 			return StringUtils.SafeModelName(s);
 		}).join('/');
@@ -160,9 +173,7 @@ export class CmsComponent extends Component<CmsComponentProps, CmsComponentState
 	 */
 	public componentDidMount()
 	{
-		if (!this.isExpandedValueValid()) {
-			if(this.props.context.isDebugActive()) console.debug('Content not yet available, awaiting data for', this.props.contentLink?.id);
-		} else if (!this.isComponentValid() && this.state.componentName) {
+		if (!this.isComponentValid() && this.state.componentName) {
 			this.updateComponent(this.state.componentName);
 		}
 	}
@@ -170,41 +181,37 @@ export class CmsComponent extends Component<CmsComponentProps, CmsComponentState
 	public componentDidUpdate(prevProps: CmsComponentProps, prevState: CmsComponentState)
 	{
 		if (this.state.componentIsUpdating || prevState.componentIsUpdating) return; 
-		let mustUpdate : boolean = prevProps.contentLink?.id != this.props.contentLink.id;
+		const mustUpdate : boolean = prevProps.contentLink?.id !== this.props.contentLink.id;
 		if (mustUpdate || !this.isComponentValid()) {
-			if(this.props.context.isDebugActive()) console.info('Invalid component; updating', this.state.component?.displayName, this.buildComponentName(this.props.expandedValue), this.props.contentLink.id);
-			this.setState({component: null, componentName: null, componentIsUpdating: true });
-			let componentName : string = this.buildComponentName(this.props.expandedValue);
+			this.setState({component: undefined, componentName: undefined, componentIsUpdating: true });
+			const componentName : string = this.props.expandedValue ? this.buildComponentName(this.props.expandedValue) : '';
 			this.updateComponent(componentName);
 		}
 	}
 
 	protected updateComponent(componentName: string)
 	{
-		//If the component is in cache, use cached version and do not use promises
+		// If the component is in cache, use cached version and do not use promises
 		if (this.componentLoader.isPreLoaded(componentName)) {
 			this.setState({
-				componentName: componentName,
-				component: this.componentLoader.getPreLoadedType(componentName, true),
+				componentName,
+				component: this.componentLoader.getPreLoadedType(componentName, true) as TComponentType,
 				componentIsUpdating: false
 			});
 			return;
 		}
 
-		//Load component through promises
+		// Load component through promises
 		const me = this;
-		if(this.props.context.isDebugActive()) console.info(`Loading component ${componentName}`, this.props.contentLink.id);
 		this.componentLoader.LoadType(componentName).then(cType => {
-			if(this.props.context.isDebugActive()) console.info(`The component ${componentName} has been loaded`, this.props.contentLink.id);
 			if (!me._unmounted) me.setState({
-				componentName: componentName,
+				componentName,
 				component: cType,
 				componentIsUpdating: false
 			});
 		}).catch(reason => {
-			if(me.props.context.isDebugActive()) console.warn(`Failed to load component ${ componentName }, reason`, reason, this.props.contentLink.id);
-			let state : any = {
-				componentName: componentName,
+			const state : any = {
+				componentName,
 				component: ComponentNotFound,
 				componentIsUpdating: false
 			};
@@ -218,23 +225,23 @@ export class CmsComponent extends Component<CmsComponentProps, CmsComponentState
 	 */
 	protected isExpandedValueValid() : boolean
 	{
-		return this.props.expandedValue &&
-				this.props.expandedValue.contentLink.guidValue == this.props.contentLink.guidValue;
+		if (!this.props.expandedValue) return false;
+		return this.props.expandedValue.contentLink.guidValue === this.props.contentLink.guidValue;
 	}
 
 	protected isComponentValid() : boolean
 	{
 		if (this.isExpandedValueValid()) {
-			let name = this.buildComponentName(this.props.expandedValue);
-			return this.state.component?.displayName == 'Epi/ComponentNotFound' ||
-				this.state.component?.displayName == name;
+			const name = this.buildComponentName(this.props.expandedValue as IContent);
+			return this.state.component?.displayName === 'Epi/ComponentNotFound' ||
+				this.state.component?.displayName === name;
 		}
 		return false;
 	}
 
 	public componentDidCatch(error: any, errorInfo: any) : any
 	{
-		console.error(error, errorInfo);
+		// Ignore caught errors
 	}
 
 	public static getDerivedStateFromError(error: any) : CmsComponentState
@@ -242,8 +249,8 @@ export class CmsComponent extends Component<CmsComponentProps, CmsComponentState
 		return {
 			hasError: true,
 			errorObject: error,
-			component: null,
-			componentName: null,
+			component: undefined,
+			componentName: undefined,
 			componentIsUpdating: false
 		}
 	}
@@ -254,13 +261,13 @@ export class CmsComponent extends Component<CmsComponentProps, CmsComponentState
 
 	public render() : ReactNode | null
 	{
-		var spinnerId = `ssr-${ ContentLinkService.createApiId(this.props.contentLink) }`;
+		const spinnerId = `ssr-${ ContentLinkService.createApiId(this.props.contentLink) }`;
 		if (this.state.hasError) {
 			return <div className="alert alert-danger">An uncaught error occured!</div>
 		}
-		if (this.isExpandedValueValid() && this.isComponentValid()) {
-			let props : ComponentProps<IContent> = this.buildComponentProps(this.props.expandedValue);
-			return React.createElement(this.state.component, props);
+		if (this.isComponentValid()) {
+			const props : ComponentProps<IContent> = this.buildComponentProps(this.props.expandedValue as IContent);
+			return React.createElement(this.state.component as TComponentType, props);
 		}
 		if (this.props.contentLink == null) {
 			return <div className="alert alert-danger">No linked content</div>
@@ -271,16 +278,14 @@ export class CmsComponent extends Component<CmsComponentProps, CmsComponentState
 	}
 }
 
-interface CmsComponentType {
-	new (props : CmsComponentProps) : CmsComponent
-}
+type CmsComponentType = new (props : CmsComponentProps) => CmsComponent
 
 let ExportableCmsComponent : CmsComponentType;
 if (EpiContext.isServerSideRendering()) {
 	ExportableCmsComponent = CmsComponent;
 } else {
 	ExportableCmsComponent = connect((state: any, ownProps: CmsComponentProps) : CmsComponentProps => {
-		let id : string = ContentLinkService.createApiId(ownProps.contentLink);
+		const id : string = ContentLinkService.createApiId(ownProps.contentLink);
 		if (state.iContentRepo.items[id]) {
 			return {
 				...ownProps, 

@@ -1,9 +1,6 @@
-//Poly-fill server
-import 'core-js';
-
 //Episerver libraries
-import SSRResponse from 'Episerver/ServerSideRendering/Response';
-import RenderServerSide from 'Episerver/InitServer';
+import SSRResponse from 'episerver/ServerSideRendering/Response';
+import RenderServerSide from 'episerver/InitServer';
 
 //Application layout & config
 import appConfig from 'app/Config';

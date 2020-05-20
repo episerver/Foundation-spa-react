@@ -136,7 +136,7 @@ export abstract class BaseEpiComponent<P extends ComponentProps<IContent>, S = {
      * Retrieve the ContentLink for this component
      */
     protected getCurrentContentLink() : ContentLink {
-        return this.props.data.contentLink ? this.props.data.contentLink : this.props.contentLink;
+        return this.props.data.contentLink;
     }
 
     protected getContext() : IEpiserverSpaContext

@@ -1,7 +1,7 @@
 import React, { ReactNode, ReactNodeArray } from 'react';
 import {Helmet} from 'react-helmet';
-import IContent from "Episerver/Models/IContent";
-import EpiComponent from 'Episerver/EpiComponent';
+import IContent from "episerver/Models/IContent";
+import EpiComponent from 'episerver/EpiComponent';
 
 interface NavigationData extends IContent {
     name: string

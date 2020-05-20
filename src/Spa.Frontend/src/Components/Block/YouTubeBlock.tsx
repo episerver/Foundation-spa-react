@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import EpiComponent from 'Episerver/EpiComponent';
+import EpiComponent from 'episerver/EpiComponent';
 import YouTubeBlockData from 'app/Models/Content/YouTubeBlockData';
 
 export default class YouTubeBlock extends EpiComponent<YouTubeBlockData> {

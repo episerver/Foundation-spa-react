@@ -10,8 +10,8 @@ import EpiserverSpaContext from '../Spa';
  */
 declare let PreLoad: PreLoadedModuleList;
 
-type TComponentType = ComponentType<ComponentProps<IContent>>;
-type TComponentTypePromise = Promise<TComponentType>;
+export type TComponentType = ComponentType<ComponentProps<IContent>>;
+export type TComponentTypePromise = Promise<TComponentType>;
 
 /**
  * Type defintiion to allow access to the pre-loaded modules
@@ -75,7 +75,7 @@ export default class ComponentLoader
      * @param   component       The name/path of the component
      * @param   throwOnUnknown  Wether or not an error must be thrown if the component is not in the cache
      */
-    public getPreLoadedType(component: string, throwOnUnknown: boolean = true) : TComponentType
+    public getPreLoadedType(component: string, throwOnUnknown: boolean = true) : TComponentType | null
     {
         if (this.isPreLoaded(component)) {
             let c : TComponentType = this.cache["app/Components/" + component];
@@ -88,12 +88,11 @@ export default class ComponentLoader
         return null;
     }
 
-    public getPreLoadedComponent(component: string, props?: ComponentProps<IContent>): ReactNode
+    public getPreLoadedComponent(component: string, props: ComponentProps<IContent>): ReactNode
     {
-        let component_props : ComponentProps<IContent> = props ? props : {data: null, context: EpiserverSpaContext};
         if (this.isPreLoaded(component)) {
             let type = this.getPreLoadedType(component);
-            return React.createElement(type, component_props);
+            return React.createElement(type as TComponentType, props);
         }
         throw `The component ${component} has not been pre-loaded!`;
     }
@@ -101,7 +100,7 @@ export default class ComponentLoader
     public LoadType(component: string) : TComponentTypePromise
     {
         if (this.isPreLoaded(component)) {
-            return Promise.resolve<TComponentType>(this.getPreLoadedType(component));
+            return Promise.resolve<TComponentType>(this.getPreLoadedType(component) as TComponentType);
         }
         try {
             if (this.loading[component]) {
@@ -117,7 +116,7 @@ export default class ComponentLoader
         return this.loading[component];
     }
 
-    protected async doLoadComponent(component: string) : TComponentTypePromise
+    protected async doLoadComponent(component: string) : Promise<TComponentType>
     {
         const type = await (import(
             /* webpackInclude: /\.tsx$/ */
@@ -141,10 +140,9 @@ export default class ComponentLoader
         return type;
     }
 
-    public async LoadComponent(component: string, props?: ComponentProps<IContent>): Promise<ReactNode>
+    public async LoadComponent(component: string, props: ComponentProps<IContent>): Promise<ReactNode>
     {
-        let component_props : ComponentProps<IContent> = props ? props : {data: null, context: EpiserverSpaContext};
         let type = await this.LoadType(component);
-        return React.createElement(type, component_props);
+        return React.createElement(type, props);
     }
 };

@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import EpiComponent from 'Episerver/EpiComponent';
+import EpiComponent from 'episerver/EpiComponent';
 import LandingPageData from 'app/Models/Content/LandingPageData';
 import Teaser from 'app/Components/Shared/Teaser';
 import IContentWithTeaser from 'app/Models/IContentWithTeaser';

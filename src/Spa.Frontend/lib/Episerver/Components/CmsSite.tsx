@@ -1,9 +1,9 @@
-//Import libraries
+// Import libraries
 import React, {ReactNode, ReactNodeArray, Component} from 'react';
 import {Helmet} from 'react-helmet';
 import { Provider, connect } from 'react-redux';
 
-//Import Episerver CMS
+// Import Episerver CMS
 import Layout, { LayoutComponent, LayoutProps } from './Layout';
 import IContent from '../Models/IContent';
 import ContentLink from '../Models/ContentLink';
@@ -58,33 +58,19 @@ export default class CmsSite extends Component<CmsSiteProps, CmsSiteState>
         const me : CmsSite = this;
         try {
             const ws = await this.props.context.loadCurrentWebsite();
-            me.logMessage(`Initialized website ${ws.name} with id ${ws.id}`);
             const c = await me.props.context.loadContentByRef("startPage");
             me.props.context.dispatch(IContentActionFactory.registerPaths(c, ['/']));
-            me.logMessage(`Initialized start page ${ c.name } with id ${ c.contentLink.id } from ${ c.contentLink.providerName || 'Episerver CMS' }`);
             const cPath = me.props.context.getCurrentPath();
-            if (!(cPath == '/' || cPath == c.contentLink.url)) {
+            if (!(cPath === '/' || cPath === c.contentLink.url)) {
                 const cPage = await me.props.context.loadContentByPath(cPath);
-                if (cPage.contentLink.url != cPath) {
+                if (cPage.contentLink.url !== cPath) {
                     me.props.context.dispatch(IContentActionFactory.registerPaths(cPage, [cPath]));
                 }
-                me.logMessage(`Initialized page ${ cPage.name } with id ${ cPage.contentLink.id } from ${ cPage.contentLink.providerName || 'Episerver CMS'}`);
-            } else {
-                me.logMessage('Initialized current page from start page');
             }
             return true;
         }
         catch (e) {
             return false;
-        }
-    }
-
-    protected logMessage(msg: any) : void
-    {
-        if (this.props.context.isDebugActive())
-        {
-            //console.log.apply(console, arguments);
-            console.log(msg);
         }
     }
 
@@ -97,7 +83,6 @@ export default class CmsSite extends Component<CmsSiteProps, CmsSiteState>
 
     protected renderDisconnected() : ReactNodeArray
     {
-        if (this.props.context.isDebugActive()) console.debug('Rendering disconnected layout');
         const MyLayout = this.getLayout();
         const myStartPage : IContent = this.getInitialStartPage();
         const myContentLink : ContentLink = this.getInitialContentLink();
@@ -111,12 +96,9 @@ export default class CmsSite extends Component<CmsSiteProps, CmsSiteState>
     protected renderConnected() : ReactNode
     {
         if (this.isStateValid()) {
-            if (this.props.context.isDebugActive()) console.debug('Creating connected layout');
-            let ConnectedLayout = connect(this.buildLayoutPropsFromState.bind(this))(this.getLayout());
-            if (this.props.context.isDebugActive()) console.debug('Rendering connected layout');
+            const ConnectedLayout = connect(this.buildLayoutPropsFromState.bind(this))(this.getLayout());
             return <Provider store={ this.props.context.getStore() }><Helmet/><ConnectedLayout context={this.props.context} /></Provider>;
         } else {
-            if (this.props.context.isDebugActive()) console.debug('Awaiting valid state for rendering the layout');
             return Spinner.CreateInstance({});
         }
     }
@@ -124,31 +106,30 @@ export default class CmsSite extends Component<CmsSiteProps, CmsSiteState>
     protected buildLayoutPropsFromState(state: any, ownProps: LayoutProps) : LayoutProps
     {
         try {
-            let path : string = state.ViewContext.currentPath;
-            let idx = state.iContentRepo.paths[path];
+            const path : string = state.ViewContext.currentPath;
+            const idx = state.iContentRepo.paths[path];
             if (!idx) {
-                console.warn("Path not found in state, sending empty to layout");
-                return {...ownProps, path: path, page: null, expandedValue: null, startPage: null};
+                return {...ownProps, path, page: undefined, expandedValue: undefined, startPage: undefined};
             }
             let contentLink : ContentLink;
             let contentItem : IContent;
-            let startPage : IContent;
+            let startPage : IContent | undefined;
             contentItem = state.iContentRepo.items[idx].content;
             contentLink = contentItem.contentLink;
-            let startIdx = state.iContentRepo.refs['startPage'];
+            const startIdx = state.iContentRepo.refs.startPage;
             if (startIdx && state.iContentRepo.items[startIdx]) {
                 startPage = state.iContentRepo.items[startIdx].content;
             }
-            let newProps : LayoutProps = { 
+            const newProps : LayoutProps = { 
                 ...ownProps,
                 page: contentLink,
                 expandedValue: contentItem,
-                path: path,
-                startPage: startPage
+                path,
+                startPage
             }
             return newProps;
         } catch (e) {
-            if (this.props.context.isDebugActive()) console.warn('Error building layout properties', e, ownProps);
+            // Ignore layout property building errors
         }
         return ownProps;
     }
@@ -160,10 +141,10 @@ export default class CmsSite extends Component<CmsSiteProps, CmsSiteState>
 
     protected hasStartPage() : boolean
     {
-        let totalState = this.props.context.getStore().getState();
-        let iContentState : IContentRepoState = totalState[IContentRepository.StateKey];
+        const totalState = this.props.context.getStore().getState();
+        const iContentState : IContentRepoState = totalState[IContentRepository.StateKey];
 
-        let spId = iContentState.refs["startPage"];
+        const spId = iContentState.refs.startPage;
         if (spId && iContentState.items[spId]) {
             return true;
         }
@@ -172,8 +153,8 @@ export default class CmsSite extends Component<CmsSiteProps, CmsSiteState>
 
     protected hasWebsite() : boolean
     {
-        let totalState = this.props.context.getStore().getState();
-        let iContentState : IContentRepoState = totalState[IContentRepository.StateKey];
+        const totalState = this.props.context.getStore().getState();
+        const iContentState : IContentRepoState = totalState[IContentRepository.StateKey];
         
         if (!iContentState.website) return false;
 

@@ -1,5 +1,5 @@
 import ContentLink from '../Models/ContentLink';
-import React, { Component, ReactNode, ReactElement } from 'react';
+import React, { Component, ReactNode, ReactElement, ReactNodeArray } from 'react';
 import CmsComponent from './CmsComponent';
 import { ContentAreaProperty } from '../Property';
 import { IEpiserverSpaContext } from '../Spa';
@@ -93,11 +93,11 @@ export default class ContentArea extends Component<ContentAreaProps>
 {
     public render() : ReactNode | null
     {
-        //Return the children if there's no components
+        // Return the children if there's no components
         if (!this.props.data || !this.props.data.value) return this.props.children || this.renderNoChildren();
 
-        //Render the actual components
-        let components = this.props.data.value.map(this.renderComponent.bind(this));
+        // Render the actual components
+        const components : ReactElement[] = this.props.data.value.map(this.renderComponent.bind(this));
         if (this.props.noWrap === true) {
             if (this.props.propertyName && this.props.context.isEditable()) {
                 return <div data-epi-edit={ this.props.propertyName }>{ components }</div>;
@@ -105,8 +105,8 @@ export default class ContentArea extends Component<ContentAreaProps>
             return components;
         }
 
-        //If there's no container, just output the row
-        let rowClass = `content-area ${ this.getConfigValue('defaultRowClass', 'row') }`;
+        // If there's no container, just output the row
+        const rowClass = `content-area ${ this.getConfigValue('defaultRowClass', 'row') }`;
         if (!this.props.addContainer) {
             if (this.props.context.isEditable()) {
                 return <div className={rowClass} data-epi-edit={ this.props.propertyName }>{ components }</div>
@@ -114,36 +114,36 @@ export default class ContentArea extends Component<ContentAreaProps>
             return <div className= {rowClass }>{ components }</div>
         }
 
-        let containerBreakBlockClass = this.getConfigValue('containerBreakBlockClass', null);
-        let containerClass = this.getConfigValue('defaultContainerClass', 'container');
+        const containerBreakBlockClass = this.getConfigValue('containerBreakBlockClass', undefined);
+        const containerClass = this.getConfigValue('defaultContainerClass', 'container');
         if (!containerBreakBlockClass) {
             return <div className={containerClass}>
                 <div className={rowClass} data-epi-edit={ this.props.context.isEditable() ? this.props.propertyName : null}>{ components }</div>
             </div>
         }
 
-        let containers: Array<{
+        const containers: {
             isContainer: boolean,
-            components: Array<ReactNode | ReactElement>
-        }> = [{ isContainer: true, components: []}];
+            components: ReactNodeArray | ReactElement[]
+        }[] = [{ isContainer: true, components: []}];
         let containerIdx : number = 0;
-        for (let idx in components) {
-            let classNames : string = (components[idx] as React.ReactElement).props.className;
+        components.forEach(c => {
+            const classNames : string = c.props.className;
             if (classNames.indexOf(containerBreakBlockClass) >= 0) {
-                if (containers[containerIdx].components.length == 0) {
+                if (containers[containerIdx].components.length === 0) {
                     containers[containerIdx].isContainer = false;
-                    containers[containerIdx].components.push(components[idx]);
+                    containers[containerIdx].components.push(c);
                 } else {
                     containerIdx++;
-                    containers[containerIdx] = { isContainer: false, components: [components[idx]]};
+                    containers[containerIdx] = { isContainer: false, components: [c]};
                 }
                 containerIdx++;
                 containers[containerIdx] = { isContainer: true, components: []};
             } else {
-                containers[containerIdx].components.push(components[idx]);
+                containers[containerIdx].components.push(c);
             }
-        }
-        let groupedComponents = containers.map((cItem, idx) => {
+        });
+        const groupedComponents = containers.map((cItem, idx) => {
             if (cItem.isContainer) {
                 return <div className={containerClass} key={ `ContentArea-${this.props.propertyName}-item-${idx}` }>
                     <div className={rowClass}>
@@ -162,18 +162,18 @@ export default class ContentArea extends Component<ContentAreaProps>
         return groupedComponents;
     }
 
-    protected renderComponent(item: ContentAreaPropertyItem, idx: number) : ReactNode|HTMLElement
+    protected renderComponent(item: ContentAreaPropertyItem, idx: number) : ReactElement
     {
-        //Get expanded value
-        let expandedValue = undefined;
+        // Get expanded value
+        let expandedValue;
         if (this.props.data.expandedValue) {
             expandedValue = this.props.data.expandedValue[idx];
         }
 
-        //Build component
-        let component = <CmsComponent context={this.props.context} contentLink={ item.contentLink } contentType={ this.getComponentType() } key={ item.contentLink.guidValue } expandedValue={ expandedValue } />;
+        // Build component
+        const component = <CmsComponent context={this.props.context} contentLink={ item.contentLink } contentType={ this.getComponentType() } key={ item.contentLink.guidValue } expandedValue={ expandedValue } />;
 
-        //Return if no wrapping
+        // Return if no wrapping
         if (this.props.noWrap === true) {
             if (this.props.context.isEditable()) {
                 return <div data-epi-block-id={ item.contentLink.id } key={ item.contentLink.guidValue+"-container"}>{ component }</div>
@@ -181,9 +181,9 @@ export default class ContentArea extends Component<ContentAreaProps>
             return component
         }
 
-        //Build wrapper element
-        let displayOption : string = item.displayOption || "default";
-        let props : any = {
+        // Build wrapper element
+        const displayOption : string = item.displayOption || "default";
+        const props : any = {
             "data-displayoption": displayOption,
             "data-tag": item.tag,
             "className": this.getBlockClasses(displayOption).join(' '),
@@ -202,13 +202,13 @@ export default class ContentArea extends Component<ContentAreaProps>
         return <div />
     }
 
-    protected getBlockClasses(displayOption: string) : Array<string> {
-        let cssClasses : Array<string> = ['block'];
-        let displayOptions = this.getConfigValue('displayOptions', {});
+    protected getBlockClasses(displayOption: string) : string[] {
+        const cssClasses : string[] = ['block'];
+        const displayOptions = this.getConfigValue('displayOptions', {}) || {};
         if (displayOptions[displayOption]) {
             cssClasses.push(displayOptions[displayOption]);
         } else {
-            cssClasses.push(this.getConfigValue('defaultBlockClass', 'col'));
+            cssClasses.push(this.getConfigValue('defaultBlockClass', 'col') as string);
         }
         return cssClasses;
     }
@@ -219,7 +219,7 @@ export default class ContentArea extends Component<ContentAreaProps>
      */
     protected getConfig() : ContentAreaSiteConfig
     {
-        let globalConfig = this.props.context.config()?.contentArea || {};
+        const globalConfig = this.props.context.config()?.contentArea || {};
         return {
             ...globalConfig,
             ...this.props
@@ -228,7 +228,7 @@ export default class ContentArea extends Component<ContentAreaProps>
 
     protected getConfigValue<K extends keyof ContentAreaSiteConfig>(propName: K, defaultValue?: ContentAreaSiteConfig[K]) : ContentAreaSiteConfig[K]
     {
-        let cfg = this.getConfig();
+        const cfg = this.getConfig();
         if (cfg[propName]) {
             return cfg[propName]
         }
@@ -237,7 +237,7 @@ export default class ContentArea extends Component<ContentAreaProps>
 
     protected getComponentType()
     {
-        let cfg = this.getConfig();
+        const cfg = this.getConfig();
         return cfg.itemContentType || "Block";
     }
 }

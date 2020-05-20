@@ -1,13 +1,13 @@
 import React, { ReactNode } from 'react';
 import {Helmet} from 'react-helmet';
-import Layout from 'Episerver/Components/Layout';
-import CmsComponent from 'Episerver/Components/CmsComponent';
+import Layout from 'episerver/Components/Layout';
+import CmsComponent from 'episerver/Components/CmsComponent';
 import Header from 'app/Components/Shared/Header';
 import Footer from 'app/Components/Shared/Footer';
 import CmsHomePageData from 'app/Models/Content/CmsHomePageData';
-import IContent from 'Episerver/Models/IContent';
-import { StringProperty, BooleanProperty, ContentReferenceProperty } from 'Episerver/Property';
-import { ContentLinkService } from 'Episerver/Models/ContentLink';
+import IContent from 'episerver/Models/IContent';
+import { StringProperty, BooleanProperty, ContentReferenceProperty } from 'episerver/Property';
+import { ContentLinkService } from 'episerver/Models/ContentLink';
 
 interface FoundationPageData extends IContent
 {

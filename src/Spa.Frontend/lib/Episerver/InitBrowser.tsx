@@ -15,7 +15,7 @@ export default function InitBrowser(config: AppConfig, containerId?: string)
     }
     
     let container = document.getElementById(containerId ? containerId : "epi-page-container");
-    if (container.childElementCount > 0) {
+    if (container && container.childElementCount > 0) {
         if (EpiContext.isDebugActive()) console.info('Hydrating existing render, Stage 1. Preloading components ...');
         const components : IComponentPreloadList = EpiContext.config().preLoadComponents || [];
         const loader = EpiContext.componentLoader();

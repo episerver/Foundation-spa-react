@@ -20,20 +20,19 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "core-js": "^3.6.5",
+    "episerver": "file:lib/episerver",
     "jquery": "^3.5.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.0.0",
     "react-redux": "^7.2.0",
-    "reactstrap": "^8.4.1",
-    "redux": "^4.0.5"
+    "reactstrap": "^8.4.1"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
     "@types/bootstrap": "^4.3.3",
     "@types/core-js": "^2.5.3",
     "@types/jquery": "^3.3.38",
-    "@types/node": "^12.12.39",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
     "@types/react-helmet": "^6.0.0",

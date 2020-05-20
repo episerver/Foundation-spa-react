@@ -1,5 +1,5 @@
 //Episerver library
-import Start from 'Episerver/InitBrowser';
+import Start from 'episerver/InitBrowser';
 
 //Application
 import config from 'app/Config';

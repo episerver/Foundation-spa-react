@@ -6,17 +6,16 @@
         "jsx": "react",
         //"diagnostics": true,
         "esModuleInterop": true,
-        "module": "ES2020",
+        "module": "CommonJS",
         "noImplicitAny": true,
         "outDir": "./build/",
         "removeComments": true,
         "skipLibCheck": true,
         "target": "ES6",
         "paths": {
-            "Episerver/*": [ "../lib/Episerver/*" ],
-            "Foundation/*": [ "../lib/Foundation/*" ],
             "app/*": [ "../src/*" ],
-            "server/*": [ "../server/*" ],
+            "app.server/*": [ "../server/*" ],
+            "app.express/*": [ "../express/*" ],
             "EPiServer.ContentApi.Forms/*": [ "../../Foundation/Scripts/EPiServer.ContentApi.Forms/*" ]
         },
         "moduleResolution": "node"

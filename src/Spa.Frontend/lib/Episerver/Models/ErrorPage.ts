@@ -1,10 +1,8 @@
-
-
-    /**
-     * Create the objects needed to render a generic navigation error page
-     * 
-     * @param reason 
-     *//*
+/**
+ * Create the objects needed to render a generic navigation error page
+ *
+ * @param reason
+ */ /*
     buildNavigationErrorPage(reason: Error) : IContent {
         let link : ContentLink = {
             guidValue: null,

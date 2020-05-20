@@ -1,5 +1,5 @@
 //Episerver library
-import AppConfig from "Episerver/AppConfig";
+import AppConfig from "episerver/AppConfig";
 
 //Referenced components for configuration
 import MoseyLoader from "app/Components/Shared/MoseyLoader";

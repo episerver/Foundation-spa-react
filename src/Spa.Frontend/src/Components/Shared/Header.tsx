@@ -3,11 +3,10 @@ import React, { Component, ReactNodeArray } from 'react';
 import { Collapse, Nav, Navbar, NavbarToggler } from 'reactstrap';
 
 //Import Episerver Libs
-import { IEpiserverSpaContext } from 'Episerver/Spa';
-import CmsComponent from 'Episerver/Components/CmsComponent';
-import ContentArea from 'Episerver/Components/ContentArea';
-import Property from 'Episerver/Components/Property';
-import Link from 'Episerver/Components/Link';
+import { IEpiserverSpaContext } from 'episerver/Spa';
+import ContentArea from 'episerver/Components/ContentArea';
+import Property from 'episerver/Components/Property';
+import Link from 'episerver/Components/Link';
 
 //Import App
 import CmsHomePageData from 'app/Models/Content/CmsHomePageData';

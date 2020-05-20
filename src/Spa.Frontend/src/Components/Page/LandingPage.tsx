@@ -1,9 +1,9 @@
 import React, { ReactNode, ReactNodeArray } from 'react';
 import {Helmet} from 'react-helmet';
 
-import ContentArea from 'Episerver/Components/ContentArea';
-import Property from 'Episerver/Components/Property';
-import Page, { PageType } from 'Episerver/Page';
+import ContentArea from 'episerver/Components/ContentArea';
+import Property from 'episerver/Components/Property';
+import Page, { PageType } from 'episerver/Page';
 
 import LandingPageData from 'app/Models/Content/LandingPageData';
 

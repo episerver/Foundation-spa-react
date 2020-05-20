@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import Spinner from 'Episerver/Components/Spinner';
+import Spinner from 'episerver/Components/Spinner';
 
 export default class MoseyLoader extends Spinner {
     render() : ReactNode

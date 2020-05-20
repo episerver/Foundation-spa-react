@@ -1,5 +1,5 @@
 import React, { ReactNode, ReactNodeArray } from "react";
-import EpiComponent from "Episerver/EpiComponent";
+import EpiComponent from "episerver/EpiComponent";
 import ContentRecommendationsBlockData from 'app/Models/Content/ContentRecommendationsBlockData';
 
 export default class ContentRecommendationsBlock extends EpiComponent<ContentRecommendationsBlockData>

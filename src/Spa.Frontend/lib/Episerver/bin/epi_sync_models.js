@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require("path");
-const StringUtils = require('../Util/StringUtils');
+const StringUtils = require('episerver/Util/StringUtils');
 const dotenv = require('dotenv');
 const axios = require('axios');
 
@@ -101,10 +101,10 @@ class EpiModelSync {
             const fileName = interfaceName + ".ts";
 
             //Imports
-            let iface = "import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'\n";
-            iface += "import IContent, { BaseIContent } from 'Episerver/Models/IContent'\n";
-            iface += "import ContentLink from 'Episerver/Models/ContentLink'\n";
-            iface += "import { ComponentProps } from 'Episerver/EpiComponent'\n\n"
+            let iface = "import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'episerver/Property'\n";
+            iface += "import IContent, { BaseIContent } from 'episerver/Models/IContent'\n";
+            iface += "import ContentLink from 'episerver/Models/ContentLink'\n";
+            iface += "import { ComponentProps } from 'episerver/EpiComponent'\n\n"
 
             //Heading
             iface += "/**\n * "+(info.DisplayName ? info.DisplayName : info.Name)+"\n *\n * "+(info.Description ? info.Description : "No Description available.")+"\n *\n * @GUID "+info.GUID+"\n */\n";

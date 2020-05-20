@@ -4,8 +4,8 @@
  * the current execution environment.
  */
 export default interface PathProvider {
-    /**
-     * Retrieve the current application path
-     */
-    getCurrentPath(): string
+  /**
+   * Retrieve the current application path
+   */
+  getCurrentPath(): string;
 }

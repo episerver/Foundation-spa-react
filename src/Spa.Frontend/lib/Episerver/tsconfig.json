@@ -1,0 +1,15 @@
+{
+  "files": ["index.ts"],
+  "compilerOptions": {
+    "target": "ES5",
+    "jsx": "react",
+    "module": "CommonJS",
+    "declaration": true,
+    "noImplicitAny": true,
+    "outDir": "./lib",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true
+  },
+  "exclude": ["node_modules", "tests","lib"]
+}

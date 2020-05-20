@@ -1,9 +1,9 @@
 import React, { PureComponent, ReactNode } from "react";
 import IContentWithTeaser, { isIContentWithTeaser } from 'app/Models/IContentWithTeaser';
-import CmsComponent from "Episerver/Components/CmsComponent";
-import ContentLink, { ContentLinkService } from "Episerver/Models/ContentLink";
-import { IEpiserverSpaContext } from "Episerver/Spa";
-import IContent from "Episerver/Models/IContent";
+import CmsComponent from "episerver/Components/CmsComponent";
+import ContentLink, { ContentLinkService } from "episerver/Models/ContentLink";
+import { IEpiserverSpaContext } from "episerver/Spa";
+import IContent from "episerver/Models/IContent";
 
 import './Teaser.scss';
 

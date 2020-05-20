@@ -10,7 +10,7 @@ export default class Link extends Component<LinkProps>
 {
     public render() : ReactNode
     {
-        let href : string = ContentLinkService.createHref(this.props.href);
+        const href : string | null = ContentLinkService.createHref(this.props.href);
 
         if (href) {
             return <a href={ href } className={ this.props.className } >{ this.props.children }</a>

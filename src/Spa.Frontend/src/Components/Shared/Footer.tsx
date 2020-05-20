@@ -1,11 +1,11 @@
 import React, { Component, ReactNode, ReactNodeArray } from 'react';
 import { connect } from 'react-redux';
-import Property from 'Episerver/Components/Property';
-import ContentArea from 'Episerver/Components/ContentArea';
-import EpiContext, { IEpiserverSpaContext } from 'Episerver/Spa';
+import Property from 'episerver/Components/Property';
+import ContentArea from 'episerver/Components/ContentArea';
+import EpiContext, { IEpiserverSpaContext } from 'episerver/Spa';
 
 import CmsHomePageData from 'app/Models/Content/CmsHomePageData';
-import { ContentLinkService } from 'Episerver/Models/ContentLink';
+import { ContentLinkService } from 'episerver/Models/ContentLink';
 
 export interface FooterProps {
     startPage: CmsHomePageData

@@ -81,8 +81,7 @@ class GlobalConfig {
             alias: {
                 "app": srcDir,
                 "app.server": serverDir,
-                "app.express": expressDir,
-                "Episerver": path.resolve(libDir, 'Episerver')
+                "app.express": expressDir
             },
             extensions: ['.js', '.jsx', '.json', '.tsx', '.ts']
         };

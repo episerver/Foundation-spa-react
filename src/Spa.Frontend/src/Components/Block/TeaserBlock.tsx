@@ -1,6 +1,6 @@
 import React, { ReactNode, ReactNodeArray, CSSProperties } from "react";
-import EpiComponent from "Episerver/EpiComponent";
-import Property from "Episerver/Components/Property";
+import EpiComponent from "episerver/EpiComponent";
+import Property from "episerver/Components/Property";
 import TeaserBlockData from 'app/Models/Content/TeaserBlockData';
 
 export default class TeaserBlock extends EpiComponent<TeaserBlockData>

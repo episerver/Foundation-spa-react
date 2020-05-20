@@ -1,6 +1,6 @@
 import React, { ReactNode, ReactNodeArray } from 'react';
-import EpiContext from 'Episerver/Spa';
-import EpiComponent from 'Episerver/EpiComponent';
+import EpiContext from 'episerver/Spa';
+import EpiComponent from 'episerver/EpiComponent';
 import ImageMediaDataData from 'app/Models/Content/ImageMediaDataData';
 
 export default class ImageMediaData extends EpiComponent<ImageMediaDataData>

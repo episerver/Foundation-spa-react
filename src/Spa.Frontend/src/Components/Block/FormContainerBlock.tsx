@@ -1,8 +1,8 @@
 import React, { ReactNode, ReactNodeArray } from 'react';
 
-import EpiComponent from 'Episerver/EpiComponent';
-import Property from 'Episerver/Components/Property';
-import ContentArea from 'Episerver/Components/ContentArea';
+import EpiComponent from 'episerver/EpiComponent';
+import Property from 'episerver/Components/Property';
+import ContentArea from 'episerver/Components/ContentArea';
 
 import BaseFormContainerBlockData from 'app/Models/Content/FormContainerBlockData';
 import './FormContainerBlock.scss';

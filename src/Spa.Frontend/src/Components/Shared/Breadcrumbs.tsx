@@ -1,9 +1,9 @@
 import React, { Component, ReactNode, ReactNodeArray } from 'react';
-import EpiContext from 'Episerver/Spa';
-import IContent, { namePropertyIsString } from 'Episerver/Models/IContent';
-import { ContentLinkService } from 'Episerver/Models/ContentLink';
-import Link from 'Episerver/Components/Link';
-import { StringProperty } from 'Episerver/Property';
+import EpiContext from 'episerver/Spa';
+import IContent, { namePropertyIsString } from 'episerver/Models/IContent';
+import { ContentLinkService } from 'episerver/Models/ContentLink';
+import Link from 'episerver/Components/Link';
+import { StringProperty } from 'episerver/Property';
 
 interface BreadcrumbsProps {
     currentContent: IContent

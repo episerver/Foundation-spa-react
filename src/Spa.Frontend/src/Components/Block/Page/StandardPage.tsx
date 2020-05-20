@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
-import CmsComponent from 'Episerver/Components/CmsComponent'
-import EpiComponent from 'Episerver/EpiComponent'
+import CmsComponent from 'episerver/Components/CmsComponent'
+import EpiComponent from 'episerver/EpiComponent'
 import StandardPageData from 'app/Models/Content/StandardPageData'
 
 import './StandardPage.scss';

@@ -1,14 +1,14 @@
-import IContent from "./Models/IContent";
-import ContentLink from "./Models/ContentLink";
-import { ContentAreaPropertyValue } from "./Components/ContentArea";
+import IContent from './Models/IContent';
+import ContentLink from './Models/ContentLink';
+import { ContentAreaPropertyValue } from './Components/ContentArea';
 
 /**
  * Default untyped property definition
  */
 export default interface Property<T> {
-    propertyDataType: string
-    value: T
-    expandedValue?: any
+  propertyDataType: string;
+  value: T;
+  expandedValue?: any;
 }
 
 /**
@@ -24,19 +24,19 @@ export interface BooleanProperty extends Property<boolean> {}
  * Content reference typed property definition
  */
 export interface ContentReferenceProperty extends Property<ContentLink> {
-    expandedValue?: IContent
+  expandedValue?: IContent;
 }
 
 export interface ContentAreaProperty extends Property<ContentAreaPropertyValue> {
-    expandedValue?: Array<IContent>
+  expandedValue?: Array<IContent>;
 }
 
 export interface LinkListProperty extends Property<Array<LinkProperty>> {}
 
 export interface LinkProperty {
-    href: string
-    title: string
-    target: string
-    text: string, 
-    contentLink: ContentLink
+  href: string;
+  title: string;
+  target: string;
+  text: string;
+  contentLink: ContentLink;
 }

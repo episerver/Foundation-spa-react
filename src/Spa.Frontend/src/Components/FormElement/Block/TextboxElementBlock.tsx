@@ -1,6 +1,6 @@
 import React, { ReactNode, ReactNodeArray } from 'react';
-import Property from 'Episerver/Components/Property';
-import { ContentLinkService } from 'Episerver/Models/ContentLink';
+import Property from 'episerver/Components/Property';
+import { ContentLinkService } from 'episerver/Models/ContentLink';
 import TextboxElementBlockData from 'app/Models/Content/TextboxElementBlockData';
 import AbstractElementBlock from 'app/Components/FormElement/AbstractElementBlock';
 

@@ -1,0 +1,6 @@
+#Ignore build artifacts
+node_modules
+/lib
+
+#Ensure bin folder is always included, even if it's exluded by a higher-up .gitignore
+!/bin

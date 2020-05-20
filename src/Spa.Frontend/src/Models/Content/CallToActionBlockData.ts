@@ -1,8 +1,8 @@
 import ButtonBlockData from './ButtonBlockData'
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'Episerver/Property'
-import IContent, { BaseIContent } from 'Episerver/Models/IContent'
-import ContentLink from 'Episerver/Models/ContentLink'
-import { ComponentProps } from 'Episerver/EpiComponent'
+import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'episerver/Property'
+import IContent, { BaseIContent } from 'episerver/Models/IContent'
+import ContentLink from 'episerver/Models/ContentLink'
+import { ComponentProps } from 'episerver/EpiComponent'
 
 /**
  * Call To Action Block
