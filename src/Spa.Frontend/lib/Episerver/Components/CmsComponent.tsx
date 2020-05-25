@@ -79,6 +79,17 @@ export class CmsComponent extends Component<CmsComponentProps, CmsComponentState
 	protected _unmounted : boolean = false;
 
 	/**
+	 * Dynamic property for accessing the Episerver SPA Context, first from the
+	 * component properties, secondly from the global context.
+	 * 
+	 * @returns	{ IEpiserverSpaContext } The current context for the SPA
+	 */
+	protected get spaContext() : IEpiserverSpaContext
+	{
+		return this.props.context || EpiContext;
+	}
+
+	/**
 	 * Create a new CMS Component, which dynamically loads the application component
 	 * for rendering.
 	 * 
@@ -94,6 +105,7 @@ export class CmsComponent extends Component<CmsComponentProps, CmsComponentState
 			componentName = this.buildComponentName(this.props.expandedValue as IContent);
 			component = this.componentLoader.getPreLoadedType(componentName, false);
 		} else {
+			if (this.spaContext.isDebugActive()) console.debug(`CmsComponent is awaiting full content`, this.props.contentLink)
 			if (!this.props.context.isServerSideRendering() && this.props.contentLink?.id) {
 				this.props.context.loadContentById(ContentLinkService.createApiId(this.props.contentLink));
 			}
@@ -102,18 +114,11 @@ export class CmsComponent extends Component<CmsComponentProps, CmsComponentState
 		const hasError: boolean = false;
 		const componentIsUpdating: boolean = false;
 
-		if (component) {
-			this.state = {
-				hasError,
-				componentName,
-				component,
-				componentIsUpdating
-			}
-		} else {
-			this.state = {
-				hasError,
-				componentIsUpdating
-			}
+		this.state = {
+			hasError,
+			componentName,
+			component: component || undefined,
+			componentIsUpdating
 		}
 	}
 

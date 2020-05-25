@@ -107,7 +107,7 @@ export default class PageListBlock extends EpiComponent<PageListBlockData, PageL
         let heading : ReactNode = null;
         if (this.props.data.heading?.value || this.getContext().isEditable()) {
             heading = <div className="d-flex justify-content-center p-3 w-100">
-                <h2><Property iContent={this.props.data} propName="heading" context={ this.getContext() } /></h2>
+                <h2><Property iContent={this.props.data} field="heading" context={ this.getContext() } /></h2>
             </div>;
         }
         return <div className={ classes.join(" ") }>

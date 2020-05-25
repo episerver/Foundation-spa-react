@@ -10,10 +10,10 @@ export default class TeaserBlock extends EpiComponent<TeaserBlockData>
         //console.log(this.props.data);
         return <div style={ this.getBlockStyles() } className={ this.getClasses().join(' ') }>
             <div className="card h-100">
-                <Property context={this.getContext() } iContent={ this.props.data } propName="image" className="card-img-top" />
+                <Property context={this.getContext() } iContent={ this.props.data } field="image" className="card-img-top" />
                 <div className="card-body">
-                    <h5 className="card-title"><Property context={this.getContext() } iContent={ this.props.data } propName="heading" /></h5>
-                    <div className="card-text"><Property context={this.getContext() } iContent={ this.props.data } propName="text" /></div>
+                    <h5 className="card-title"><Property context={this.getContext() } iContent={ this.props.data } field="heading" /></h5>
+                    <div className="card-text"><Property context={this.getContext() } iContent={ this.props.data } field="text" /></div>
                 </div>
             </div>
         </div>;

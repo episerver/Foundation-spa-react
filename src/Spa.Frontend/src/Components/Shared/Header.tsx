@@ -36,7 +36,7 @@ export default class Header extends Component<HeaderProps, HeaderState>
             <div className="header-top bg-secondary text-white">
                 <div className="container">
                     <div className="row">
-                        <div className="col text-center pt-3"><Property iContent={this.props.startPage} propName="bannerText" context={this.props.context} /></div>
+                        <div className="col text-center pt-3"><Property iContent={this.props.startPage} field="bannerText" context={this.props.context} /></div>
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@ export default class Header extends Component<HeaderProps, HeaderState>
                     <div className="col"></div>
                     <div className="col py-4 d-flex justify-content-center">
                         <Link href={this.props.startPage.contentLink}>
-                            <Property iContent={this.props.startPage} propName="siteLogo" context={this.props.context} />
+                            <Property iContent={this.props.startPage} field="siteLogo" context={this.props.context} />
                         </Link>
                     </div>
                     <div className="col py-4 d-flex">

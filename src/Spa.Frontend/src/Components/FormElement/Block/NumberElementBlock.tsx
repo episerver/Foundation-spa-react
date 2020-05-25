@@ -13,9 +13,9 @@ export default class NumberElementBlock extends AbstractElementBlock<NumberEleme
         let fieldInfoId : string = `${ fieldId }_Description`;
 
         return <div className="form-group">
-            <label htmlFor={ fieldId }><Property iContent={this.props.data} propName="label" context={ this.getContext() }/></label>
+            <label htmlFor={ fieldId }><Property iContent={this.props.data} field="label" context={ this.getContext() }/></label>
             <input type={ this.getFieldType() } id={ fieldId } name={ fieldName } className="form-control" placeholder={ this.props.data.placeHolder?.value } aria-describedby={ fieldInfoId } />
-            <small id={ fieldInfoId } className="form-text text-muted"><Property iContent={this.props.data} propName="description" context={ this.getContext() }/></small>
+            <small id={ fieldInfoId } className="form-text text-muted"><Property iContent={this.props.data} field="description" context={ this.getContext() }/></small>
         </div>
     }
 

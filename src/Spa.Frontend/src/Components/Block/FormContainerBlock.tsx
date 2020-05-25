@@ -18,8 +18,8 @@ export default class FormContainerBlock extends EpiComponent<FormContainerBlockD
         //Render using React - Not yet fully supported by ContentDeliveryAPI
         return <div className="episerver-form">
             <div className="alert alert-warning">Episerver Forms support is experimental and incomplete!</div>
-            <h3><Property context={ this.getContext() } iContent={ this.props.data } propName="title" /></h3>
-            <p><Property context={ this.getContext() } iContent={ this.props.data } propName="description" /></p>
+            <h3><Property context={ this.getContext() } iContent={ this.props.data } field="title" /></h3>
+            <p><Property context={ this.getContext() } iContent={ this.props.data } field="description" /></p>
             <form>
                 <ContentArea data={ this.props.data.elementsArea } propertyName="elementsArea" context={ this.getContext() } itemContentType="FormElement" noWrap />
             </form>

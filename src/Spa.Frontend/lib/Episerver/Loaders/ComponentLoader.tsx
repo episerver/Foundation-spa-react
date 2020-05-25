@@ -118,6 +118,7 @@ export default class ComponentLoader
 
     protected async doLoadComponent(component: string) : Promise<TComponentType>
     {
+        if (EpiserverSpaContext.isDebugActive()) console.debug('Loading component: '+component);
         const type = await (import(
             /* webpackInclude: /\.tsx$/ */
             /* webpackExclude: /\.noimport\.tsx$/ */
@@ -137,6 +138,7 @@ export default class ComponentLoader
                 return ComponentNotFound;
             }));
         this.cache["app/Components/" + component] = type || ComponentNotFound;
+        if (EpiserverSpaContext.isDebugActive()) console.debug('Loaded component: '+component);
         return type;
     }
 
