@@ -48,6 +48,6 @@
         "lib": "./lib/"
     },
     "bin": {
-        "epi_sync_models": "./bin/epi_sync_models.js"
+        "epi-sync-models": "./bin/epi_sync_models.js"
     }
 }

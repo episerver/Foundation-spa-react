@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const fs = require('fs');
 const path = require("path");
 const StringUtils = require('episerver/Util/StringUtils');
@@ -32,6 +34,7 @@ class EpiModelSync {
      */
     run() {
         console.log('***** Start: Episerver IContent Model Synchronization *****')
+        console.log(' - Using Episerver installed at: ' + this._config.EPI_URL);
         console.log(' - Ensuring models directory exists ('+ this.getModelPath() +')');
         console.log(' - Retrieving content types')
         const me = this;

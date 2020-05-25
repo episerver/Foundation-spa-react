@@ -2,19 +2,20 @@
  * String utilities for common advanced string operations, which are needed across multiple
  * locations.
  */
-export default class StringUtils {
+var StringUtils = {
   /**
    * Transform a model name, as received from the ContentDelivery API to a safe model name that
    * can be loaded through the ES module loaders.
    *
    * @param {string} modelName  The original model name
+   * @returns {string}
    */
-  public static SafeModelName(modelName: string): string {
+  SafeModelName: function(modelName) {
     let processedName = modelName;
     processedName = processedName.replace('(', '_').replace(')', '_');
     processedName = this.TrimRight('_', processedName);
     return processedName;
-  }
+  },
 
   /**
    * Trim all occurences of a string of the end of another string
@@ -23,7 +24,7 @@ export default class StringUtils {
    * @param {string} subject  The string to manipulate
    * @returns {string}        The manipulated string
    */
-  public static TrimRight(char: string, subject: string): string {
+  TrimRight: function(char, subject) {
     if (typeof char != 'string' || char.length < 1) {
       throw 'Char must be a string of minimal one char';
     }
@@ -41,7 +42,7 @@ export default class StringUtils {
       out = out.substr(0, out.length + length);
     }
     return out;
-  }
+  },
 
   /**
    * Trim all occurences of a string of the start of another string
@@ -50,7 +51,7 @@ export default class StringUtils {
    * @param {string} subject  The string to manipulate
    * @returns {string}        The manipulated string
    */
-  public static TrimLeft(char: string, subject: string): string {
+  TrimLeft: function(char, subject) {
     if (typeof char != 'string' || char.length < 1) {
       throw 'Char must be a string of minimal one char';
     }
@@ -68,4 +69,10 @@ export default class StringUtils {
     }
     return out;
   }
-}
+};
+
+//Create exported functions
+exports.SafeModelName = StringUtils.SafeModelName.bind(StringUtils);
+exports.TrimRight = StringUtils.TrimRight.bind(StringUtils);
+exports.TrimLeft = StringUtils.TrimLeft.bind(StringUtils);
+
