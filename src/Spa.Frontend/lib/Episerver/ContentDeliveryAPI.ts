@@ -6,7 +6,6 @@ import ActionResponse, { ResponseType } from './Models/ActionResponse';
 import WebsiteList from './Models/WebsiteList';
 import Website from './Models/Website';
 import PathProvider from './PathProvider';
-import EpiContext from './Spa';
 import Property from './Property';
 
 export type PathResponse = IContent | ActionResponse<any>;
@@ -27,9 +26,6 @@ export default class ContentDeliveryAPI {
   protected componentService: string = '/api/episerver/v2.0/content/';
   protected websiteService: string = '/api/episerver/v3/site/';
   protected methodService: string = '/api/episerver/v3/action/';
-  protected pricingService: string = '/api/episerver/v2.0/pricing/';
-  protected inventoryService: string = '/api/episerver/v2.0/inventory/';
-  protected warehouseService: string = '/api/episerver/v2.0/warehouse/';
   protected debug: boolean = false;
   protected pathProvider: PathProvider;
 
@@ -52,10 +48,20 @@ export default class ContentDeliveryAPI {
    */
   private website!: Website;
 
-  constructor(pathProvider: PathProvider, config?: AppConfig) {
+  constructor(pathProvider: PathProvider, config: AppConfig) {
     this.pathProvider = pathProvider;
-    this.config = config ? config : EpiContext.config();
+    this.config = config;
     this.debug = this.config.enableDebug === true;
+  }
+
+  public get currentPathProvider() : PathProvider
+  {
+    return this.pathProvider;
+  }
+
+  public get currentConfig() : AppConfig
+  {
+    return this.config;
   }
 
   public isInEditMode(): boolean {

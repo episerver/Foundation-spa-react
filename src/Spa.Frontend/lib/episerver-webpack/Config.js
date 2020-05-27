@@ -87,7 +87,7 @@ class GlobalConfig {
         };
 
         if (this.isEpiserverFormsEnabled()) {
-            const formsDir = path.resolve(__dirname,  this.getEpiserverFormsDir(envOverrides));
+            const formsDir = path.resolve(this._rootDir,  this.getEpiserverFormsDir(envOverrides));
             resolveConfig.alias["EPiServer.ContentApi.Forms"] = formsDir;
         }
 

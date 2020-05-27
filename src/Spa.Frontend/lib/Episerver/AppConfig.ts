@@ -2,6 +2,7 @@ import { SpinnerComponent } from './Components/Spinner';
 import { LayoutComponent } from './Components/Layout';
 import { ContentAreaSiteConfig } from './Components/ContentArea';
 import { IComponentPreloadList } from './Loaders/ComponentPreLoader';
+import IInitializableModule from './Core/IInitializableModule';
 
 export default interface AppConfig {
   /**
@@ -58,18 +59,6 @@ export default interface AppConfig {
   spinner?: SpinnerComponent;
 
   /**
-   * The default market to use, if none speicified. Only applies to the default
-   * Commerce APIs
-   */
-  defaultMarket?: string;
-
-  /**
-   * The default currency to use, if none specified. Only applies to the default
-   * Commerce APIs
-   */
-  defaultCurrency?: string;
-
-  /**
    * Layout
    */
   layout: LayoutComponent;
@@ -85,4 +74,9 @@ export default interface AppConfig {
    * before the full SPA has been loaded.
    */
   preLoadComponents?: IComponentPreloadList;
+
+  /**
+   * The list of module initializers to included into the bootstrapping process
+   */
+  modules ?: IInitializableModule[];
 }

@@ -1,9 +1,9 @@
-import React, { Component, ReactNode, ReactNodeArray, ComponentLifecycle } from 'react';
+import React, { Component, ReactNode, ReactNodeArray } from 'react';
 import IContent from '../Models/IContent';
 import ContentLink from '../Models/ContentLink';
 import CmsComponent from './CmsComponent';
 import Spinner, { SpinnerProps } from './Spinner';
-import EpiContext, { IEpiserverSpaContext } from '../Spa';
+import IEpiserverContext from '../Core/IEpiserverContext';
 
 export interface LayoutProps {
     page?: ContentLink
@@ -11,7 +11,7 @@ export interface LayoutProps {
     actionName?: string
     actionData?: any
     path?: string
-    context: IEpiserverSpaContext
+    context: IEpiserverContext
     startPage?: IContent
 }
 
@@ -97,13 +97,18 @@ export default class Layout extends Component<LayoutProps, LayoutState> implemen
         return null;
     }
 
+    protected getContext() : IEpiserverContext
+    {
+        return this.props.context;
+    }
+
     protected isPageValid() : boolean
     {
         if (this.props.path === "/") return true; // Do not validate homepage
         if (this.props.path && this.props.page)
         {
-            const pagePath = EpiContext.getEpiserverUrl(this.props.page, this.props.actionName);
-            const path = EpiContext.getEpiserverUrl(this.props.path, this.props.actionName);
+            const pagePath = this.getContext().getEpiserverUrl(this.props.page, this.props.actionName);
+            const path = this.getContext().getEpiserverUrl(this.props.path, this.props.actionName);
 
             return pagePath === path;
         }

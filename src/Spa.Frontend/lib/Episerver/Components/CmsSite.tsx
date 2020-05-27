@@ -8,7 +8,7 @@ import Layout, { LayoutComponent, LayoutProps } from './Layout';
 import IContent from '../Models/IContent';
 import ContentLink from '../Models/ContentLink';
 import Website from '../Models/Website';
-import { IEpiserverSpaContext } from '../Spa';
+import IEpiserverContext from '../Core/IEpiserverContext';
 import IContentRepository, { IContentRepoState, IContentActionFactory } from '../Repository/IContent';
 import ServerContext, { isSerializedIContent, isSerializedWebsite, isSerializedContentLink } from '../ServerSideRendering/ServerContext';
 import Spinner from './Spinner';
@@ -23,7 +23,7 @@ declare let __INITIAL__DATA__ : ServerContext;
  * Define the property structure for the CmsSite component
  */
 interface CmsSiteProps {
-    context: IEpiserverSpaContext
+    context: IEpiserverContext
     path?: string
 }
 

@@ -2,14 +2,14 @@ import React, { PureComponent, ReactNode } from "react";
 import IContentWithTeaser, { isIContentWithTeaser } from 'app/Models/IContentWithTeaser';
 import CmsComponent from "episerver/Components/CmsComponent";
 import ContentLink, { ContentLinkService } from "episerver/Models/ContentLink";
-import { IEpiserverSpaContext } from "episerver/Spa";
+import IEpiserverContext from "episerver/Core/IEpiserverContext";
 import IContent from "episerver/Models/IContent";
 
 import './Teaser.scss';
 
 interface TeaserProps {
     content: IContentWithTeaser
-    context: IEpiserverSpaContext
+    context: IEpiserverContext
     className?: string
 }
 

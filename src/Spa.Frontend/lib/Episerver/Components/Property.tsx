@@ -1,7 +1,7 @@
 import React, { Component, ReactNode, ReactNodeArray, HTMLAttributes, HTMLProps, AnchorHTMLAttributes } from 'react';
 import IContentProperty, { ContentReferenceProperty, ContentAreaProperty } from '../Property';
 import IContent, { IContentData, GenericProperty} from '../Models/IContent';
-import { IEpiserverSpaContext } from '../Spa';
+import IEpiserverContext from '../Core/IEpiserverContext';
 import { ContentLinkService } from 'Episerver/Models/ContentLink';
 import CmsComponent from './CmsComponent';
 import ContentArea from './ContentArea';
@@ -10,7 +10,7 @@ export interface PropertyProps<T extends IContent> extends HTMLAttributes<HTMLEl
 {
     iContent: T
     field: keyof T
-    context: IEpiserverSpaContext
+    context: IEpiserverContext
     className?: string
 }
 
@@ -31,7 +31,7 @@ export default class Property<T extends IContent> extends Component<PropertyProp
 
     protected isIContentProperty(p: GenericProperty): p is IContentProperty<any>
     {
-        if (p && (p as IContentProperty<any>).propertyDataType && typeof((p as IContentProperty<any>).propertyDataType) == 'string') {
+        if (p && (p as IContentProperty<any>).propertyDataType && typeof((p as IContentProperty<any>).propertyDataType) === 'string') {
             return true;
         }
         return false;
@@ -42,8 +42,8 @@ export default class Property<T extends IContent> extends Component<PropertyProp
         if (!this.hasProperty()) {
             return this.props.context.isDebugActive() ? <div>Property <span>{ this.props.field }</span> not present</div> : null;
         }
-        let prop = this.getProperty();
-        let propType = this.isIContentProperty(prop) ? prop.propertyDataType : typeof(prop);
+        const prop = this.getProperty();
+        const propType = this.isIContentProperty(prop) ? prop.propertyDataType : typeof(prop);
         let stringValue : string;
         switch (propType) {
             case 'string':
@@ -53,8 +53,8 @@ export default class Property<T extends IContent> extends Component<PropertyProp
                 stringValue = (prop as IContentProperty<string>).value;
                 return this.isEditable() ? <span className={this.props.className} data-epi-edit={ this.props.field }>{ stringValue }</span> : (this.props.className ? <span className={ this.props.className }>{ stringValue }</span> : stringValue);
             case 'PropertyUrl':
-                let propUrlValue = (prop as IContentProperty<string>).value;
-                let props : AnchorHTMLAttributes<HTMLAnchorElement> = {
+                const propUrlValue = (prop as IContentProperty<string>).value;
+                const props : AnchorHTMLAttributes<HTMLAnchorElement> = {
                     className: this.props.className,
                     href: propUrlValue,
                     children: this.props.children || propUrlValue
@@ -66,8 +66,8 @@ export default class Property<T extends IContent> extends Component<PropertyProp
             case 'PropertyDecimal':
             case 'PropertyNumber':
             case 'PropertyFloatNumber':
-                let propNumberValue : number = (prop as IContentProperty<number>).value;
-                let className : string = `number ${this.props.className}`;
+                const propNumberValue : number = (prop as IContentProperty<number>).value;
+                const className : string = `number ${this.props.className}`;
                 return this.isEditable() ? <span className={ className } data-epi-edit={ this.props.field }>{ propNumberValue }</span> : <span className={ className }>{ propNumberValue }</span>;
             case 'PropertyXhtmlString':
                 stringValue = (prop as IContentProperty<string>).value;
@@ -100,6 +100,6 @@ export default class Property<T extends IContent> extends Component<PropertyProp
         const routedContent = this.props.context.getRoutedContent();
         const routedContentId = ContentLinkService.createApiId(routedContent.contentLink);
         const myContentId = ContentLinkService.createApiId(this.props.iContent.contentLink);
-        return routedContentId == myContentId;
+        return routedContentId === myContentId;
     }
 }

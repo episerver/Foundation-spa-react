@@ -5,16 +5,21 @@ import AppConfig from './AppConfig';
 import EpiContext from './Spa';
 import History from './Routing/History';
 import ComponentPreLoader, { IComponentPreloadList } from "./Loaders/ComponentPreLoader";
+import IServiceContainer from './Core/IServiceContainer';
+import DefaultServiceContainer from './Core/DefaultServiceContainer';
 
-export default function InitBrowser(config: AppConfig, containerId?: string)
+export default function InitBrowser(config: AppConfig, containerId?: string, serviceContainer?: IServiceContainer)
 {
-    EpiContext.init(config);
+    if (!serviceContainer) {
+        serviceContainer = new DefaultServiceContainer();
+    }
+    EpiContext.init(config, serviceContainer);
 
-    if ((new URLSearchParams(window.location.search)).get('epieditmode') != 'True') {
+    if ((new URLSearchParams(window.location.search)).get('epieditmode') !== 'True') {
         History.setupPageBinding(EpiContext);
     }
     
-    let container = document.getElementById(containerId ? containerId : "epi-page-container");
+    const container = document.getElementById(containerId ? containerId : "epi-page-container");
     if (container && container.childElementCount > 0) {
         if (EpiContext.isDebugActive()) console.info('Hydrating existing render, Stage 1. Preloading components ...');
         const components : IComponentPreloadList = EpiContext.config().preLoadComponents || [];

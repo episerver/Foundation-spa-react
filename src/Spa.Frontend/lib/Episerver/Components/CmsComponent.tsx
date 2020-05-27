@@ -6,7 +6,8 @@ import ContentLink, { ContentLinkService } from "../Models/ContentLink";
 import Spinner from "./Spinner";
 import ComponentLoader from "../Loaders/ComponentLoader";
 import ComponentNotFound from "./Errors/ComponentNotFound";
-import EpiContext, { IEpiserverSpaContext } from "../Spa";
+import IEpiserverContext from '../Core/IEpiserverContext';
+import EpiContext from "../Spa";
 import StringUtils from '../Util/StringUtils';
 import { TComponentType } from '../Loaders/ComponentLoader';
 
@@ -32,7 +33,7 @@ interface CmsComponentProps {
 	/**
 	 * 
 	 */
-	context: IEpiserverSpaContext
+	context: IEpiserverContext
 
 	/**
 	 * CSS Class to be added
@@ -84,7 +85,7 @@ export class CmsComponent extends Component<CmsComponentProps, CmsComponentState
 	 * 
 	 * @returns	{ IEpiserverSpaContext } The current context for the SPA
 	 */
-	protected get spaContext() : IEpiserverSpaContext
+	protected get spaContext() : IEpiserverContext
 	{
 		return this.props.context || EpiContext;
 	}

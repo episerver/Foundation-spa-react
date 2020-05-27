@@ -3,7 +3,7 @@ import { Method } from 'axios';
 import IContent from './Models/IContent';
 import ActionResponse from './Models/ActionResponse';
 import ContentLink from './Models/ContentLink';
-import { IEpiserverSpaContext } from './Spa';
+import IEpiserverContext from './Core/IEpiserverContext';
 
 /**
  * Base properties to be applied to every Episerver component
@@ -62,7 +62,7 @@ export interface ComponentProps<T extends IContent> {
     /**
      * The application context to be used
      */
-    context: IEpiserverSpaContext
+    context: IEpiserverContext
 
     /**
      * The current path being rendered
@@ -78,9 +78,7 @@ export interface ComponentProps<T extends IContent> {
 /**
  * Type do describe a generic EpiComponent type
  */
-export interface EpiComponentType {
-    new ( props : ComponentProps<IContent>) : EpiComponent<IContent>
-}
+export type EpiComponentType = new ( props : ComponentProps<IContent>)  => EpiComponent<IContent>;
 
 /**
  * Base abstract class to be used by components representing an Episerver IContent component (e.g. Block, Page, Media, 
@@ -139,7 +137,7 @@ export abstract class BaseEpiComponent<P extends ComponentProps<IContent>, S = {
         return this.props.data.contentLink;
     }
 
-    protected getContext() : IEpiserverSpaContext
+    protected getContext() : IEpiserverContext
     {
         return this.props.context;
     }

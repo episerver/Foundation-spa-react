@@ -1,10 +1,12 @@
-//Redux & Redux setup
-import { configureStore, EnhancedStore, AnyAction } from '@reduxjs/toolkit';
+// Redux & Redux setup
+import { configureStore, EnhancedStore, Action, AnyAction, Reducer } from '@reduxjs/toolkit';
 import { DispatchableMethod, RepositoryAction, RepositoryActions } from './Repository/AbstractRepostory';
 import IContentRepository, { IContentActionFactory } from './Repository/IContent';
 import ViewContext from './Repository/ViewContext';
 
-//Application context
+// Application context
+import IEpiserverContext from './Core/IEpiserverContext';
+import IServiceContainer, { DefaultServices } from './Core/IServiceContainer';
 import EpiConfig from './AppConfig';
 import ContentDeliveryAPI from './ContentDeliveryAPI';
 import EventEngine, { IEventEngine } from './EventEngine';
@@ -12,193 +14,19 @@ import { ContentReference, ContentLinkService, ContentApiId } from './Models/Con
 import ComponentLoader from './Loaders/ComponentLoader';
 import AppConfig from './AppConfig';
 
-//Taxonomy
+// Taxonomy
 import IContent from './Models/IContent';
 import Website from './Models/Website';
 import History from './Routing/History';
 import StringUtils from './Util/StringUtils';
 
-//Create context
+// Create context
 declare let global: any;
 declare let window: Window;
-let ctx: any = window || global || {};
+const ctx: any = window || global || {};
 ctx.EpiserverSpa = ctx.EpiserverSpa || {};
 ctx.epi = ctx.epi || {};
 declare let epi: any;
-
-/**
- * The context for an Episerver SPA, enabling access to the core logic of the SPA.
- */
-export interface IEpiserverSpaContext {
-  /**
-   * Perform the initialization of the context from the configuration of the application
-   *
-   * @param config
-   */
-  init(config: EpiConfig, isServerSideRendering?: boolean): void;
-
-  /**
-   * Check if the debug mode is active
-   */
-  isDebugActive(): boolean;
-
-  /**
-   * Test if the current context has already been initialized and is now ready for usage
-   */
-  isInitialized(): boolean;
-
-  /**
-   * Return if we're server side rendering
-   */
-  isServerSideRendering(): boolean;
-
-  /**
-   * Dispatch an action to the context (Redux store)
-   *
-   * @param action
-   */
-  dispatch<T extends RepositoryAction<any, any>>(action: T): T;
-
-  /**
-   * Invoke a function on the context (Redux store)
-   *
-   * @param action
-   */
-  invoke<T>(action: DispatchableMethod<T>): T;
-
-  /**
-   * Get the store
-   */
-  getStore(): EnhancedStore;
-
-  /**
-   * Get the main EventEngine to use
-   */
-  events(): IEventEngine;
-
-  /**
-   * Retrieve the full configuration
-   */
-  config(): AppConfig;
-
-  /**
-   * Get the current component loader
-   */
-  componentLoader(): ComponentLoader;
-
-  /**
-   * Get an instance of the ContentDeliveryAPI
-   */
-  contentDeliveryApi(): ContentDeliveryAPI;
-
-  /**
-   * Navigate to a specific item
-   *
-   * @param item
-   */
-  navigateTo(item: ContentReference): void;
-
-  /**
-   * Transform a path to a full URL that can be used as href parameter for a
-   * link tag.
-   *
-   * @param path
-   */
-  getEpiserverUrl(path: ContentReference, action?: string): string;
-
-  /**
-   * Retrieve an item from the state based upon it's GUID, will return
-   * null if the content is not in the state.
-   *
-   * @param guid The GUID of the content to fetch
-   */
-  getContentByGuid(guid: string): IContent | null;
-
-  /**
-   * Retrieve an item from the state based upon it's GUID, will trigger async
-   * fetching of the content by GUID if the content is not in the state
-   *
-   * @param guid The GUID of the content to fetch
-   */
-  loadContentByGuid(guid: string): Promise<IContent>;
-
-  /**
-   * Retrieve an item from the state based upon it's ID, will return
-   * null if the content is not in the state.
-   *
-   * @param id The API ID (combination of ContentProvider & ID) of the content to fetch
-   */
-  getContentById(id: ContentApiId): IContent | null;
-
-  /**
-   * Retrieve an item from the state based upon it's GUID, will trigger async
-   * fetching of the content by GUID if the content is not in the state
-   *
-   * @param id The API ID (combination of ContentProvider & ID) of the content to fetch
-   */
-  loadContentById(id: ContentApiId): Promise<IContent>;
-  getContentByRef(ref: string): IContent | null;
-  loadContentByRef(ref: string): Promise<IContent>;
-  getContentByPath(path: string): IContent | null;
-  loadContentByPath(path: string): Promise<IContent>;
-
-  /**
-   * Retrieve the website that's currently being rendered by the system, returns null
-   * if the website is not yet loaded into the state.
-   */
-  getCurrentWebsite(): Website;
-
-  /**
-   * Retrieve the website that's currently being rendered by the system, returns null
-   * if the website is not yet loaded into the state.
-   */
-  loadCurrentWebsite(): Promise<Website>;
-  injectContent(iContent: IContent): void;
-  isInEditMode(): boolean;
-  isEditable(): boolean;
-
-  /**
-   * Retrieve the current path
-   */
-  getCurrentPath(): string;
-
-  /**
-   * Retrieve the currently routed content
-   */
-  getRoutedContent(): IContent;
-
-  /**
-   * Get the cached content by ContentReference object
-   *
-   * @param ref The content reference to load
-   */
-  getContentByContentRef(ref: ContentReference): IContent | null;
-
-  /**
-   * Get the domain where the SPA is running. If it's configured to be
-   * running at https://example.com/spa/, this method returns: https://example.com
-   */
-  getSpaDomain(): string;
-
-  /*
-   * Get the base path where the SPA is running. If it's configured to be
-   * running at https://example.com/spa/, this method returns /spa. If it's
-   * running at https://example.com/, this method will return an empty
-   * string.
-   *
-   * It's preferred to use this method over accessing the config directly as
-   * this method sanitizes the configuration value;
-   *
-   * @returns {string}    The base path of the SPA
-   */
-  getSpaBasePath(): string;
-
-  /**
-   * Get the URL where Episerver is running, without trailing slash, so that
-   * all paths can start with a traling slash.
-   */
-  getEpiserverURL(): string;
-}
 
 interface EpiContentSavedEvent {
   successful: boolean;
@@ -206,53 +34,78 @@ interface EpiContentSavedEvent {
   hasContentLinkChanged: boolean;
   savedContentLink: string;
   publishedContentLink: string;
-  properties: Array<{
+  properties: {
     name: string;
     successful: boolean;
     validationErrors: any;
     value: any;
-  }>;
-  validationErrors: Array<any>;
+  }[];
+  validationErrors: any[];
   oldContentLink: string;
 }
 
-export class EpiserverSpaContext implements IEpiserverSpaContext {
-  protected _config!: EpiConfig;
-  protected _initialized: boolean = false;
-  protected _state!: EnhancedStore;
-  protected _contentApi!: ContentDeliveryAPI;
-  protected _isServerSideRendering!: boolean;
-  protected _componentLoader!: ComponentLoader;
+export enum InitStatus
+{
+  NotInitialized,
+  Initializing,
+  Initialized
+}
 
-  public init(config: EpiConfig, isServerSideRendering: boolean = false): void {
-    //Generic init
-    this._initialized = true;
-    this._isServerSideRendering = isServerSideRendering;
-    this._config = config;
-    if (process.env.NODE_ENV == 'production') {
-      this._config = { ...this._config, enableDebug: false };
+export class EpiserverSpaContext implements IEpiserverContext {
+    protected _config!: EpiConfig;
+    protected _initialized: InitStatus = InitStatus.NotInitialized;
+    protected _state!: EnhancedStore;
+    protected _isServerSideRendering!: boolean;
+    protected _componentLoader!: ComponentLoader;
+    protected _serviceContainer!: IServiceContainer;
+
+    public init(config: EpiConfig, serviceContainer: IServiceContainer, isServerSideRendering: boolean = false): void {
+        // Generic init
+        this._initialized = InitStatus.Initializing;
+        this._isServerSideRendering = isServerSideRendering;
+        this._serviceContainer = serviceContainer;
+        this._config = config;
+
+        // Register core services
+        this._serviceContainer.addService(DefaultServices.ContentDeliveryApi, new ContentDeliveryAPI({ getCurrentPath(): string { return window.location.pathname; }}, this._config));
+
+        // Have modules add services of their own
+        if (this._config.modules) {
+            this._config.modules.forEach(x => x.ConfigureContainer(this._serviceContainer));
+        }
+
+        // Redux init
+        this._initRedux();
+
+        // EpiEditMode init
+        this._initEditMode();
+
+        // Run module startup logic
+        if (this._config.modules) {
+            const me = this;
+            this._config.modules.forEach(x => x.StartModule(me));
+        }
+
+        this._initialized = InitStatus.Initialized;
     }
-    this._contentApi = new ContentDeliveryAPI(
-      {
-        getCurrentPath(): string {
-          return window.location.pathname;
-        },
-      },
-      this._config,
-    );
 
-    //Redux init
-    let reducers: any = {};
-    IContentRepository.ContentDeliveryAPI = this._contentApi;
-    reducers[IContentRepository.StateKey] = IContentRepository.reducer.bind(IContentRepository);
-    reducers[ViewContext.StateKey] = ViewContext.reducer.bind(ViewContext);
-    this._state = configureStore({ reducer: reducers });
-    let initAction: RepositoryAction<RepositoryActions, any> = {
-      type: RepositoryActions.INIT,
-    };
-    this._state.dispatch(initAction);
+    private _initRedux() : void
+    {
+        const reducers: { [key : string ]: Reducer<any, Action> } = {};
 
-    //EpiEditMode init
+        IContentRepository.ContentDeliveryAPI = this.contentDeliveryApi();
+        reducers[IContentRepository.StateKey] = IContentRepository.reducer.bind(IContentRepository);
+        reducers[ViewContext.StateKey] = ViewContext.reducer.bind(ViewContext);
+        if (this._config.modules) {
+            this._config.modules.forEach(x => { const ri = x.GetStateReducer(); if (ri) { reducers[ri.stateKey] = ri.reducer }});
+        }
+        this._state = configureStore({ reducer: reducers });
+        const initAction: Action<RepositoryActions> = { type: RepositoryActions.INIT };
+        this._state.dispatch(initAction);
+    }
+
+  private _initEditMode() : void
+  {
     if (!this._isServerSideRendering) {
       this.events().addListener(
         'beta/epiReady',
@@ -260,7 +113,7 @@ export class EpiserverSpaContext implements IEpiserverSpaContext {
         (() => {
           if (this.isDebugActive())
             console.info('Episerver Ready, setting edit mode to', this.isInEditMode() ? 'true' : 'false');
-          this._contentApi.setInEditMode(this.isInEditMode());
+          this.contentDeliveryApi().setInEditMode(this.isInEditMode());
         }).bind(this),
         true,
       );
@@ -270,8 +123,8 @@ export class EpiserverSpaContext implements IEpiserverSpaContext {
         ((event: EpiContentSavedEvent) => {
           if (this.isDebugActive()) console.info('Received updated content from the Episerver Shell', event);
           if (event.successful) {
-            let baseId = event.savedContentLink.split('_')[0];
-            let baseContent = this.getContentById(baseId);
+            const baseId = event.savedContentLink.split('_')[0];
+            const baseContent = this.getContentById(baseId);
             if (baseContent) {
               event.properties.forEach((prop) => {
                 this.dispatch(
@@ -280,7 +133,7 @@ export class EpiserverSpaContext implements IEpiserverSpaContext {
               });
             }
 
-            //Full refresh as we don't support partials yet....
+            // Full refresh as we don't support partials yet....
             this.loadContentById(event.savedContentLink);
           }
         }).bind(this),
@@ -290,7 +143,7 @@ export class EpiserverSpaContext implements IEpiserverSpaContext {
   }
 
   public isInitialized(): boolean {
-    return this._initialized;
+    return this._initialized === InitStatus.Initialized;
   }
 
   public isDebugActive(): boolean {
@@ -301,7 +154,7 @@ export class EpiserverSpaContext implements IEpiserverSpaContext {
   public isServerSideRendering(): boolean {
     if (this._isServerSideRendering == null) {
       try {
-        this._isServerSideRendering = epi.isServerSideRendering == true;
+        this._isServerSideRendering = epi.isServerSideRendering === true;
       } catch (e) {
         return false;
       }
@@ -311,7 +164,7 @@ export class EpiserverSpaContext implements IEpiserverSpaContext {
 
   protected enforceInitialized(): void {
     if (!this._initialized) {
-      throw 'The Episerver SPA Context has not yet been initialized';
+      throw new Error('The Episerver SPA Context has not yet been initialized');
     }
   }
 
@@ -346,21 +199,21 @@ export class EpiserverSpaContext implements IEpiserverSpaContext {
     return this._componentLoader;
   }
 
-  public contentDeliveryApi(): ContentDeliveryAPI {
+  public contentDeliveryApi<API extends ContentDeliveryAPI = ContentDeliveryAPI>(): API {
     this.enforceInitialized();
-    return this._contentApi;
+    return this._serviceContainer.getService<API>(DefaultServices.ContentDeliveryApi);
   }
 
   public getContentByGuid(guid: string): IContent | null {
     if (this._state.getState().iContentRepo.guids[guid]) {
-      let id = this._state.getState().iContentRepo.guids[guid];
+      const id = this._state.getState().iContentRepo.guids[guid];
       return this.getContentById(id);
     }
     return null;
   }
 
   public loadContentByGuid(id: string): Promise<IContent> {
-    let c: IContent | null = this.getContentByGuid(id);
+    const c: IContent | null = this.getContentByGuid(id);
     if (c) {
       return Promise.resolve(c);
     }
@@ -375,7 +228,7 @@ export class EpiserverSpaContext implements IEpiserverSpaContext {
   }
 
   public loadContentById(id: ContentApiId): Promise<IContent> {
-    let c = this.getContentById(id);
+    const c = this.getContentById(id);
     if (c) {
       return Promise.resolve(c);
     }
@@ -384,14 +237,14 @@ export class EpiserverSpaContext implements IEpiserverSpaContext {
 
   public getContentByRef(ref: string): IContent | null {
     if (this._state.getState().iContentRepo.refs[ref]) {
-      let id = this._state.getState().iContentRepo.refs[ref];
+      const id = this._state.getState().iContentRepo.refs[ref];
       return this.getContentById(id);
     }
     return null;
   }
 
   public loadContentByRef(ref: string): Promise<IContent> {
-    let item = this.getContentByRef(ref);
+    const item = this.getContentByRef(ref);
     if (item) return Promise.resolve(item);
 
     return this.invoke(IContentRepository.getByReference(ref));
@@ -399,14 +252,14 @@ export class EpiserverSpaContext implements IEpiserverSpaContext {
 
   public getContentByPath(path: string): IContent | null {
     if (this._state.getState().iContentRepo.paths[path]) {
-      let id = this._state.getState().iContentRepo.paths[path];
+      const id = this._state.getState().iContentRepo.paths[path];
       return this.getContentById(id);
     }
     return null;
   }
 
   public loadContentByPath(path: string): Promise<IContent> {
-    let c = this.getContentByPath(path);
+    const c = this.getContentByPath(path);
     if (c) {
       return Promise.resolve(c);
     }
@@ -419,15 +272,15 @@ export class EpiserverSpaContext implements IEpiserverSpaContext {
 
   public isInEditMode(): boolean {
     try {
-      return ctx.epi && ctx.epi.beta ? ctx.epi.beta.inEditMode == true : false;
+      return ctx.epi && ctx.epi.beta ? ctx.epi.beta.inEditMode === true : false;
     } catch (e) {
-      return false; //Asume not
+      return false; // Asume not
     }
   }
 
   public isEditable(): boolean {
     try {
-      return ctx.epi && ctx.epi.beta ? ctx.epi.beta.isEditable == true : false;
+      return ctx.epi && ctx.epi.beta ? ctx.epi.beta.isEditable === true : false;
     } catch (e) {
       return false;
     }
@@ -464,7 +317,7 @@ export class EpiserverSpaContext implements IEpiserverSpaContext {
       if (this.isDebugActive()) console.log('The navigation target does not include a path.', path);
       newPath = '/';
     }
-    let me = this;
+    const me = this;
     this.loadContentByPath(newPath).then(() => {
       me.getStore().dispatch(ViewContext.updateCurrentPath(newPath));
       if (!noHistory) {
@@ -478,7 +331,7 @@ export class EpiserverSpaContext implements IEpiserverSpaContext {
   }
 
   public loadCurrentWebsite(): Promise<Website> {
-    let website: Website = this.getCurrentWebsite();
+    const website: Website = this.getCurrentWebsite();
     if (website) {
       return Promise.resolve(website);
     }
@@ -486,20 +339,20 @@ export class EpiserverSpaContext implements IEpiserverSpaContext {
   }
 
   public getCurrentPath(): string {
-    let state = this._state.getState();
+    const state = this._state.getState();
     return state.ViewContext.currentPath;
   }
 
   public getRoutedContent(): IContent {
-    let c = this.getContentByPath(this.getCurrentPath());
+    const c = this.getContentByPath(this.getCurrentPath());
     if (!c) {
-      throw "There's no currently routed content";
+      throw new Error("There's no currently routed content");
     }
     return c;
   }
 
   public getContentByContentRef(ref: ContentReference) {
-    let id: string | null = ContentLinkService.createApiId(ref);
+    const id: string | null = ContentLinkService.createApiId(ref);
     return id ? this.getContentById(id) : null;
   }
 
@@ -515,7 +368,7 @@ export class EpiserverSpaContext implements IEpiserverSpaContext {
    * @returns {string}    The base path of the SPA
    */
   public getSpaBasePath(): string {
-    if (typeof this._sanitizedSpaBasePath == 'string') {
+    if (typeof this._sanitizedSpaBasePath === 'string') {
       return this._sanitizedSpaBasePath;
     }
     let configBasePath = this.config()?.basePath || '';
@@ -541,10 +394,10 @@ export class EpiserverSpaContext implements IEpiserverSpaContext {
    * Get the location where Episerver is running, whithout a trailing slash.
    */
   public getEpiserverURL(): string {
-    let epiUrl = this.config().epiBaseUrl;
+    const epiUrl = this.config().epiBaseUrl;
     return StringUtils.TrimRight('/', epiUrl);
   }
 }
 
 ctx.EpiserverSpa.Context = ctx.EpiserverSpa.Context || new EpiserverSpaContext();
-export default ctx.EpiserverSpa.Context as IEpiserverSpaContext;
+export default ctx.EpiserverSpa.Context as IEpiserverContext;

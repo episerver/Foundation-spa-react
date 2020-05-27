@@ -2,7 +2,7 @@ import ContentLink from '../Models/ContentLink';
 import React, { Component, ReactNode, ReactElement, ReactNodeArray } from 'react';
 import CmsComponent from './CmsComponent';
 import { ContentAreaProperty } from '../Property';
-import { IEpiserverSpaContext } from '../Spa';
+import IEpiserverContext from '../Core/IEpiserverContext';
 
 /**
  * Definition of the ContentArea property value as used within the ContentDelivery API
@@ -80,7 +80,7 @@ interface ContentAreaProps extends ContentAreaSiteConfig {
     /**
      * The Episerver Context used for rendering the ContentArea
      */
-    context: IEpiserverSpaContext
+    context: IEpiserverContext
 
     /**
      * The name of the ContentArea property, if set this enables On Page Editing for

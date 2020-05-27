@@ -3,7 +3,7 @@ import React, { Component, ReactNodeArray } from 'react';
 import { Collapse, Nav, Navbar, NavbarToggler } from 'reactstrap';
 
 //Import Episerver Libs
-import { IEpiserverSpaContext } from 'episerver/Spa';
+import IEpiserverContext from 'episerver/Core/IEpiserverContext';
 import ContentArea from 'episerver/Components/ContentArea';
 import Property from 'episerver/Components/Property';
 import Link from 'episerver/Components/Link';
@@ -13,7 +13,7 @@ import CmsHomePageData from 'app/Models/Content/CmsHomePageData';
 
 interface HeaderProps {
     startPage: CmsHomePageData
-    context: IEpiserverSpaContext
+    context: IEpiserverContext
     path: string
 }
 interface HeaderState {

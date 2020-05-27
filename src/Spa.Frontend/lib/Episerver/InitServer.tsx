@@ -1,27 +1,29 @@
-//Global Libraries && Poly-fills
+// Global Libraries && Poly-fills
 import 'core-js';
 import ReactDOMServer from 'react-dom/server';
 import { Helmet } from 'react-helmet';
 import React from 'react';
 
-//Episerver Libraries
+// Episerver Libraries
+import DefaultServiceContainer from './Core/DefaultServiceContainer'; 
 import EpiSpaContext from './Spa';
 import CmsSite from './Components/CmsSite';
 import AppConfig from './AppConfig';
 
-//Episerver SPA/PWA Server Side Rendering libs
+// Episerver SPA/PWA Server Side Rendering libs
 import SSRResponse from './ServerSideRendering/Response';
 
 export default function RenderServerSide(config: AppConfig): SSRResponse {
-    //Initialize Episerver Context, for Server Side Rendering
-    //EpiContext.Instance = new SSRContext(new SSRPathProvider());
+    // Initialize Episerver Context, for Server Side Rendering
+    // EpiContext.Instance = new SSRContext(new SSRPathProvider());
+    const serviceContainer = new DefaultServiceContainer();
     config.enableSpinner = false;
     config.noAjax = true;
     config.enableDebug = true;
-    EpiSpaContext.init(config, true);
+    EpiSpaContext.init(config, serviceContainer, true);
 
-    let body = ReactDOMServer.renderToString(<CmsSite context={EpiSpaContext}/>);
-    let meta = Helmet.renderStatic();
+    const body = ReactDOMServer.renderToString(<CmsSite context={EpiSpaContext}/>);
+    const meta = Helmet.renderStatic();
 
     return {
         Body: body,
