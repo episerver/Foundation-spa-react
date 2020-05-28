@@ -180,3 +180,10 @@ ul.none-style-type {
         margin-left: auto;
     }
 }
+
+.disabled {
+    pointer-events: none;
+    cursor: default;
+    background-color: grey;
+    border: 0;
+}

@@ -40,4 +40,5 @@
 
 @RenderSection("AdditionalScripts", required: false)
 @Html.RequiredClientResources("Footer")
+@Html.RenderExtendedScripts(Model.CurrentContent)
 @Model.SchemaMarkup
