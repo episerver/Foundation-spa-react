@@ -622,6 +622,8 @@
     <Compile Include="Features\Blocks\NavigationBlockController.cs" />
     <Compile Include="Features\Blog\BlogItem\BlogItemController.cs" />
     <Compile Include="Features\Blog\BlogListPage\BlogListPageController.cs" />
+    <Compile Include="Features\People\PersonListPage\PersonListPageController.cs" />
+    <Compile Include="Features\People\PersonItemPage\PersonItemPageController.cs" />
     <Compile Include="Features\Preview\PartialViewDisplayChannel.cs" />
     <Compile Include="Features\Preview\PagePartialPreviewController.cs" />
     <Compile Include="Features\Preview\PreviewControllerHelper.cs" />
@@ -833,6 +835,7 @@
     <Content Include="Assets\js\features\Search.js" />
     <Content Include="Assets\js\features\SearchBox.js" />
     <Content Include="Assets\js\features\Selection.js" />
+    <Content Include="Assets\js\features\selective\People.js" />
     <Content Include="Assets\js\features\selective\Locations.js" />
     <Content Include="Assets\js\footer.min.js" />
     <Content Include="Assets\js\main.min.js" />
@@ -1320,6 +1323,9 @@
     <Content Include="modules\_protected\advanced-cms-forms\web.config" />
     <Content Include="modules\_protected\advanced-cms-forms\advanced-cms-forms.zip" />
     <Content Include="modules\_protected\EPiServer.Marketing.Testing\EPiServer.Marketing.Testing.zip" />
+    <Content Include="Assets\scss\templates\pages\_people.scss" />
+    <Content Include="Features\People\PersonItemPage\Index.cshtml" />
+    <Content Include="Features\People\PersonListPage\Index.cshtml" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

@@ -1,12 +1,15 @@
+using EPiServer.Cms.Shell.UI.ObjectEditing.EditorDescriptors;
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using EPiServer.Framework.DataAnnotations;
+using EPiServer.PlugIn;
 using EPiServer.Shell.ObjectEditing;
 using EPiServer.SpecializedProperties;
 using EPiServer.Web;
 using Foundation.Cms.Blocks;
 using Foundation.Cms.EditorDescriptors;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Foundation.Cms.Pages
@@ -116,5 +119,18 @@ namespace Foundation.Cms.Pages
         [Display(Name = "Menu style", GroupName = CmsTabNames.Header, Order = 30)]
         public virtual string HeaderMenuStyle { get; set; }
         #endregion
+
+        [Display(GroupName = CmsTabNames.CustomSettings, Order = 100)]
+        [EditorDescriptor(EditorDescriptorType = typeof(CollectionEditorDescriptor<SelectionItem>))]
+        public virtual IList<SelectionItem> Sectors { get; set; }
+
+        [Display(GroupName = CmsTabNames.CustomSettings, Order = 200)]
+        [EditorDescriptor(EditorDescriptorType = typeof(CollectionEditorDescriptor<SelectionItem>))]
+        public virtual IList<SelectionItem> Locations { get; set; }
+    }
+
+    [PropertyDefinitionTypePlugIn]
+    public class SelectionItemProperty : PropertyList<SelectionItem>
+    {
     }
 }
