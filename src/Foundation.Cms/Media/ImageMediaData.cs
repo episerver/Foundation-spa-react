@@ -4,6 +4,8 @@ using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using EPiServer.Framework.Blobs;
 using EPiServer.Framework.DataAnnotations;
+using EPiServer.Labs.ContentManager.Cards;
+using EPiServer.Labs.ContentManager.Dashboard;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,7 +15,7 @@ namespace Foundation.Cms.Media
         GUID = "20644be7-3ca1-4f84-b893-ee021b73ce6c", 
         Description = "Used for image file types such as jpg, jpeg, jpe, ico, gif, bmp, png, svg, webp")]
     [MediaDescriptor(ExtensionString = "jpg,jpeg,jpe,ico,gif,bmp,png,svg,webp")]
-    public class ImageMediaData : ImageData
+    public class ImageMediaData : ImageData, IDashboardItem
     {
         [Editable(false)]
         [ImageDescriptor(Width = 256, Height = 256)]
@@ -88,5 +90,11 @@ namespace Foundation.Cms.Media
         [CultureSpecific]
         [Display(GroupName = SystemTabNames.Content, Order = 210)]
         public virtual string Copyright { get; set; }
+
+        public void SetItem(ItemModel itemModel)
+        {
+            itemModel.Description = Description;
+            itemModel.Image = ContentLink;
+        }
     }
 }
