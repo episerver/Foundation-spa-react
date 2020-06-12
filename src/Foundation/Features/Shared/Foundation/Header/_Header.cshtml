@@ -13,6 +13,14 @@ else
                     <div class="top-header__banner-text">
                         @Html.PropertyFor(x => x.HomePage.BannerText)
                     </div>
+                    @if (!Request.IsAuthenticated)
+                    {
+                        <div class="login-button">
+                            <a class="login-url" href="/episerver">
+                                Login
+                            </a>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
