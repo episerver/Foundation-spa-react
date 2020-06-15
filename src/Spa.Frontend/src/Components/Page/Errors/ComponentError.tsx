@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
-import IContent from "episerver/Models/IContent";
-import EpiComponent from 'episerver/EpiComponent';
+import IContent from "@episerver/spa-core/Models/IContent";
+import EpiComponent from '@episerver/spa-core/EpiComponent';
 
 interface ComponentErrorData extends IContent {
     error: any

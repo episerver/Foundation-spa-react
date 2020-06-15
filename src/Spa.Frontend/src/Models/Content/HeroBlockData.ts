@@ -1,8 +1,8 @@
 import HeroBlockCalloutData from './HeroBlockCalloutData'
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from 'episerver/Property'
-import IContent, { BaseIContent } from 'episerver/Models/IContent'
-import ContentLink from 'episerver/Models/ContentLink'
-import { ComponentProps } from 'episerver/EpiComponent'
+import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
+import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
+import ContentLink from '@episerver/spa-core/Models/ContentLink'
+import { ComponentProps } from '@episerver/spa-core/EpiComponent'
 
 /**
  * Hero Block

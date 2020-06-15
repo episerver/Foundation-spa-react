@@ -1,10 +1,12 @@
 import React, { ReactNode, ReactNodeArray } from 'react';
+
 import Property from '@episerver/spa-core/Components/Property';
 import { ContentLinkService } from '@episerver/spa-core/Models/ContentLink';
-import NumberElementBlockData from 'app/Models/Content/NumberElementBlockData';
-import AbstractElementBlock from 'app/Components/FormElement/AbstractElementBlock';
 
-export default class NumberElementBlock extends AbstractElementBlock<NumberElementBlockData>
+import AbstractElementBlock from '../AbstractElementBlock';
+import SubmitButtonElementBlockData from '../../../Models/Content/SubmitButtonElementBlockData';
+
+export default class SubmitButtonElementBlock extends AbstractElementBlock<SubmitButtonElementBlockData>
 {
     public render() : null | ReactNode | ReactNodeArray
     {
@@ -13,14 +15,13 @@ export default class NumberElementBlock extends AbstractElementBlock<NumberEleme
         let fieldInfoId : string = `${ fieldId }_Description`;
 
         return <div className="form-group">
-            <label htmlFor={ fieldId }><Property iContent={this.props.data} field="label" context={ this.getContext() }/></label>
-            <input type={ this.getFieldType() } id={ fieldId } name={ fieldName } className="form-control" placeholder={ this.props.data.placeHolder?.value } aria-describedby={ fieldInfoId } />
+            <input type={ this.getFieldType() } id={ fieldId } name={ fieldName } className="btn btn-primary" aria-describedby={ fieldInfoId } />
             <small id={ fieldInfoId } className="form-text text-muted"><Property iContent={this.props.data} field="description" context={ this.getContext() }/></small>
         </div>
     }
 
     protected getFieldType() : string
     {
-        return 'number';
+        return 'submit';
     }
 }

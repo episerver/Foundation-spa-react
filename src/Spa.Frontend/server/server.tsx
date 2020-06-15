@@ -1,6 +1,6 @@
 //Episerver libraries
-import SSRResponse from 'episerver/ServerSideRendering/Response';
-import RenderServerSide from 'episerver/InitServer';
+import SSRResponse from '@episerver/spa-core/ServerSideRendering/Response';
+import RenderServerSide from '@episerver/spa-core/InitServer';
 
 //Application layout & config
 import appConfig from 'app/Config';

@@ -1,10 +1,10 @@
 import React, { Component, ReactNode, ReactNodeArray } from 'react';
-import Property from 'episerver/Components/Property';
-import ContentArea from 'episerver/Components/ContentArea';
-import IEpiserverContext from 'episerver/Core/IEpiserverContext';
+import Property from '@episerver/spa-core/Components/Property';
+import ContentArea from '@episerver/spa-core/Components/ContentArea';
+import IEpiserverContext from '@episerver/spa-core/Core/IEpiserverContext';
 
 import CmsHomePageData from 'app/Models/Content/CmsHomePageData';
-import { ContentLinkService } from 'episerver/Models/ContentLink';
+import { ContentLinkService } from '@episerver/spa-core/Models/ContentLink';
 
 export interface FooterProps {
     startPage: CmsHomePageData

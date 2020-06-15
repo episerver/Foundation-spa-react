@@ -1,5 +1,5 @@
-import { StringProperty, ContentReferenceProperty } from 'episerver/Property'
-import IContent from 'episerver/Models/IContent'
+import { StringProperty, ContentReferenceProperty } from '@episerver/spa-core/Property'
+import IContent from '@episerver/spa-core/Models/IContent'
 
 export default interface IContentWithTeaser extends IContent
 {

@@ -1,6 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
-const GlobalConfig = require('episerver-webpack/Config');
+const GlobalConfig = require('@episerver/webpack/Config');
 
 /**
  * Webpack configuration module which generates the .Net based
@@ -34,9 +34,12 @@ module.exports = (env) => {
             rules: [{
                 test: /\.(ts|tsx)$/,
                 use: [{
-                    loader: 'ts-loader'
+                    loader: 'ts-loader',
+                    options: {
+                        allowTsInNodeModules: true
+                    }
                 }, {
-                    loader: 'episerver-webpack/PreLoadLoader',
+                    loader: '@episerver/webpack/PreLoadLoader',
                     options: {
                         pattern: '**/*.tsx',
                         extension: '.tsx'
@@ -44,10 +47,10 @@ module.exports = (env) => {
                 }]
             }, {
                 test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-                use: [{ loader: 'episerver-webpack/EmptyLoader' }]
+                use: [{ loader: '@episerver/webpack/EmptyLoader' }]
             }, {
                 test: /\.(s[ca]ss)$/,
-                use: [{ loader: 'episerver-webpack/EmptyLoader' }]
+                use: [{ loader: '@episerver/webpack/EmptyLoader' }]
             }]
         },
         plugins: [

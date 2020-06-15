@@ -1,9 +1,9 @@
 import React, { ReactNode, CSSProperties } from 'react';
 import {Helmet} from 'react-helmet';
-import CmsComponent from 'episerver/Components/CmsComponent';
-import ContentArea from 'episerver/Components/ContentArea';
-import Property from 'episerver/Components/Property';
-import Page, { PageType } from 'episerver/Page';
+import CmsComponent from '@episerver/spa-core/Components/CmsComponent';
+import ContentArea from '@episerver/spa-core/Components/ContentArea';
+import Property from '@episerver/spa-core/Components/Property';
+import Page, { PageType } from '@episerver/spa-core/Page';
 import BaseStandardPageData from 'app/Models/Content/StandardPageData';
 
 import './StandardPage.scss';

@@ -1,6 +1,6 @@
 import React, {ReactNode, ReactNodeArray} from 'react';
-import EpiComponent from 'episerver/EpiComponent';
-import Property from 'episerver/Components/Property';
+import EpiComponent from '@episerver/spa-core/EpiComponent';
+import Property from '@episerver/spa-core/Components/Property';
 import TextBlockData from 'app/Models/Content/TextBlockData';
 
 export default class TextBlock extends EpiComponent<TextBlockData>

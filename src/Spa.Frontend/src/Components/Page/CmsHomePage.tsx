@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import {Helmet} from "react-helmet";
-import Page, { PageType } from 'episerver/Page';
-import ContentArea from 'episerver/Components/ContentArea';
+import Page, { PageType } from '@episerver/spa-core/Page';
+import ContentArea from '@episerver/spa-core/Components/ContentArea';
 import CmsHomePageData from 'app/Models/Content/CmsHomePageData';
 import TypeMapper from 'app/Models/Content/TypeMapper';
 

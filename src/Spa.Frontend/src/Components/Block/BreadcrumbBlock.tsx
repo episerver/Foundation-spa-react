@@ -1,10 +1,12 @@
 import React, { ReactNode, ReactNodeArray } from 'react';
-import EpiComponent from 'episerver/EpiComponent';
-import BreadcrumbBlockData, { BreadcrumbBlockProps } from 'app/Models/Content/BreadcrumbBlockData';
-import IContent from 'episerver/Models/IContent';
-import ContentLink, { ContentReference, ContentLinkService } from 'episerver/Models/ContentLink';
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
-import Link from 'episerver/Components/Link';
+
+import EpiComponent from '@episerver/spa-core/EpiComponent';
+import IContent from '@episerver/spa-core/Models/IContent';
+import ContentLink, { ContentReference, ContentLinkService } from '@episerver/spa-core/Models/ContentLink';
+import Link from '@episerver/spa-core/Components/Link';
+
+import BreadcrumbBlockData, { BreadcrumbBlockProps } from 'app/Models/Content/BreadcrumbBlockData';
 
 interface BreadcrumbBlockState {
     isLoading: boolean

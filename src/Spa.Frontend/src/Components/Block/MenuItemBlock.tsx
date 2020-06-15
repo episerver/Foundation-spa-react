@@ -3,8 +3,8 @@ import React, { ReactNode } from 'react';
 import { NavItem, NavLink, UncontrolledDropdown, DropdownToggle, DropdownMenu, Alert, Button } from 'reactstrap';
 
 //Import Episerver Components
-import CmsComponent from 'episerver/Components/CmsComponent';
-import EpiComponent from 'episerver/EpiComponent';
+import CmsComponent from '@episerver/spa-core/Components/CmsComponent';
+import EpiComponent from '@episerver/spa-core/EpiComponent';
 
 import MenuItemBlockData from 'app/Models/Content/MenuItemBlockData';
 

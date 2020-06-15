@@ -1,6 +1,6 @@
-import { IContentType } from 'Episerver/Models/IContent';
-import EpiserverSpaContext from 'Episerver/Spa';
-import BaseTypeMapper, { TypeMapperTypeInfo } from 'Episerver/Loaders/BaseTypeMapper'
+import { IContentType } from '@episerver/spa-core/Models/IContent';
+import EpiserverSpaContext from '@episerver/spa-core/Spa';
+import BaseTypeMapper, { TypeMapperTypeInfo } from '@episerver/spa-core/Loaders/BaseTypeMapper'
 ;
 export default class TypeMapper extends BaseTypeMapper {
   protected map : { [type: string]: TypeMapperTypeInfo } = {

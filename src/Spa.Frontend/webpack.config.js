@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const GlobalConfig = require('episerver-webpack/Config');
+const GlobalConfig = require('@episerver/webpack/Config');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
@@ -50,7 +50,10 @@ module.exports = (env) => {
 			rules: [
 			{
 				test: /\.(ts|tsx)$/,
-				loader: 'ts-loader'
+				loader: 'ts-loader',
+				options: {
+					allowTsInNodeModules: true
+				}
 			},{
 				enforce: "pre",
 				test: /\.js$/,

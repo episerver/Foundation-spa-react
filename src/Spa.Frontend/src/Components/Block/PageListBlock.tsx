@@ -1,14 +1,16 @@
 import React, {ReactNode, ReactNodeArray, CSSProperties} from 'react';
-import EpiComponent from 'episerver/EpiComponent';
-import IContent from 'episerver/Models/IContent';
+import EpiComponent from '@episerver/spa-core/EpiComponent';
+import IContent from '@episerver/spa-core/Models/IContent';
+import { CmsComponent } from '@episerver/spa-core/Components/CmsComponent';
+import Link from '@episerver/spa-core/Components/Link';
+import Property from '@episerver/spa-core/Components/Property';
+import { ContentLinkService } from '@episerver/spa-core/Models/ContentLink';
+
 import PageListBlockData, { PageListBlockProps } from 'app/Models/Content/PageListBlockData';
-import { CmsComponent } from 'episerver/Components/CmsComponent';
-import IContentWithTeaser, { isIContentWithTeaser } from 'Models/IContentWithTeaser';
-import Link from 'episerver/Components/Link';
-import Property from 'episerver/Components/Property';
-import './PageListBlock/GridView.scss';
+import IContentWithTeaser, { isIContentWithTeaser } from 'app/Models/IContentWithTeaser';
 import Teaser from 'app/Components/Shared/Teaser';
-import { ContentLinkService } from 'episerver/Models/ContentLink';
+
+import './PageListBlock/GridView.scss';
 
 interface PageListPreviewViewModel {
     page: IContent

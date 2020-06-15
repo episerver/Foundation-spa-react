@@ -1,6 +1,6 @@
-import EpiComponent from "episerver/EpiComponent";
-import IContent from 'episerver/Models/IContent';
-import { StringProperty } from "episerver/Property";
+import EpiComponent from "@episerver/spa-core/EpiComponent";
+import IContent from '@episerver/spa-core/Models/IContent';
+import { StringProperty } from "@episerver/spa-core/Property";
 
 export interface ElementBlockData extends IContent
 {

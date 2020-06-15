@@ -1,5 +1,5 @@
 import React, { ReactNode, ReactNodeArray } from 'react'
-import EpiComponent from 'episerver/EpiComponent'
+import EpiComponent from '@episerver/spa-core/EpiComponent'
 import VideoFileData from 'app/Models/Content/VideoFileData'
 
 export default class VideoFile extends EpiComponent<VideoFileData>
