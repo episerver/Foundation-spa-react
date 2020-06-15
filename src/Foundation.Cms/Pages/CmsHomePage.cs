@@ -60,8 +60,8 @@ namespace Foundation.Cms.Pages
         [Display(Name = "Site logo", GroupName = CmsTabNames.Header, Order = 10)]
         public virtual ContentReference SiteLogo { get; set; }
 
-        [Display(Name = "Logo size", GroupName = CmsTabNames.Header, Order = 35)]
-        public virtual int LogoSize { get; set; }
+        [Display(Name = "Logo height (pixels)", GroupName = CmsTabNames.Header, Order = 35)]
+        public virtual int LogoHeight { get; set; }
 
         [SelectOne(SelectionFactoryType = typeof(HeaderMenuSelectionFactory))]
         [Display(Name = "Menu style", GroupName = CmsTabNames.Header, Order = 30)]
@@ -139,7 +139,7 @@ namespace Foundation.Cms.Pages
         {
             base.SetDefaultValues(contentType);
 
-            LogoSize = 50;
+            LogoHeight = 50;
         }
     }
 

@@ -2,7 +2,7 @@
 @Html.FullRefreshPropertiesMetaData(new[] { "MainMenu", "SiteLogo" })
 
 @{ 
-    var navigationHeight = Model.LogoSize + 30;
+    var navigationHeight = Model.LogoHeight + 30;
 }
 
 <!-- Navigation bar for Desktop -->
@@ -14,8 +14,8 @@
                      style="@(Model.HomePage.HeaderMenuStyle == "LeftLogo" ? "order: -1; width: 75%;" : "")">
                     <a href="/">
                         <picture>
-                            <source data-srcset="@Url.ContentUrl(Model.HomePage.SiteLogo)?format=webp&height=@(Model.LogoSize)" type="image/webp">
-                            <img style="max-height: @(Model.LogoSize)px" data-src="@Url.ContentUrl(Model.HomePage.SiteLogo)?height=@(Model.LogoSize)" class="img-fluid lazyload" @Html.EditAttributes(x => x.HomePage.SiteLogo) />
+                            <source data-srcset="@Url.ContentUrl(Model.HomePage.SiteLogo)?format=webp&height=@(Model.LogoHeight)" type="image/webp">
+                            <img style="max-height: @(Model.LogoHeight)px" data-src="@Url.ContentUrl(Model.HomePage.SiteLogo)?height=@(Model.LogoHeight)" class="img-fluid lazyload" @Html.EditAttributes(x => x.HomePage.SiteLogo) />
                         </picture>
                     </a>
                 </div>
