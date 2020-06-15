@@ -53,6 +53,22 @@ namespace Foundation.Cms.Pages
 
         #endregion
 
+        #region Header
+
+        [CultureSpecific]
+        [UIHint(UIHint.Image)]
+        [Display(Name = "Site logo", GroupName = CmsTabNames.Header, Order = 10)]
+        public virtual ContentReference SiteLogo { get; set; }
+
+        [Display(Name = "Logo size", GroupName = CmsTabNames.Header, Order = 35)]
+        public virtual int LogoSize { get; set; }
+
+        [SelectOne(SelectionFactoryType = typeof(HeaderMenuSelectionFactory))]
+        [Display(Name = "Menu style", GroupName = CmsTabNames.Header, Order = 30)]
+        public virtual string HeaderMenuStyle { get; set; }
+
+        #endregion
+
         #region Footer
 
         [Display(Name = "Introduction", GroupName = CmsTabNames.Footer, Order = 10)]
@@ -96,6 +112,7 @@ namespace Foundation.Cms.Pages
         #endregion
 
         #region References
+
         [AllowedTypes(typeof(ResetPasswordPage))]
         [Display(Name = "Reset password page", GroupName = CmsTabNames.SiteStructure, Order = 40)]
         public virtual ContentReference ResetPasswordPage { get; set; }
@@ -104,20 +121,10 @@ namespace Foundation.Cms.Pages
         [Display(Name = "Reset password", GroupName = CmsTabNames.MailTemplates, Order = 30)]
         public virtual ContentReference ResetPasswordMail { get; set; }
 
-        [CultureSpecific]
-        [UIHint(UIHint.Image)]
-        [Display(Name = "Site logo", GroupName = CmsTabNames.Header, Order = 10)]
-        public virtual ContentReference SiteLogo { get; set; }
-
         [AllowedTypes(typeof(SearchResultPage))]
         [Display(Name = "Search page", GroupName = CmsTabNames.SiteStructure, Order = 10)]
         public virtual ContentReference SearchPage { get; set; }
-        #endregion
 
-        #region Settings
-        [SelectOne(SelectionFactoryType = typeof(HeaderMenuSelectionFactory))]
-        [Display(Name = "Menu style", GroupName = CmsTabNames.Header, Order = 30)]
-        public virtual string HeaderMenuStyle { get; set; }
         #endregion
 
         [Display(GroupName = CmsTabNames.CustomSettings, Order = 100)]
@@ -127,6 +134,13 @@ namespace Foundation.Cms.Pages
         [Display(GroupName = CmsTabNames.CustomSettings, Order = 200)]
         [EditorDescriptor(EditorDescriptorType = typeof(CollectionEditorDescriptor<SelectionItem>))]
         public virtual IList<SelectionItem> Locations { get; set; }
+
+        public override void SetDefaultValues(ContentType contentType)
+        {
+            base.SetDefaultValues(contentType);
+
+            LogoSize = 50;
+        }
     }
 
     [PropertyDefinitionTypePlugIn]

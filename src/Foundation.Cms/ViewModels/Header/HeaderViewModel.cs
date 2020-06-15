@@ -9,6 +9,7 @@ namespace Foundation.Cms.ViewModels.Header
     public class HeaderViewModel
     {
         public virtual CmsHomePage HomePage { get; set; }
+        public int LogoSize { get; set; }
         public ContentReference CurrentContentLink { get; set; }
         public Guid CurrentContentGuid { get; set; }
         public LinkItemCollection UserLinks { get; set; }

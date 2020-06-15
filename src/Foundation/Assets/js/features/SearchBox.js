@@ -66,14 +66,12 @@
     }
 
     ExpandSearchBox() {
-        this.btn.style.display = "none";
-        this.box.style.width = "324px";
+        this.box.style.width = "560px";
         this.box.style.visibility = "visible";
         this.boxInput.focus();
     }
 
     CollapseSearchBox() {
-        this.btn.style.display = "flex";
         this.box.style.width = "80px";
         const inst = this;
         setTimeout(

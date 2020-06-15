@@ -98,6 +98,7 @@ namespace Foundation.Cms.ViewModels.Header
             return new THeaderViewModel
             {
                 HomePage = homePage,
+                LogoSize = homePage.LogoSize,
                 CurrentContentLink = currentContent?.ContentLink,
                 CurrentContentGuid = currentContent?.ContentGuid ?? Guid.Empty,
                 UserLinks = new LinkItemCollection(),

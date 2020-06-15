@@ -23,11 +23,6 @@
         display: flex;
         align-items: center;
         width: 20%;
-        height: $navigation-height;
-
-        img {
-            max-height: $navigation-height - 30px;
-        }
     }
 
     &__right {
@@ -38,13 +33,9 @@
         justify-content: flex-end;
 
         > li {
-            border-left: 1px solid #eeeeee;
-            flex: 0 0 $navigation-height;
             list-style: none;
-
-            &:last-child {
-                border-right: 1px solid #eeeeee;
-            }
+            display: flex;
+            align-items: center;
 
             > div {
                 outline: 0;

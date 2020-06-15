@@ -1,18 +1,21 @@
 ﻿@model Foundation.Cms.ViewModels.Header.HeaderViewModel
 @Html.FullRefreshPropertiesMetaData(new[] { "MainMenu", "SiteLogo" })
 
+@{ 
+    var navigationHeight = Model.LogoSize + 30;
+}
+
 <!-- Navigation bar for Desktop -->
 <div class="d-none d-lg-block">
     <nav class="container">
         <div class="row no-gutters">
-            <div class="navigation">
-
+            <div class="navigation" style="height:@(navigationHeight)px">
                 <div class="navigation__logo @(Model.HomePage.HeaderMenuStyle == "LeftLogo" ? "flex-start" : "flex-center")"
                      style="@(Model.HomePage.HeaderMenuStyle == "LeftLogo" ? "order: -1; width: 75%;" : "")">
                     <a href="/">
-                        <picture class="img-fluid">
-                            <source data-srcset="@Url.ContentUrl(Model.HomePage.SiteLogo)?format=webp&width=225" type="image/webp">
-                            <img data-src="@Url.ContentUrl(Model.HomePage.SiteLogo)?width=225" class="img-fluid lazyload" @Html.EditAttributes(x => x.HomePage.SiteLogo) />
+                        <picture>
+                            <source data-srcset="@Url.ContentUrl(Model.HomePage.SiteLogo)?format=webp&height=@(Model.LogoSize)" type="image/webp">
+                            <img style="max-height: @(Model.LogoSize)px" data-src="@Url.ContentUrl(Model.HomePage.SiteLogo)?height=@(Model.LogoSize)" class="img-fluid lazyload" @Html.EditAttributes(x => x.HomePage.SiteLogo) />
                         </picture>
                     </a>
                 </div>
@@ -24,7 +27,7 @@
                         <div class="icon-menu" id="js-searchbutton">
                             <i data-feather="search"></i>
                         </div>
-                        <div class="searchbox" id="js-searchbox">
+                        <div class="searchbox" style="height:@(navigationHeight)px" id="js-searchbox">
                             <i class="icon-left" data-feather="search"></i>
                             <input placeholder="Search" id="js-searchbox-input" class="jsSearchText"
                                    data-search="@Url.ContentUrl(Model.HomePage.SearchPage)"
