@@ -20,7 +20,7 @@
                     </a>
                 </div>
                 <div class="navigation__main" @Html.EditAttributes(x => x.HomePage.MainMenu)>
-                    @Html.Partial("_Menu", Model.MenuItems)
+                    @Html.Partial("_Menu", Model.MenuItems ?? new List<MenuItemViewModel>())
                 </div>
                 <ul class="navigation__right">
                     <li>
