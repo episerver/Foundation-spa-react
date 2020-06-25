@@ -8,6 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "echo \"Clean: not implemented\" && exit 0",
     "build": "npx webpack --env.NODE_ENV=development",
+    "build-html": "npx webpack --env.NODE_ENV=development --env.EPI_BUILD_TARGET=html",
+    "build-express": "npx webpack --env.NODE_ENV=development --env.EPI_BUILD_TARGET=express",
+    "build-episerver": "npx webpack --env.NODE_ENV=development --env.EPI_BUILD_TARGET=episerver",
     "release": "npx epi-sync-models && npx webpack --env.NODE_ENV=production",
     "watch-episerver": "npx epi-sync-models && webpack --watch --progress --env.NODE_ENV=development --env.EPI_BUILD_TARGET=episerver",
     "run-html": "npx webpack-dev-server --env=NODE_ENV=development --config=html.webpack.config.js --open",
@@ -17,7 +20,7 @@
   "author": "Remko Jantzen",
   "license": "Apache-2.0",
   "dependencies": {
-    "@episerver/spa-core": "git+https://github.com/episerver/foundation-lib-spa-core.git#a6e21da",
+    "@episerver/spa-core": "git+https://github.com/episerver/foundation-lib-spa-core.git#0.0.6",
     "@reduxjs/toolkit": "^1.4.0",
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
@@ -33,7 +36,7 @@
     "reactstrap": "^8.5.1"
   },
   "devDependencies": {
-    "@episerver/webpack": "git+https://github.com/episerver/foundation-lib-spa-webpack.git#8651f57",
+    "@episerver/webpack": "git+https://github.com/episerver/foundation-lib-spa-webpack.git#0.0.2",
     "@fortawesome/fontawesome-free": "^5.13.1",
     "@types/bootstrap": "^4.3.3",
     "@types/core-js": "^2.5.3",
