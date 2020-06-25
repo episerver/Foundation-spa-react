@@ -1,6 +1,6 @@
 {
     "compileOnSave": false,
-    "files": ["./src/index.tsx","./server/server.tsx"],
+    "files": ["./src/index.tsx","./server/server.tsx","./express/server.ts"],
     "compilerOptions": {
         "baseUrl": "./src/",
         "jsx": "react",
@@ -22,6 +22,7 @@
     },
     "include": [
         "./src",
-        "./server"
+        "./server",
+        "./express"
     ]
 }

@@ -1,7 +1,7 @@
 import React, {ReactNode, ReactNodeArray, CSSProperties} from 'react';
 import EpiComponent from '@episerver/spa-core/EpiComponent';
 import IContent from '@episerver/spa-core/Models/IContent';
-import { CmsComponent } from '@episerver/spa-core/Components/CmsComponent';
+import CmsComponent from '@episerver/spa-core/Components/CmsComponent';
 import Link from '@episerver/spa-core/Components/Link';
 import Property from '@episerver/spa-core/Components/Property';
 import { ContentLinkService } from '@episerver/spa-core/Models/ContentLink';
