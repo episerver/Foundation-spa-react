@@ -20,7 +20,7 @@
   "author": "Remko Jantzen",
   "license": "Apache-2.0",
   "dependencies": {
-    "@episerver/spa-core": "git+https://github.com/episerver/foundation-lib-spa-core.git#0.0.6",
+    "@episerver/spa-core": "git+https://github.com/episerver/foundation-lib-spa-core.git#0.0.7",
     "@reduxjs/toolkit": "^1.4.0",
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
@@ -36,7 +36,7 @@
     "reactstrap": "^8.5.1"
   },
   "devDependencies": {
-    "@episerver/webpack": "git+https://github.com/episerver/foundation-lib-spa-webpack.git#0.0.2",
+    "@episerver/webpack": "git+https://github.com/episerver/foundation-lib-spa-webpack.git#0.0.3",
     "@fortawesome/fontawesome-free": "^5.13.1",
     "@types/bootstrap": "^4.3.3",
     "@types/core-js": "^2.5.3",

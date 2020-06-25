@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { Helmet } from 'react-helmet';
 
 import Layout from '@episerver/spa-core/Components/Layout';
-import CmsComponent from '@episerver/spa-core/Components/CmsComponent';
+import EpiComponent from '@episerver/spa-core/Components/EpiComponent';
 import IContent from '@episerver/spa-core/Models/IContent';
 import { StringProperty, BooleanProperty, ContentReferenceProperty } from '@episerver/spa-core/Property';
 import { ContentLinkService } from '@episerver/spa-core/Models/ContentLink';
@@ -30,6 +30,7 @@ export default class MoseyLayout extends Layout
 {
     renderLayout() : Array<ReactNode> | ReactNode | null
     {
+        const CmsComponent = EpiComponent.CreateComponent(this.props.context);
         if (!this.isPage())
         {
             return <CmsComponent context={ this.props.context } contentLink={this.props.page} expandedValue={this.props.expandedValue} key={`website-body`} actionName={this.props.actionName} actionData={this.props.actionData} />;
