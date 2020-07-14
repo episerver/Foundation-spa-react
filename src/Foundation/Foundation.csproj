@@ -605,12 +605,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="VirtualTemplates.Core, Version=3.4.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\VirtualTemplateSystem.3.5\lib\net40\VirtualTemplates.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="VirtualTemplates.UI, Version=3.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\VirtualTemplateSystem.3.5\lib\net40\VirtualTemplates.UI.dll</HintPath>
-    </Reference>
     <Reference Include="VisualCompareMode, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\VisualCompareMode.1.0.3\lib\net45\VisualCompareMode.dll</HintPath>
     </Reference>
@@ -1348,20 +1342,6 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\VirtualTemplates\Compare.cshtml" />
-    <Content Include="Views\VirtualTemplates\Index.cshtml" />
-    <Content Include="Views\VirtualTemplates\_VirtualTemplatesRoot.cshtml" />
-    <Content Include="Views\VirtualTemplates\Shared\VersionList.cshtml" />
-    <Content Include="Views\VirtualTemplates\Shared\PanelTitle.cshtml" />
-    <Content Include="Views\VirtualTemplates\Edit.cshtml" />
-    <Content Include="Views\VirtualTemplates\Display.cshtml" />
-    <Content Include="Views\VirtualTemplates\CompareDisplay.cshtml" />
-    <Content Include="Views\VirtualTemplates\Buttons\SaveAndClose.cshtml" />
-    <Content Include="Views\VirtualTemplates\Buttons\Save.cshtml" />
-    <Content Include="Views\VirtualTemplates\Buttons\Revert.cshtml" />
-    <Content Include="Views\VirtualTemplates\Buttons\MakeVirtual.cshtml" />
-    <Content Include="Views\VirtualTemplates\Buttons\Edit.cshtml" />
-    <Content Include="Views\VirtualTemplates\Buttons\Compare.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
