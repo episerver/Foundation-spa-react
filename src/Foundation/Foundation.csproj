@@ -1324,17 +1324,27 @@
     <Content Include="modules\_protected\Shell\Shell.zip" />
     <Content Include="modules\_protected\CMS\web.config" />
     <Content Include="modules\_protected\CMS\CMS.zip" />
-    <Content Include="modules\_protected\EPiServer.Cms.TinyMce\web.config" />
-    <Content Include="modules\_protected\EPiServer.Cms.TinyMce\EPiServer.Cms.TinyMce.zip" />
+    <Content Include="modules\_protected\AdvancedTask\AdvancedTask.zip" />
     <Content Include="modules\_protected\EPiServer.Forms.UI\module.config" />
     <Content Include="modules\_protected\EPiServer.Forms.UI\EPiServer.Forms.UI.zip" />
     <Content Include="modules\_protected\EPiServer.Forms\Views\ElementBlocks\Web.config" />
     <Content Include="modules\_protected\EPiServer.Forms\EPiServer.Forms.zip" />
+    <Content Include="modules\_protected\episerver-telemetry-ui\web.config" />
+    <Content Include="modules\_protected\episerver-telemetry-ui\episerver-telemetry-ui.zip" />
+    <Content Include="modules\_protected\Episerver.Marketing.Connector\module.config" />
+    <Content Include="modules\_protected\advanced-cms.Reviews\web.config" />
+    <Content Include="modules\_protected\advanced-cms.Reviews\advanced-cms.Reviews.zip" />
+    <Content Include="modules\_protected\advanced-cms.ExternalReviews\web.config" />
+    <Content Include="modules\_protected\advanced-cms.ExternalReviews\advanced-cms.ExternalReviews.zip" />
+    <Content Include="modules\_protected\EPiServer.GoogleAnalytics\Views\Web.config" />
+    <Content Include="modules\_protected\EPiServer.GoogleAnalytics\EPiServerGoogleAnalytics.config" />
+    <Content Include="modules\_protected\EPiServer.GoogleAnalytics\EPiServer.GoogleAnalytics.zip" />
     <Content Include="modules\_protected\EPiServer.Labs.LanguageManager\module.config" />
     <Content Include="modules\_protected\EPiServer.Labs.LanguageManager\EPiServer.LanguageManager.config" />
     <Content Include="modules\_protected\EPiServer.Labs.LanguageManager\EPiServer.Labs.LanguageManager.zip" />
-    <Content Include="modules\_protected\episerver-telemetry-ui\web.config" />
-    <Content Include="modules\_protected\episerver-telemetry-ui\episerver-telemetry-ui.zip" />
+    <Content Include="modules\_protected\EPiServer.Marketing.Testing\EPiServer.Marketing.Testing.zip" />
+    <Content Include="modules\_protected\episerver-labs-block-enhancements\web.config" />
+    <Content Include="modules\_protected\episerver-labs-block-enhancements\episerver-labs-block-enhancements.zip" />
     <Content Include="modules\_protected\episerver-labs-content-manager\web.config" />
     <Content Include="modules\_protected\episerver-labs-content-manager\episerver-labs-content-manager.zip" />
     <Content Include="modules\_protected\episerver-labs-grid-view\web.config" />
@@ -1343,9 +1353,6 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Views\Web.config" />
-    <None Include="Properties\PublishProfiles\epst01mstr9j79lprod - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\epst01mstr9j79lprod - ReadOnly - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\epst01mstr9j79lprod - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

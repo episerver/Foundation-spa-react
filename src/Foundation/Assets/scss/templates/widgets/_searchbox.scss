@@ -12,6 +12,8 @@
     &__icon {
         margin-left: 10px;
     }
+    overflow: hidden;
+    width: 80px;
 
     &__product-list {
         max-height: 45vh;
