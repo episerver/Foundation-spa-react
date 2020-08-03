@@ -48,67 +48,24 @@
     Url.PageLinkUrl(Model.CurrentBlock.Link),
     Model.CurrentBlock.Heading))
 {
-
-
-
-    <div class="teaser-block @(Model.CurrentBlock.Padding + " " + Model.CurrentBlock.Margin)" style="@Model.CurrentBlock.ElementsAlignment; background-color: @Model.CurrentBlock.BackgroundColor; @Model.CurrentBlock.HeadingColor; opacity:@Model.CurrentBlock.BlockOpacity;@Model.CurrentBlock.Height;">
-
+    <div class="teaser-block @(Model.CurrentBlock.Padding + " " + Model.CurrentBlock.Margin)" style="@Model.CurrentBlock.ElementsAlignment; background-color: @Model.CurrentBlock.BackgroundColor; @Model.CurrentBlock.TextColor; opacity:@Model.CurrentBlock.BlockOpacity;">
+        @if (!ContentReference.IsNullOrEmpty(Model.CurrentBlock.Image))
+        {
+            <div @Html.EditAttributes(x => x.CurrentBlock.Image) class="teaser-block__image" style="@imagePosition; @Model.CurrentBlock.ElementsAlignment">
+                <picture class="img-fluid">
+                    <source data-srcset="@Url.ContentUrl(Model.CurrentBlock.Image)?format=webp" type="image/webp">
+                    <img class="img-fluid lazyload" style="width: @(Model.CurrentBlock.ImageSize)%" data-src="@Url.ContentUrl(Model.CurrentBlock.Image)" loading="lazy" />
+                </picture>
+            </div>
+        }
+        <h2 class="teaser-block__heading" style="@headingPosition; font-size: @(Model.CurrentBlock.HeadingSize)px; @Model.CurrentBlock.HeadingStyle" @Html.EditAttributes(x => x.CurrentBlock.Heading)>@Model.CurrentBlock.Heading</h2>
         @if (!Model.CurrentBlock.Description.IsNullOrEmpty())
         {
-            <div class="row">
-                <div class="col-12">
-                    <div class="teaser-block__description small" style="@descriptionPosition" @Html.EditAttributes(x => x.CurrentBlock.Description)>@Model.CurrentBlock.Description</div>
-                </div>
-
-            </div>
+            <div class="teaser-block__description" style="@descriptionPosition" @Html.EditAttributes(x => x.CurrentBlock.Description)>@Model.CurrentBlock.Description</div>
         }
-
-        @if (Model.CurrentBlock.Image != null || Model.CurrentBlock.SecondImage != null)
+        @if (Model.CurrentBlock.Text != null)
         {
-            <div class="row mt-3 mb-3 teaser-heading">
-                <div class="col-4">
-                    <div @Html.EditAttributes(x => x.CurrentBlock.Image) class="teaser-block__image" style="@imagePosition;">
-                        <picture class="img-fluid">
-                            <source data-srcset="@Url.ContentUrl(Model.CurrentBlock.Image)?format=webp" type="image/webp">
-                            <img class="img-fluid lazyload" style="width: @(Model.CurrentBlock.ImageSize)%" data-src="@Url.ContentUrl(Model.CurrentBlock.Image)" loading="lazy"/>
-                        </picture>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <h2 class="" style="@headingPosition; font-size: @(Model.CurrentBlock.HeadingSize)px; @Model.CurrentBlock.HeadingStyle" @Html.EditAttributes(x => x.CurrentBlock.Heading)>@Model.CurrentBlock.Heading</h2>
-
-                </div>
-            </div>
-            <div class="row teaser-bottom">
-                <div class="col-4">
-                    <div @Html.EditAttributes(x => x.CurrentBlock.SecondImage) class="teaser-block__image" style="@imagePosition;">
-                        <picture class="img-fluid">
-                            <source data-srcset="@Url.ContentUrl(Model.CurrentBlock.Image)?format=webp" type="image/webp">
-                            <img class="img-fluid lazyload" style="width: @(Model.CurrentBlock.SecondImageSize)%" data-src="@Url.ContentUrl(Model.CurrentBlock.SecondImage)" />
-                        </picture>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="teaser-block__text" style="@Model.CurrentBlock.TextColor;order: 4" @Html.EditAttributes(x => x.CurrentBlock.Text)>@Html.Raw(Model.CurrentBlock.Text)</div>
-
-                </div>
-            </div>
-
-        }
-        else
-        {
-            <div class="row mt-1 mb-1 teaser-heading">             
-                <div class="col-12">
-                    <h2 class="" style="@headingPosition; font-size: @(Model.CurrentBlock.HeadingSize)px; @Model.CurrentBlock.HeadingStyle" @Html.EditAttributes(x => x.CurrentBlock.Heading)>@Model.CurrentBlock.Heading</h2>
-
-                </div>
-            </div>
-            <div class="row teaser-bottom">         
-                <div class="col-12">
-                    <div class="teaser-block__text" style="@Model.CurrentBlock.TextColor;order: 4" @Html.EditAttributes(x => x.CurrentBlock.Text)>@Html.Raw(Model.CurrentBlock.Text)</div>
-                </div>
-            </div>
-
+            <div class="teaser-block__text" style="order: 4" @Html.EditAttributes(x => x.CurrentBlock.Text)>@Html.Raw(Model.CurrentBlock.Text)</div>
         }
     </div>
-    }
+}

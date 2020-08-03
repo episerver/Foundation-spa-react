@@ -1,16 +1,16 @@
 ﻿.teaser-block {
-    display: block;
+    display: flex;
     flex-wrap: wrap;
-   
+    flex-direction: column;
 
     &__image {
         width: 100%;
         text-align: center;
-        /*padding: 5px 0 5px 0;*/
+        padding: 5px 0 5px 0;
     }
 
     &__heading {
-        /*padding: 5px 0 5px 0;*/
+        padding: 5px 0 5px 0;
     }
 
     &__description {
@@ -18,7 +18,7 @@
     }
 
     &__text {
-        /*padding: 5px 0 5px 0;*/
+        padding: 5px 0 5px 0;
         text-align: initial;
         color: initial;
     }
