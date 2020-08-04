@@ -142,5 +142,40 @@
             top: -15px;
             font-size: 18px;
         }
+
+        .FormSubmitButton {
+            display: inline-block;
+            font-size: .875rem;
+            line-height: 1em;
+            font-weight: 400;
+            text-transform: uppercase;
+            text-align: center;
+            vertical-align: middle;
+            padding: 12px 20px;
+            user-select: none;
+            background-color: transparent;
+            transition: color 0.15s;
+            text-decoration: none;
+            min-height: 40px;
+            min-width: 100px;
+            margin-top: 20px;
+            background-color: #61A0A8;
+            color: white;
+            border: 0;
+
+            &:hover {
+                background: #004564;
+            }
+        }
+
+        .FormSelection {
+            margin-top: 20px;
+
+            select {
+                position: relative;
+                border: 1px solid $color-darkgrey;
+                padding: 8px;
+            }
+        }
     }
 }
