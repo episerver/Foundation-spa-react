@@ -169,9 +169,11 @@
         }
 
         .FormSelection {
-            margin-top: 20px;
+            margin-top: 5px;
 
             select {
+                width: 100%;
+                height: 40px;
                 position: relative;
                 border: 1px solid $color-darkgrey;
                 padding: 8px;
