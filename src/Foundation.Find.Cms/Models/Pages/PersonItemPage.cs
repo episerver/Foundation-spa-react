@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
@@ -8,6 +7,7 @@ using EPiServer.Web;
 using Foundation.Cms.EditorDescriptors;
 using Foundation.Cms.Pages;
 using Foundation.Find.Cms.Facets.Config;
+using System.ComponentModel.DataAnnotations;
 
 namespace Foundation.Find.Cms.Models.Pages
 {

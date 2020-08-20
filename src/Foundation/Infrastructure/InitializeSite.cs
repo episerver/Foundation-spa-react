@@ -43,10 +43,8 @@ namespace Foundation.Infrastructure
 
         public void Initialize(InitializationEngine context)
         {
-           
             context.InitializeFoundationCms();
             context.InitializeFoundationFindCms();
-
 
             var handler = GlobalConfiguration.Configuration.MessageHandlers
                 .FirstOrDefault(x => x.GetType() == typeof(PassiveAuthenticationMessageHandler));
@@ -59,7 +57,6 @@ namespace Foundation.Infrastructure
 
         public void Uninitialize(InitializationEngine context)
         {
-
         }
     }
 }

@@ -46,7 +46,7 @@ namespace Foundation.Cms
             _services.AddTransient<IViewTemplateModelRegistrator, ViewTemplateModelRegistrator>();
             _services.AddSingleton<ISchemaDataMapper<BlogItemPage>, BlogItemPageSchemaMapper>();
             _services.AddSingleton<ISchemaDataMapper<CmsHomePage>, CmsHomePageSchemaMapper>();
-            _services.AddSingleton<IUserService,UserService>();
+            _services.AddSingleton<IUserService, UserService>();
             _services.AddSingleton<IHeaderViewModelFactory, CmsHeaderViewModelFactory>();
         }
 

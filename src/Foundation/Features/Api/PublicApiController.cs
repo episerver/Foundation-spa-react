@@ -94,7 +94,7 @@ namespace Foundation.Features.Api
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> InternalLogin(UserViewModel viewModel)
         {
-            
+
             var returnUrl = GetSafeReturnUrl(Request.UrlReferrer);
 
             if (!ModelState.IsValid)

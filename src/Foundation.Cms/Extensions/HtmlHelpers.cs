@@ -73,7 +73,7 @@ namespace Foundation.Cms.Extensions
 
             // Extended Javascript file
             AppendFiles(startPage.ScriptFiles, outputScript, _scriptFormat);
-            if(!(sitePageData is CmsHomePage))
+            if (!(sitePageData is CmsHomePage))
             {
                 AppendFiles(sitePageData.ScriptFiles, outputScript, _scriptFormat);
             }

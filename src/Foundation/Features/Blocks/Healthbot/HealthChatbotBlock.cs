@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using EPiServer.Core;
+﻿using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using Foundation.Cms;
 using Foundation.Cms.Blocks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Foundation.Features.Blocks.Healthbot
 {
