@@ -45,7 +45,6 @@ namespace Foundation.Helpers
                 alternateLocales = pageData.ExistingLanguages.Where(culture => culture.TextInfo.CultureName != defaultLocale)
                             .Select(culture => culture.TextInfo.CultureName.Replace('-', '_'));
             }
-            
 
             if (contentViewModel.CurrentContent is FoundationPageData)
             {
@@ -69,7 +68,7 @@ namespace Foundation.Helpers
                         Locale = defaultLocale.Replace('-', '_'),
                         AlternateLocales = alternateLocales,
                         ContentType = contentType,
-                        Category = homePage.Categories?.Select(c => c.ToString()),
+                        Category = GetCategoryNames(homePage.Categories),
                         ModifiedTime = homePage.Changed,
                         PublishedTime = homePage.StartPublish ?? null,
                         ExpirationTime = homePage.StopPublish ?? null
@@ -140,7 +139,7 @@ namespace Foundation.Helpers
                         AlternateLocales = alternateLocales,
                         Author = foundationPageData.AuthorMetaData,
                         ContentType = contentType,
-                        Category = foundationPageData.Categories?.Select(c => c.ToString()),
+                        Category = GetCategoryNames(foundationPageData.Categories),
                         ModifiedTime = foundationPageData.Changed,
                         PublishedTime = foundationPageData.StartPublish ?? null,
                         ExpirationTime = foundationPageData.StopPublish ?? null
@@ -167,6 +166,18 @@ namespace Foundation.Helpers
             var url = new Uri(siteUrl, UrlResolver.Current.GetUrl(content));
 
             return url.ToString();
+        }
+
+        private static IEnumerable<string> GetCategoryNames(IEnumerable<ContentReference> categories)
+        {
+            if (categories == null)
+            {
+                yield break;
+            }
+            foreach (var category in categories)
+            {
+                yield return _contentLoader.Value.Get<IContent>(category).Name;
+            }
         }
     }
 }
