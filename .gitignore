@@ -85,5 +85,3 @@ src/Foundation/License.config
 src/Foundation/connectionStrings.config
 rebuild.cmd
 resetup.cmd
-src/Foundation/Assets/js/footer.min.js
-src/Foundation/Assets/js/footer.min.js.map

@@ -1,4 +1,4 @@
-﻿class ProductSearch {
+﻿export class ProductSearch {
     constructor() {
         // for filtering
         this.PageClass = "jsPaginate";
@@ -200,7 +200,7 @@
     }
 }
 
-class FilterOption {
+export class FilterOption {
     constructor() {
         this.Page = 1;
         this.PageSize = 15;
@@ -210,7 +210,7 @@ class FilterOption {
     }
 }
 
-class ContentSearch {
+export class ContentSearch {
 
     changePageContent(page) {
         var search = new ProductSearch();
@@ -249,7 +249,7 @@ class ContentSearch {
     }
 }
 
-class NewProductsSearch {
+export class NewProductsSearch {
     changePageContent(page) {
         var inst = this;
         var url = window.location.href + "?page=" + page;
@@ -283,7 +283,7 @@ class NewProductsSearch {
     }
 }
 
-class SalesSearch {
+export class SalesSearch {
     changePageContent(page) {
         var inst = this;
         var url = window.location.href + "?page=" + page;

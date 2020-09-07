@@ -1,5 +1,6 @@
-﻿class BlockTracking  {
+﻿export class BlockTracking  {
     init() {
+        console.log("TrackingSSSc")
         var inst = this;
         $('.heroblock').click(function (e) {
             inst.trackingHeroBlock(e);
@@ -8,6 +9,8 @@
         $('.video-block').on('ended', function (e) {
             inst.trackingVideoBlock(e);
         });
+
+        console.log("TrackingSS")
     }
 
     trackingHeroBlock(e) {

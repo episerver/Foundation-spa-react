@@ -1,76 +1,22 @@
 ﻿@charset 'UTF-8';
 
 // 1. Configuration and helpers
-@import
-    'utils/variables';
+@import 'abstracts/**/*.scss';
 
 // 2. Vendors
-@import
-    'vendors/bootstrap-4.3.1/bootstrap';
+@import '~bootstrap/scss/bootstrap';
 
 // 3. Base stuff
-@import
-    'base/typography',
-    'base/helpers';
+@import 'base/**/*.scss';
 
 // 4. Layout-related sections
-@import
-    'layout/header',
-    'layout/footer',
-    'layout/navigation-bar',
-    'layout/navigation',
-    'layout/mobile-navigation';
+@import 'layout/**/*.scss';
 
 // 5. Components
-@import
-    'components/buttons',
-    'components/textbox',
-    'components/checkbox',
-    'components/select-menu',
-    'components/icon-menu',
-    'components/hamburger-menu',
-    'components/loading-box',
-    'components/list-group',
-    'components/dropdown',
-    'components/table',
-    'components/icon-buttons',
-    'components/easy-autocomplete';
+@import 'components/**/*.scss';
 
 // 6. Template specific styles
-@import
-    'templates/widgets/login-users',
-    'templates/widgets/profile-sidebar',
-    'templates/widgets/toolbar',
-    'templates/widgets/breadcrumb',
-    'templates/widgets/searchbox',
-    'templates/widgets/teaser';
-
-@import
-    'templates/blocks/hero-block',
-    'templates/blocks/button-block',
-    'templates/blocks/calendar-block',
-    'templates/blocks/featurebox-block',
-    'templates/blocks/vimeo-block',
-    'templates/blocks/teaser-block',
-    'templates/blocks/video-block',
-    'templates/blocks/breadcrumb-block',
-    'templates/blocks/text-block';
-
-@import
-    'templates/forms/form';
-
-@import
-    'templates/pages/home',
-    'templates/pages/standard-page',
-    'templates/pages/my-account-pages',
-    'templates/pages/location',
-    'templates/pages/people',
-    'templates/pages/search-page',
-    'templates/pages/blog-list',
-    'templates/pages/blog-item',
-    'templates/pages/login',
-    'templates/pages/error';
+@import 'templates/**/*.scss';
 
 // 7. Themes
-@import
-    'themes/default';
+@import 'themes/**/*.scss';

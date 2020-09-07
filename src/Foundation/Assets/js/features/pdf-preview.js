@@ -1,4 +1,4 @@
-﻿class PdfPreview {
+﻿export class PdfPreview {
     Render() {
         $('.jsPdfPreview').each(function (i, e) {
             let url = $(e).attr('mediaUrl');

@@ -1,4 +1,4 @@
-class MobileNavigation {
+export class MobileNavigation {
     constructor(params) {
         this.SearchBoxId = params.searchBoxId;
         this.OpenSearchBoxId = params.openSearchBoxId;

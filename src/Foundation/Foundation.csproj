@@ -830,38 +830,32 @@
     <Content Include="Assets\icons\cms\pages\sitemap.png" />
     <Content Include="Assets\icons\mosey-logo.svg" />
     <Content Include="Assets\imgs\blog-img1.jpg" />
-    <Content Include="Assets\js\features\BlockTracking.js" />
-    <Content Include="Assets\js\features\Blog.js" />
-    <Content Include="Assets\js\features\Dropdown.js" />
-    <Content Include="Assets\js\features\PdfPreview.js" />
-    <Content Include="Assets\js\features\Header.js" />
-    <Content Include="Assets\js\features\mobile-navigation.js" />
+    <Content Include="Assets\js\features\block-tracking.js" />
+    <Content Include="Assets\js\features\blog.js" />
+    <Content Include="Assets\js\features\dropdown.js" />
+    <Content Include="Assets\js\features\foundation.cms.js" />
     <Content Include="Assets\js\features\foundation.init.js" />
-    <Content Include="Assets\js\features\MyProfile.js" />
-    <Content Include="Assets\js\features\Search.js" />
-    <Content Include="Assets\js\features\SearchBox.js" />
-    <Content Include="Assets\js\features\Selection.js" />
-    <Content Include="Assets\js\features\selective\People.js" />
-    <Content Include="Assets\js\features\selective\Locations.js" />
-    <Content Include="Assets\js\footer.min.js" />
+    <Content Include="Assets\js\features\header.js" />
+    <Content Include="Assets\js\features\mobile-navigation.js" />
+    <Content Include="Assets\js\features\my-profile.js" />
+    <Content Include="Assets\js\features\notification-helper.js" />
+    <Content Include="Assets\js\features\pdf-preview.js" />
+    <Content Include="Assets\js\features\search.js" />
+    <Content Include="Assets\js\features\search-box.js" />
+    <Content Include="Assets\js\features\selection.js" />
+    <Content Include="Assets\js\features\selective\locations.js" />
+    <Content Include="Assets\js\features\selective\people.js" />
+    <Content Include="Assets\js\main.js" />
     <Content Include="Assets\js\main.min.js" />
     <Content Include="Assets\js\plugins\fontawesomeicons.js" />
-    <Content Include="Assets\js\features\notifyHelper.js" />
     <Content Include="Assets\js\plugins\lazysizes.min.js" />
     <Content Include="Assets\js\plugins\ls.bgset.min.js" />
-    <Content Include="Assets\js\vendors\bootstrap-slider\bootstrap-slider.js" />
-    <Content Include="Assets\js\vendors\jquery\jquery.easy-autocomplete.min.js" />
-    <Content Include="Assets\js\vendors\jquery\jquery.zoom.js" />
     <Content Include="Assets\js\plugins\notify.js" />
     <Content Include="Assets\js\vendors\axios\axios.min.js" />
+    <Content Include="Assets\js\vendors\bootstrap-4.3.1\bootstrap.min.js" />
+    <Content Include="Assets\js\vendors\bootstrap-slider\bootstrap-slider.js" />
     <Content Include="Assets\js\vendors\feather-icons\feather.min.js" />
     <Content Include="Assets\js\vendors\fullcalendar\fullcalendar.min.js" />
-    <Content Include="Assets\js\vendors\jquery\jquery-ui.min.js" />
-    <Content Include="Assets\js\vendors\jquery\jquery.validate.min.js" />
-    <Content Include="Assets\js\vendors\jquery\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Assets\js\vendors\jsuri\jsuri-1.1.1.min.js" />
-    <Content Include="Assets\js\vendors\moments\moment.min.js" />
-    <Content Include="Assets\js\vendors\bootstrap-4.3.1\bootstrap.min.js" />
     <Content Include="Assets\js\vendors\gijgo\gijgo.min.js" />
     <Content Include="Assets\js\vendors\gijgo\messages\messages.bg-bg.js" />
     <Content Include="Assets\js\vendors\gijgo\messages\messages.bg-bg.min.js" />
@@ -886,6 +880,13 @@
     <Content Include="Assets\js\vendors\gijgo\messages\messages.zh-tw.js" />
     <Content Include="Assets\js\vendors\gijgo\messages\messages.zh-tw.min.js" />
     <Content Include="Assets\js\vendors\jquery\jquery-3.4.0.min.js" />
+    <Content Include="Assets\js\vendors\jquery\jquery-ui.min.js" />
+    <Content Include="Assets\js\vendors\jquery\jquery.easy-autocomplete.min.js" />
+    <Content Include="Assets\js\vendors\jquery\jquery.validate.min.js" />
+    <Content Include="Assets\js\vendors\jquery\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Assets\js\vendors\jquery\jquery.zoom.js" />
+    <Content Include="Assets\js\vendors\jsuri\jsuri-1.1.1.min.js" />
+    <Content Include="Assets\js\vendors\moments\moment.min.js" />
     <Content Include="Assets\js\vendors\mvc-grid\mvc-grid.js" />
     <Content Include="Assets\js\vendors\pdfobject\PdfObject.js" />
     <Content Include="Assets\js\vendors\popper\popper.min.js" />
@@ -949,7 +950,6 @@
     <Content Include="Features\Shared\Foundation\_Facet.cshtml" />
     <Content Include="Features\Web.config" />
     <Content Include="Global.asax" />
-    <Content Include="gulpfile.js" />
     <Content Include="lang\AbTestVisitorGroupCriteria.xml" />
     <Content Include="lang\CookieVisitorGroupCriteria.xml" />
     <Content Include="lang\Display_EN.xml" />
@@ -1040,7 +1040,6 @@
     <Content Include="Assets\icons\cms\LICENSE" />
     <Content Include="Assets\icons\cms\README.md" />
     <Content Include="Assets\scss\main.scss" />
-    <Content Include="Assets\js\main.min.js.map" />
     <Content Include="Assets\scss\main.min.css.map" />
     <Content Include="Assets\scss\vendors\gijgo\fonts\gijgo-material.eot" />
     <Content Include="Assets\scss\vendors\gijgo\fonts\gijgo-material.ttf" />
@@ -1078,7 +1077,6 @@
     <Content Include="Assets\scss\vendors\font-awesome-5.9.0\font-awesome-list.json" />
     <Content Include="Assets\scss\templates\widgets\_teaser.scss" />
     <Content Include="Assets\scss\components\_easy-autocomplete.scss" />
-    <Content Include="Assets\js\features\foundation.cms.js" />
     <Content Include="Assets\scss\templates\forms\_form.scss" />
     <Content Include="Assets\scss\templates\widgets\_breadcrumb.scss" />
     <Content Include="Assets\scss\templates\pages\_blog-item.scss" />
@@ -1288,17 +1286,8 @@
     <Content Include="modules\_protected\BVNetwork.404Handler\BVNetwork.404Handler.zip" />
     <Content Include="Features\Blocks\Views\PageListBlock\_CarouselTemplate.cshtml" />
     <Content Include="Features\Blocks\Healthbot\HealthChatBotBlock.cshtml" />
-    <Content Include="Assets\js\vendors\slick\config.rb" />
-    <Content Include="Assets\js\vendors\slick\fonts\slick.eot" />
-    <Content Include="Assets\js\vendors\slick\fonts\slick.ttf" />
-    <Content Include="Assets\js\vendors\slick\fonts\slick.woff" />
-    <Content Include="Assets\js\vendors\slick\slick-theme.less" />
-    <Content Include="Assets\js\vendors\slick\slick-theme.scss" />
-    <Content Include="Assets\js\vendors\slick\slick.less" />
-    <Content Include="Assets\js\vendors\slick\slick.scss" />
     <Content Include="Features\Shared\Foundation\ErrorPage.cshtml" />
     <Content Include="Assets\scss\templates\pages\_error.scss" />
-    <Content Include="Assets\js\footer.min.js.map" />
     <Content Include="modules\_protected\EPiServer.Forms.Samples\Views\ElementBlocks\Web.config" />
     <Content Include="modules\_protected\EPiServer.Forms.Samples\module.config" />
     <Content Include="Assets\scss\templates\pages\_people.scss" />
@@ -1345,6 +1334,18 @@
     <Content Include="modules\_protected\episerver-labs-grid-view\web.config" />
     <Content Include="modules\_protected\episerver-labs-grid-view\episerver-labs-grid-view.zip" />
     <Content Include="modules\_protected\Geta.SEO.Sitemaps\Geta.SEO.Sitemaps.zip" />
+    <Content Include="webpack.common.js" />
+    <Content Include="webpack.dev.js" />
+    <Content Include="webpack.prod.js" />
+    <Content Include="Assets\js\vendors\slick\config.rb" />
+    <Content Include="Assets\js\vendors\slick\fonts\slick.eot" />
+    <Content Include="Assets\js\vendors\slick\fonts\slick.ttf" />
+    <Content Include="Assets\js\vendors\slick\fonts\slick.woff" />
+    <Content Include="Assets\js\vendors\slick\slick-theme.less" />
+    <Content Include="Assets\js\vendors\slick\slick-theme.scss" />
+    <Content Include="Assets\js\vendors\slick\slick.less" />
+    <Content Include="Assets\js\vendors\slick\slick.scss" />
+    <Content Include="Assets\js\main.min.js.map" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -1401,7 +1402,9 @@
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
   -->
+  <Target Name="AfterBuild">
+    <Exec Condition="'$(Configuration)' == 'Debug' " Command="npm run dev" />
+    <Exec Condition="'$(Configuration)' == 'Release' " Command="npm run prod" />
+  </Target>
 </Project>

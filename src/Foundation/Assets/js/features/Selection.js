@@ -1,4 +1,4 @@
-﻿class Selection {
+﻿export class Selection {
     Init() {
         this.Expand();
         this.Collapse();

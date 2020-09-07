@@ -1,4 +1,4 @@
-﻿class SearchBox {
+﻿export class SearchBox {
     constructor() {
         this.ApiUrl = "https://eastus.api.cognitive.microsoft.com/vision/v1.0/analyze?visualFeatures=Description";
         this.AuthKey = "38192ad9dc5647d1b4d6328d420ac505";

@@ -1,4 +1,4 @@
-﻿class FoundationCms {
+﻿export class FoundationCms {
     init() {
         axios.defaults.headers.common['Accept'] = '*/*';
         window.notification = new NotifyHelper();

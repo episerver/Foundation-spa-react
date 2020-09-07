@@ -1,4 +1,4 @@
-﻿class Locations {
+﻿export class Locations {
     constructor() {
         this.locationMap = {};
         this.locationInfobox = {};

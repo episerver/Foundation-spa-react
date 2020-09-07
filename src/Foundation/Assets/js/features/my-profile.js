@@ -1,4 +1,4 @@
-﻿class MyProfile {
+﻿export class MyProfile {
 
     saveProfile(options) {
         $('.loading-box').show();

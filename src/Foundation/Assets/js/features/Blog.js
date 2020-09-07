@@ -1,4 +1,4 @@
-﻿class Blog {
+﻿export class Blog {
     init() {
         var inst = this;
         $(document).on("click", ".get-blog-comment", this.getBlogComment);

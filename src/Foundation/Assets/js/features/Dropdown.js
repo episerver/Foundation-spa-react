@@ -1,4 +1,4 @@
-﻿class Dropdown {
+﻿export class Dropdown {
     constructor(divId) {
         if (divId) {
             this.DivContainer = divId;

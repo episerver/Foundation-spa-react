@@ -1,8 +1,4 @@
-﻿class Persons {
-    constructor() {
-        this.Init();
-    }
-
+﻿export class Persons {
     Init() {
         var instance = this;
         if ($('#persons').html().trim()) {

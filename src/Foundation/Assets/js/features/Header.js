@@ -1,4 +1,4 @@
-﻿class Header {
+﻿export class Header {
     constructor() {
         this.Popovers = [];
     }
