@@ -1,7 +1,6 @@
 ﻿using EPiServer;
 using EPiServer.Web.Routing;
-using Foundation.Cms.Pages;
-using Foundation.Cms.ViewModels.Header;
+using Foundation.Features.Home;
 using System.Web.Mvc;
 
 namespace Foundation.Features.Header
@@ -10,7 +9,6 @@ namespace Foundation.Features.Header
     {
         private readonly IHeaderViewModelFactory _headerViewModelFactory;
         private readonly IContentRouteHelper _contentRouteHelper;
-        private readonly IContentLoader _contentLoader;
 
         public HeaderController(IHeaderViewModelFactory headerViewModelFactory,
             IContentRouteHelper contentRouteHelper,
@@ -18,14 +16,13 @@ namespace Foundation.Features.Header
         {
             _headerViewModelFactory = headerViewModelFactory;
             _contentRouteHelper = contentRouteHelper;
-            _contentLoader = contentLoader;
         }
 
         [ChildActionOnly]
-        public ActionResult GetHeader(CmsHomePage homePage)
+        public ActionResult GetHeader(HomePage homePage)
         {
             var content = _contentRouteHelper.Content;
-            return PartialView("_Header", _headerViewModelFactory.CreateHeaderViewModel<HeaderViewModel>(content, homePage));
+            return PartialView("_Header", _headerViewModelFactory.CreateHeaderViewModel(content, homePage));
         }
     }
 }

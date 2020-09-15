@@ -2,7 +2,7 @@
 using EPiServer.Find.Api.Querying;
 using Newtonsoft.Json;
 
-namespace Foundation.Find.Cms.Facets
+namespace Foundation.Find.Facets
 {
     public class FacetFilterRequest : FacetRequest
     {

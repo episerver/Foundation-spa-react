@@ -1,0 +1,108 @@
+﻿@using EPiServer.Core
+@using EPiServer.Web.Mvc.Html
+@using Foundation.Features.Blog.BlogItemPage
+
+@model BlogItemPageViewModel
+
+@{
+    var contentLoader = EPiServer.ServiceLocation.ServiceLocator.Current.GetInstance<EPiServer.IContentLoader>();
+}
+
+@Html.FullRefreshPropertiesMetaData()
+
+<div class="row blog-item">
+    <div class="col-10">
+
+        @* Header *@
+
+        <div class="row">
+            @* Tags *@
+
+            <div class="col-12">
+                @if (Model.Tags != null)
+                {
+                    <div class="text-center" @Html.EditAttributes(x => x.CurrentContent.Categories)>
+                        @if (Model.Tags != null)
+                        {
+                            <!--<i class="fa fa-tags"></i>-->
+                            foreach (var tag in Model.Tags)
+                            {
+                                <span data-epi-block-id="@tag.Count">
+                                    <a href="@tag.Url"><span class="small text-uppercase">@tag.DisplayName</span></a>
+                                </span>
+                            }
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 pt-4 pb-4">
+                <h1 class="text-center">@Model.CurrentContent.Name</h1>
+            </div>
+            @* Header Image *@
+            <!--<div class="col-12">
+
+                @if (PageEditing.PageIsInEditMode)
+                {
+                    <img class="blog-item__image img-fluid lazyload" data-src="@Url.ContentUrl(Model.CurrentContent.PageImage)" @Html.EditAttributes(x => x.CurrentContent.PageImage) />
+                }
+                else if (!ContentReference.IsNullOrEmpty(Model.CurrentContent.PageImage))
+                {
+                    <picture class="blog-item__image img-fluid">
+                        <source data-srcset="@Url.ContentUrl(Model.CurrentContent.PageImage)?format=webp" type="image/webp">
+                        <img class="blog-item__image img-fluid lazyload" data-src="@Url.ContentUrl(Model.CurrentContent.PageImage)" />
+                    </picture>
+                }
+            </div>-->
+        </div>
+
+        <div class="row pb-5 text-center" style="border-bottom: 5px solid #E6F3EF;">
+            @if (Model.CurrentContent.StartPublish != null)
+            {
+                <div class="col-12 link">
+                    <span @Html.EditAttributes(x => x.CurrentContent.StartPublish)>@Model.StartPublish.ToString("dd MMM yyyy")</span>
+                    @if (!Model.CurrentContent.Author.IsNullOrEmpty())
+                    {
+                        <span> - </span>
+                        @Html.PropertyFor(x => x.CurrentContent.Author);
+                    }
+                </div>
+            }
+
+        </div>
+
+        @* Bread Crumb *@
+        <div class="row pt-5 justify-content-center">
+            <div class="col-11">
+                <ul class="bread-crumb small" style="float:left;padding-left:0">
+                    @foreach (var p in Model.BreadCrumbs)
+                    {
+                        <li><a href="@p.Value">@p.Key</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+
+
+
+        @* Main Content *@
+        <div class="row justify-content-center">
+            <div class="col-11">
+                <div @Html.EditAttributes(x => x.CurrentContent.MainBody)>
+                    @Html.Raw(@Model.CurrentContent.MainBody)
+                </div>
+            </div>
+        </div>
+        <br />
+
+
+        @* Content Area *@
+        <div class="row">
+            <div class="col-12">
+                @Html.PropertyFor(x => x.CurrentContent.MainContentArea, new { CssClass = "equal-height" })
+            </div>
+        </div>
+    </div>
+</div>

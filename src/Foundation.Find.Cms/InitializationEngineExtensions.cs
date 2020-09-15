@@ -2,13 +2,13 @@
 using EPiServer.Core;
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
-using Foundation.Find.Cms.Facets;
-using Foundation.Find.Cms.Facets.Config;
+using Foundation.Find.Facets;
+using Foundation.Find.Facets.Config;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Foundation.Find.Cms
+namespace Foundation.Find
 {
     public static class InitializationEngineExtensions
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Foundation.Find.Cms.Facets
+namespace Foundation.Find.Facets
 {
     public interface IFacetRegistry
     {

@@ -2,8 +2,7 @@
 using EPiServer.Core;
 using EPiServer.Framework.DataAnnotations;
 using EPiServer.Web.Mvc;
-using Foundation.Cms.Blocks;
-using Foundation.Cms.ViewModels;
+using Foundation.Features.Shared;
 using System;
 using System.Web.Mvc;
 
@@ -15,7 +14,8 @@ namespace Foundation.Features.Blocks
         public override ActionResult Index(FoundationBlockData currentBlock)
         {
             var model = CreateModel(currentBlock);
-            return PartialView(string.Format("~/Features/Blocks/Views/{0}.cshtml", currentBlock.GetOriginalType().Name), model);
+            var blockName = currentBlock.GetOriginalType().Name;
+            return PartialView(string.Format("~/Features/Blocks/{0}/{1}.cshtml", blockName, blockName), model);
         }
 
         private static IBlockViewModel<BlockData> CreateModel(BlockData currentBlock)

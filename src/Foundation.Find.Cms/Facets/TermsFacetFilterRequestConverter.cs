@@ -6,7 +6,7 @@ using Newtonsoft.Json.Serialization;
 using System.Globalization;
 using System.Linq;
 
-namespace Foundation.Find.Cms.Facets
+namespace Foundation.Find.Facets
 {
     public class TermsFacetFilterRequestConverter : CustomWriteConverterBase<TermsFacetFilterRequest>
     {

@@ -1,6 +1,6 @@
 using EPiServer.Find.Api.Facets;
 
-namespace Foundation.Find.Cms.Facets
+namespace Foundation.Find.Facets
 {
     public class MultiSelectTermCount : TermCount, ISelectable
     {

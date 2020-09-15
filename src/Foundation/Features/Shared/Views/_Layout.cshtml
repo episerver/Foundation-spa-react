@@ -1,0 +1,37 @@
+@model IContentViewModel<IContent>
+
+@{
+    Layout = "~/Features/Shared/Views/_MasterLayout.cshtml";
+    var foundationPageData = Model.CurrentContent as IFoundationContent;
+}
+
+@section AdditionalStyles {
+    @RenderSection("AdditionalStyles", required: false)
+}
+
+<div class="loading-box" style="display: none">
+    <div class="loader"></div>
+</div>
+
+@Html.RenderEPiServerQuickNavigator()
+
+@if (!foundationPageData?.HideSiteHeader ?? false)
+{
+    { Html.RenderAction("GetHeader", "Header", new { homePage = Model.StartPage }); }
+}
+
+<div class="container">
+    @RenderBody()
+</div>
+
+@if (!foundationPageData?.HideSiteFooter ?? false)
+{
+    @Html.Partial("_Footer", Model)
+}
+
+<script src="~/Assets/js/main.min.js"></script>
+
+@RenderSection("AdditionalScripts", required: false)
+@Html.RequiredClientResources("Footer")
+@Html.RenderExtendedScripts(Model.CurrentContent)
+@Model.SchemaMarkup

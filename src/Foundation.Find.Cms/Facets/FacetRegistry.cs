@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Foundation.Find.Cms.Facets
+namespace Foundation.Find.Facets
 {
     public class FacetRegistry : IFacetRegistry
     {

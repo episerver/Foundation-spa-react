@@ -1,7 +1,7 @@
-﻿using Foundation.Find.Cms.Facets.Config;
+﻿using Foundation.Find.Facets.Config;
 using System.Collections.Generic;
 
-namespace Foundation.Find.Cms.Facets
+namespace Foundation.Find.Facets
 {
     public interface IFacetConfiguration
     {

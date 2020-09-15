@@ -1,14 +1,12 @@
 using EPiServer.Core;
-using Foundation.Cms.Pages;
-using Foundation.Cms.ViewModels;
+using Foundation.Features.Shared;
 using System.Collections.Generic;
 
 namespace Foundation.Features.Preview
 {
     public class PreviewModel : ContentViewModel<FoundationPageData>
     {
-        public PreviewModel(FoundationPageData currentPage, IContent previewContent)
-            : base(currentPage)
+        public PreviewModel(FoundationPageData currentPage, IContent previewContent) : base(currentPage)
         {
             PreviewContent = previewContent;
             Areas = new List<PreviewArea>();

@@ -1,0 +1,61 @@
+﻿@using Foundation.Features.Header
+@using Foundation.Features.Blocks.MenuItemBlock
+
+@model HeaderViewModel 
+    
+@Html.FullRefreshPropertiesMetaData(new[] { "MainMenu", "SiteLogo" })
+
+@{
+    var navigationHeight = Model.LogoHeight + 30;
+}
+
+<!-- Navigation bar for Desktop -->
+<div class="d-none d-lg-block">
+    <nav class="container">
+        <div class="row no-gutters">
+            <div class="navigation" style="height:@(navigationHeight)px">
+                <div class="navigation__logo @(Model.HomePage.HeaderMenuStyle == "LeftLogo" ? "flex-start" : "flex-center")"
+                     style="@(Model.HomePage.HeaderMenuStyle == "LeftLogo" ? "order: -1; width: 75%;" : "")">
+                    <a href="/">
+                        <picture>
+                            <source data-srcset="@Url.ContentUrl(Model.HomePage.SiteLogo)?format=webp&height=@(Model.LogoHeight)" type="image/webp">
+                            <img style="max-height: @(Model.LogoHeight)px" data-src="@Url.ContentUrl(Model.HomePage.SiteLogo)?height=@(Model.LogoHeight)" class="img-fluid lazyload" @Html.EditAttributes(x => x.HomePage.SiteLogo) />
+                        </picture>
+                    </a>
+                </div>
+                <div class="navigation__main" @Html.EditAttributes(x => x.HomePage.MainMenu)>
+                    @Html.Partial("_Menu", Model.MenuItems ?? new List<MenuItemViewModel>())
+                </div>
+                <ul class="navigation__right">
+                    <li>
+                        <div class="icon-menu" id="js-searchbutton">
+                            <i data-feather="search"></i>
+                        </div>
+                        <div class="searchbox" style="height:@(navigationHeight)px" id="js-searchbox">
+                            <i class="icon-left" data-feather="search"></i>
+                            <input placeholder="Search" id="js-searchbox-input" class="jsSearchText"
+                                   data-search="@Url.ContentUrl(Model.HomePage.SearchPage)"
+                                   data-result-container="#jsResultSearch" />
+                            <input type="hidden" id="searchConfidence" value="1" />
+                            <input class="hidden" type="file" id="fileSearchInput" />
+                            <div class="icon-right">
+                                <i data-feather="camera" class="jsSearchImage" data-input="#fileSearchInput"></i>
+                                <i data-feather="x" id="js-searchbox-close"></i>
+                            </div>
+                        </div>
+                        <div class="searchbox-popover" id="jsResultSearch" style="display: none">
+                            <div style="position: relative; min-height: 80px;">
+                                <div class="loading-cart" style="display: none">
+                                    <div class="loader"></div>
+                                </div>
+                                <div class="js-searchbox-content">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<!-- END - Navigation bar for Desktop -->

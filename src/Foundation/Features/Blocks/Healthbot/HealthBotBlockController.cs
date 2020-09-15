@@ -1,7 +1,7 @@
 ﻿using EPiServer.Framework.DataAnnotations;
 using EPiServer.Framework.Web.Resources;
 using EPiServer.Web.Mvc;
-using Foundation.Cms.ViewModels;
+using Foundation.Features.Shared;
 using System.Collections.Generic;
 using System.Web.Mvc;
 

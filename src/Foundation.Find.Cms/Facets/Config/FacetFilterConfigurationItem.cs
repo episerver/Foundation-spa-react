@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace Foundation.Find.Cms.Facets.Config
+namespace Foundation.Find.Facets.Config
 {
     public class FacetFilterConfigurationItem
     {

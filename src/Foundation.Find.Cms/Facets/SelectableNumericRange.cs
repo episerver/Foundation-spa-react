@@ -1,7 +1,7 @@
 using EPiServer.Find.Api.Facets;
 using Newtonsoft.Json;
 
-namespace Foundation.Find.Cms.Facets
+namespace Foundation.Find.Facets
 {
     public class SelectableNumericRange : ISelectable
     {

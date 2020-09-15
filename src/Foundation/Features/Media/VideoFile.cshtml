@@ -1,6 +1,15 @@
-﻿@model Foundation.Cms.Media.VideoFile
+﻿@using Foundation.Features.Media
 
-<video style="width: 100%; height: auto;" controls>
-    <source src="@Url.ContentUrl(Model.ContentLink)" type="video/mp4">
-    Your browser does not support HTML5 video.
-</video>
+@model VideoFileViewModel
+
+<div class="video-file">
+    <video class="video-file__frame" @(Model.Autoplay ? "autoplay" : "") @(Model.DisplayControls ? "controls" : "")
+           poster="@(string.IsNullOrEmpty(Model.PreviewImage) ? "" : Model.PreviewImage)">
+        <source src="@Model.VideoLink" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+    @if (!string.IsNullOrEmpty(Model.Copyright))
+    {
+        <p class="video-file__copyright">@Model.Copyright</p>
+    }
+</div>

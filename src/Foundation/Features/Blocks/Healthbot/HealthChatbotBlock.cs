@@ -1,8 +1,8 @@
 ﻿using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
-using Foundation.Cms;
-using Foundation.Cms.Blocks;
+using Foundation.Features.Shared;
+using Foundation.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 
 namespace Foundation.Features.Blocks.Healthbot
@@ -10,7 +10,7 @@ namespace Foundation.Features.Blocks.Healthbot
     [ContentType(DisplayName = "Health chatbot",
         GUID = "18A7B10E-451C-4223-BAD0-36BD224E3927",
         Description = "Used to insert a health chat bot",
-        GroupName = CmsGroupNames.Content,
+        GroupName = GroupNames.Content,
         AvailableInEditMode = true)]
     [ImageUrl("~/assets/icons/cms/blocks/CMS-icon-block-25.png")]
     public class HealthChatbotBlock : FoundationBlockData

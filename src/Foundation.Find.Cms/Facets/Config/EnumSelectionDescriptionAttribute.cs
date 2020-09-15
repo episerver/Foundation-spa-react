@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Foundation.Find.Cms.Facets.Config
+namespace Foundation.Find.Facets.Config
 {
     public class EnumSelectionDescriptionAttribute : DescriptionAttribute
     {

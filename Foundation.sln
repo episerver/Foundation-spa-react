@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foundation", "Src\Foundatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundation.Cms", "src\Foundation.Cms\Foundation.Cms.csproj", "{C9638F52-7402-446D-BF89-993686E26A52}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundation.Find.Cms", "src\Foundation.Find.Cms\Foundation.Find.Cms.csproj", "{07C19549-7028-4CBA-BA73-FADD93BE8E5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundation.Find", "src\Foundation.Find.Cms\Foundation.Find.csproj", "{07C19549-7028-4CBA-BA73-FADD93BE8E5A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{04685227-468D-440F-A0DB-4E6C01D550CA}"
 	ProjectSection(SolutionItems) = preProject

@@ -3,7 +3,7 @@ using EPiServer.Find.Api.Querying;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace Foundation.Find.Cms.Facets
+namespace Foundation.Find.Facets
 {
     [JsonConverter(typeof(RangeFacetRequestConverter))]
     public class RangeFacetFilterRequest : FacetFilterRequest

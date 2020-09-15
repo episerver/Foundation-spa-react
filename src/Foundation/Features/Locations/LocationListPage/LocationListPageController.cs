@@ -5,14 +5,12 @@ using EPiServer.Find.Cms;
 using EPiServer.Find.Framework;
 using EPiServer.Personalization;
 using EPiServer.Web.Mvc;
-using Foundation.Find.Cms;
-using Foundation.Find.Cms.Locations;
-using Foundation.Find.Cms.Locations.ViewModels;
+using Foundation.Find;
 using System.Web.Mvc;
 
 namespace Foundation.Features.Locations.LocationListPage
 {
-    public class LocationListPageController : PageController<Find.Cms.Models.Pages.LocationListPage>
+    public class LocationListPageController : PageController<LocationListPage>
     {
         private readonly IContentLoader _contentLoader;
 
@@ -21,9 +19,9 @@ namespace Foundation.Features.Locations.LocationListPage
             _contentLoader = contentLoader;
         }
 
-        public ActionResult Index(Find.Cms.Models.Pages.LocationListPage currentPage)
+        public ActionResult Index(LocationListPage currentPage)
         {
-            var query = SearchClient.Instance.Search<Find.Cms.Models.Pages.LocationItemPage>()
+            var query = SearchClient.Instance.Search<LocationItemPage.LocationItemPage>()
                 .PublishedInCurrentLanguage()
                 .FilterOnReadAccess();
 

@@ -9,7 +9,7 @@ using System.Net;
 using System.Text;
 using System.Web;
 
-namespace Foundation.Find.Cms
+namespace Foundation.Find
 {
     public static class GeoPosition
     {

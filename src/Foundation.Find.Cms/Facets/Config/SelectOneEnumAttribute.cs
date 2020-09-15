@@ -2,7 +2,7 @@
 using System;
 using System.Web.Mvc;
 
-namespace Foundation.Find.Cms.Facets.Config
+namespace Foundation.Find.Facets.Config
 {
     public class SelectOneEnumAttribute : SelectOneAttribute, IMetadataAware
     {

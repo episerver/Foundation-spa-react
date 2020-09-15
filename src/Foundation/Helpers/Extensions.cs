@@ -2,7 +2,7 @@
 using EPiServer.Core;
 using EPiServer.ServiceLocation;
 using EPiServer.Web.Mvc.Html;
-using Foundation.Cms.Pages;
+using Foundation.Features.Home;
 using Foundation.Features.Login;
 using System;
 using System.Web.Mvc;
@@ -17,7 +17,7 @@ namespace Foundation.Helpers
         public static UserViewModel GetUserViewModel(this UrlHelper urlHelper, string returnUrl, string title = "Login")
         {
             var model = new UserViewModel();
-            ContentLoader.Value.TryGet(ContentReference.StartPage, out CmsHomePage homePage);
+            ContentLoader.Value.TryGet(ContentReference.StartPage, out HomePage homePage);
             model.Logo = urlHelper.ContentUrl(homePage?.SiteLogo);
             model.ResetPasswordUrl = urlHelper.ContentUrl(homePage?.ResetPasswordPage);
             model.Title = title;

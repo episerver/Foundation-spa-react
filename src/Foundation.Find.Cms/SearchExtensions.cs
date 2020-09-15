@@ -6,15 +6,13 @@ using EPiServer.Find.Api.Querying.Filters;
 using EPiServer.Find.Api.Querying.Queries;
 using EPiServer.Find.Helpers;
 using EPiServer.ServiceLocation;
-using Foundation.Cms.Categories;
-using Foundation.Find.Cms.Facets;
-using Foundation.Find.Cms.Models.Pages;
+using Foundation.Find.Facets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Foundation.Find.Cms
+namespace Foundation.Find
 {
     public static class SearchExtensions
     {
@@ -348,11 +346,6 @@ namespace Foundation.Find.Cms
                 });
         }
 
-        public static List<string> TagString(this LocationItemPage locationList)
-        {
-            return locationList.Categories.Select(cai => _contentRepository.Value.Get<StandardCategory>(cai).Name).ToList();
-        }
-
         private static Action<RangeFacetFilterRequest> NumericRangeFacetRequestAction(IClient searchClient,
             string fieldName,
             IEnumerable<NumericRange> range,
@@ -367,14 +360,13 @@ namespace Foundation.Find.Cms
             };
         }
 
-        public static ITypeSearch<T> AddWildCardQuery<T>(
-        this ITypeSearch<T> search,
-        string query,
-        Expression<Func<T, string>> fieldSelector)
+        public static ITypeSearch<T> AddWildCardQuery<T>(this ITypeSearch<T> search,
+            string query, Expression<Func<T, string>> fieldSelector)
         {
             var fieldName = search.Client.Conventions.FieldNameConvention
                 .GetFieldNameForAnalyzed(fieldSelector);
             var wildcardQuery = new WildcardQuery(fieldName, query.ToLowerInvariant());
+            
             return new Search<T, WildcardQuery>(search, context =>
             {
                 if (context.RequestBody.Query != null)

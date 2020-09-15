@@ -1,183 +1,276 @@
-﻿using Boilerplate.Web.Mvc.OpenGraph;
 using EPiServer;
 using EPiServer.Core;
-using EPiServer.DataAbstraction;
 using EPiServer.ServiceLocation;
+using EPiServer.SpecializedProperties;
 using EPiServer.Web;
+using EPiServer.Web.Mvc.Html;
 using EPiServer.Web.Routing;
-using Foundation.Cms.Categories;
-using Foundation.Cms.Pages;
-using Foundation.Cms.ViewModels;
-using Foundation.Find.Cms.Models.Pages;
-using Foundation.Infrastructure.OpenGraph;
+using Foundation.Cms.Extensions;
+using Foundation.Features.Home;
+using Foundation.Features.Shared;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.WebPages;
 
 namespace Foundation.Helpers
 {
     public static class HtmlHelpers
     {
-        private static readonly Lazy<IContentLoader> _contentLoader = new Lazy<IContentLoader>(() => ServiceLocator.Current.GetInstance<IContentLoader>());
-        private static readonly Lazy<IContentTypeRepository> _contentTypeRepository = new Lazy<IContentTypeRepository>(() => ServiceLocator.Current.GetInstance<IContentTypeRepository>());
+        private const string _cssFormat = "<link href=\"{0}\" rel=\"stylesheet\" />";
+        private const string _scriptFormat = "<script src=\"{0}\"></script>";
+        private const string _metaFormat = "<meta property=\"{0}\" content=\"{1}\" />";
 
-        public static IHtmlString RenderOpenGraphMetaData(this HtmlHelper helper, IContentViewModel<IContent> contentViewModel)
+        private static readonly Lazy<IContentLoader> _contentLoader =
+            new Lazy<IContentLoader>(() => ServiceLocator.Current.GetInstance<IContentLoader>());
+
+        private static readonly Lazy<IUrlResolver> _urlResolver =
+           new Lazy<IUrlResolver>(() => ServiceLocator.Current.GetInstance<IUrlResolver>());
+
+        private static readonly Lazy<IPermanentLinkMapper> _permanentLinkMapper =
+           new Lazy<IPermanentLinkMapper>(() => ServiceLocator.Current.GetInstance<IPermanentLinkMapper>());
+
+        public static MvcHtmlString RenderExtendedCss(this HtmlHelper helper, IContent content)
         {
-            var metaTitle = (contentViewModel.CurrentContent as FoundationPageData)?.MetaTitle ?? contentViewModel.CurrentContent.Name;
-            var defaultLocale = EPiServer.Globalization.GlobalizationSettings.CultureLanguageCode;
-            IEnumerable<string> alternateLocales = null;
-            string contentType = null;
-            string imageUrl = null;
-
-            if (contentViewModel.CurrentContent is FoundationPageData && ((FoundationPageData)contentViewModel.CurrentContent).PageImage != null)
+            if (content == null || ContentReference.StartPage == PageReference.EmptyReference || !(content is IFoundationContent sitePageData))
             {
-                imageUrl = GetUrl(((FoundationPageData)contentViewModel.CurrentContent).PageImage);
-            }
-            else
-            {
-                imageUrl = GetDefaultImageUrl();
+                return new MvcHtmlString("");
             }
 
-            if (contentViewModel.CurrentContent is FoundationPageData pageData)
+            var outputCss = new StringBuilder(string.Empty);
+            var startPage = _contentLoader.Value.Get<HomePage>(ContentReference.StartPage);
+
+            // Extended Css file
+            AppendFiles(startPage.CssFiles, outputCss, _cssFormat);
+            if (!(sitePageData is HomePage))
             {
-                alternateLocales = pageData.ExistingLanguages.Where(culture => culture.TextInfo.CultureName != defaultLocale)
-                            .Select(culture => culture.TextInfo.CultureName.Replace('-', '_'));
+                AppendFiles(sitePageData.CssFiles, outputCss, _cssFormat);
             }
 
-            if (contentViewModel.CurrentContent is FoundationPageData)
+            // Inline CSS
+            if (!string.IsNullOrWhiteSpace(startPage.Css) || !string.IsNullOrWhiteSpace(sitePageData.Css))
             {
-                if (((FoundationPageData)contentViewModel.CurrentContent).MetaContentType != null)
+                outputCss.AppendLine("<style>");
+                outputCss.AppendLine(!string.IsNullOrWhiteSpace(startPage.Css) ? startPage.Css : "");
+                outputCss.AppendLine(!string.IsNullOrWhiteSpace(sitePageData.Css) && !(sitePageData is HomePage) ? sitePageData.Css : "");
+                outputCss.AppendLine("</style>");
+            }
+
+            return new MvcHtmlString(outputCss.ToString());
+        }
+
+        public static MvcHtmlString RenderExtendedScripts(this HtmlHelper helper, IContent content)
+        {
+            if (content == null || ContentReference.StartPage == PageReference.EmptyReference || !(content is FoundationPageData sitePageData))
+            {
+                return new MvcHtmlString("");
+            }
+
+            var outputScript = new StringBuilder(string.Empty);
+            var startPage = _contentLoader.Value.Get<HomePage>(ContentReference.StartPage);
+
+            // Extended Javascript file
+            AppendFiles(startPage.ScriptFiles, outputScript, _scriptFormat);
+            if (!(sitePageData is HomePage))
+            {
+                AppendFiles(sitePageData.ScriptFiles, outputScript, _scriptFormat);
+            }
+
+            // Inline Javascript
+            if (!string.IsNullOrWhiteSpace(startPage.Scripts) || !string.IsNullOrWhiteSpace(sitePageData.Scripts))
+            {
+                outputScript.AppendLine("<script type=\"text/javascript\">");
+                outputScript.AppendLine(!string.IsNullOrWhiteSpace(startPage.Scripts) ? startPage.Scripts : "");
+                outputScript.AppendLine(!string.IsNullOrWhiteSpace(sitePageData.Scripts) && !(sitePageData is HomePage) ? sitePageData.Scripts : "");
+                outputScript.AppendLine("</script>");
+            }
+
+            return new MvcHtmlString(outputScript.ToString());
+        }
+
+        public static MvcHtmlString RenderMetaData(this HtmlHelper helper, IContent content)
+        {
+            if (content == null || !(content is FoundationPageData sitePageData))
+            {
+                return new MvcHtmlString("");
+            }
+
+            var output = new StringBuilder(string.Empty);
+
+            if (!string.IsNullOrWhiteSpace(sitePageData.MetaTitle))
+            {
+                output.AppendLine(string.Format(_metaFormat, "title", sitePageData.MetaTitle));
+            }
+            if (!string.IsNullOrEmpty(sitePageData.Keywords))
+            {
+                output.AppendLine(string.Format(_metaFormat, "keywords", sitePageData.Keywords));
+            }
+            if (!string.IsNullOrWhiteSpace(sitePageData.PageDescription))
+            {
+                output.AppendLine(string.Format(_metaFormat, "description", sitePageData.PageDescription));
+            }
+            if (sitePageData.DisableIndexing)
+            {
+                output.AppendLine("<meta name=\"robots\" content=\"NOINDEX, NOFOLLOW\">");
+            }
+
+            return new MvcHtmlString(output.ToString());
+        }
+
+        //public static ContentReference GetSearchPage(this HtmlHelper helper) => ContentLoader.Value.Get<HomePage>(ContentReference.StartPage).SearchPage;
+
+        private static void AppendFiles(LinkItemCollection files, StringBuilder outputString, string formatString)
+        {
+            if (files == null || files.Count <= 0) return;
+
+            foreach (var item in files.Where(item => !string.IsNullOrEmpty(item.Href)))
+            {
+                var map = _permanentLinkMapper.Value.Find(new UrlBuilder(item.Href));
+                outputString.AppendLine(map == null
+                    ? string.Format(formatString, item.GetMappedHref())
+                    : string.Format(formatString, _urlResolver.Value.GetUrl(map.ContentReference)));
+            }
+        }
+
+        public static ConditionalLink BeginConditionalLink(this HtmlHelper helper, bool shouldWriteLink,
+            IHtmlString url, string title = null, string cssClass = null)
+        {
+            if (shouldWriteLink)
+            {
+                var linkTag = new TagBuilder("a");
+                linkTag.Attributes.Add("href", url.ToHtmlString());
+
+                if (!string.IsNullOrWhiteSpace(title))
                 {
-                    contentType = ((FoundationPageData)contentViewModel.CurrentContent).MetaContentType;
+                    linkTag.Attributes.Add("title", helper.Encode(title));
                 }
-                else
+
+                if (!string.IsNullOrWhiteSpace(cssClass))
                 {
-                    var pageType = _contentTypeRepository.Value.Load(contentViewModel.CurrentContent.GetOriginalType());
-                    contentType = pageType.DisplayName;
+                    linkTag.Attributes.Add("class", cssClass);
+                }
+
+                helper.ViewContext.Writer.Write(linkTag.ToString(TagRenderMode.StartTag));
+            }
+
+            return new ConditionalLink(helper.ViewContext, shouldWriteLink);
+        }
+
+        public static ConditionalLink BeginConditionalLink(this HtmlHelper helper, bool shouldWriteLink,
+            Func<IHtmlString> urlGetter, string title = null, string cssClass = null)
+        {
+            IHtmlString url = MvcHtmlString.Empty;
+
+            if (shouldWriteLink)
+            {
+                url = urlGetter();
+            }
+
+            return helper.BeginConditionalLink(shouldWriteLink, url, title, cssClass);
+        }
+
+        public static IHtmlString MenuList(
+            this HtmlHelper helper,
+            ContentReference rootLink,
+            Func<MenuItem, HelperResult> itemTemplate = null,
+            bool includeRoot = false,
+            bool requireVisibleInMenu = true,
+            bool requirePageTemplate = true)
+        {
+            itemTemplate = itemTemplate ?? GetDefaultItemTemplate(helper);
+            var currentContentLink = helper.ViewContext.RequestContext.GetContentLink();
+
+            Func<IEnumerable<PageData>, IEnumerable<PageData>> filter =
+                pages => pages.FilterForDisplay(requirePageTemplate, requireVisibleInMenu);
+
+            var pagePath = _contentLoader.Value.GetAncestors(currentContentLink)
+                .Reverse()
+                .Select(x => x.ContentLink)
+                .SkipWhile(x => !x.CompareToIgnoreWorkID(rootLink))
+                .ToList();
+
+            var menuItems = _contentLoader.Value.GetChildren<PageData>(rootLink)
+                .FilterForDisplay(requirePageTemplate, requireVisibleInMenu)
+                .Select(x => CreateMenuItem(x, currentContentLink, pagePath, _contentLoader.Value, filter))
+                .ToList();
+
+            if (includeRoot)
+            {
+                menuItems.Insert(0,
+                    CreateMenuItem(_contentLoader.Value.Get<PageData>(rootLink), currentContentLink, pagePath, _contentLoader.Value,
+                        filter));
+            }
+
+            var buffer = new StringBuilder();
+            var writer = new StringWriter(buffer);
+            foreach (var menuItem in menuItems)
+            {
+                itemTemplate(menuItem).WriteTo(writer);
+            }
+
+            return new MvcHtmlString(buffer.ToString());
+        }
+
+        private static MenuItem CreateMenuItem(PageData page, ContentReference currentContentLink,
+            List<ContentReference> pagePath, IContentLoader contentLoader,
+            Func<IEnumerable<PageData>, IEnumerable<PageData>> filter)
+        {
+            var menuItem = new MenuItem(page)
+            {
+                Selected = page.ContentLink.CompareToIgnoreWorkID(currentContentLink) ||
+                           pagePath.Contains(page.ContentLink),
+                HasChildren =
+                    new Lazy<bool>(() => filter(contentLoader.GetChildren<PageData>(page.ContentLink)).Any())
+            };
+            return menuItem;
+        }
+
+        private static Func<MenuItem, HelperResult> GetDefaultItemTemplate(HtmlHelper helper) => x => new HelperResult(writer => writer.Write(helper.PageLink(x.Page)));
+
+        public class ConditionalLink : IDisposable
+        {
+            private readonly bool _linked;
+            private readonly ViewContext _viewContext;
+            private bool _disposed;
+
+            public ConditionalLink(ViewContext viewContext, bool isLinked)
+            {
+                _viewContext = viewContext;
+                _linked = isLinked;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if (_disposed)
+                {
+                    return;
+                }
+
+                _disposed = true;
+
+                if (_linked)
+                {
+                    _viewContext.Writer.Write("</a>");
                 }
             }
-
-            switch (contentViewModel.CurrentContent)
-            {
-                case CmsHomePage homePage:
-                    var openGraphHomePage = new OpenGraphHomePage(metaTitle, new OpenGraphImage(imageUrl), GetUrl(homePage.ContentLink))
-                    {
-                        Description = homePage.PageDescription,
-                        Locale = defaultLocale.Replace('-', '_'),
-                        AlternateLocales = alternateLocales,
-                        ContentType = contentType,
-                        Category = GetCategoryNames(homePage.Categories),
-                        ModifiedTime = homePage.Changed,
-                        PublishedTime = homePage.StartPublish ?? null,
-                        ExpirationTime = homePage.StopPublish ?? null
-                    };
-
-                    return helper.OpenGraph(openGraphHomePage);
-
-                case LocationItemPage locationItemPage:
-                    var openGraphLocationItemPage = new OpenGraphLocationItemPage(metaTitle, new OpenGraphImage(imageUrl), GetUrl(contentViewModel.CurrentContent.ContentLink))
-                    {
-                        Description = locationItemPage.PageDescription,
-                        Locale = defaultLocale.Replace('-', '_'),
-                        AlternateLocales = alternateLocales,
-                        ContentType = contentType,
-                        ModifiedTime = locationItemPage.Changed,
-                        PublishedTime = locationItemPage.StartPublish ?? null,
-                        ExpirationTime = locationItemPage.StopPublish ?? null
-                    };
-
-                    var categories = new List<string>();
-
-                    if (locationItemPage.Continent != null)
-                    {
-                        categories.Add(locationItemPage.Continent);
-                    }
-
-                    if (locationItemPage.Country != null)
-                    {
-                        categories.Add(locationItemPage.Country);
-                    }
-
-                    openGraphLocationItemPage.Category = categories;
-
-                    var tags = new List<string>();
-                    var items = ((LocationItemPage)contentViewModel.CurrentContent).Categories;
-                    if (items != null)
-                    {
-                        foreach (var item in items)
-                        {
-                            tags.Add(_contentLoader.Value.Get<StandardCategory>(item).Name);
-                        }
-                    }
-                    openGraphLocationItemPage.Tags = tags;
-
-                    return helper.OpenGraph(openGraphLocationItemPage);
-
-                case BlogItemPage _:
-                case StandardPage _:
-                case TagPage _:
-                    var openGraphArticle = new OpenGraphFoundationPageData(metaTitle, new OpenGraphImage(imageUrl), GetUrl(contentViewModel.CurrentContent.ContentLink))
-                    {
-                        Description = ((FoundationPageData)contentViewModel.CurrentContent).PageDescription,
-                        Locale = defaultLocale.Replace('-', '_'),
-                        AlternateLocales = alternateLocales,
-                        ContentType = contentType,
-                        ModifiedTime = ((FoundationPageData)contentViewModel.CurrentContent).Changed,
-                        PublishedTime = ((FoundationPageData)contentViewModel.CurrentContent).StartPublish ?? null,
-                        ExpirationTime = ((FoundationPageData)contentViewModel.CurrentContent).StopPublish ?? null
-                    };
-
-                    return helper.OpenGraph(openGraphArticle);
-
-                case FoundationPageData foundationPageData:
-                    var openGraphFoundationPage = new OpenGraphFoundationPageData(metaTitle, new OpenGraphImage(imageUrl), GetUrl(foundationPageData.ContentLink))
-                    {
-                        Description = foundationPageData.PageDescription,
-                        Locale = defaultLocale.Replace('-', '_'),
-                        AlternateLocales = alternateLocales,
-                        Author = foundationPageData.AuthorMetaData,
-                        ContentType = contentType,
-                        Category = GetCategoryNames(foundationPageData.Categories),
-                        ModifiedTime = foundationPageData.Changed,
-                        PublishedTime = foundationPageData.StartPublish ?? null,
-                        ExpirationTime = foundationPageData.StopPublish ?? null
-                    };
-
-                    return helper.OpenGraph(openGraphFoundationPage);
-            }
-
-            return new HtmlString(string.Empty);
         }
 
-        private static string GetDefaultImageUrl()
+        public class MenuItem
         {
-            var startPage = _contentLoader.Value.Get<CmsHomePage>(ContentReference.StartPage);
-            var siteUrl = SiteDefinition.Current.SiteUrl;
-            var url = new Uri(siteUrl, UrlResolver.Current.GetUrl(startPage.SiteLogo));
-
-            return url.ToString();
-        }
-
-        private static string GetUrl(ContentReference content)
-        {
-            var siteUrl = SiteDefinition.Current.SiteUrl;
-            var url = new Uri(siteUrl, UrlResolver.Current.GetUrl(content));
-
-            return url.ToString();
-        }
-
-        private static IEnumerable<string> GetCategoryNames(IEnumerable<ContentReference> categories)
-        {
-            if (categories == null)
-            {
-                yield break;
-            }
-            foreach (var category in categories)
-            {
-                yield return _contentLoader.Value.Get<IContent>(category).Name;
-            }
+            public MenuItem(PageData page) => Page = page;
+            public PageData Page { get; set; }
+            public bool Selected { get; set; }
+            public Lazy<bool> HasChildren { get; set; }
         }
     }
 }

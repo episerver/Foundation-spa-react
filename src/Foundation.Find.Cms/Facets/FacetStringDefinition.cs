@@ -4,7 +4,7 @@ using EPiServer.Find.Api.Querying;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Foundation.Find.Cms.Facets
+namespace Foundation.Find.Facets
 {
     public class FacetStringDefinition : FacetDefinition
     {
@@ -12,7 +12,7 @@ namespace Foundation.Find.Cms.Facets
 
         public ITypeSearch<T> Filter<T>(ITypeSearch<T> query, List<string> selectedValues) => selectedValues.Any() ? query.AddStringFilter(selectedValues, FieldName) : query;
 
-        public override ITypeSearch<T> Facet<T>(ITypeSearch<T> query, Filter filter) => Cms.SearchExtensions.TermsFacetFor(query, FieldName, typeof(string), filter);
+        public override ITypeSearch<T> Facet<T>(ITypeSearch<T> query, Filter filter) => SearchExtensions.TermsFacetFor(query, FieldName, typeof(string), filter);
 
         public override void PopulateFacet(FacetGroupOption facetGroupOption, Facet facet, string selectedFacets)
         {

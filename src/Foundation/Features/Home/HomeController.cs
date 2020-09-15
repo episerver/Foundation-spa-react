@@ -1,15 +1,14 @@
 ﻿using EPiServer.Web.Mvc;
-using Foundation.Cms.Pages;
-using Foundation.Cms.ViewModels;
+using Foundation.Features.Shared;
 using System.Web.Mvc;
 
 namespace Foundation.Features.Home
 {
-    public class HomeController : PageController<CmsHomePage>
+    public class HomeController : PageController<HomePage>
     {
-        public ActionResult Index(CmsHomePage currentContent)
+        public ActionResult Index(HomePage currentContent)
         {
-            return View(ContentViewModel.Create<CmsHomePage>(currentContent));
+            return View(ContentViewModel.Create<HomePage>(currentContent));
         }
     }
 }

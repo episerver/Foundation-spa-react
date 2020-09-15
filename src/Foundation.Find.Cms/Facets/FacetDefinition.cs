@@ -3,7 +3,7 @@ using EPiServer.Find.Api.Facets;
 using EPiServer.Find.Api.Querying;
 using EPiServer.Framework.Localization;
 
-namespace Foundation.Find.Cms.Facets
+namespace Foundation.Find.Facets
 {
     public abstract class FacetDefinition
     {
