@@ -23,13 +23,13 @@
             @Html.PropertyFor(x => x.CurrentContent.MainContentArea)
         </div>
     </div>
-    <div class="row container--gutter-layout margin-top-md">
+    <div class="row">
         <div class="col-md-12">
             <div id="locationMap">
             </div>
         </div>
         <div class="col-md-3">
-            <div class="block location-filter animated fadeInDown animation-delay-12">
+            <div class="block location-filter">
                 <div class="portfolio-menu">
                     <h3>@Html.TranslateFallback("/common/filters", "Filters")</h3>
                     @if (Model.CurrentContent.FilterArea != null)
@@ -59,7 +59,7 @@
                                     @if (!ContentReference.IsNullOrEmpty(location.Image))
                                     {
                                         <div class="col-lg-5">
-                                            <img class="location__img img-responsive lazyload" data-src="@Url.ContentUrl(location.Image)?format=webp" alt="@location.Name" />
+                                            <img class="location__img lazyload" data-src="@Url.ContentUrl(location.Image)?format=webp" alt="@location.Name" />
                                         </div>
                                         <div class="col-lg-7 location__description">
                                             @location.MainIntro

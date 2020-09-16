@@ -4,7 +4,9 @@
 @import 'abstracts/**/*.scss';
 
 // 2. Vendors
-@import '~bootstrap/scss/bootstrap';
+@import 
+    '~bootstrap/scss/bootstrap', 
+    '~@fortawesome/fontawesome-free/css/all.min.css';
 
 // 3. Base stuff
 @import 'base/**/*.scss';

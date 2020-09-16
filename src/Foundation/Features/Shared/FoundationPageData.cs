@@ -111,6 +111,7 @@ namespace Foundation.Features.Shared
 
         #region Teaser
 
+        [CultureSpecific]
         [Searchable(false)]
         [SelectOne(SelectionFactoryType = typeof(BlockRatioSelectionFactory))]
         [Display(Name = "Teaser ratio (width-height)", GroupName = TabNames.Teaser, Order = 50)]
@@ -165,7 +166,6 @@ namespace Foundation.Features.Shared
         public virtual string TeaserButtonStyle { get; set; }
 
         [CultureSpecific]
-
         [Searchable(false)]
         [Display(Name = "Display hover effect", GroupName = TabNames.Teaser, Order = 800)]
         public virtual bool ApplyHoverEffect { get; set; }
