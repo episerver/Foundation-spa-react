@@ -1,35 +1,33 @@
-﻿export default class NotifyHelper {
-    Success(message, encodeMess) {
-        var options = this.setOptions("success", encodeMess);
-        $.notify(message, options);
+﻿export default class NotificationHelper {
+    success(message, encodeMess) {
+        $.notify({
+            message: message
+        }, {
+            type: 'success'
+        });
     }
 
-    Error(message, encodeMess) {
-        var options = this.setOptions("error", encodeMess);
-        $.notify(message, options);
+    error(message, encodeMess) {
+        $.notify({
+            message: message
+        }, {
+            type: 'danger'
+        });
     }
 
-    Warning(message, encodeMess) {
-        var options = this.setOptions("warning", encodeMess);
-        $.notify(message, options);
+    warning(message, encodeMess) {
+        $.notify({
+            message: message
+        }, {
+            type: 'warning'
+        });
     }
 
-    Info(message, encodeMess) {
-        var options = this.setOptions("info", encodeMess);
-        $.notify(message, options);
-    }
-
-    setOptions(className, encodeMess) {
-        var options = {
-            className: className
-        }
-
-        if (encodeMess != undefined) {
-            options.encodeMess = encodeMess;
-        } else {
-            options.encodeMess = true;
-        }
-
-        return options;
+    info(message, encodeMess) {
+        $.notify({
+            message: message
+        }, {
+            type: 'info'
+        });
     }
 }

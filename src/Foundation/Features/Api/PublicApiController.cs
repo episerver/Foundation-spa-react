@@ -6,7 +6,6 @@ using Foundation.Cms;
 using Foundation.Cms.Extensions;
 using Foundation.Cms.Identity;
 using Foundation.Cms.Users;
-using Foundation.Features.Login;
 using Foundation.Helpers;
 using Microsoft.AspNet.Identity.Owin;
 using System;

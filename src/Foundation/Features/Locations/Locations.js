@@ -1,4 +1,7 @@
-﻿export class Locations {
+﻿import Uri from "jsuri";
+require("bootstrap-slider");
+
+export default class Locations {
     constructor() {
         this.locationMap = {};
         this.locationInfobox = {};
@@ -6,6 +9,27 @@
         this.markers = [];
         this.tempvals = [-20, 40];
         this.originalVal;
+    }
+
+    init() {
+        if ($("#locationMap").length === 0) {
+            return;
+        }
+
+        let instance = this;
+        instance.loadScript("https://www.bing.com/api/maps/mapcontrol?&callback=getMap");
+        window.getMap = () => {
+            instance.loadMapScenario();
+        }
+    }
+
+    loadScript(url) {
+        let script = document.createElement("script");
+        script.type = "text/javascript";
+        script.async = true;
+        script.defer = true;
+        script.src = url;
+        document.getElementsByTagName("head")[0].appendChild(script);
     }
 
     loadMapScenario() {
@@ -55,12 +79,15 @@
 
     initializeFilters() {
         let instance = this;
-        $('#slider-range').slider({ min: -20, max: 40, value: [-20, 40] });
+
+        $('#slider-range').bootstrapSlider(
+            { min: -20, max: 40, value: [-20, 40] }
+        );
 
         $(document).on('slideStop', '#slider-range', () => {
-            var newVal = $('#slider-range').data('slider').getValue();
+            var newVal = $('#slider-range').val().split(",");
             instance.tempvals = newVal;
-            instance.DoAjaxCallback($('.filterblock'));
+            instance.doAjaxCallback($('.filterblock'));
         });
 
         $(document).off('change', '.filterblock input[type=checkbox].select-all');
@@ -90,7 +117,7 @@
             if ($(this).is('.select-all')) {
                 filtersToUpdate = $('.filterblock');
             }
-            instance.DoAjaxCallback(filtersToUpdate);
+            instance.doAjaxCallback(filtersToUpdate);
         });
     }
 
@@ -105,8 +132,8 @@
     }
 
     getFilterUrl() {
+
         var uri = new Uri(location.pathname);
-        let instance = this;
         $('.filterblock').each(function (i, e) {
             var filterName = $(e).attr('data-filtertype');
             var value = '';
@@ -122,9 +149,10 @@
         return uri;
     }
 
-    DoAjaxCallback(filtersToUpdate) {
+    doAjaxCallback(filtersToUpdate) {
         let instance = this;
         $('.loading-box').show();
+
         axios.get(instance.getFilterUrl())
             .then(function (result) {
                 var fetched = $(result.data);
@@ -135,11 +163,10 @@
                 });
             })
             .catch(function (error) {
-                notification.Error(error);
+                notification.error(error);
             })
             .finally(function () {
-                $('.loading-box').hide();
+                setTimeout($('.loading-box').hide(), 300);
             });
     }
-
 }

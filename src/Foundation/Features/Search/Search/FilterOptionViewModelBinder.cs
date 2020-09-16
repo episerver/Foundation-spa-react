@@ -15,7 +15,7 @@ namespace Foundation.Features.Search
         {
             bindingContext.ModelName = "FilterOption";
             FilterOptionViewModel model;
-            
+
             try
             {
                 model = (FilterOptionViewModel)base.BindModel(controllerContext, bindingContext);
@@ -42,9 +42,9 @@ namespace Foundation.Features.Search
             var section = controllerContext.HttpContext.Request.QueryString["t"];
             var page = controllerContext.HttpContext.Request.QueryString["p"];
             var confidence = controllerContext.HttpContext.Request.QueryString["confidence"];
-            
+
             SetupModel(model, query, sort, section, page, content, confidence);
-            
+
             return model;
         }
 

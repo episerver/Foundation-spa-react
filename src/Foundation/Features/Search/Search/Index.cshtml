@@ -1,4 +1,7 @@
-﻿@model Foundation.Find.Cms.ViewModels.CmsSearchViewModel<SearchResultPage>
+﻿@using Foundation.Features.Search
+@using Foundation.Features.Search.Search
+
+@model SearchViewModel<SearchResultPage>
 
 @{
     if (Request.IsAjaxRequest())
@@ -22,7 +25,6 @@
             @Html.PropertyFor(x => x.CurrentContent.MainContentArea)
         </div>
     </div>
-   
         <div class="row">
             <div class="col-lg-3">
                 @Html.Partial("_FacetContent", Model)
@@ -36,5 +38,4 @@
                 }
             </div>
         </div>
-
 </div>
