@@ -1,6 +1,8 @@
 //Import generic libs
 import React, { Component, ReactNodeArray } from 'react';
+import { connect } from 'react-redux';
 import { Collapse, Nav, Navbar, NavbarToggler } from 'reactstrap';
+import { merge } from 'lodash';
 
 //Import Episerver Libs
 import IEpiserverContext from '@episerver/spa-core/Core/IEpiserverContext';
@@ -66,3 +68,14 @@ export default class Header extends Component<HeaderProps, HeaderState>
         ]
     }
 }
+
+export type HeaderType = new () => Header;
+
+export const ConnectedHeader : HeaderType = connect( (state : any, ownProps : HeaderProps) => {
+    try {
+        const contentId = state.iContentRepo.refs['startPage'];
+        const content = state.iContentRepo.items[contentId].content;
+        return merge({}, ownProps, { startPage: content });
+    } catch (e) {}
+    return ownProps;
+} )(Header) as unknown as HeaderType;

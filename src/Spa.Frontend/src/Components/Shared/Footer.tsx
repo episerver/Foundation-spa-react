@@ -1,4 +1,6 @@
 import React, { Component, ReactNode, ReactNodeArray } from 'react';
+import { connect } from 'react-redux';
+import { merge } from 'lodash';
 import Property from '@episerver/spa-core/Components/Property';
 import ContentArea from '@episerver/spa-core/Components/ContentArea';
 import IEpiserverContext from '@episerver/spa-core/Core/IEpiserverContext';
@@ -6,7 +8,7 @@ import IEpiserverContext from '@episerver/spa-core/Core/IEpiserverContext';
 import CmsHomePageData from 'app/Models/Content/CmsHomePageData';
 import { ContentLinkService } from '@episerver/spa-core/Models/ContentLink';
 
-export interface FooterProps {
+interface FooterProps {
     startPage: CmsHomePageData
     context: IEpiserverContext
 }
@@ -23,12 +25,6 @@ export default class Footer extends Component<FooterProps, FooterState> {
         return {
             __html: htmlValue
         };
-    }
-
-    shouldComponentUpdate(nextProps: Readonly<FooterProps>, nextState: Readonly<FooterState>, nextContext: any) : boolean
-    {
-        var needsUpdate = (nextProps.startPage.contentLink.id !== this.props.startPage.contentLink.id);
-        return needsUpdate;
     }
 
     render() : ReactNode
@@ -155,3 +151,14 @@ export default class Footer extends Component<FooterProps, FooterState> {
 export interface FooterType {
 	new (props : FooterProps) : Footer
 }
+
+export const ConnectedFooter : FooterType = (connect((state: any, ownProps: FooterProps) => {
+    try {
+        const contentId = state.iContentRepo.refs['startPage'];
+        const content = state.iContentRepo.items[contentId].content;
+        const footerProps : FooterProps = merge({}, ownProps);
+        footerProps.startPage = content;
+        return footerProps;
+    } catch (e) {}
+    return ownProps;
+})(Footer)) as unknown as FooterType;

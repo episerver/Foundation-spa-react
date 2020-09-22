@@ -4,9 +4,9 @@ import ContentLink from '@episerver/spa-core/Models/ContentLink'
 import { ComponentProps } from '@episerver/spa-core/EpiComponent'
 
 /**
- * Virtual template root
+ * VirtualTemplateRoot
  *
- * The root where all virtual templates are saved
+ * No Description available.
  *
  * @GUID 2c25988a-ab55-49db-a248-ede870db2d9d
  */

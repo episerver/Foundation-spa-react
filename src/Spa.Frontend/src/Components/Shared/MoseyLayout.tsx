@@ -7,8 +7,8 @@ import IContent from '@episerver/spa-core/Models/IContent';
 import { StringProperty, BooleanProperty, ContentReferenceProperty } from '@episerver/spa-core/Property';
 import { ContentLinkService } from '@episerver/spa-core/Models/ContentLink';
 
-import Header from 'app/Components/Shared/Header';
-import Footer from 'app/Components/Shared/Footer';
+import Header, { ConnectedHeader } from 'app/Components/Shared/Header';
+import Footer, { ConnectedFooter } from 'app/Components/Shared/Footer';
 import CmsHomePageData from 'app/Models/Content/CmsHomePageData';
 
 interface FoundationPageData extends IContent
@@ -19,7 +19,6 @@ interface FoundationPageData extends IContent
     disableIndexing: BooleanProperty
     pageDescription: StringProperty
     pageImage: ContentReferenceProperty
-
 }
 
 /**
@@ -30,6 +29,8 @@ export default class MoseyLayout extends Layout
 {
     renderLayout() : Array<ReactNode> | ReactNode | null
     {
+        // We are referencing the EpiComponent directly, so have to use the factory method to get the 
+        // appropriate type.
         const CmsComponent = EpiComponent.CreateComponent(this.props.context);
         if (!this.isPage())
         {
@@ -38,6 +39,12 @@ export default class MoseyLayout extends Layout
         if (this.props.page) {
             let page : Array<ReactNode> = [];
             let pageData = this.props.expandedValue as FoundationPageData;
+
+            // Header & Footer are custom components, so we need to check manually which version is
+            // needed. The connected version will ensure on-page-editing will work correctly.
+            const FooterComponent = this.props.context.isServerSideRendering() ? Footer : ConnectedFooter;
+            const HeaderComponent = this.props.context.isServerSideRendering() ? Header : ConnectedHeader;
+
             page.push(<Helmet key={`website-helmet`}>
                 <title>{this.getCurrentPageTitle(pageData) + ' :: Mosey Capital'}</title>
                 <meta name="description" content={ this.getCurrentPageDescription(pageData) } />
@@ -47,9 +54,9 @@ export default class MoseyLayout extends Layout
                 <link rel="canonical" href={ this.getCurrentPageCanonical(pageData) } />
                 <link rel="shortcut icon" href="/Spa/favicon.ico" type="image/x-icon" />
             </Helmet>);
-            page.push(<Header context={this.props.context} path={this.props.path} startPage={this.props.startPage as CmsHomePageData } key={`website-header`} />);
+            page.push(<HeaderComponent context={this.props.context} path={this.props.path} startPage={this.props.startPage as CmsHomePageData } key={`website-header`} />);
             page.push(<CmsComponent context={ this.props.context } contentLink={this.props.page} expandedValue={this.props.expandedValue} key={`website-body`} actionName={this.props.actionName} actionData={this.props.actionData} />);
-            page.push(<Footer context={ this.props.context } startPage={ this.props.startPage as CmsHomePageData } key='website-footer'/>);
+            page.push(<FooterComponent context={ this.props.context } startPage={ this.props.startPage as CmsHomePageData } key='website-footer'/>);
             return page;
         }
         if (this.props.context.isDebugActive()) {
@@ -79,6 +86,9 @@ export default class MoseyLayout extends Layout
 
     protected getCurrentPageImageUrl(page: FoundationPageData)
     {
-        return ContentLinkService.createHref(page.pageImage.value);
+        if (page.pageImage) {
+            return ContentLinkService.createHref(page.pageImage.value);
+        }
+        return '';
     }
 }
