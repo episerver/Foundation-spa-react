@@ -81,7 +81,7 @@ How to find the IIS settings depends on the system where you are running IIS.
 
 The installation files on GitHub contain a batch file that will install the Foundation project with all products and set up an empty demo site. After the installation, you can fetch demo content from a remote repository to create a Mosey demo site, a fictitious fashion retail company.
 
-1.	Download the ZIP file from the Foundation project's **master** branch on GitHub and extract the files, or clone the project from GitHub to a local folder using the command prompt and the git command ```git clone https://github.com/episerver/Foundation foundation  ``` (the _foundation_ part specifies the folder where to put the files):
+1.	Download the ZIP file from the Foundation project's **master** branch on GitHub and extract the files, or clone the project from GitHub to a local folder using the command prompt and the git command ```git clone https://github.com/episerver/Foundation-spa-react foundation-spa-react``` (the _foundation-spa-react_ part specifies the folder where to put the files):
 
 Download ZIP file
 
