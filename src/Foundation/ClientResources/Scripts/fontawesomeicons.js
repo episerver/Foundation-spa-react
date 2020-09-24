@@ -314,11 +314,11 @@
     editor.on('init', function () {
         var fontawesomeCss = editor.dom.create('link', {
             rel: 'stylesheet',
-            href: '/Assets/scss/vendors/font-awesome-5.9.0/css/all.min.css'
+            href: '/ClientResources/Styles/fontawesome.min.css'
         });
         var fontawesomeCustomCss = editor.dom.create('link', {
             rel: 'stylesheet',
-            href: '/Assets/scss/vendors/tinymce-font-awesome/tinymce-font-awesome.css'
+            href: '/ClientResources/Styles/tinymce-font-awesome.css'
         });
         document.getElementsByTagName('head')[0].appendChild(fontawesomeCss);
         document.getElementsByTagName('head')[0].appendChild(fontawesomeCustomCss);

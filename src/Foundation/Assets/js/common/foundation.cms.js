@@ -4,11 +4,10 @@ import Header from "./header";
 import MobileNavigation from "./mobile-navigation";
 import Selection from "./selection";
 import Dropdown from "./dropdown";
-import SearchBox from "./search-box";
-import ContentSearch from "./search";
-//import PdfPreview from "./pdf-preview"
-//import SearchBox from "./search-box"
-//import Selection from "./selection"
+import SearchBox from "../../../Features/Search/search-box";
+import ContentSearch from "../../../Features/Search/search";
+import Blog from "../../../Features/Blog/blog";
+import Locations from "../../../Features/Locations/locations";
 
 export default class FoundationCms {
     init() {
@@ -75,33 +74,10 @@ export default class FoundationCms {
         var contentSearch = new ContentSearch();
         contentSearch.init();
 
-        //TODO: update js
+        var blog = new Blog();
+        blog.init();
 
-
-        //var blog = new Blog();
-        //blog.init();
-        
-        //var productSearch = new ProductSearch();
-        //productSearch.init();
-
-        //var locations = new Locations();
-        //locations.init();
-
-        //var people = new People();
-        //people.init();
-    
-
-        //// Mobile Navgition
-        //var params = { searchBoxId: "#mobile-searchbox", openSearchBoxId: "#open-searh-box", closeSearchBoxId: "#close-search-box", sideBarId: "#offside-menu-mobile", openSideBarId: "#open-offside-menu" }
-        //var mobileNav = new MobileNavigation(params);
-        //mobileNav.Init();
-        ////--- End
-
-
-        //// Blog
-        //var blog = new Blog();
-        //blog.init();
-        //// --- End
-
+        var locations = new Locations();
+        locations.init();
     }       
 }

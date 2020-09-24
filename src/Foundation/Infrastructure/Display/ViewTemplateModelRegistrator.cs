@@ -7,7 +7,7 @@ namespace Foundation.Infrastructure.Display
 {
     public class ViewTemplateModelRegistrator : IViewTemplateModelRegistrator
     {
-        public const string FoundationFolder = "~/Features/Shared/Foundation/";
+        public const string FoundationFolder = "~/Features/Shared/Views/";
 
         public void Register(TemplateModelCollection viewTemplateModelRegistrator)
         {

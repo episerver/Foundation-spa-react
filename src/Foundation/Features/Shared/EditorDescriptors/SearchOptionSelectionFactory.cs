@@ -1,7 +1,7 @@
 using EPiServer.Shell.ObjectEditing;
 using System.Collections.Generic;
 
-namespace Foundation.Cms.EditorDescriptors
+namespace Foundation.Features.Shared
 {
     public class SearchOptionSelectionFactory : ISelectionFactory
     {
