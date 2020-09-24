@@ -20,7 +20,7 @@
 @if (string.IsNullOrEmpty(Model.Template) || Model.Template == TemplateSelections.Grid)
 {
     <a class="blog__thumbnail" href="@Model.Page.ContentLink.GetPublicUrl()">
-        <div style="width: 100%">
+        <div class="w-100">
             @if (page != null && !ContentReference.IsNullOrEmpty(page.TeaserVideo))
             {
                 <video class="video-fluid" autoplay loop playsinline muted>

@@ -2,7 +2,7 @@
 
 @Html.PropertyFor(x => x.CurrentBlock.HeaderText)
 
-<div id="healthwebchat" role="main" style="overflow: auto;height: @(Model.CurrentBlock.HeightInPixels)px;"></div>
+<div id="healthwebchat" class="overflow-auto" role="main" style="height: @(Model.CurrentBlock.HeightInPixels)px;"></div>
 <script>
     window.WebChat.renderWebChat(
         {

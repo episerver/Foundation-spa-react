@@ -27,7 +27,7 @@
                         <img class="img-fluid preview--image-top__image lazyload" data-src="@Html.ProcessImage(@Url.ContentUrl(foundationPage.PageImage)).Resize(1200, null)" />
                     }
                 }
-                <div style="flex-basis: 116px; flex-shrink: 0">
+                <div class = "image_flex">
                     @if (page.ShowPublishDate)
                     {
                         <p class="sub-title">@page.Page.StartPublish.Value.ToString("dd MMM yyyy")</p>

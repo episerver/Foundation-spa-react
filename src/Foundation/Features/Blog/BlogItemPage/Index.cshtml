@@ -57,7 +57,7 @@
             </div>-->
         </div>
 
-        <div class="row pb-5 text-center" style="border-bottom: 5px solid #E6F3EF;">
+        <div class="row pb-5 text-center blog-item-border">
             @if (Model.CurrentContent.StartPublish != null)
             {
                 <div class="col-12 link">
@@ -75,7 +75,7 @@
         @* Bread Crumb *@
         <div class="row pt-5 justify-content-center">
             <div class="col-11">
-                <ul class="bread-crumb small" style="float:left;padding-left:0">
+                <ul class="bread-crumb small pl-0 float-left">
                     @foreach (var p in Model.BreadCrumbs)
                     {
                         <li><a href="@p.Value">@p.Key</a></li>
