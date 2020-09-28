@@ -1403,6 +1403,7 @@
     <Content Include="Assets\vendors\fa-solid-900.ttf" />
     <Content Include="Assets\vendors\fa-solid-900.woff" />
     <Content Include="Assets\vendors\fa-solid-900.woff2" />
+    <Content Include="Features\Preview\_preview.scss" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
