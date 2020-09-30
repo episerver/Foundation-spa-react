@@ -18,15 +18,12 @@
         if (index % 6 == 0) { col = 12; }
         index++;
         <div class="col-xs-12 col-sm-6 col-md-@col">
-            <div class="preview__card">
-                <div class="preview__card--show">
+            <div class="page-list-block-preview__card">
+                <div class="page-list-block-preview__card--show">
                     <div class="card--top">
                         @if (blog != null && !ContentReference.IsNullOrEmpty(foundationPage.PageImage))
                         {
-                            <picture>
-                                <source data-srcset="@Url.ContentUrl(foundationPage.PageImage)?width=1200&format=webp" type="image/webp">
-                                <img data-src="@Url.ContentUrl(foundationPage.PageImage)?width=1200" class="lazyload" />
-                            </picture>
+                            <img data-src="@Url.ContentUrl(foundationPage.PageImage)?width=1200&format=webp" class="lazyload" />
                         }
                     </div>
                     <div class="card--bottom">
@@ -44,13 +41,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="preview__card--middle">
+                <div class="page-list-block-preview__card--middle">
                     <div class="triangle-side"></div>
                     <div class="triangle-center"></div>
                     <div class="triangle-side"></div>
                 </div>
-                <div class="preview__card--overlay" style="background-color: @Model.CurrentBlock.OverlayColor;">
-                    <div class="preview__card--description" style=" color: @Model.CurrentBlock.OverlayTextColor">
+                <div class="page-list-block-preview__card--overlay" style="background-color: @Model.CurrentBlock.OverlayColor;">
+                    <div class="page-list-block-preview__card--description" style="color: @Model.CurrentBlock.OverlayTextColor">
                         <p>@Html.Raw(TextIndexer.StripHtml(foundationPage.TeaserText, 200))</p>
                         <a href="@foundationPage.ContentLink.GetPublicUrl()">
                             Read more
@@ -59,5 +56,5 @@
                 </div>
             </div>
         </div>
-    }
+     }
 </div>

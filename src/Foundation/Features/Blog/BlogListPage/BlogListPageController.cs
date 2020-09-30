@@ -35,7 +35,6 @@ namespace Foundation.Features.Blog.BlogListPage
             _urlResolver = urlResolver;
             _blogTagFactory = blogTagFactory;
         }
-
         public ActionResult Index(BlogListPage currentPage)
         {
             var model = new BlogListPageViewModel(currentPage)
@@ -136,11 +135,11 @@ namespace Foundation.Features.Blog.BlogListPage
                 Heading = category != null ? "Blog tags for post: " + category.Name : string.Empty,
                 PagingInfo = pagingInfo
             };
-            model.Blogs = blogs.Select(x => GetBlogItemPageModel(x, model));
+            model.Blogs = blogs.Select(x => GetBlogItemPageViewModel(x, model));
             return model;
         }
 
-        private BlogItemPageViewModel GetBlogItemPageModel(PageData currentPage, BlogListPageViewModel blogModel)
+        private BlogItemPageViewModel GetBlogItemPageViewModel(PageData currentPage, BlogListPageViewModel blogModel)
         {
             var pd = (BlogItemPage.BlogItemPage)currentPage;
             PreviewTextLength = 200;

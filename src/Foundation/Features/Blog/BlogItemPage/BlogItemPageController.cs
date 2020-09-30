@@ -63,7 +63,7 @@ namespace Foundation.Features.Blog.BlogItemPage
                     {
                         Title = cat.Name,
                         Url = _blogTagFactory.GetTagUrl(currentPage, cat.ContentLink),
-                        DisplayName = (cat as StandardCategory)?.Name,
+                        DisplayName = (cat as StandardCategory)?.Description,
                     }).ToList();
             }
             return new List<BlogItemPageViewModel.TagItem>();

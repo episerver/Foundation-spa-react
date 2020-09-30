@@ -88,6 +88,7 @@ namespace Foundation.Features.Blog.BlogItemPage
                 var weightPercent = (double.Parse(tag.Count.ToString()) / largestCount) * 100;
                 var weight = 0;
 
+
                 if (weightPercent >= 99)
                 {
                     //heaviest
@@ -117,7 +118,6 @@ namespace Foundation.Features.Blog.BlogItemPage
                 }
 
                 tag.Weight = weight;
-
             }
 
             return tags;

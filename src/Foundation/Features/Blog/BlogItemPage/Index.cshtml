@@ -13,39 +13,12 @@
 <div class="row blog-item">
     <div class="col-10">
 
-        @* Header *@
-
+        @* Header Image *@
         <div class="row">
-            @* Tags *@
-
             <div class="col-12">
-                @if (Model.Tags != null)
-                {
-                    <div class="text-center" @Html.EditAttributes(x => x.CurrentContent.Categories)>
-                        @if (Model.Tags != null)
-                        {
-                            <!--<i class="fa fa-tags"></i>-->
-                            foreach (var tag in Model.Tags)
-                            {
-                                <span data-epi-block-id="@tag.Count">
-                                    <a href="@tag.Url"><span class="small text-uppercase">@tag.DisplayName</span></a>
-                                </span>
-                            }
-                        }
-                    </div>
-                }
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 pt-4 pb-4">
-                <h1 class="text-center">@Model.CurrentContent.Name</h1>
-            </div>
-            @* Header Image *@
-            <!--<div class="col-12">
-
                 @if (PageEditing.PageIsInEditMode)
                 {
-                    <img class="blog-item__image img-fluid lazyload" data-src="@Url.ContentUrl(Model.CurrentContent.PageImage)" @Html.EditAttributes(x => x.CurrentContent.PageImage) />
+                    <img class="blog-item__image img-fluid" src="@Url.ContentUrl(Model.CurrentContent.PageImage)" @Html.EditAttributes(x => x.CurrentContent.PageImage) />
                 }
                 else if (!ContentReference.IsNullOrEmpty(Model.CurrentContent.PageImage))
                 {
@@ -54,28 +27,14 @@
                         <img class="blog-item__image img-fluid lazyload" data-src="@Url.ContentUrl(Model.CurrentContent.PageImage)" />
                     </picture>
                 }
-            </div>-->
+            </div>
         </div>
-
-        <div class="row pb-5 text-center blog-item-border">
-            @if (Model.CurrentContent.StartPublish != null)
-            {
-                <div class="col-12 link">
-                    <span @Html.EditAttributes(x => x.CurrentContent.StartPublish)>@Model.StartPublish.ToString("dd MMM yyyy")</span>
-                    @if (!Model.CurrentContent.Author.IsNullOrEmpty())
-                    {
-                        <span> - </span>
-                        @Html.PropertyFor(x => x.CurrentContent.Author);
-                    }
-                </div>
-            }
-
-        </div>
+        <br />
 
         @* Bread Crumb *@
-        <div class="row pt-5 justify-content-center">
-            <div class="col-11">
-                <ul class="bread-crumb small pl-0 float-left">
+        <div class="row">
+            <div class="col-12">
+                <ul class="bread-crumb flex-center" style="float: none">
                     @foreach (var p in Model.BreadCrumbs)
                     {
                         <li><a href="@p.Value">@p.Key</a></li>
@@ -84,12 +43,33 @@
             </div>
         </div>
 
+        <div class="row">
+            @if (Model.CurrentContent.StartPublish != null)
+            {
+                <div class="col-12 link" @Html.EditAttributes("PageStartPublish")>
+                    @Html.PropertyFor(x => x.CurrentContent.StartPublish, new EPiServer.Web.Mvc.EditHint() { ContentDataPropertyName = "PageStartPublish" })
+                    @if (!Model.CurrentContent.Author.IsNullOrEmpty())
+                    {
+                        <span> - </span>
+                        @Html.PropertyFor(x => x.CurrentContent.Author);
+                    }
+                </div>
+            }
+            <div class="col-12">
+                <h2>@Model.CurrentContent.MetaTitle</h2>
+            </div>
+        </div>
 
-
+        @* Content Area *@
+        <div class="row">
+            <div class="col-12">
+                @Html.PropertyFor(x => x.CurrentContent.MainContentArea, new { CssClass = "equal-height" })
+            </div>
+        </div>
 
         @* Main Content *@
-        <div class="row justify-content-center">
-            <div class="col-11">
+        <div class="row">
+            <div class="col-12">
                 <div @Html.EditAttributes(x => x.CurrentContent.MainBody)>
                     @Html.Raw(@Model.CurrentContent.MainBody)
                 </div>
@@ -97,11 +77,27 @@
         </div>
         <br />
 
-
-        @* Content Area *@
+        @* Tags *@
         <div class="row">
             <div class="col-12">
-                @Html.PropertyFor(x => x.CurrentContent.MainContentArea, new { CssClass = "equal-height" })
+                @if (Model.Tags.Any())
+                {
+                    @Html.Raw("With the following tags: ")
+
+                    foreach (var tag in Model.Tags)
+                    {
+                        <a class="tag link" title="@tag.DisplayName" href="@tag.Url" style="margin-left: 5px">
+                            #@tag.DisplayName
+                        </a>
+                    }
+                }
+            </div>
+        </div>
+
+        @* Comments *@
+        <div class="row">
+            <div class="col-12">
+                @Html.PropertyFor(x => x.CurrentContent.Comments, new { Tag = EPiBootstrapArea.ContentAreaTags.FullWidth })
             </div>
         </div>
     </div>

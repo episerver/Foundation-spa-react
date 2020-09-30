@@ -16,5 +16,6 @@ namespace Foundation.Features.Blog.BlogItemPage
     {
         [Display(GroupName = SystemTabNames.Content, Order = 10)]
         public virtual string Author { get; set; }
+
     }
 }

@@ -1044,8 +1044,6 @@
     <Content Include="Features\Blog\blog.js" />
     <Content Include="Features\Blog\BlogListPage\_BlogList.cshtml" />
     <Content Include="Features\Blog\BlogListPage\_GridTemplate.cshtml" />
-    <Content Include="Features\Blog\BlogListPage\Preview.cshtml" />
-    <Content Include="Features\Blocks\PageListBlock\_PageListPreview.cshtml" />
     <Content Include="Features\Login\_login.scss" />
     <Content Include="Features\Blocks\NavigationBlock\NavigationBlock.cshtml" />
     <Content Include="Features\Events\CalendarBlock\calendar-block.js" />
@@ -1229,7 +1227,6 @@
     <Content Include="Features\Blocks\FacebookBlock\FacebookBlock.cshtml" />
     <Content Include="Features\Blocks\HeroBlock\HeroBlock.cshtml" />
     <Content Include="Features\Blocks\LinkedInCompanyBlock\LinkedInCompanyBlock.cshtml" />
-    <Content Include="Features\Blocks\PageListBlock\PageListBlock.cshtml" />
     <Content Include="Features\Blocks\RssReaderBlock\RssReaderBlock.cshtml" />
     <Content Include="Features\Blocks\TeaserBlock\TeaserBlock.cshtml" />
     <Content Include="Features\Blocks\TextBlock\TextBlock.cshtml" />
@@ -1288,16 +1285,9 @@
     <Content Include="Features\Blog\BlogListPage\_CardTemplate.cshtml" />
     <Content Include="Features\Blog\BlogListPage\_InsightTemplate.cshtml" />
     <Content Include="Features\Blog\BlogListPage\_Paging.cshtml" />
-    <Content Include="Features\Blocks\PageListBlock\_GridTemplate.cshtml" />
-    <Content Include="Features\Blocks\PageListBlock\_NoImageTemplate.cshtml" />
-    <Content Include="Features\Blocks\PageListBlock\_InsightTemplate.cshtml" />
-    <Content Include="Features\Blocks\PageListBlock\_CardTemplate.cshtml" />
-    <Content Include="Features\Blocks\PageListBlock\_HighlightPanelTemplate.cshtml" />
-    <Content Include="Features\Blocks\PageListBlock\_LeftImageTemplate.cshtml" />
     <Content Include="App_Data\DefaultSiteContent.episerverdata" />
     <Content Include="modules\_protected\BVNetwork.404Handler\web.config" />
     <Content Include="modules\_protected\BVNetwork.404Handler\BVNetwork.404Handler.zip" />
-    <Content Include="Features\Blocks\PageListBlock\_CarouselTemplate.cshtml" />
     <Content Include="Features\Blocks\Healthbot\HealthChatBotBlock.cshtml" />
     <Content Include="Features\ErrorPage\ErrorPage.cshtml" />
     <Content Include="Features\ErrorPage\_error.scss" />
@@ -1370,7 +1360,6 @@
     <Content Include="Assets\scss\components\widgets\_toolbar.scss" />
     <Content Include="Features\Blocks\BreadcrumbBlock\_breadcrumb-block.scss" />
     <Content Include="Features\Blocks\BreadcrumbBlock\BreadcrumbBlock.cshtml" />
-    <Content Include="Features\Blocks\PageListBlock\_TopImageTemplate.cshtml" />
     <Content Include="Features\Media\ImageMedia.cshtml" />
     <Content Include="Features\Media\Index.cshtml" />
     <Content Include="Features\Media\PdfFile.cshtml" />
@@ -1404,6 +1393,21 @@
     <Content Include="Assets\vendors\fa-solid-900.woff" />
     <Content Include="Assets\vendors\fa-solid-900.woff2" />
     <Content Include="Features\Preview\_preview.scss" />
+    <Content Include="Features\Blocks\PageListBlock\PageListBlock.cshtml" />
+    <Content Include="Features\Blocks\PageListBlock\_CardTemplate.cshtml" />
+    <Content Include="Features\Blocks\PageListBlock\_GridTemplate.cshtml" />
+    <Content Include="Features\Blocks\PageListBlock\_HighlightPanelTemplate.cshtml" />
+    <Content Include="Features\Blocks\PageListBlock\_InsightTemplate.cshtml" />
+    <Content Include="Features\Blocks\PageListBlock\_LeftImageTemplate.cshtml" />
+    <Content Include="Features\Blocks\PageListBlock\_NoImageTemplate.cshtml" />
+    <Content Include="Features\Blocks\PageListBlock\_page-list-block.scss" />
+    <Content Include="Features\Blocks\PageListBlock\_PageListPreview.cshtml" />
+    <Content Include="Features\Blocks\PageListBlock\_TopImageTemplate.cshtml" />
+    <Content Include="Features\Blog\BlogListPage\_GridTemplateBlock.cshtml" />
+    <Content Include="Features\Blog\BlogListPage\_HighLightTemplate.cshtml" />
+    <Content Include="Features\Blog\BlogListPage\_ImageLeftTemplate.cshtml" />
+    <Content Include="Features\Blog\BlogListPage\_ImageTopTemplate.cshtml" />
+    <Content Include="Features\Blog\BlogListPage\_NoImageTemplate.cshtml" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -1420,7 +1424,7 @@
       <Project>{c9638f52-7402-446d-bf89-993686e26a52}</Project>
       <Name>Foundation.Cms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Foundation.Find.Cms\Foundation.Find.csproj">
+    <ProjectReference Include="..\Foundation.Find\Foundation.Find.csproj">
       <Project>{07c19549-7028-4cba-ba73-fadd93be8e5a}</Project>
       <Name>Foundation.Find</Name>
     </ProjectReference>
