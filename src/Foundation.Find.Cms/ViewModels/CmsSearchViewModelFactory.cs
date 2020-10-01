@@ -54,11 +54,7 @@ namespace Foundation.Find.Cms.ViewModels
             model.FilterOption = cmsArgs.FilterOption;
             model.Query = cmsArgs.FilterOption.Q;
             model.IsMobile = _httpContextBase.GetOverriddenBrowser().IsMobileDevice;
-
-            if (!model.ContentSearchResult.Hits.Any() && model.FilterOption.Q.IsNullOrEmpty())
-            {
-                model.DidYouMeans = _findClient.Statistics().GetDidYouMean(model.FilterOption.Q);
-            }
+            model.DidYouMeans = string.IsNullOrEmpty(model.FilterOption.Q) ? null : model.ContentSearchResult.Hits.Any() ? null : _findClient.Statistics().GetDidYouMean(model.FilterOption.Q);
 
             return model;
         }
