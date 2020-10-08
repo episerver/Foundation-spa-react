@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * CustomizedSearchSettings
  *
@@ -10,43 +6,43 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID df11dc77-d4ea-4383-be7c-fcd13ac5beba
  */
-export default interface CustomizedSearchSettingsData extends IContent {
+export default interface CustomizedSearchSettingsData extends Taxonomy.IContent {
     /**
      * SearchPhrase
      *
      * No description available
      */
-    searchPhrase: StringProperty
+    searchPhrase: ContentDelivery.StringProperty
 
     /**
      * UseAndBetweenWords
      *
      * No description available
      */
-    useAndBetweenWords: BooleanProperty
+    useAndBetweenWords: ContentDelivery.BooleanProperty
 
     /**
      * NumberOfHits
      *
      * No description available
      */
-    numberOfHits: NumberProperty
+    numberOfHits: ContentDelivery.NumberProperty
 
     /**
      * IncludeDescription
      *
      * No description available
      */
-    includeDescription: BooleanProperty
+    includeDescription: ContentDelivery.BooleanProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface CustomizedSearchSettingsProps extends ComponentProps<CustomizedSearchSettingsData> {}
+export interface CustomizedSearchSettingsProps extends ComponentTypes.AbstractComponentProps<CustomizedSearchSettingsData> {}
 
-export class CustomizedSearchSettingsType extends BaseIContent<CustomizedSearchSettingsData> implements CustomizedSearchSettingsData {
+export class CustomizedSearchSettingsType extends Taxonomy.AbstractIContent<CustomizedSearchSettingsData> implements CustomizedSearchSettingsData {
     protected _typeName : string = "CustomizedSearchSettings";
     /**
      * Map of all property types within this content type.
@@ -63,27 +59,27 @@ export class CustomizedSearchSettingsType extends BaseIContent<CustomizedSearchS
      *
      * No description available
      */
-    public searchPhrase: StringProperty;
+    public get searchPhrase() : CustomizedSearchSettingsData["searchPhrase"] { return this.getProperty("searchPhrase"); }
 
     /**
      * UseAndBetweenWords
      *
      * No description available
      */
-    public useAndBetweenWords: BooleanProperty;
+    public get useAndBetweenWords() : CustomizedSearchSettingsData["useAndBetweenWords"] { return this.getProperty("useAndBetweenWords"); }
 
     /**
      * NumberOfHits
      *
      * No description available
      */
-    public numberOfHits: NumberProperty;
+    public get numberOfHits() : CustomizedSearchSettingsData["numberOfHits"] { return this.getProperty("numberOfHits"); }
 
     /**
      * IncludeDescription
      *
      * No description available
      */
-    public includeDescription: BooleanProperty;
+    public get includeDescription() : CustomizedSearchSettingsData["includeDescription"] { return this.getProperty("includeDescription"); }
 
 }

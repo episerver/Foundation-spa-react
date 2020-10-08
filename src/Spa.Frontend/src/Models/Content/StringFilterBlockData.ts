@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * String Filter Block
  *
@@ -10,29 +6,29 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID efcb0aef-5427-49bb-ab1b-2b429a2f2cc3
  */
-export default interface StringFilterBlockData extends IContent {
+export default interface StringFilterBlockData extends Taxonomy.IContent {
     /**
      * Name
      *
      * Name of field in index
      */
-    fieldName: StringProperty
+    fieldName: ContentDelivery.StringProperty
 
     /**
      * Value
      *
      * The value to filter search results on
      */
-    fieldValue: StringProperty
+    fieldValue: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface StringFilterBlockProps extends ComponentProps<StringFilterBlockData> {}
+export interface StringFilterBlockProps extends ComponentTypes.AbstractComponentProps<StringFilterBlockData> {}
 
-export class StringFilterBlockType extends BaseIContent<StringFilterBlockData> implements StringFilterBlockData {
+export class StringFilterBlockType extends Taxonomy.AbstractIContent<StringFilterBlockData> implements StringFilterBlockData {
     protected _typeName : string = "StringFilterBlock";
     /**
      * Map of all property types within this content type.
@@ -47,13 +43,13 @@ export class StringFilterBlockType extends BaseIContent<StringFilterBlockData> i
      *
      * Name of field in index
      */
-    public fieldName: StringProperty;
+    public get fieldName() : StringFilterBlockData["fieldName"] { return this.getProperty("fieldName"); }
 
     /**
      * Value
      *
      * The value to filter search results on
      */
-    public fieldValue: StringProperty;
+    public get fieldValue() : StringFilterBlockData["fieldValue"] { return this.getProperty("fieldValue"); }
 
 }

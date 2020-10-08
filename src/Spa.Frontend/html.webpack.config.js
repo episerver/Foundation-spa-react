@@ -96,11 +96,13 @@ module.exports = (env) => {
                         }, {
                             loader: 'postcss-loader', // Run post css actions
                             options: {
-                                plugins: function () { // post css plugins, can be exported to postcss.config.js
-                                    return [
-                                        require('precss'),
-                                        require('autoprefixer')
-                                    ];
+                                postcssOptions: {
+                                    plugins: function () { // post css plugins, can be exported to postcss.config.js
+                                        return [
+                                            require('precss'),
+                                            require('autoprefixer')
+                                        ];
+                                    }
                                 }
                             }
                         }, {
@@ -177,14 +179,18 @@ module.exports = (env) => {
 
             new CopyWebpackPlugin([
                 {
-                    from: path.join(srcPath,'favicon.ico'),
-                    to: outPrefix+'favicon.ico'
-                }, {
-                    from: path.join(srcPath,'robots.txt'),
-                    to: outPrefix+'robots.txt'
-                }, {
-                    from: path.join(srcPath,'web.config'),
-                    to: outPrefix+'web.config'
+                    patterns: [
+                        {
+                            from: path.join(srcPath,'favicon.ico'),
+                            to: outPrefix+'favicon.ico'
+                        }, {
+                            from: path.join(srcPath,'robots.txt'),
+                            to: outPrefix+'robots.txt'
+                        }, {
+                            from: path.join(srcPath,'web.config'),
+                            to: outPrefix+'web.config'
+                        }
+                    ]
                 }
             ]),
 

@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Filter Continents Block
  *
@@ -10,64 +6,64 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 9103a763-4c9c-431e-bc11-f2794c3b4b80
  */
-export default interface FilterContinentsBlockData extends IContent {
+export default interface FilterContinentsBlockData extends Taxonomy.IContent {
     /**
      * Categories
      *
      * Categories associated with this content
      */
-    categories: Property<Array<ContentLink>>
+    categories: ContentDelivery.ContentReferenceListProperty
 
     /**
      * Padding
      *
      * No description available
      */
-    padding: StringProperty
+    padding: ContentDelivery.StringProperty
 
     /**
      * Margin
      *
      * No description available
      */
-    margin: StringProperty
+    margin: ContentDelivery.StringProperty
 
     /**
      * Background color
      *
      * No description available
      */
-    backgroundColor: StringProperty
+    backgroundColor: ContentDelivery.StringProperty
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    blockOpacity: NumberProperty
+    blockOpacity: ContentDelivery.NumberProperty
 
     /**
      * Filter title
      *
      * No description available
      */
-    filterTitle: StringProperty
+    filterTitle: ContentDelivery.StringProperty
 
     /**
      * All condition text
      *
      * No description available
      */
-    allConditionText: StringProperty
+    allConditionText: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface FilterContinentsBlockProps extends ComponentProps<FilterContinentsBlockData> {}
+export interface FilterContinentsBlockProps extends ComponentTypes.AbstractComponentProps<FilterContinentsBlockData> {}
 
-export class FilterContinentsBlockType extends BaseIContent<FilterContinentsBlockData> implements FilterContinentsBlockData {
+export class FilterContinentsBlockType extends Taxonomy.AbstractIContent<FilterContinentsBlockData> implements FilterContinentsBlockData {
     protected _typeName : string = "FilterContinentsBlock";
     /**
      * Map of all property types within this content type.
@@ -87,48 +83,48 @@ export class FilterContinentsBlockType extends BaseIContent<FilterContinentsBloc
      *
      * Categories associated with this content
      */
-    public categories: Property<Array<ContentLink>>;
+    public get categories() : FilterContinentsBlockData["categories"] { return this.getProperty("categories"); }
 
     /**
      * Padding
      *
      * No description available
      */
-    public padding: StringProperty;
+    public get padding() : FilterContinentsBlockData["padding"] { return this.getProperty("padding"); }
 
     /**
      * Margin
      *
      * No description available
      */
-    public margin: StringProperty;
+    public get margin() : FilterContinentsBlockData["margin"] { return this.getProperty("margin"); }
 
     /**
      * Background color
      *
      * No description available
      */
-    public backgroundColor: StringProperty;
+    public get backgroundColor() : FilterContinentsBlockData["backgroundColor"] { return this.getProperty("backgroundColor"); }
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    public blockOpacity: NumberProperty;
+    public get blockOpacity() : FilterContinentsBlockData["blockOpacity"] { return this.getProperty("blockOpacity"); }
 
     /**
      * Filter title
      *
      * No description available
      */
-    public filterTitle: StringProperty;
+    public get filterTitle() : FilterContinentsBlockData["filterTitle"] { return this.getProperty("filterTitle"); }
 
     /**
      * All condition text
      *
      * No description available
      */
-    public allConditionText: StringProperty;
+    public get allConditionText() : FilterContinentsBlockData["allConditionText"] { return this.getProperty("allConditionText"); }
 
 }

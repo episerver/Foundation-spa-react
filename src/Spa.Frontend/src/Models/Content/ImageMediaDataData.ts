@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * ImageMediaData
  *
@@ -10,162 +6,162 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 20644be7-3ca1-4f84-b893-ee021b73ce6c
  */
-export default interface ImageMediaDataData extends IContent {
+export default interface ImageMediaDataData extends Taxonomy.IContent {
     /**
      * Large thumbnail
      *
      * No description available
      */
-    largeThumbnail: Property<any> // Original type: Blob
+    largeThumbnail: ContentDelivery.Property<any> // Original type: Blob
 
     /**
      * File size
      *
      * No description available
      */
-    fileSize: StringProperty
+    fileSize: ContentDelivery.StringProperty
 
     /**
      * Accent color
      *
      * No description available
      */
-    accentColor: StringProperty
+    accentColor: ContentDelivery.StringProperty
 
     /**
      * Caption
      *
      * No description available
      */
-    caption: StringProperty
+    caption: ContentDelivery.StringProperty
 
     /**
      * Clip art type
      *
      * No description available
      */
-    clipArtType: StringProperty
+    clipArtType: ContentDelivery.StringProperty
 
     /**
      * Dominant color background
      *
      * No description available
      */
-    dominantColorBackground: StringProperty
+    dominantColorBackground: ContentDelivery.StringProperty
 
     /**
      * Dominant color foreground
      *
      * No description available
      */
-    dominantColorForeground: StringProperty
+    dominantColorForeground: ContentDelivery.StringProperty
 
     /**
      * Dominant colors
      *
      * No description available
      */
-    dominantColors: Property<any> // Original type: StringList
+    dominantColors: ContentDelivery.Property<any> // Original type: StringList
 
     /**
      * Image categories
      *
      * No description available
      */
-    imageCategories: Property<any> // Original type: StringList
+    imageCategories: ContentDelivery.Property<any> // Original type: StringList
 
     /**
      * Is adult content
      *
      * No description available
      */
-    isAdultContent: BooleanProperty
+    isAdultContent: ContentDelivery.BooleanProperty
 
     /**
      * Is black & white image
      *
      * No description available
      */
-    isBwImg: BooleanProperty
+    isBwImg: ContentDelivery.BooleanProperty
 
     /**
      * Is racy content
      *
      * No description available
      */
-    isRacyContent: BooleanProperty
+    isRacyContent: ContentDelivery.BooleanProperty
 
     /**
      * Line drawing type
      *
      * No description available
      */
-    lineDrawingType: StringProperty
+    lineDrawingType: ContentDelivery.StringProperty
 
     /**
      * Tags
      *
      * No description available
      */
-    tags: Property<any> // Original type: StringList
+    tags: ContentDelivery.Property<any> // Original type: StringList
 
     /**
      * Title
      *
      * No description available
      */
-    title: StringProperty
+    title: ContentDelivery.StringProperty
 
     /**
      * Description
      *
      * Description of the image
      */
-    description: StringProperty
+    description: ContentDelivery.StringProperty
 
     /**
      * Alternate text
      *
      * No description available
      */
-    altText: StringProperty
+    altText: ContentDelivery.StringProperty
 
     /**
      * Credits text
      *
      * No description available
      */
-    creditsText: StringProperty
+    creditsText: ContentDelivery.StringProperty
 
     /**
      * Credits link
      *
      * No description available
      */
-    creditsLink: StringProperty
+    creditsLink: ContentDelivery.StringProperty
 
     /**
      * Link
      *
      * Link to content
      */
-    link: ContentReferenceProperty
+    link: ContentDelivery.ContentReferenceProperty
 
     /**
      * Copyright
      *
      * No description available
      */
-    copyright: StringProperty
+    copyright: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface ImageMediaDataProps extends ComponentProps<ImageMediaDataData> {}
+export interface ImageMediaDataProps extends ComponentTypes.AbstractComponentProps<ImageMediaDataData> {}
 
-export class ImageMediaDataType extends BaseIContent<ImageMediaDataData> implements ImageMediaDataData {
+export class ImageMediaDataType extends Taxonomy.AbstractIContent<ImageMediaDataData> implements ImageMediaDataData {
     protected _typeName : string = "ImageMediaData";
     /**
      * Map of all property types within this content type.
@@ -199,146 +195,146 @@ export class ImageMediaDataType extends BaseIContent<ImageMediaDataData> impleme
      *
      * No description available
      */
-    public largeThumbnail: Property<any> // Original type: Blob;
+    public get largeThumbnail() : ImageMediaDataData["largeThumbnail"] { return this.getProperty("largeThumbnail"); }
 
     /**
      * File size
      *
      * No description available
      */
-    public fileSize: StringProperty;
+    public get fileSize() : ImageMediaDataData["fileSize"] { return this.getProperty("fileSize"); }
 
     /**
      * Accent color
      *
      * No description available
      */
-    public accentColor: StringProperty;
+    public get accentColor() : ImageMediaDataData["accentColor"] { return this.getProperty("accentColor"); }
 
     /**
      * Caption
      *
      * No description available
      */
-    public caption: StringProperty;
+    public get caption() : ImageMediaDataData["caption"] { return this.getProperty("caption"); }
 
     /**
      * Clip art type
      *
      * No description available
      */
-    public clipArtType: StringProperty;
+    public get clipArtType() : ImageMediaDataData["clipArtType"] { return this.getProperty("clipArtType"); }
 
     /**
      * Dominant color background
      *
      * No description available
      */
-    public dominantColorBackground: StringProperty;
+    public get dominantColorBackground() : ImageMediaDataData["dominantColorBackground"] { return this.getProperty("dominantColorBackground"); }
 
     /**
      * Dominant color foreground
      *
      * No description available
      */
-    public dominantColorForeground: StringProperty;
+    public get dominantColorForeground() : ImageMediaDataData["dominantColorForeground"] { return this.getProperty("dominantColorForeground"); }
 
     /**
      * Dominant colors
      *
      * No description available
      */
-    public dominantColors: Property<any> // Original type: StringList;
+    public get dominantColors() : ImageMediaDataData["dominantColors"] { return this.getProperty("dominantColors"); }
 
     /**
      * Image categories
      *
      * No description available
      */
-    public imageCategories: Property<any> // Original type: StringList;
+    public get imageCategories() : ImageMediaDataData["imageCategories"] { return this.getProperty("imageCategories"); }
 
     /**
      * Is adult content
      *
      * No description available
      */
-    public isAdultContent: BooleanProperty;
+    public get isAdultContent() : ImageMediaDataData["isAdultContent"] { return this.getProperty("isAdultContent"); }
 
     /**
      * Is black & white image
      *
      * No description available
      */
-    public isBwImg: BooleanProperty;
+    public get isBwImg() : ImageMediaDataData["isBwImg"] { return this.getProperty("isBwImg"); }
 
     /**
      * Is racy content
      *
      * No description available
      */
-    public isRacyContent: BooleanProperty;
+    public get isRacyContent() : ImageMediaDataData["isRacyContent"] { return this.getProperty("isRacyContent"); }
 
     /**
      * Line drawing type
      *
      * No description available
      */
-    public lineDrawingType: StringProperty;
+    public get lineDrawingType() : ImageMediaDataData["lineDrawingType"] { return this.getProperty("lineDrawingType"); }
 
     /**
      * Tags
      *
      * No description available
      */
-    public tags: Property<any> // Original type: StringList;
+    public get tags() : ImageMediaDataData["tags"] { return this.getProperty("tags"); }
 
     /**
      * Title
      *
      * No description available
      */
-    public title: StringProperty;
+    public get title() : ImageMediaDataData["title"] { return this.getProperty("title"); }
 
     /**
      * Description
      *
      * Description of the image
      */
-    public description: StringProperty;
+    public get description() : ImageMediaDataData["description"] { return this.getProperty("description"); }
 
     /**
      * Alternate text
      *
      * No description available
      */
-    public altText: StringProperty;
+    public get altText() : ImageMediaDataData["altText"] { return this.getProperty("altText"); }
 
     /**
      * Credits text
      *
      * No description available
      */
-    public creditsText: StringProperty;
+    public get creditsText() : ImageMediaDataData["creditsText"] { return this.getProperty("creditsText"); }
 
     /**
      * Credits link
      *
      * No description available
      */
-    public creditsLink: StringProperty;
+    public get creditsLink() : ImageMediaDataData["creditsLink"] { return this.getProperty("creditsLink"); }
 
     /**
      * Link
      *
      * Link to content
      */
-    public link: ContentReferenceProperty;
+    public get link() : ImageMediaDataData["link"] { return this.getProperty("link"); }
 
     /**
      * Copyright
      *
      * No description available
      */
-    public copyright: StringProperty;
+    public get copyright() : ImageMediaDataData["copyright"] { return this.getProperty("copyright"); }
 
 }

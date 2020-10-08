@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Calendar Block
  *
@@ -10,85 +6,85 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID d5148c01-dfb0-4e57-8399-6ceebf48f38e
  */
-export default interface CalendarBlockData extends IContent {
+export default interface CalendarBlockData extends Taxonomy.IContent {
     /**
      * Categories
      *
      * Categories associated with this content
      */
-    categories: Property<Array<ContentLink>>
+    categories: ContentDelivery.ContentReferenceListProperty
 
     /**
      * Padding
      *
      * No description available
      */
-    padding: StringProperty
+    padding: ContentDelivery.StringProperty
 
     /**
      * Margin
      *
      * No description available
      */
-    margin: StringProperty
+    margin: ContentDelivery.StringProperty
 
     /**
      * Background color
      *
      * No description available
      */
-    backgroundColor: StringProperty
+    backgroundColor: ContentDelivery.StringProperty
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    blockOpacity: NumberProperty
+    blockOpacity: ContentDelivery.NumberProperty
 
     /**
      * View as
      *
      * No description available
      */
-    viewMode: StringProperty
+    viewMode: ContentDelivery.StringProperty
 
     /**
      * Events root
      *
      * No description available
      */
-    eventsRoot: ContentReferenceProperty
+    eventsRoot: ContentDelivery.ContentReferenceProperty
 
     /**
      * Number of events
      *
      * No description available
      */
-    count: NumberProperty
+    count: ContentDelivery.NumberProperty
 
     /**
      * Filter by category
      *
      * No description available
      */
-    categoryFilter: Property<any> // Original type: Category
+    categoryFilter: ContentDelivery.Property<any> // Original type: Category
 
     /**
      * Include all levels
      *
      * No description available
      */
-    recursive: BooleanProperty
+    recursive: ContentDelivery.BooleanProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface CalendarBlockProps extends ComponentProps<CalendarBlockData> {}
+export interface CalendarBlockProps extends ComponentTypes.AbstractComponentProps<CalendarBlockData> {}
 
-export class CalendarBlockType extends BaseIContent<CalendarBlockData> implements CalendarBlockData {
+export class CalendarBlockType extends Taxonomy.AbstractIContent<CalendarBlockData> implements CalendarBlockData {
     protected _typeName : string = "CalendarBlock";
     /**
      * Map of all property types within this content type.
@@ -111,69 +107,69 @@ export class CalendarBlockType extends BaseIContent<CalendarBlockData> implement
      *
      * Categories associated with this content
      */
-    public categories: Property<Array<ContentLink>>;
+    public get categories() : CalendarBlockData["categories"] { return this.getProperty("categories"); }
 
     /**
      * Padding
      *
      * No description available
      */
-    public padding: StringProperty;
+    public get padding() : CalendarBlockData["padding"] { return this.getProperty("padding"); }
 
     /**
      * Margin
      *
      * No description available
      */
-    public margin: StringProperty;
+    public get margin() : CalendarBlockData["margin"] { return this.getProperty("margin"); }
 
     /**
      * Background color
      *
      * No description available
      */
-    public backgroundColor: StringProperty;
+    public get backgroundColor() : CalendarBlockData["backgroundColor"] { return this.getProperty("backgroundColor"); }
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    public blockOpacity: NumberProperty;
+    public get blockOpacity() : CalendarBlockData["blockOpacity"] { return this.getProperty("blockOpacity"); }
 
     /**
      * View as
      *
      * No description available
      */
-    public viewMode: StringProperty;
+    public get viewMode() : CalendarBlockData["viewMode"] { return this.getProperty("viewMode"); }
 
     /**
      * Events root
      *
      * No description available
      */
-    public eventsRoot: ContentReferenceProperty;
+    public get eventsRoot() : CalendarBlockData["eventsRoot"] { return this.getProperty("eventsRoot"); }
 
     /**
      * Number of events
      *
      * No description available
      */
-    public count: NumberProperty;
+    public get count() : CalendarBlockData["count"] { return this.getProperty("count"); }
 
     /**
      * Filter by category
      *
      * No description available
      */
-    public categoryFilter: Property<any> // Original type: Category;
+    public get categoryFilter() : CalendarBlockData["categoryFilter"] { return this.getProperty("categoryFilter"); }
 
     /**
      * Include all levels
      *
      * No description available
      */
-    public recursive: BooleanProperty;
+    public get recursive() : CalendarBlockData["recursive"] { return this.getProperty("recursive"); }
 
 }

@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * YouTube Block
  *
@@ -10,71 +6,71 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 67429e0d-9365-407c-8a49-69489382bbdc
  */
-export default interface YouTubeBlockData extends IContent {
+export default interface YouTubeBlockData extends Taxonomy.IContent {
     /**
      * Categories
      *
      * Categories associated with this content
      */
-    categories: Property<Array<ContentLink>>
+    categories: ContentDelivery.ContentReferenceListProperty
 
     /**
      * Padding
      *
      * No description available
      */
-    padding: StringProperty
+    padding: ContentDelivery.StringProperty
 
     /**
      * Margin
      *
      * No description available
      */
-    margin: StringProperty
+    margin: ContentDelivery.StringProperty
 
     /**
      * Background color
      *
      * No description available
      */
-    backgroundColor: StringProperty
+    backgroundColor: ContentDelivery.StringProperty
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    blockOpacity: NumberProperty
+    blockOpacity: ContentDelivery.NumberProperty
 
     /**
      * YouTube link
      *
      * URL link to YouTube video
      */
-    youTubeLink: StringProperty
+    youTubeLink: ContentDelivery.StringProperty
 
     /**
      * Heading
      *
      * No description available
      */
-    heading: StringProperty
+    heading: ContentDelivery.StringProperty
 
     /**
      * Main body
      *
      * Descriptive text for the video
      */
-    mainBody: StringProperty
+    mainBody: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface YouTubeBlockProps extends ComponentProps<YouTubeBlockData> {}
+export interface YouTubeBlockProps extends ComponentTypes.AbstractComponentProps<YouTubeBlockData> {}
 
-export class YouTubeBlockType extends BaseIContent<YouTubeBlockData> implements YouTubeBlockData {
+export class YouTubeBlockType extends Taxonomy.AbstractIContent<YouTubeBlockData> implements YouTubeBlockData {
     protected _typeName : string = "YouTubeBlock";
     /**
      * Map of all property types within this content type.
@@ -95,55 +91,55 @@ export class YouTubeBlockType extends BaseIContent<YouTubeBlockData> implements 
      *
      * Categories associated with this content
      */
-    public categories: Property<Array<ContentLink>>;
+    public get categories() : YouTubeBlockData["categories"] { return this.getProperty("categories"); }
 
     /**
      * Padding
      *
      * No description available
      */
-    public padding: StringProperty;
+    public get padding() : YouTubeBlockData["padding"] { return this.getProperty("padding"); }
 
     /**
      * Margin
      *
      * No description available
      */
-    public margin: StringProperty;
+    public get margin() : YouTubeBlockData["margin"] { return this.getProperty("margin"); }
 
     /**
      * Background color
      *
      * No description available
      */
-    public backgroundColor: StringProperty;
+    public get backgroundColor() : YouTubeBlockData["backgroundColor"] { return this.getProperty("backgroundColor"); }
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    public blockOpacity: NumberProperty;
+    public get blockOpacity() : YouTubeBlockData["blockOpacity"] { return this.getProperty("blockOpacity"); }
 
     /**
      * YouTube link
      *
      * URL link to YouTube video
      */
-    public youTubeLink: StringProperty;
+    public get youTubeLink() : YouTubeBlockData["youTubeLink"] { return this.getProperty("youTubeLink"); }
 
     /**
      * Heading
      *
      * No description available
      */
-    public heading: StringProperty;
+    public get heading() : YouTubeBlockData["heading"] { return this.getProperty("heading"); }
 
     /**
      * Main body
      *
      * Descriptive text for the video
      */
-    public mainBody: StringProperty;
+    public get mainBody() : YouTubeBlockData["mainBody"] { return this.getProperty("mainBody"); }
 
 }

@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Recent Page Category Recommendation Block
  *
@@ -10,71 +6,71 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID d1728a48-764a-4a02-bfb6-4e004fb4ac92
  */
-export default interface RecentPageCategoryRecommendationBlockData extends IContent {
+export default interface RecentPageCategoryRecommendationBlockData extends Taxonomy.IContent {
     /**
      * Categories
      *
      * Categories associated with this content
      */
-    categories: Property<Array<ContentLink>>
+    categories: ContentDelivery.ContentReferenceListProperty
 
     /**
      * Padding
      *
      * No description available
      */
-    padding: StringProperty
+    padding: ContentDelivery.StringProperty
 
     /**
      * Margin
      *
      * No description available
      */
-    margin: StringProperty
+    margin: ContentDelivery.StringProperty
 
     /**
      * Background color
      *
      * No description available
      */
-    backgroundColor: StringProperty
+    backgroundColor: ContentDelivery.StringProperty
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    blockOpacity: NumberProperty
+    blockOpacity: ContentDelivery.NumberProperty
 
     /**
      * Number of recommendations
      *
      * No description available
      */
-    numberOfRecommendations: NumberProperty
+    numberOfRecommendations: ContentDelivery.NumberProperty
 
     /**
      * Filter root
      *
      * No description available
      */
-    filterRoot: ContentReferenceProperty
+    filterRoot: ContentDelivery.ContentReferenceProperty
 
     /**
      * Filter types
      *
      * No description available
      */
-    filterTypes: StringProperty
+    filterTypes: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface RecentPageCategoryRecommendationBlockProps extends ComponentProps<RecentPageCategoryRecommendationBlockData> {}
+export interface RecentPageCategoryRecommendationBlockProps extends ComponentTypes.AbstractComponentProps<RecentPageCategoryRecommendationBlockData> {}
 
-export class RecentPageCategoryRecommendationBlockType extends BaseIContent<RecentPageCategoryRecommendationBlockData> implements RecentPageCategoryRecommendationBlockData {
+export class RecentPageCategoryRecommendationBlockType extends Taxonomy.AbstractIContent<RecentPageCategoryRecommendationBlockData> implements RecentPageCategoryRecommendationBlockData {
     protected _typeName : string = "RecentPageCategoryRecommendationBlock";
     /**
      * Map of all property types within this content type.
@@ -95,55 +91,55 @@ export class RecentPageCategoryRecommendationBlockType extends BaseIContent<Rece
      *
      * Categories associated with this content
      */
-    public categories: Property<Array<ContentLink>>;
+    public get categories() : RecentPageCategoryRecommendationBlockData["categories"] { return this.getProperty("categories"); }
 
     /**
      * Padding
      *
      * No description available
      */
-    public padding: StringProperty;
+    public get padding() : RecentPageCategoryRecommendationBlockData["padding"] { return this.getProperty("padding"); }
 
     /**
      * Margin
      *
      * No description available
      */
-    public margin: StringProperty;
+    public get margin() : RecentPageCategoryRecommendationBlockData["margin"] { return this.getProperty("margin"); }
 
     /**
      * Background color
      *
      * No description available
      */
-    public backgroundColor: StringProperty;
+    public get backgroundColor() : RecentPageCategoryRecommendationBlockData["backgroundColor"] { return this.getProperty("backgroundColor"); }
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    public blockOpacity: NumberProperty;
+    public get blockOpacity() : RecentPageCategoryRecommendationBlockData["blockOpacity"] { return this.getProperty("blockOpacity"); }
 
     /**
      * Number of recommendations
      *
      * No description available
      */
-    public numberOfRecommendations: NumberProperty;
+    public get numberOfRecommendations() : RecentPageCategoryRecommendationBlockData["numberOfRecommendations"] { return this.getProperty("numberOfRecommendations"); }
 
     /**
      * Filter root
      *
      * No description available
      */
-    public filterRoot: ContentReferenceProperty;
+    public get filterRoot() : RecentPageCategoryRecommendationBlockData["filterRoot"] { return this.getProperty("filterRoot"); }
 
     /**
      * Filter types
      *
      * No description available
      */
-    public filterTypes: StringProperty;
+    public get filterTypes() : RecentPageCategoryRecommendationBlockData["filterTypes"] { return this.getProperty("filterTypes"); }
 
 }

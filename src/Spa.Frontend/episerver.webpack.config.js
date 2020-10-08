@@ -1,7 +1,7 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const GlobalConfig = require('@episerver/webpack/Config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const path = require('path');
@@ -157,11 +157,13 @@ module.exports = (env) => {
                         }, {
                             loader: 'postcss-loader', // Run post css actions
                             options: {
-                                plugins: function () { // post css plugins, can be exported to postcss.config.js
-                                    return [
-                                        require('precss'),
-                                        require('autoprefixer')
-                                    ];
+                                postcssOptions: {
+                                    plugins: function () { // post css plugins, can be exported to postcss.config.js
+                                        return [
+                                            require('precss'),
+                                            require('autoprefixer')
+                                        ];
+                                    }
                                 }
                             }
                         }, {
@@ -195,14 +197,18 @@ module.exports = (env) => {
 
             new CopyWebpackPlugin([
                 {
-                    from: path.join(srcPath,'favicon.ico'),
-                    to: outPrefix+'favicon.ico'
-                }, {
-                    from: path.join(srcPath,'robots.txt'),
-                    to: outPrefix+'robots.txt'
-                }, {
-                    from: path.join(srcPath,'web.config'),
-                    to: outPrefix+'web.config'
+                    patterns: [
+                        {
+                            from: path.join(srcPath,'favicon.ico'),
+                            to: outPrefix+'favicon.ico'
+                        }, {
+                            from: path.join(srcPath,'robots.txt'),
+                            to: outPrefix+'robots.txt'
+                        }, {
+                            from: path.join(srcPath,'web.config'),
+                            to: outPrefix+'web.config'
+                        }
+                    ]
                 }
             ]),
 

@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * CustomizedSearchAdvancedSettings
  *
@@ -10,43 +6,43 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 5e333241-f873-4092-9947-8b573ac0ffde
  */
-export default interface CustomizedSearchAdvancedSettingsData extends IContent {
+export default interface CustomizedSearchAdvancedSettingsData extends Taxonomy.IContent {
     /**
      * RootContent
      *
      * No description available
      */
-    rootContent: ContentReferenceProperty
+    rootContent: ContentDelivery.ContentReferenceProperty
 
     /**
      * ContentTypes
      *
      * No description available
      */
-    contentTypes: StringProperty
+    contentTypes: ContentDelivery.StringProperty
 
     /**
      * IncludeBestBets
      *
      * No description available
      */
-    includeBestBets: BooleanProperty
+    includeBestBets: ContentDelivery.BooleanProperty
 
     /**
      * UseSynonyms
      *
      * No description available
      */
-    useSynonyms: BooleanProperty
+    useSynonyms: ContentDelivery.BooleanProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface CustomizedSearchAdvancedSettingsProps extends ComponentProps<CustomizedSearchAdvancedSettingsData> {}
+export interface CustomizedSearchAdvancedSettingsProps extends ComponentTypes.AbstractComponentProps<CustomizedSearchAdvancedSettingsData> {}
 
-export class CustomizedSearchAdvancedSettingsType extends BaseIContent<CustomizedSearchAdvancedSettingsData> implements CustomizedSearchAdvancedSettingsData {
+export class CustomizedSearchAdvancedSettingsType extends Taxonomy.AbstractIContent<CustomizedSearchAdvancedSettingsData> implements CustomizedSearchAdvancedSettingsData {
     protected _typeName : string = "CustomizedSearchAdvancedSettings";
     /**
      * Map of all property types within this content type.
@@ -63,27 +59,27 @@ export class CustomizedSearchAdvancedSettingsType extends BaseIContent<Customize
      *
      * No description available
      */
-    public rootContent: ContentReferenceProperty;
+    public get rootContent() : CustomizedSearchAdvancedSettingsData["rootContent"] { return this.getProperty("rootContent"); }
 
     /**
      * ContentTypes
      *
      * No description available
      */
-    public contentTypes: StringProperty;
+    public get contentTypes() : CustomizedSearchAdvancedSettingsData["contentTypes"] { return this.getProperty("contentTypes"); }
 
     /**
      * IncludeBestBets
      *
      * No description available
      */
-    public includeBestBets: BooleanProperty;
+    public get includeBestBets() : CustomizedSearchAdvancedSettingsData["includeBestBets"] { return this.getProperty("includeBestBets"); }
 
     /**
      * UseSynonyms
      *
      * No description available
      */
-    public useSynonyms: BooleanProperty;
+    public get useSynonyms() : CustomizedSearchAdvancedSettingsData["useSynonyms"] { return this.getProperty("useSynonyms"); }
 
 }

@@ -1,120 +1,111 @@
-import React, { PureComponent, ReactNode } from "react";
+import React, { ReactNode, FunctionComponent } from "react";
+import { Core, Components, Services, Taxonomy, useEpiserver } from "@episerver/spa-core";
 import IContentWithTeaser, { isIContentWithTeaser } from 'app/Models/IContentWithTeaser';
-import CmsComponent from "@episerver/spa-core/Components/CmsComponent";
-import ContentLink, { ContentLinkService } from "@episerver/spa-core/Models/ContentLink";
-import IEpiserverContext from "@episerver/spa-core/Core/IEpiserverContext";
-import IContent from "@episerver/spa-core/Models/IContent";
 
 import './Teaser.scss';
 
-interface TeaserProps {
+export interface TeaserProps {
     content: IContentWithTeaser
-    context: IEpiserverContext
+    context?: Core.IEpiserverContext
     className?: string
 }
 
-export default class Teaser extends PureComponent<TeaserProps>
+export const Teaser : FunctionComponent<TeaserProps> = (props) =>
 {
-    public constructor(props: TeaserProps)
-    {
-        super(props);
-        if (!isIContentWithTeaser(props.content)) {
-            throw "Invalid content received";
-        }
+    const ctx = props.context || useEpiserver();
+    if (!isIContentWithTeaser(props.content)) {
+        throw "Invalid content received";
     }
 
-    public render() : ReactNode
-    {
-        //Determine classes
-        let myClassName = `teaser ${ this.props.className }`;
-        let ratioClass : string = this.props.content.teaserRatio?.value ? `r-${ this.props.content.teaserRatio.value }` : ''; 
-        let contentClasses : Array<string> = ['teaser-content','p-3','d-flex','flex-column'];
-        let contentTextClasses : Array<string> = [];
+    // Determine classes
+    const myClassName = `teaser ${ props.className }`;
+    const ratioClass : string = props.content.teaserRatio?.value ? `r-${ props.content.teaserRatio.value }` : ''; 
+    const contentClasses : Array<string> = ['teaser-content','p-3','d-flex','flex-column'];
+    const contentTextClasses : Array<string> = [];
 
-        //Get teaser background
-        let teaserBackground : ContentLink;
-        let teaserBackgroundExpanded : IContent;
-        if (this.props.content.teaserVideo?.value) {
-            teaserBackground = this.props.content.teaserVideo.value;
-            teaserBackgroundExpanded = this.props.content.teaserVideo.expandedValue;
-        } else {
-            teaserBackground = this.props.content.pageImage.value;
-            teaserBackgroundExpanded = this.props.content.pageImage.expandedValue;
-        }
+    // Get teaser background
+    let teaserBackground : Taxonomy.ContentLink;
+    let teaserBackgroundExpanded : Taxonomy.IContent;
+    if (props.content.teaserVideo?.value) {
+        teaserBackground = props.content.teaserVideo.value;
+        teaserBackgroundExpanded = props.content.teaserVideo.expandedValue;
+    } else {
+        teaserBackground = props.content.pageImage.value;
+        teaserBackgroundExpanded = props.content.pageImage.expandedValue;
+    }
+    if (props.content.teaserColorTheme?.value) contentClasses.push(`tc-${ props.content.teaserColorTheme.value.toLowerCase() }`);
 
-        if (this.props.content.teaserColorTheme?.value) contentClasses.push(`tc-${ this.props.content.teaserColorTheme.value.toLowerCase() }`)
+    // Get teaser name
+    const title : string = typeof(props.content.name) == "string" ? props.content.name : props.content.name.value;
 
-        //Get teaser name
-        let title : string = typeof(this.props.content.name) == "string" ? this.props.content.name : this.props.content.name.value;
-
-        switch (this.props.content.teaserTextAlignment.value.toLowerCase()) {
-            case 'right':
-                contentClasses.push('align-items-end');
-                contentTextClasses.push('text-right');
-                break;
-            case 'center':
-                contentClasses.push('align-items-center');
-                contentTextClasses.push('text-center');
-                break;
-            case 'left':
-            default:
-                contentClasses.push('align-items-start');
-                contentTextClasses.push('text-left');
-                break;
-        }
-
-        //Build teaser
-        let button : ReactNode = this.renderButton(this.props.content);
-        let body : ReactNode = this.props.content.teaserText?.value ? <p className={ contentTextClasses.join(' ') }>{ this.props.content.teaserText.value }</p> : null;
-        let container = <div className={ ratioClass} >
-            <CmsComponent contentLink={ teaserBackground } context={ this.props.context } expandedValue={ teaserBackgroundExpanded } className="d-cover" />
-            <div className={ contentClasses.join(' ') }>
-                <div className={`teaser-header ${ contentTextClasses.join(' ') }`}>{ title }</div>
-                { body }
-                { button }
-            </div>
-        </div>;
-
-        if (button) {
-            return <div className={ myClassName } >
-                {container}
-            </div>
-        } else {
-            return <a className={ myClassName } href={ ContentLinkService.createHref(this.props.content.contentLink) }>
-                { container }
-            </a> 
-        }
+    // Teaser alignment
+    switch (props.content.teaserTextAlignment.value.toLowerCase()) {
+        case 'right':
+            contentClasses.push('align-items-end');
+            contentTextClasses.push('text-right');
+            break;
+        case 'center':
+            contentClasses.push('align-items-center');
+            contentTextClasses.push('text-center');
+            break;
+        case 'left':
+        default:
+            contentClasses.push('align-items-start');
+            contentTextClasses.push('text-left');
+            break;
     }
 
-    protected renderButton(teaser: IContentWithTeaser) : ReactNode | null
-    {
-        if (!teaser.teaserButtonText?.value) {
-            return null;
-        }
-        let btnClasses : Array<string> = ['btn'];
-        switch (teaser.teaserButtonStyle?.value) {
-            case 'button-white':
-                btnClasses.push('btn-light');
-                break;
-            case 'button-black':
-                btnClasses.push('btn-dark');
-                break;
-            case 'button-transparent-black':
-                btnClasses.push('btn-outline-dark');
-                break;
-            case 'button-transparent-white':
-                btnClasses.push('btn-outline-light');
-                break;
-            case 'button-yellow-black':
-                btnClasses.push('btn-warning');
-                break;
-            case 'button-yellow-white':
-                btnClasses.push('btn-outline-warning');
-                break;
-            default:
-                btnClasses.push('btn-primary');
-                break;
-        }
-        return <a className={ btnClasses.join(' ') } href={ ContentLinkService.createHref(teaser.contentLink) }>{teaser.teaserButtonText.value}</a>
+    // Build teaser
+    const button : ReactNode = renderButton(props.content);
+    const body : ReactNode = props.content.teaserText?.value ? <p className={ contentTextClasses.join(' ') }>{ props.content.teaserText.value }</p> : null;
+    const container = <div className={ ratioClass} >
+        <Components.EpiserverContent contentLink={ teaserBackground } context={ ctx } expandedValue={ teaserBackgroundExpanded } className="d-cover" />
+        <div className={ contentClasses.join(' ') }>
+            <div className={`teaser-header ${ contentTextClasses.join(' ') }`}>{ title }</div>
+            { body }
+            { button }
+        </div>
+    </div>;
+
+    if (button) {
+        return <div className={ myClassName } >
+            { container }
+        </div>
     }
+    return <a className={ myClassName } href={ Services.ContentLink.createHref(props.content.contentLink) }>
+        { container }
+    </a>
+}
+export default Teaser;
+
+const renderButton : (teaser: IContentWithTeaser) => ReactNode | null = (teaser) =>
+{
+    if (!teaser.teaserButtonText?.value) {
+        return null;
+    }
+    let btnClasses : Array<string> = ['btn'];
+    switch (teaser.teaserButtonStyle?.value) {
+        case 'button-white':
+            btnClasses.push('btn-light');
+            break;
+        case 'button-black':
+            btnClasses.push('btn-dark');
+            break;
+        case 'button-transparent-black':
+            btnClasses.push('btn-outline-dark');
+            break;
+        case 'button-transparent-white':
+            btnClasses.push('btn-outline-light');
+            break;
+        case 'button-yellow-black':
+            btnClasses.push('btn-warning');
+            break;
+        case 'button-yellow-white':
+            btnClasses.push('btn-outline-warning');
+            break;
+        default:
+            btnClasses.push('btn-primary');
+            break;
+    }
+    return <a className={ btnClasses.join(' ') } href={ Services.ContentLink.createHref(teaser.contentLink) }>{teaser.teaserButtonText.value}</a>
 }

@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * PredefinedHiddenElementBlock
  *
@@ -10,36 +6,36 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID d08021d2-ffff-4359-9603-3c66d7eb97c6
  */
-export default interface PredefinedHiddenElementBlockData extends IContent {
+export default interface PredefinedHiddenElementBlockData extends Taxonomy.IContent {
     /**
      * PredefinedValue
      *
      * No description available
      */
-    predefinedValue: StringProperty
+    predefinedValue: ContentDelivery.StringProperty
 
     /**
      * External system field mapping
      *
      * No description available
      */
-    forms_ExternalSystemsFieldMappings: Property<any> // Original type: Property Field Mapping Collection
+    forms_ExternalSystemsFieldMappings: ContentDelivery.Property<any> // Original type: Property Field Mapping Collection
 
     /**
      * ValidatorMessages
      *
      * No description available
      */
-    validatorMessages: Property<any> // Original type: Validator with message collection
+    validatorMessages: ContentDelivery.Property<any> // Original type: Validator with message collection
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface PredefinedHiddenElementBlockProps extends ComponentProps<PredefinedHiddenElementBlockData> {}
+export interface PredefinedHiddenElementBlockProps extends ComponentTypes.AbstractComponentProps<PredefinedHiddenElementBlockData> {}
 
-export class PredefinedHiddenElementBlockType extends BaseIContent<PredefinedHiddenElementBlockData> implements PredefinedHiddenElementBlockData {
+export class PredefinedHiddenElementBlockType extends Taxonomy.AbstractIContent<PredefinedHiddenElementBlockData> implements PredefinedHiddenElementBlockData {
     protected _typeName : string = "PredefinedHiddenElementBlock";
     /**
      * Map of all property types within this content type.
@@ -55,20 +51,20 @@ export class PredefinedHiddenElementBlockType extends BaseIContent<PredefinedHid
      *
      * No description available
      */
-    public predefinedValue: StringProperty;
+    public get predefinedValue() : PredefinedHiddenElementBlockData["predefinedValue"] { return this.getProperty("predefinedValue"); }
 
     /**
      * External system field mapping
      *
      * No description available
      */
-    public forms_ExternalSystemsFieldMappings: Property<any> // Original type: Property Field Mapping Collection;
+    public get forms_ExternalSystemsFieldMappings() : PredefinedHiddenElementBlockData["forms_ExternalSystemsFieldMappings"] { return this.getProperty("forms_ExternalSystemsFieldMappings"); }
 
     /**
      * ValidatorMessages
      *
      * No description available
      */
-    public validatorMessages: Property<any> // Original type: Validator with message collection;
+    public get validatorMessages() : PredefinedHiddenElementBlockData["validatorMessages"] { return this.getProperty("validatorMessages"); }
 
 }

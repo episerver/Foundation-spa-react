@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Google Maps Embed Block
  *
@@ -10,71 +6,71 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 8fc31051-6d22-4445-b92d-7c394267fa49
  */
-export default interface GoogleMapsEmbedBlockData extends IContent {
+export default interface GoogleMapsEmbedBlockData extends Taxonomy.IContent {
     /**
      * Categories
      *
      * Categories associated with this content
      */
-    categories: Property<Array<ContentLink>>
+    categories: ContentDelivery.ContentReferenceListProperty
 
     /**
      * Padding
      *
      * No description available
      */
-    padding: StringProperty
+    padding: ContentDelivery.StringProperty
 
     /**
      * Margin
      *
      * No description available
      */
-    margin: StringProperty
+    margin: ContentDelivery.StringProperty
 
     /**
      * Background color
      *
      * No description available
      */
-    backgroundColor: StringProperty
+    backgroundColor: ContentDelivery.StringProperty
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    blockOpacity: NumberProperty
+    blockOpacity: ContentDelivery.NumberProperty
 
     /**
      * API Key
      *
      * No description available
      */
-    apiKey: StringProperty
+    apiKey: ContentDelivery.StringProperty
 
     /**
      * Search term
      *
      * No description available
      */
-    searchTerm: StringProperty
+    searchTerm: ContentDelivery.StringProperty
 
     /**
      * Height
      *
      * No description available
      */
-    height: NumberProperty
+    height: ContentDelivery.NumberProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface GoogleMapsEmbedBlockProps extends ComponentProps<GoogleMapsEmbedBlockData> {}
+export interface GoogleMapsEmbedBlockProps extends ComponentTypes.AbstractComponentProps<GoogleMapsEmbedBlockData> {}
 
-export class GoogleMapsEmbedBlockType extends BaseIContent<GoogleMapsEmbedBlockData> implements GoogleMapsEmbedBlockData {
+export class GoogleMapsEmbedBlockType extends Taxonomy.AbstractIContent<GoogleMapsEmbedBlockData> implements GoogleMapsEmbedBlockData {
     protected _typeName : string = "GoogleMapsEmbedBlock";
     /**
      * Map of all property types within this content type.
@@ -95,55 +91,55 @@ export class GoogleMapsEmbedBlockType extends BaseIContent<GoogleMapsEmbedBlockD
      *
      * Categories associated with this content
      */
-    public categories: Property<Array<ContentLink>>;
+    public get categories() : GoogleMapsEmbedBlockData["categories"] { return this.getProperty("categories"); }
 
     /**
      * Padding
      *
      * No description available
      */
-    public padding: StringProperty;
+    public get padding() : GoogleMapsEmbedBlockData["padding"] { return this.getProperty("padding"); }
 
     /**
      * Margin
      *
      * No description available
      */
-    public margin: StringProperty;
+    public get margin() : GoogleMapsEmbedBlockData["margin"] { return this.getProperty("margin"); }
 
     /**
      * Background color
      *
      * No description available
      */
-    public backgroundColor: StringProperty;
+    public get backgroundColor() : GoogleMapsEmbedBlockData["backgroundColor"] { return this.getProperty("backgroundColor"); }
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    public blockOpacity: NumberProperty;
+    public get blockOpacity() : GoogleMapsEmbedBlockData["blockOpacity"] { return this.getProperty("blockOpacity"); }
 
     /**
      * API Key
      *
      * No description available
      */
-    public apiKey: StringProperty;
+    public get apiKey() : GoogleMapsEmbedBlockData["apiKey"] { return this.getProperty("apiKey"); }
 
     /**
      * Search term
      *
      * No description available
      */
-    public searchTerm: StringProperty;
+    public get searchTerm() : GoogleMapsEmbedBlockData["searchTerm"] { return this.getProperty("searchTerm"); }
 
     /**
      * Height
      *
      * No description available
      */
-    public height: NumberProperty;
+    public get height() : GoogleMapsEmbedBlockData["height"] { return this.getProperty("height"); }
 
 }

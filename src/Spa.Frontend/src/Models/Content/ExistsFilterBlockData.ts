@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Exists Filter Block
  *
@@ -10,22 +6,22 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID e93c9a50-4b62-4116-8e56-1df84ab93ef7
  */
-export default interface ExistsFilterBlockData extends IContent {
+export default interface ExistsFilterBlockData extends Taxonomy.IContent {
     /**
      * Name
      *
      * Name of field in index
      */
-    fieldName: StringProperty
+    fieldName: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface ExistsFilterBlockProps extends ComponentProps<ExistsFilterBlockData> {}
+export interface ExistsFilterBlockProps extends ComponentTypes.AbstractComponentProps<ExistsFilterBlockData> {}
 
-export class ExistsFilterBlockType extends BaseIContent<ExistsFilterBlockData> implements ExistsFilterBlockData {
+export class ExistsFilterBlockType extends Taxonomy.AbstractIContent<ExistsFilterBlockData> implements ExistsFilterBlockData {
     protected _typeName : string = "ExistsFilterBlock";
     /**
      * Map of all property types within this content type.
@@ -39,6 +35,6 @@ export class ExistsFilterBlockType extends BaseIContent<ExistsFilterBlockData> i
      *
      * Name of field in index
      */
-    public fieldName: StringProperty;
+    public get fieldName() : ExistsFilterBlockData["fieldName"] { return this.getProperty("fieldName"); }
 
 }

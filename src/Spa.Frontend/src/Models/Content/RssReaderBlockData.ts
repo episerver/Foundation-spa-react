@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * RSS Reader Block
  *
@@ -10,85 +6,85 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 8fc5a3bb-727c-4871-8b2e-5ff337e30e82
  */
-export default interface RssReaderBlockData extends IContent {
+export default interface RssReaderBlockData extends Taxonomy.IContent {
     /**
      * Categories
      *
      * Categories associated with this content
      */
-    categories: Property<Array<ContentLink>>
+    categories: ContentDelivery.ContentReferenceListProperty
 
     /**
      * Padding
      *
      * No description available
      */
-    padding: StringProperty
+    padding: ContentDelivery.StringProperty
 
     /**
      * Margin
      *
      * No description available
      */
-    margin: StringProperty
+    margin: ContentDelivery.StringProperty
 
     /**
      * Background color
      *
      * No description available
      */
-    backgroundColor: StringProperty
+    backgroundColor: ContentDelivery.StringProperty
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    blockOpacity: NumberProperty
+    blockOpacity: ContentDelivery.NumberProperty
 
     /**
      * RSS feed URL
      *
      * URL for RSS feed
      */
-    rssUrl: StringProperty
+    rssUrl: ContentDelivery.StringProperty
 
     /**
      * Number of results
      *
      * Maximum number of items to display
      */
-    maxCount: NumberProperty
+    maxCount: ContentDelivery.NumberProperty
 
     /**
      * Include publish date
      *
      * Include publish date for each item in list
      */
-    includePublishDate: BooleanProperty
+    includePublishDate: ContentDelivery.BooleanProperty
 
     /**
      * Heading
      *
      * No description available
      */
-    heading: StringProperty
+    heading: ContentDelivery.StringProperty
 
     /**
      * Main body
      *
      * Descriptive text for the RSS feed
      */
-    mainBody: StringProperty
+    mainBody: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface RssReaderBlockProps extends ComponentProps<RssReaderBlockData> {}
+export interface RssReaderBlockProps extends ComponentTypes.AbstractComponentProps<RssReaderBlockData> {}
 
-export class RssReaderBlockType extends BaseIContent<RssReaderBlockData> implements RssReaderBlockData {
+export class RssReaderBlockType extends Taxonomy.AbstractIContent<RssReaderBlockData> implements RssReaderBlockData {
     protected _typeName : string = "RssReaderBlock";
     /**
      * Map of all property types within this content type.
@@ -111,69 +107,69 @@ export class RssReaderBlockType extends BaseIContent<RssReaderBlockData> impleme
      *
      * Categories associated with this content
      */
-    public categories: Property<Array<ContentLink>>;
+    public get categories() : RssReaderBlockData["categories"] { return this.getProperty("categories"); }
 
     /**
      * Padding
      *
      * No description available
      */
-    public padding: StringProperty;
+    public get padding() : RssReaderBlockData["padding"] { return this.getProperty("padding"); }
 
     /**
      * Margin
      *
      * No description available
      */
-    public margin: StringProperty;
+    public get margin() : RssReaderBlockData["margin"] { return this.getProperty("margin"); }
 
     /**
      * Background color
      *
      * No description available
      */
-    public backgroundColor: StringProperty;
+    public get backgroundColor() : RssReaderBlockData["backgroundColor"] { return this.getProperty("backgroundColor"); }
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    public blockOpacity: NumberProperty;
+    public get blockOpacity() : RssReaderBlockData["blockOpacity"] { return this.getProperty("blockOpacity"); }
 
     /**
      * RSS feed URL
      *
      * URL for RSS feed
      */
-    public rssUrl: StringProperty;
+    public get rssUrl() : RssReaderBlockData["rssUrl"] { return this.getProperty("rssUrl"); }
 
     /**
      * Number of results
      *
      * Maximum number of items to display
      */
-    public maxCount: NumberProperty;
+    public get maxCount() : RssReaderBlockData["maxCount"] { return this.getProperty("maxCount"); }
 
     /**
      * Include publish date
      *
      * Include publish date for each item in list
      */
-    public includePublishDate: BooleanProperty;
+    public get includePublishDate() : RssReaderBlockData["includePublishDate"] { return this.getProperty("includePublishDate"); }
 
     /**
      * Heading
      *
      * No description available
      */
-    public heading: StringProperty;
+    public get heading() : RssReaderBlockData["heading"] { return this.getProperty("heading"); }
 
     /**
      * Main body
      *
      * Descriptive text for the RSS feed
      */
-    public mainBody: StringProperty;
+    public get mainBody() : RssReaderBlockData["mainBody"] { return this.getProperty("mainBody"); }
 
 }

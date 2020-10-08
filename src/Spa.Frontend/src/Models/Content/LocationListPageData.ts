@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Locations List Page
  *
@@ -10,225 +6,225 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 597afd14-391b-4e99-8e4f-8827e3e82354
  */
-export default interface LocationListPageData extends IContent {
+export default interface LocationListPageData extends Taxonomy.IContent {
     /**
      * Categories
      *
      * Categories associated with this content.
      */
-    categories: Property<Array<ContentLink>>
+    categories: ContentDelivery.ContentReferenceListProperty
 
     /**
      * Teaser ratio (width-height)
      *
      * No description available
      */
-    teaserRatio: StringProperty
+    teaserRatio: ContentDelivery.StringProperty
 
     /**
      * Main body
      *
      * No description available
      */
-    mainBody: StringProperty
+    mainBody: ContentDelivery.StringProperty
 
     /**
      * Title
      *
      * No description available
      */
-    metaTitle: StringProperty
+    metaTitle: ContentDelivery.StringProperty
 
     /**
      * Exclude from results
      *
      * This will determine whether or not to show on search
      */
-    excludeFromSearch: BooleanProperty
+    excludeFromSearch: ContentDelivery.BooleanProperty
 
     /**
      * Image
      *
      * No description available
      */
-    pageImage: ContentReferenceProperty
+    pageImage: ContentDelivery.ContentReferenceProperty
 
     /**
      * CSS files
      *
      * No description available
      */
-    cssFiles: LinkListProperty
+    cssFiles: ContentDelivery.LinkListProperty
 
     /**
      * Script files
      *
      * No description available
      */
-    scriptFiles: LinkListProperty
+    scriptFiles: ContentDelivery.LinkListProperty
 
     /**
      * Main content area
      *
      * No description available
      */
-    mainContentArea: ContentAreaProperty
+    mainContentArea: ContentDelivery.ContentAreaProperty
 
     /**
      * Keywords
      *
      * No description available
      */
-    keywords: StringProperty
+    keywords: ContentDelivery.StringProperty
 
     /**
      * Hide site header
      *
      * No description available
      */
-    hideSiteHeader: BooleanProperty
+    hideSiteHeader: ContentDelivery.BooleanProperty
 
     /**
      * Video
      *
      * No description available
      */
-    teaserVideo: ContentReferenceProperty
+    teaserVideo: ContentDelivery.ContentReferenceProperty
 
     /**
      * CSS
      *
      * No description available
      */
-    css: StringProperty
+    css: ContentDelivery.StringProperty
 
     /**
      * Scripts
      *
      * No description available
      */
-    scripts: StringProperty
+    scripts: ContentDelivery.StringProperty
 
     /**
      * Filter area
      *
      * No description available
      */
-    filterArea: ContentAreaProperty
+    filterArea: ContentDelivery.ContentAreaProperty
 
     /**
      * Page description
      *
      * No description available
      */
-    pageDescription: StringProperty
+    pageDescription: ContentDelivery.StringProperty
 
     /**
      * Hide site footer
      *
      * No description available
      */
-    hideSiteFooter: BooleanProperty
+    hideSiteFooter: ContentDelivery.BooleanProperty
 
     /**
      * Text
      *
      * No description available
      */
-    teaserText: StringProperty
+    teaserText: ContentDelivery.StringProperty
 
     /**
      * Content type
      *
      * No description available
      */
-    metaContentType: StringProperty
+    metaContentType: ContentDelivery.StringProperty
 
     /**
      * Industry
      *
      * No description available
      */
-    industry: StringProperty
+    industry: ContentDelivery.StringProperty
 
     /**
      * Author
      *
      * No description available
      */
-    authorMetaData: StringProperty
+    authorMetaData: ContentDelivery.StringProperty
 
     /**
      * Disable indexing
      *
      * No description available
      */
-    disableIndexing: BooleanProperty
+    disableIndexing: ContentDelivery.BooleanProperty
 
     /**
      * Highlight in page list
      *
      * No description available
      */
-    highlight: BooleanProperty
+    highlight: ContentDelivery.BooleanProperty
 
     /**
      * Text alignment
      *
      * No description available
      */
-    teaserTextAlignment: StringProperty
+    teaserTextAlignment: ContentDelivery.StringProperty
 
     /**
      * Color theme
      *
      * No description available
      */
-    teaserColorTheme: StringProperty
+    teaserColorTheme: ContentDelivery.StringProperty
 
     /**
      * Button label
      *
      * No description available
      */
-    teaserButtonText: StringProperty
+    teaserButtonText: ContentDelivery.StringProperty
 
     /**
      * Button theme
      *
      * No description available
      */
-    teaserButtonStyle: StringProperty
+    teaserButtonStyle: ContentDelivery.StringProperty
 
     /**
      * Display hover effect
      *
      * No description available
      */
-    applyHoverEffect: BooleanProperty
+    applyHoverEffect: ContentDelivery.BooleanProperty
 
     /**
      * Padding
      *
      * No description available
      */
-    padding: StringProperty
+    padding: ContentDelivery.StringProperty
 
     /**
      * Margin
      *
      * No description available
      */
-    margin: StringProperty
+    margin: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface LocationListPageProps extends ComponentProps<LocationListPageData> {}
+export interface LocationListPageProps extends ComponentTypes.AbstractComponentProps<LocationListPageData> {}
 
-export class LocationListPageType extends BaseIContent<LocationListPageData> implements LocationListPageData {
+export class LocationListPageType extends Taxonomy.AbstractIContent<LocationListPageData> implements LocationListPageData {
     protected _typeName : string = "LocationListPage";
     /**
      * Map of all property types within this content type.
@@ -271,209 +267,209 @@ export class LocationListPageType extends BaseIContent<LocationListPageData> imp
      *
      * Categories associated with this content.
      */
-    public categories: Property<Array<ContentLink>>;
+    public get categories() : LocationListPageData["categories"] { return this.getProperty("categories"); }
 
     /**
      * Teaser ratio (width-height)
      *
      * No description available
      */
-    public teaserRatio: StringProperty;
+    public get teaserRatio() : LocationListPageData["teaserRatio"] { return this.getProperty("teaserRatio"); }
 
     /**
      * Main body
      *
      * No description available
      */
-    public mainBody: StringProperty;
+    public get mainBody() : LocationListPageData["mainBody"] { return this.getProperty("mainBody"); }
 
     /**
      * Title
      *
      * No description available
      */
-    public metaTitle: StringProperty;
+    public get metaTitle() : LocationListPageData["metaTitle"] { return this.getProperty("metaTitle"); }
 
     /**
      * Exclude from results
      *
      * This will determine whether or not to show on search
      */
-    public excludeFromSearch: BooleanProperty;
+    public get excludeFromSearch() : LocationListPageData["excludeFromSearch"] { return this.getProperty("excludeFromSearch"); }
 
     /**
      * Image
      *
      * No description available
      */
-    public pageImage: ContentReferenceProperty;
+    public get pageImage() : LocationListPageData["pageImage"] { return this.getProperty("pageImage"); }
 
     /**
      * CSS files
      *
      * No description available
      */
-    public cssFiles: LinkListProperty;
+    public get cssFiles() : LocationListPageData["cssFiles"] { return this.getProperty("cssFiles"); }
 
     /**
      * Script files
      *
      * No description available
      */
-    public scriptFiles: LinkListProperty;
+    public get scriptFiles() : LocationListPageData["scriptFiles"] { return this.getProperty("scriptFiles"); }
 
     /**
      * Main content area
      *
      * No description available
      */
-    public mainContentArea: ContentAreaProperty;
+    public get mainContentArea() : LocationListPageData["mainContentArea"] { return this.getProperty("mainContentArea"); }
 
     /**
      * Keywords
      *
      * No description available
      */
-    public keywords: StringProperty;
+    public get keywords() : LocationListPageData["keywords"] { return this.getProperty("keywords"); }
 
     /**
      * Hide site header
      *
      * No description available
      */
-    public hideSiteHeader: BooleanProperty;
+    public get hideSiteHeader() : LocationListPageData["hideSiteHeader"] { return this.getProperty("hideSiteHeader"); }
 
     /**
      * Video
      *
      * No description available
      */
-    public teaserVideo: ContentReferenceProperty;
+    public get teaserVideo() : LocationListPageData["teaserVideo"] { return this.getProperty("teaserVideo"); }
 
     /**
      * CSS
      *
      * No description available
      */
-    public css: StringProperty;
+    public get css() : LocationListPageData["css"] { return this.getProperty("css"); }
 
     /**
      * Scripts
      *
      * No description available
      */
-    public scripts: StringProperty;
+    public get scripts() : LocationListPageData["scripts"] { return this.getProperty("scripts"); }
 
     /**
      * Filter area
      *
      * No description available
      */
-    public filterArea: ContentAreaProperty;
+    public get filterArea() : LocationListPageData["filterArea"] { return this.getProperty("filterArea"); }
 
     /**
      * Page description
      *
      * No description available
      */
-    public pageDescription: StringProperty;
+    public get pageDescription() : LocationListPageData["pageDescription"] { return this.getProperty("pageDescription"); }
 
     /**
      * Hide site footer
      *
      * No description available
      */
-    public hideSiteFooter: BooleanProperty;
+    public get hideSiteFooter() : LocationListPageData["hideSiteFooter"] { return this.getProperty("hideSiteFooter"); }
 
     /**
      * Text
      *
      * No description available
      */
-    public teaserText: StringProperty;
+    public get teaserText() : LocationListPageData["teaserText"] { return this.getProperty("teaserText"); }
 
     /**
      * Content type
      *
      * No description available
      */
-    public metaContentType: StringProperty;
+    public get metaContentType() : LocationListPageData["metaContentType"] { return this.getProperty("metaContentType"); }
 
     /**
      * Industry
      *
      * No description available
      */
-    public industry: StringProperty;
+    public get industry() : LocationListPageData["industry"] { return this.getProperty("industry"); }
 
     /**
      * Author
      *
      * No description available
      */
-    public authorMetaData: StringProperty;
+    public get authorMetaData() : LocationListPageData["authorMetaData"] { return this.getProperty("authorMetaData"); }
 
     /**
      * Disable indexing
      *
      * No description available
      */
-    public disableIndexing: BooleanProperty;
+    public get disableIndexing() : LocationListPageData["disableIndexing"] { return this.getProperty("disableIndexing"); }
 
     /**
      * Highlight in page list
      *
      * No description available
      */
-    public highlight: BooleanProperty;
+    public get highlight() : LocationListPageData["highlight"] { return this.getProperty("highlight"); }
 
     /**
      * Text alignment
      *
      * No description available
      */
-    public teaserTextAlignment: StringProperty;
+    public get teaserTextAlignment() : LocationListPageData["teaserTextAlignment"] { return this.getProperty("teaserTextAlignment"); }
 
     /**
      * Color theme
      *
      * No description available
      */
-    public teaserColorTheme: StringProperty;
+    public get teaserColorTheme() : LocationListPageData["teaserColorTheme"] { return this.getProperty("teaserColorTheme"); }
 
     /**
      * Button label
      *
      * No description available
      */
-    public teaserButtonText: StringProperty;
+    public get teaserButtonText() : LocationListPageData["teaserButtonText"] { return this.getProperty("teaserButtonText"); }
 
     /**
      * Button theme
      *
      * No description available
      */
-    public teaserButtonStyle: StringProperty;
+    public get teaserButtonStyle() : LocationListPageData["teaserButtonStyle"] { return this.getProperty("teaserButtonStyle"); }
 
     /**
      * Display hover effect
      *
      * No description available
      */
-    public applyHoverEffect: BooleanProperty;
+    public get applyHoverEffect() : LocationListPageData["applyHoverEffect"] { return this.getProperty("applyHoverEffect"); }
 
     /**
      * Padding
      *
      * No description available
      */
-    public padding: StringProperty;
+    public get padding() : LocationListPageData["padding"] { return this.getProperty("padding"); }
 
     /**
      * Margin
      *
      * No description available
      */
-    public margin: StringProperty;
+    public get margin() : LocationListPageData["margin"] { return this.getProperty("margin"); }
 
 }

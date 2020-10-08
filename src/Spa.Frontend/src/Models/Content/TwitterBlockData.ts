@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Twitter Feed Block
  *
@@ -10,64 +6,64 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 8ed98895-c4a5-4d4d-8abf-43853bd46bc8
  */
-export default interface TwitterBlockData extends IContent {
+export default interface TwitterBlockData extends Taxonomy.IContent {
     /**
      * Categories
      *
      * Categories associated with this content
      */
-    categories: Property<Array<ContentLink>>
+    categories: ContentDelivery.ContentReferenceListProperty
 
     /**
      * Padding
      *
      * No description available
      */
-    padding: StringProperty
+    padding: ContentDelivery.StringProperty
 
     /**
      * Margin
      *
      * No description available
      */
-    margin: StringProperty
+    margin: ContentDelivery.StringProperty
 
     /**
      * Background color
      *
      * No description available
      */
-    backgroundColor: StringProperty
+    backgroundColor: ContentDelivery.StringProperty
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    blockOpacity: NumberProperty
+    blockOpacity: ContentDelivery.NumberProperty
 
     /**
      * Account name
      *
      * No description available
      */
-    accountName: StringProperty
+    accountName: ContentDelivery.StringProperty
 
     /**
      * Number of items
      *
      * No description available
      */
-    numberOfItems: NumberProperty
+    numberOfItems: ContentDelivery.NumberProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface TwitterBlockProps extends ComponentProps<TwitterBlockData> {}
+export interface TwitterBlockProps extends ComponentTypes.AbstractComponentProps<TwitterBlockData> {}
 
-export class TwitterBlockType extends BaseIContent<TwitterBlockData> implements TwitterBlockData {
+export class TwitterBlockType extends Taxonomy.AbstractIContent<TwitterBlockData> implements TwitterBlockData {
     protected _typeName : string = "TwitterBlock";
     /**
      * Map of all property types within this content type.
@@ -87,48 +83,48 @@ export class TwitterBlockType extends BaseIContent<TwitterBlockData> implements 
      *
      * Categories associated with this content
      */
-    public categories: Property<Array<ContentLink>>;
+    public get categories() : TwitterBlockData["categories"] { return this.getProperty("categories"); }
 
     /**
      * Padding
      *
      * No description available
      */
-    public padding: StringProperty;
+    public get padding() : TwitterBlockData["padding"] { return this.getProperty("padding"); }
 
     /**
      * Margin
      *
      * No description available
      */
-    public margin: StringProperty;
+    public get margin() : TwitterBlockData["margin"] { return this.getProperty("margin"); }
 
     /**
      * Background color
      *
      * No description available
      */
-    public backgroundColor: StringProperty;
+    public get backgroundColor() : TwitterBlockData["backgroundColor"] { return this.getProperty("backgroundColor"); }
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    public blockOpacity: NumberProperty;
+    public get blockOpacity() : TwitterBlockData["blockOpacity"] { return this.getProperty("blockOpacity"); }
 
     /**
      * Account name
      *
      * No description available
      */
-    public accountName: StringProperty;
+    public get accountName() : TwitterBlockData["accountName"] { return this.getProperty("accountName"); }
 
     /**
      * Number of items
      *
      * No description available
      */
-    public numberOfItems: NumberProperty;
+    public get numberOfItems() : TwitterBlockData["numberOfItems"] { return this.getProperty("numberOfItems"); }
 
 }

@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Page List Block
  *
@@ -10,141 +6,141 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 30685434-33de-42af-88a7-3126b936aead
  */
-export default interface PageListBlockData extends IContent {
+export default interface PageListBlockData extends Taxonomy.IContent {
     /**
      * Categories
      *
      * Categories associated with this content
      */
-    categories: Property<Array<ContentLink>>
+    categories: ContentDelivery.ContentReferenceListProperty
 
     /**
      * Padding
      *
      * No description available
      */
-    padding: StringProperty
+    padding: ContentDelivery.StringProperty
 
     /**
      * Margin
      *
      * No description available
      */
-    margin: StringProperty
+    margin: ContentDelivery.StringProperty
 
     /**
      * Background color
      *
      * No description available
      */
-    backgroundColor: StringProperty
+    backgroundColor: ContentDelivery.StringProperty
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    blockOpacity: NumberProperty
+    blockOpacity: ContentDelivery.NumberProperty
 
     /**
      * Heading
      *
      * No description available
      */
-    heading: StringProperty
+    heading: ContentDelivery.StringProperty
 
     /**
      * Include publish date
      *
      * No description available
      */
-    includePublishDate: BooleanProperty
+    includePublishDate: ContentDelivery.BooleanProperty
 
     /**
      * Include teaser text
      *
      * No description available
      */
-    includeTeaserText: BooleanProperty
+    includeTeaserText: ContentDelivery.BooleanProperty
 
     /**
      * Number of results
      *
      * No description available
      */
-    count: NumberProperty
+    count: ContentDelivery.NumberProperty
 
     /**
      * Sort order
      *
      * No description available
      */
-    sortOrder: NumberProperty
+    sortOrder: ContentDelivery.NumberProperty
 
     /**
      * Root
      *
      * No description available
      */
-    root: ContentReferenceProperty
+    root: ContentDelivery.ContentReferenceProperty
 
     /**
      * Filter by page type
      *
      * No description available
      */
-    pageTypeFilter: Property<any> // Original type: PageType
+    pageTypeFilter: ContentDelivery.Property<any> // Original type: PageType
 
     /**
      * Filter by category
      *
      * Categories to filter the list on
      */
-    categoryListFilter: Property<Array<ContentLink>>
+    categoryListFilter: ContentDelivery.ContentReferenceListProperty
 
     /**
      * Include all levels
      *
      * No description available
      */
-    recursive: BooleanProperty
+    recursive: ContentDelivery.BooleanProperty
 
     /**
      * Template of pages listing
      *
      * No description available
      */
-    template: StringProperty
+    template: ContentDelivery.StringProperty
 
     /**
      * Preview option (not available in the Grid template)
      *
      * No description available
      */
-    previewOption: StringProperty
+    previewOption: ContentDelivery.StringProperty
 
     /**
      * Overlay color (hex or rgba)
      *
      * Apply for Card template
      */
-    overlayColor: StringProperty
+    overlayColor: ContentDelivery.StringProperty
 
     /**
      * Overlay text color (hex or rgba)
      *
      * Apply for Card template
      */
-    overlayTextColor: StringProperty
+    overlayTextColor: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface PageListBlockProps extends ComponentProps<PageListBlockData> {}
+export interface PageListBlockProps extends ComponentTypes.AbstractComponentProps<PageListBlockData> {}
 
-export class PageListBlockType extends BaseIContent<PageListBlockData> implements PageListBlockData {
+export class PageListBlockType extends Taxonomy.AbstractIContent<PageListBlockData> implements PageListBlockData {
     protected _typeName : string = "PageListBlock";
     /**
      * Map of all property types within this content type.
@@ -175,125 +171,125 @@ export class PageListBlockType extends BaseIContent<PageListBlockData> implement
      *
      * Categories associated with this content
      */
-    public categories: Property<Array<ContentLink>>;
+    public get categories() : PageListBlockData["categories"] { return this.getProperty("categories"); }
 
     /**
      * Padding
      *
      * No description available
      */
-    public padding: StringProperty;
+    public get padding() : PageListBlockData["padding"] { return this.getProperty("padding"); }
 
     /**
      * Margin
      *
      * No description available
      */
-    public margin: StringProperty;
+    public get margin() : PageListBlockData["margin"] { return this.getProperty("margin"); }
 
     /**
      * Background color
      *
      * No description available
      */
-    public backgroundColor: StringProperty;
+    public get backgroundColor() : PageListBlockData["backgroundColor"] { return this.getProperty("backgroundColor"); }
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    public blockOpacity: NumberProperty;
+    public get blockOpacity() : PageListBlockData["blockOpacity"] { return this.getProperty("blockOpacity"); }
 
     /**
      * Heading
      *
      * No description available
      */
-    public heading: StringProperty;
+    public get heading() : PageListBlockData["heading"] { return this.getProperty("heading"); }
 
     /**
      * Include publish date
      *
      * No description available
      */
-    public includePublishDate: BooleanProperty;
+    public get includePublishDate() : PageListBlockData["includePublishDate"] { return this.getProperty("includePublishDate"); }
 
     /**
      * Include teaser text
      *
      * No description available
      */
-    public includeTeaserText: BooleanProperty;
+    public get includeTeaserText() : PageListBlockData["includeTeaserText"] { return this.getProperty("includeTeaserText"); }
 
     /**
      * Number of results
      *
      * No description available
      */
-    public count: NumberProperty;
+    public get count() : PageListBlockData["count"] { return this.getProperty("count"); }
 
     /**
      * Sort order
      *
      * No description available
      */
-    public sortOrder: NumberProperty;
+    public get sortOrder() : PageListBlockData["sortOrder"] { return this.getProperty("sortOrder"); }
 
     /**
      * Root
      *
      * No description available
      */
-    public root: ContentReferenceProperty;
+    public get root() : PageListBlockData["root"] { return this.getProperty("root"); }
 
     /**
      * Filter by page type
      *
      * No description available
      */
-    public pageTypeFilter: Property<any> // Original type: PageType;
+    public get pageTypeFilter() : PageListBlockData["pageTypeFilter"] { return this.getProperty("pageTypeFilter"); }
 
     /**
      * Filter by category
      *
      * Categories to filter the list on
      */
-    public categoryListFilter: Property<Array<ContentLink>>;
+    public get categoryListFilter() : PageListBlockData["categoryListFilter"] { return this.getProperty("categoryListFilter"); }
 
     /**
      * Include all levels
      *
      * No description available
      */
-    public recursive: BooleanProperty;
+    public get recursive() : PageListBlockData["recursive"] { return this.getProperty("recursive"); }
 
     /**
      * Template of pages listing
      *
      * No description available
      */
-    public template: StringProperty;
+    public get template() : PageListBlockData["template"] { return this.getProperty("template"); }
 
     /**
      * Preview option (not available in the Grid template)
      *
      * No description available
      */
-    public previewOption: StringProperty;
+    public get previewOption() : PageListBlockData["previewOption"] { return this.getProperty("previewOption"); }
 
     /**
      * Overlay color (hex or rgba)
      *
      * Apply for Card template
      */
-    public overlayColor: StringProperty;
+    public get overlayColor() : PageListBlockData["overlayColor"] { return this.getProperty("overlayColor"); }
 
     /**
      * Overlay text color (hex or rgba)
      *
      * Apply for Card template
      */
-    public overlayTextColor: StringProperty;
+    public get overlayTextColor() : PageListBlockData["overlayTextColor"] { return this.getProperty("overlayTextColor"); }
 
 }

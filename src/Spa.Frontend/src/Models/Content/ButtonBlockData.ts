@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Button Block
  *
@@ -10,78 +6,78 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 426cf12f-1f01-4ea0-922f-0778314ddaf0
  */
-export default interface ButtonBlockData extends IContent {
+export default interface ButtonBlockData extends Taxonomy.IContent {
     /**
      * Categories
      *
      * Categories associated with this content
      */
-    categories: Property<Array<ContentLink>>
+    categories: ContentDelivery.ContentReferenceListProperty
 
     /**
      * Padding
      *
      * No description available
      */
-    padding: StringProperty
+    padding: ContentDelivery.StringProperty
 
     /**
      * Margin
      *
      * No description available
      */
-    margin: StringProperty
+    margin: ContentDelivery.StringProperty
 
     /**
      * Background color
      *
      * No description available
      */
-    backgroundColor: StringProperty
+    backgroundColor: ContentDelivery.StringProperty
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    blockOpacity: NumberProperty
+    blockOpacity: ContentDelivery.NumberProperty
 
     /**
      * Label
      *
      * No description available
      */
-    buttonText: StringProperty
+    buttonText: ContentDelivery.StringProperty
 
     /**
      * Link
      *
      * No description available
      */
-    buttonLink: StringProperty
+    buttonLink: ContentDelivery.StringProperty
 
     /**
      * Style
      *
      * No description available
      */
-    buttonStyle: StringProperty
+    buttonStyle: ContentDelivery.StringProperty
 
     /**
      * Reassuring caption
      *
      * No description available
      */
-    buttonCaption: StringProperty
+    buttonCaption: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface ButtonBlockProps extends ComponentProps<ButtonBlockData> {}
+export interface ButtonBlockProps extends ComponentTypes.AbstractComponentProps<ButtonBlockData> {}
 
-export class ButtonBlockType extends BaseIContent<ButtonBlockData> implements ButtonBlockData {
+export class ButtonBlockType extends Taxonomy.AbstractIContent<ButtonBlockData> implements ButtonBlockData {
     protected _typeName : string = "ButtonBlock";
     /**
      * Map of all property types within this content type.
@@ -103,62 +99,62 @@ export class ButtonBlockType extends BaseIContent<ButtonBlockData> implements Bu
      *
      * Categories associated with this content
      */
-    public categories: Property<Array<ContentLink>>;
+    public get categories() : ButtonBlockData["categories"] { return this.getProperty("categories"); }
 
     /**
      * Padding
      *
      * No description available
      */
-    public padding: StringProperty;
+    public get padding() : ButtonBlockData["padding"] { return this.getProperty("padding"); }
 
     /**
      * Margin
      *
      * No description available
      */
-    public margin: StringProperty;
+    public get margin() : ButtonBlockData["margin"] { return this.getProperty("margin"); }
 
     /**
      * Background color
      *
      * No description available
      */
-    public backgroundColor: StringProperty;
+    public get backgroundColor() : ButtonBlockData["backgroundColor"] { return this.getProperty("backgroundColor"); }
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    public blockOpacity: NumberProperty;
+    public get blockOpacity() : ButtonBlockData["blockOpacity"] { return this.getProperty("blockOpacity"); }
 
     /**
      * Label
      *
      * No description available
      */
-    public buttonText: StringProperty;
+    public get buttonText() : ButtonBlockData["buttonText"] { return this.getProperty("buttonText"); }
 
     /**
      * Link
      *
      * No description available
      */
-    public buttonLink: StringProperty;
+    public get buttonLink() : ButtonBlockData["buttonLink"] { return this.getProperty("buttonLink"); }
 
     /**
      * Style
      *
      * No description available
      */
-    public buttonStyle: StringProperty;
+    public get buttonStyle() : ButtonBlockData["buttonStyle"] { return this.getProperty("buttonStyle"); }
 
     /**
      * Reassuring caption
      *
      * No description available
      */
-    public buttonCaption: StringProperty;
+    public get buttonCaption() : ButtonBlockData["buttonCaption"] { return this.getProperty("buttonCaption"); }
 
 }

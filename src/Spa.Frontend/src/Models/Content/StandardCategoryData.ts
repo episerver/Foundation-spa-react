@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Standard Category
  *
@@ -10,43 +6,43 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID a9bbd7fc-27c5-4718-890a-e28acbe5ee26
  */
-export default interface StandardCategoryData extends IContent {
+export default interface StandardCategoryData extends Taxonomy.IContent {
     /**
      * Description
      *
      * No description available
      */
-    description: StringProperty
+    description: ContentDelivery.StringProperty
 
     /**
      * IsSelectable
      *
      * No description available
      */
-    isSelectable: BooleanProperty
+    isSelectable: ContentDelivery.BooleanProperty
 
     /**
      * Hide site header
      *
      * No description available
      */
-    hideSiteHeader: BooleanProperty
+    hideSiteHeader: ContentDelivery.BooleanProperty
 
     /**
      * Hide site footer
      *
      * No description available
      */
-    hideSiteFooter: BooleanProperty
+    hideSiteFooter: ContentDelivery.BooleanProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface StandardCategoryProps extends ComponentProps<StandardCategoryData> {}
+export interface StandardCategoryProps extends ComponentTypes.AbstractComponentProps<StandardCategoryData> {}
 
-export class StandardCategoryType extends BaseIContent<StandardCategoryData> implements StandardCategoryData {
+export class StandardCategoryType extends Taxonomy.AbstractIContent<StandardCategoryData> implements StandardCategoryData {
     protected _typeName : string = "StandardCategory";
     /**
      * Map of all property types within this content type.
@@ -63,27 +59,27 @@ export class StandardCategoryType extends BaseIContent<StandardCategoryData> imp
      *
      * No description available
      */
-    public description: StringProperty;
+    public get description() : StandardCategoryData["description"] { return this.getProperty("description"); }
 
     /**
      * IsSelectable
      *
      * No description available
      */
-    public isSelectable: BooleanProperty;
+    public get isSelectable() : StandardCategoryData["isSelectable"] { return this.getProperty("isSelectable"); }
 
     /**
      * Hide site header
      *
      * No description available
      */
-    public hideSiteHeader: BooleanProperty;
+    public get hideSiteHeader() : StandardCategoryData["hideSiteHeader"] { return this.getProperty("hideSiteHeader"); }
 
     /**
      * Hide site footer
      *
      * No description available
      */
-    public hideSiteFooter: BooleanProperty;
+    public get hideSiteFooter() : StandardCategoryData["hideSiteFooter"] { return this.getProperty("hideSiteFooter"); }
 
 }

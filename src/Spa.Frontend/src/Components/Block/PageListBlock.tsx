@@ -1,10 +1,5 @@
-import React, {ReactNode, ReactNodeArray, CSSProperties} from 'react';
-import EpiComponent from '@episerver/spa-core/EpiComponent';
-import IContent from '@episerver/spa-core/Models/IContent';
-import CmsComponent from '@episerver/spa-core/Components/CmsComponent';
-import Link from '@episerver/spa-core/Components/Link';
-import Property from '@episerver/spa-core/Components/Property';
-import { ContentLinkService } from '@episerver/spa-core/Models/ContentLink';
+import React, {ReactNode, ReactNodeArray } from 'react';
+import { Taxonomy, ComponentTypes, Components, Services } from '@episerver/spa-core';
 
 import PageListBlockData, { PageListBlockProps } from 'app/Models/Content/PageListBlockData';
 import IContentWithTeaser, { isIContentWithTeaser } from 'app/Models/IContentWithTeaser';
@@ -13,7 +8,7 @@ import Teaser from 'app/Components/Shared/Teaser';
 import './PageListBlock/GridView.scss';
 
 interface PageListPreviewViewModel {
-    page: IContent
+    page: Taxonomy.IContent
     template: string
     previewOption: string
     showIntroduction: boolean
@@ -29,14 +24,12 @@ interface PageListBlockViewModel {
     currentBlock: PageListBlockData
 }
 
-
-
 interface PageListBlockState {
     isLoading: boolean
     pages: Array<PageListPreviewViewModel>
 }
 
-export default class PageListBlock extends EpiComponent<PageListBlockData, PageListBlockState>
+export default class PageListBlock extends ComponentTypes.AbstractComponent<PageListBlockData, PageListBlockState>
 {
     protected getInitialState() : PageListBlockState
     {
@@ -51,7 +44,7 @@ export default class PageListBlock extends EpiComponent<PageListBlockData, PageL
         this.updatePages();
     }
     
-    public componentDidUpdate(prevProps: PageListBlockProps)
+    public componentDidUpdate(prevProps: Readonly<PageListBlockProps>)
     {
         if (this.props.data.contentLink.id != prevProps.data.contentLink.id) {
             this.updatePages();
@@ -109,7 +102,7 @@ export default class PageListBlock extends EpiComponent<PageListBlockData, PageL
         let heading : ReactNode = null;
         if (this.props.data.heading?.value || this.getContext().isEditable()) {
             heading = <div className="d-flex justify-content-center p-3 w-100">
-                <h2><Property iContent={this.props.data} field="heading" context={ this.getContext() } /></h2>
+                <h2><Components.Property iContent={this.props.data} field="heading" context={ this.getContext() } /></h2>
             </div>;
         }
         return <div className={ classes.join(" ") }>
@@ -118,7 +111,7 @@ export default class PageListBlock extends EpiComponent<PageListBlockData, PageL
         </div>
     }
 
-    protected renderGridTemplate(pages: Array<IContent>, keyPrefix: string = 'plb_i_', previewOption: string = "1/3") : ReactNode
+    protected renderGridTemplate(pages: Array<Taxonomy.IContent>, keyPrefix: string = 'plb_i_', previewOption: string = "1/3") : ReactNode
     {
         let items : ReactNodeArray = [];
 
@@ -151,10 +144,10 @@ export default class PageListBlock extends EpiComponent<PageListBlockData, PageL
         cssClasses = cssClasses || [];
         cssClasses.push('tile');
 
-        return <Teaser content={teaser} className={ cssClasses.join(' ') } context={ this.getContext() } key={ "teaser-"+ContentLinkService.createApiId(teaser.contentLink) } />;
+        return <Teaser content={teaser} className={ cssClasses.join(' ') } context={ this.getContext() } key={ "teaser-"+Services.ContentLink.createApiId(teaser.contentLink) } />;
     }
 
-    protected renderTopTemplate(pages: Array<IContent>, key: string, previewOption: string = "1/3")
+    protected renderTopTemplate(pages: Array<Taxonomy.IContent>, key: string, previewOption: string = "1/3")
     {
         let items: ReactNodeArray = [];
         if (pages && pages.length > 0) {
@@ -164,11 +157,11 @@ export default class PageListBlock extends EpiComponent<PageListBlockData, PageL
                 let teaser: IContentWithTeaser = iContent as IContentWithTeaser;
                 return <div key={`${key}${teaser.contentLink.id}`} className={cssClasses.join(" ")}>
                     <div className="card mb-4">
-                        <CmsComponent contentLink={teaser.pageImage?.value} expandedValue={teaser.pageImage?.expandedValue} context={this.getContext()} className="card-img-top w-100" />
+                        <Components.EpiserverContent contentLink={teaser.pageImage?.value} expandedValue={teaser.pageImage?.expandedValue} context={this.getContext()} className="card-img-top w-100" />
                         <div className="card-body">
                             <h5 className="card-title">{teaser.name}</h5>
                             <p className="card-text">{teaser.teaserText.value}</p>
-                            <Link href={teaser} className="btn btn-primary">Read more</Link>
+                            <Components.Link href={teaser} className="btn btn-primary">Read more</Components.Link>
                         </div>
                     </div>
                 </div>
@@ -178,12 +171,12 @@ export default class PageListBlock extends EpiComponent<PageListBlockData, PageL
         return items;
     }
 
-    protected renderDefaultTemplate(pages: Array<IContent>, key: string, previewOption: string = "1/3")
+    protected renderDefaultTemplate(pages: Array<Taxonomy.IContent>, key: string, previewOption: string = "1/3")
     {
         let items: ReactNodeArray = [];
         if (pages && pages.length > 0) {
             items = pages.map(iContent => <div key={`${key}${iContent.contentLink.id}`} className={this.previewOptionToCssClass(previewOption)}>
-                <CmsComponent contentLink={iContent.contentLink} expandedValue={iContent} context={this.getContext()} contentType="Block" />
+                <Components.EpiserverContent contentLink={iContent.contentLink} expandedValue={iContent} context={this.getContext()} contentType="Block" />
             </div>);
         }
        

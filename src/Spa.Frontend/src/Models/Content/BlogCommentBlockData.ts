@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Blog Comment Block
  *
@@ -10,50 +6,50 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 656ff547-1c31-4fc1-99b9-93573d24de07
  */
-export default interface BlogCommentBlockData extends IContent {
+export default interface BlogCommentBlockData extends Taxonomy.IContent {
     /**
      * Padding top
      *
      * No description available
      */
-    paddingTop: NumberProperty
+    paddingTop: ContentDelivery.NumberProperty
 
     /**
      * Padding right
      *
      * No description available
      */
-    paddingRight: NumberProperty
+    paddingRight: ContentDelivery.NumberProperty
 
     /**
      * Padding bottom
      *
      * No description available
      */
-    paddingBottom: NumberProperty
+    paddingBottom: ContentDelivery.NumberProperty
 
     /**
      * Padding left
      *
      * No description available
      */
-    paddingLeft: NumberProperty
+    paddingLeft: ContentDelivery.NumberProperty
 
     /**
      * Comments per page
      *
      * Number of comments per page
      */
-    commentsPerPage: NumberProperty
+    commentsPerPage: ContentDelivery.NumberProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface BlogCommentBlockProps extends ComponentProps<BlogCommentBlockData> {}
+export interface BlogCommentBlockProps extends ComponentTypes.AbstractComponentProps<BlogCommentBlockData> {}
 
-export class BlogCommentBlockType extends BaseIContent<BlogCommentBlockData> implements BlogCommentBlockData {
+export class BlogCommentBlockType extends Taxonomy.AbstractIContent<BlogCommentBlockData> implements BlogCommentBlockData {
     protected _typeName : string = "BlogCommentBlock";
     /**
      * Map of all property types within this content type.
@@ -71,34 +67,34 @@ export class BlogCommentBlockType extends BaseIContent<BlogCommentBlockData> imp
      *
      * No description available
      */
-    public paddingTop: NumberProperty;
+    public get paddingTop() : BlogCommentBlockData["paddingTop"] { return this.getProperty("paddingTop"); }
 
     /**
      * Padding right
      *
      * No description available
      */
-    public paddingRight: NumberProperty;
+    public get paddingRight() : BlogCommentBlockData["paddingRight"] { return this.getProperty("paddingRight"); }
 
     /**
      * Padding bottom
      *
      * No description available
      */
-    public paddingBottom: NumberProperty;
+    public get paddingBottom() : BlogCommentBlockData["paddingBottom"] { return this.getProperty("paddingBottom"); }
 
     /**
      * Padding left
      *
      * No description available
      */
-    public paddingLeft: NumberProperty;
+    public get paddingLeft() : BlogCommentBlockData["paddingLeft"] { return this.getProperty("paddingLeft"); }
 
     /**
      * Comments per page
      *
      * Number of comments per page
      */
-    public commentsPerPage: NumberProperty;
+    public get commentsPerPage() : BlogCommentBlockData["commentsPerPage"] { return this.getProperty("commentsPerPage"); }
 
 }

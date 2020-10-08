@@ -137,8 +137,8 @@ async function epiRouter(req: Request, res: Response, next: NextFunction) : Prom
     }
     const element = React.createElement(CmsSite, {
         context: EpiSpaContext,
-        path: req.url,
-        pageData
+        //path: req.url,
+        //pageData
     });
     const react_body = ReactDOMServer.renderToString(element);
     const meta = Helmet.renderStatic();

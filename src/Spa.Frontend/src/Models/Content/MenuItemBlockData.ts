@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Menu Item Block
  *
@@ -10,64 +6,64 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID a6d0242a-3946-4a80-9eec-4d9b2e5fc2d0
  */
-export default interface MenuItemBlockData extends IContent {
+export default interface MenuItemBlockData extends Taxonomy.IContent {
     /**
      * Name
      *
      * Name in menu
      */
-    name: StringProperty
+    name: ContentDelivery.StringProperty
 
     /**
      * Link
      *
      * Link
      */
-    link: StringProperty
+    link: ContentDelivery.StringProperty
 
     /**
      * Menu item image
      *
      * No description available
      */
-    menuImage: ContentReferenceProperty
+    menuImage: ContentDelivery.ContentReferenceProperty
 
     /**
      * Teaser text
      *
      * No description available
      */
-    teaserText: StringProperty
+    teaserText: ContentDelivery.StringProperty
 
     /**
      * Label
      *
      * No description available
      */
-    buttonText: StringProperty
+    buttonText: ContentDelivery.StringProperty
 
     /**
      * Button link
      *
      * No description available
      */
-    buttonLink: StringProperty
+    buttonLink: ContentDelivery.StringProperty
 
     /**
      * Child items
      *
      * No description available
      */
-    childItems: Property<any> // Original type: GroupLinkCollectionProperty
+    childItems: ContentDelivery.Property<any> // Original type: GroupLinkCollectionProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface MenuItemBlockProps extends ComponentProps<MenuItemBlockData> {}
+export interface MenuItemBlockProps extends ComponentTypes.AbstractComponentProps<MenuItemBlockData> {}
 
-export class MenuItemBlockType extends BaseIContent<MenuItemBlockData> implements MenuItemBlockData {
+export class MenuItemBlockType extends Taxonomy.AbstractIContent<MenuItemBlockData> implements MenuItemBlockData {
     protected _typeName : string = "MenuItemBlock";
     /**
      * Map of all property types within this content type.
@@ -87,48 +83,48 @@ export class MenuItemBlockType extends BaseIContent<MenuItemBlockData> implement
      *
      * Name in menu
      */
-    public name: StringProperty;
+    public get name() : MenuItemBlockData["name"] { return this.getProperty("name"); }
 
     /**
      * Link
      *
      * Link
      */
-    public link: StringProperty;
+    public get link() : MenuItemBlockData["link"] { return this.getProperty("link"); }
 
     /**
      * Menu item image
      *
      * No description available
      */
-    public menuImage: ContentReferenceProperty;
+    public get menuImage() : MenuItemBlockData["menuImage"] { return this.getProperty("menuImage"); }
 
     /**
      * Teaser text
      *
      * No description available
      */
-    public teaserText: StringProperty;
+    public get teaserText() : MenuItemBlockData["teaserText"] { return this.getProperty("teaserText"); }
 
     /**
      * Label
      *
      * No description available
      */
-    public buttonText: StringProperty;
+    public get buttonText() : MenuItemBlockData["buttonText"] { return this.getProperty("buttonText"); }
 
     /**
      * Button link
      *
      * No description available
      */
-    public buttonLink: StringProperty;
+    public get buttonLink() : MenuItemBlockData["buttonLink"] { return this.getProperty("buttonLink"); }
 
     /**
      * Child items
      *
      * No description available
      */
-    public childItems: Property<any> // Original type: GroupLinkCollectionProperty;
+    public get childItems() : MenuItemBlockData["childItems"] { return this.getProperty("childItems"); }
 
 }

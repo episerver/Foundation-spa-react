@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Folder Page
  *
@@ -10,15 +6,15 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 1bc8e78b-40cc-4efc-a561-a0bba89b51ac
  */
-export default interface FolderPageData extends IContent {
+export default interface FolderPageData extends Taxonomy.IContent {
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface FolderPageProps extends ComponentProps<FolderPageData> {}
+export interface FolderPageProps extends ComponentTypes.AbstractComponentProps<FolderPageData> {}
 
-export class FolderPageType extends BaseIContent<FolderPageData> implements FolderPageData {
+export class FolderPageType extends Taxonomy.AbstractIContent<FolderPageData> implements FolderPageData {
     protected _typeName : string = "FolderPage";
     /**
      * Map of all property types within this content type.

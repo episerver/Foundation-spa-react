@@ -3,10 +3,10 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 
 import EpiComponent from '@episerver/spa-core/EpiComponent';
 import IContent from '@episerver/spa-core/Models/IContent';
-import ContentLink, { ContentReference, ContentLinkService } from '@episerver/spa-core/Models/ContentLink';
+import ContentLink, { ContentLinkService } from '@episerver/spa-core/Models/ContentLink';
 import Link from '@episerver/spa-core/Components/Link';
 
-import BreadcrumbBlockData, { BreadcrumbBlockProps } from 'app/Models/Content/BreadcrumbBlockData';
+import BreadcrumbBlockData from 'app/Models/Content/BreadcrumbBlockData';
 
 interface BreadcrumbBlockState {
     isLoading: boolean
@@ -30,14 +30,6 @@ export default class BreadcrumbBlock extends EpiComponent<BreadcrumbBlockData, B
     public componentDidMount()
     {
         this.refreshData();
-    }
-
-    public componentDidUpdate(prevProps: BreadcrumbBlockProps)
-    {
-        if (this.props.data.destinationPage.value?.id != prevProps.data.destinationPage.value?.id)
-        {
-            this.refreshData();
-        }
     }
 
     public componentWillUnmount()

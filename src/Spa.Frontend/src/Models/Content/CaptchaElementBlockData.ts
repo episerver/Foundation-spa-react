@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * CaptchaElementBlock
  *
@@ -10,64 +6,64 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 0cffa8b6-3c20-4b97-914f-75a624b19bff
  */
-export default interface CaptchaElementBlockData extends IContent {
+export default interface CaptchaElementBlockData extends Taxonomy.IContent {
     /**
      * Label
      *
      * No description available
      */
-    label: StringProperty
+    label: ContentDelivery.StringProperty
 
     /**
      * Description
      *
      * No description available
      */
-    description: StringProperty
+    description: ContentDelivery.StringProperty
 
     /**
      * Validators
      *
      * No description available
      */
-    validators: StringProperty
+    validators: ContentDelivery.StringProperty
 
     /**
      * ImageWidth
      *
      * No description available
      */
-    imageWidth: NumberProperty
+    imageWidth: ContentDelivery.NumberProperty
 
     /**
      * ImageHeight
      *
      * No description available
      */
-    imageHeight: NumberProperty
+    imageHeight: ContentDelivery.NumberProperty
 
     /**
      * TextLength
      *
      * No description available
      */
-    textLength: NumberProperty
+    textLength: ContentDelivery.NumberProperty
 
     /**
      * ValidatorMessages
      *
      * No description available
      */
-    validatorMessages: Property<any> // Original type: Validator with message collection
+    validatorMessages: ContentDelivery.Property<any> // Original type: Validator with message collection
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface CaptchaElementBlockProps extends ComponentProps<CaptchaElementBlockData> {}
+export interface CaptchaElementBlockProps extends ComponentTypes.AbstractComponentProps<CaptchaElementBlockData> {}
 
-export class CaptchaElementBlockType extends BaseIContent<CaptchaElementBlockData> implements CaptchaElementBlockData {
+export class CaptchaElementBlockType extends Taxonomy.AbstractIContent<CaptchaElementBlockData> implements CaptchaElementBlockData {
     protected _typeName : string = "CaptchaElementBlock";
     /**
      * Map of all property types within this content type.
@@ -87,48 +83,48 @@ export class CaptchaElementBlockType extends BaseIContent<CaptchaElementBlockDat
      *
      * No description available
      */
-    public label: StringProperty;
+    public get label() : CaptchaElementBlockData["label"] { return this.getProperty("label"); }
 
     /**
      * Description
      *
      * No description available
      */
-    public description: StringProperty;
+    public get description() : CaptchaElementBlockData["description"] { return this.getProperty("description"); }
 
     /**
      * Validators
      *
      * No description available
      */
-    public validators: StringProperty;
+    public get validators() : CaptchaElementBlockData["validators"] { return this.getProperty("validators"); }
 
     /**
      * ImageWidth
      *
      * No description available
      */
-    public imageWidth: NumberProperty;
+    public get imageWidth() : CaptchaElementBlockData["imageWidth"] { return this.getProperty("imageWidth"); }
 
     /**
      * ImageHeight
      *
      * No description available
      */
-    public imageHeight: NumberProperty;
+    public get imageHeight() : CaptchaElementBlockData["imageHeight"] { return this.getProperty("imageHeight"); }
 
     /**
      * TextLength
      *
      * No description available
      */
-    public textLength: NumberProperty;
+    public get textLength() : CaptchaElementBlockData["textLength"] { return this.getProperty("textLength"); }
 
     /**
      * ValidatorMessages
      *
      * No description available
      */
-    public validatorMessages: Property<any> // Original type: Validator with message collection;
+    public get validatorMessages() : CaptchaElementBlockData["validatorMessages"] { return this.getProperty("validatorMessages"); }
 
 }

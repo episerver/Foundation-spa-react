@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Video File
  *
@@ -10,36 +6,36 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 8a9d9d4b-cd4b-40e8-a777-414cfbda7770
  */
-export default interface VideoFileData extends IContent {
+export default interface VideoFileData extends Taxonomy.IContent {
     /**
      * Copyright
      *
      * No description available
      */
-    copyright: StringProperty
+    copyright: ContentDelivery.StringProperty
 
     /**
      * PreviewImage
      *
      * No description available
      */
-    previewImage: ContentReferenceProperty
+    previewImage: ContentDelivery.ContentReferenceProperty
 
     /**
      * FileSize
      *
      * No description available
      */
-    fileSize: StringProperty
+    fileSize: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface VideoFileProps extends ComponentProps<VideoFileData> {}
+export interface VideoFileProps extends ComponentTypes.AbstractComponentProps<VideoFileData> {}
 
-export class VideoFileType extends BaseIContent<VideoFileData> implements VideoFileData {
+export class VideoFileType extends Taxonomy.AbstractIContent<VideoFileData> implements VideoFileData {
     protected _typeName : string = "VideoFile";
     /**
      * Map of all property types within this content type.
@@ -55,20 +51,20 @@ export class VideoFileType extends BaseIContent<VideoFileData> implements VideoF
      *
      * No description available
      */
-    public copyright: StringProperty;
+    public get copyright() : VideoFileData["copyright"] { return this.getProperty("copyright"); }
 
     /**
      * PreviewImage
      *
      * No description available
      */
-    public previewImage: ContentReferenceProperty;
+    public get previewImage() : VideoFileData["previewImage"] { return this.getProperty("previewImage"); }
 
     /**
      * FileSize
      *
      * No description available
      */
-    public fileSize: StringProperty;
+    public get fileSize() : VideoFileData["fileSize"] { return this.getProperty("fileSize"); }
 
 }
