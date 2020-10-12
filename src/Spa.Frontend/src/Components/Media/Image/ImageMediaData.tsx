@@ -1,9 +1,8 @@
 import React, { ReactNode, ReactNodeArray } from 'react';
-import EpiContext from '@episerver/spa-core/Spa';
-import EpiComponent from '@episerver/spa-core/EpiComponent';
+import { Core, ComponentTypes } from '@episerver/spa-core';
 import ImageMediaDataData from 'app/Models/Content/ImageMediaDataData';
 
-export default class ImageMediaData extends EpiComponent<ImageMediaDataData>
+export default class ImageMediaData extends ComponentTypes.AbstractComponent<ImageMediaDataData>
 {
     protected breakPoints: {[size: string]: { imgWidth: string, cssMedia: string}} = {
         xl: {
@@ -34,10 +33,10 @@ export default class ImageMediaData extends EpiComponent<ImageMediaDataData>
             cssClass = cssClass + " " + this.props.className
         }
         if (this.props.data.url !== null) {
-            let imgUrl: URL = new URL(EpiContext.getEpiserverUrl(this.props.data.url));
+            let imgUrl: URL = new URL(Core.DefaultContext.getEpiserverUrl(this.props.data.url));
             imgUrl.searchParams.set("upscale", "false"); //Never upscale an image, leave that to the browser
             imgUrl.searchParams.set("quality", "85"); //Lossy processing
-            let webpUrl : URL = new URL(EpiContext.getEpiserverUrl(this.props.data.url));
+            let webpUrl : URL = new URL(Core.DefaultContext.getEpiserverUrl(this.props.data.url));
             webpUrl.searchParams.set("upscale", "false"); //Never upscale an image, leave that to the browser
             webpUrl.searchParams.set("format", "webp"); //Format as WebP
             webpUrl.searchParams.set("quality", "85"); //Lossy processing

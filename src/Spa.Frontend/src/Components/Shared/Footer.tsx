@@ -1,16 +1,13 @@
 import React, { Component, ReactNode, ReactNodeArray } from 'react';
 import { connect } from 'react-redux';
 import { merge } from 'lodash';
-import Property from '@episerver/spa-core/Components/Property';
-import ContentArea from '@episerver/spa-core/Components/ContentArea';
-import IEpiserverContext from '@episerver/spa-core/Core/IEpiserverContext';
+import { Core, Services, Components } from '@episerver/spa-core';
 
 import CmsHomePageData from 'app/Models/Content/CmsHomePageData';
-import { ContentLinkService } from '@episerver/spa-core/Models/ContentLink';
 
 interface FooterProps {
     startPage: CmsHomePageData
-    context: IEpiserverContext
+    context: Core.IEpiserverContext
 }
 interface FooterState{}
 
@@ -44,26 +41,26 @@ export default class Footer extends Component<FooterProps, FooterState> {
             <div className="container">
                 <div className="row">
                     <div className="col text-center mt-4 mb-3">
-                        <p className="h4"><Property iContent={ this.props.startPage } field="introduction" context={ this.props.context }/></p>
+                        <p className="h4"><Components.Property iContent={ this.props.startPage } field="introduction" context={ this.props.context }/></p>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-12 col-lg-4">
-                        <h3 className="h5 text-uppercase"><Property iContent={ this.props.startPage } field="companyHeader" context={ this.props.context }/></h3>
+                        <h3 className="h5 text-uppercase"><Components.Property iContent={ this.props.startPage } field="companyHeader" context={ this.props.context }/></h3>
                         <dl className="row">
                             <dt className="col-3">Phone:</dt>
-                            <dd className="col-9"><Property iContent={ this.props.startPage } field="companyPhone" context={ this.props.context }/></dd>
+                            <dd className="col-9"><Components.Property iContent={ this.props.startPage } field="companyPhone" context={ this.props.context }/></dd>
                             <dt className="col-3">Email:</dt>
-                            <dd className="col-9"><Property iContent={ this.props.startPage } field="companyEmail" context={ this.props.context }/></dd>
+                            <dd className="col-9"><Components.Property iContent={ this.props.startPage } field="companyEmail" context={ this.props.context }/></dd>
                         </dl>
-                        <p><Property iContent={ this.props.startPage } field="companyAddress" context={ this.props.context }/></p>
+                        <p><Components.Property iContent={ this.props.startPage } field="companyAddress" context={ this.props.context }/></p>
                     </div>
                     <div className="col-6 col-lg-2">
-                        <h3 className="h5 text-uppercase"><Property iContent={ this.props.startPage } field="linksHeader" context={ this.props.context }/></h3>
+                        <h3 className="h5 text-uppercase"><Components.Property iContent={ this.props.startPage } field="linksHeader" context={ this.props.context }/></h3>
                         { this.renderLinks() }
                     </div>
                     <div className="col-6 col-lg-2">
-                        <h3 className="h5 text-uppercase"><Property iContent={ this.props.startPage } field="socialHeader" context={ this.props.context }/></h3>
+                        <h3 className="h5 text-uppercase"><Components.Property iContent={ this.props.startPage } field="socialHeader" context={ this.props.context }/></h3>
                         { this.renderSocialLinks() }
                     </div>
                     <div className="col-12 col-lg-4">
@@ -71,7 +68,7 @@ export default class Footer extends Component<FooterProps, FooterState> {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col my-3"><p className="font-weight-lighter">&copy; <span>{ (new Date()).getFullYear() }</span> <span><Property iContent={ this.props.startPage } field="footerCopyrightText" context={ this.props.context }/></span></p></div>
+                    <div className="col my-3"><p className="font-weight-lighter">&copy; <span>{ (new Date()).getFullYear() }</span> <span><Components.Property iContent={ this.props.startPage } field="footerCopyrightText" context={ this.props.context }/></span></p></div>
                 </div>
             </div>
         </footer>;
@@ -129,7 +126,7 @@ export default class Footer extends Component<FooterProps, FooterState> {
         if (this.currentPageIsStartPage()) {
             props['propertyName'] = 'contentArea';
         }
-        return React.createElement(ContentArea, props);
+        return React.createElement(Components.ContentArea, props);
     }
 
     protected isEditable()
@@ -139,8 +136,8 @@ export default class Footer extends Component<FooterProps, FooterState> {
 
     protected currentPageIsStartPage()
     {
-        let routedId = ContentLinkService.createApiId(this.props.context.getRoutedContent());
-        let startPageId = ContentLinkService.createApiId(this.props.startPage.contentLink);
+        let routedId = Services.ContentLink.createApiId(this.props.context.getRoutedContent());
+        let startPageId = Services.ContentLink.createApiId(this.props.startPage.contentLink);
         return routedId == startPageId;
     }
 }

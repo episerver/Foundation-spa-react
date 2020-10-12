@@ -8,6 +8,7 @@ const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { exit } = require('process');
 
 
 module.exports = (env) => {
@@ -47,7 +48,7 @@ module.exports = (env) => {
                     use: [{
                         loader: 'ts-loader',
                         options: {
-                            allowTsInNodeModules: true
+                            allowTsInNodeModules: false
                         }
                     }, {
                         loader: '@episerver/webpack/PreLoadLoader',
@@ -112,8 +113,8 @@ module.exports = (env) => {
 						test: /[\\/]src[\\/][Cc]omponents[\\/]/,
 						name(module, chunks, cacheGroupKey) {
 							// get the name. E.g. node_modules/packageName/not/this/part.js
-							// or node_modules/packageName
-							const componentId = module.identifier().match(/[\\/]src[\\/][Cc]omponents[\\/](.*)/)[1].split(path.sep).map(x => x.split(".")[0]).join('.');
+                            // or node_modules/packageName
+                            const componentId = module.identifier().match(/[\\/]src[\\/][Cc]omponents[\\/](.*)/)[1].split(path.sep).map(x => x.split(".")[0]).join('.');
 
 							//const packageName = module.context.match(/[\\/][Cc]omponents[\\/](.*?)([\\/]|$)/)[1];
 
@@ -195,7 +196,7 @@ module.exports = (env) => {
                 ignoreOrder: true
             }),
 
-            new CopyWebpackPlugin([
+            new CopyWebpackPlugin(
                 {
                     patterns: [
                         {
@@ -210,7 +211,7 @@ module.exports = (env) => {
                         }
                     ]
                 }
-            ]),
+            ),
 
             //Keep the Spa folder clean
             new CleanWebpackPlugin({
@@ -256,5 +257,6 @@ module.exports = (env) => {
             resource.request = "react-dom/server.browser";
         }
     ));
+
     return webpackConfig;
 }

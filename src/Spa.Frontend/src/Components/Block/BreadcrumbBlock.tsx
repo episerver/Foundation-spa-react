@@ -1,20 +1,15 @@
 import React, { ReactNode, ReactNodeArray } from 'react';
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
-
-import EpiComponent from '@episerver/spa-core/EpiComponent';
-import IContent from '@episerver/spa-core/Models/IContent';
-import ContentLink, { ContentLinkService } from '@episerver/spa-core/Models/ContentLink';
-import Link from '@episerver/spa-core/Components/Link';
-
+import { Components, ComponentTypes, Taxonomy, Services } from '@episerver/spa-core';
 import BreadcrumbBlockData from 'app/Models/Content/BreadcrumbBlockData';
 
 interface BreadcrumbBlockState {
     isLoading: boolean
-    destination: ContentLink
-    ancestors: Array<IContent>
+    destination: Taxonomy.ContentLink
+    ancestors: Taxonomy.IContent[]
 }
 
-export default class BreadcrumbBlock extends EpiComponent<BreadcrumbBlockData, BreadcrumbBlockState>
+export default class BreadcrumbBlock extends ComponentTypes.AbstractComponent<BreadcrumbBlockData, BreadcrumbBlockState>
 {
     private _unmounted : boolean = false;
 
@@ -49,13 +44,13 @@ export default class BreadcrumbBlock extends EpiComponent<BreadcrumbBlockData, B
         let items : ReactNodeArray = [];
         this.state.ancestors.forEach((i) => {
             items.push(
-                <BreadcrumbItem key={ `breadcrumb-${ContentLinkService.createApiId(i)}` }><Link href={i}>{i.name}</Link></BreadcrumbItem>
+                <BreadcrumbItem key={ `breadcrumb-${Services.ContentLink.createApiId(i)}` }><Components.Link href={i}>{i.name}</Components.Link></BreadcrumbItem>
             );
         });
-        let currentPage : IContent = this.state.destination ? this.getContext().getContentByContentRef(this.state.destination) : this.getContext().getRoutedContent();
+        let currentPage : Taxonomy.IContent = this.state.destination ? this.getContext().getContentByContentRef(this.state.destination) : this.getContext().getRoutedContent();
         return <Breadcrumb className={cssClasses.join(" ")} style={styles}>
             {items}
-            <BreadcrumbItem key={ `breadcrumb-${ContentLinkService.createApiId(this.state.destination)}` } active>{ currentPage?.name || "" }</BreadcrumbItem>
+            <BreadcrumbItem key={ `breadcrumb-${Services.ContentLink.createApiId(this.state.destination)}` } active>{ currentPage?.name || "" }</BreadcrumbItem>
         </Breadcrumb>;
     }
 
@@ -68,11 +63,11 @@ export default class BreadcrumbBlock extends EpiComponent<BreadcrumbBlockData, B
         this.setState({isLoading: true, destination: destinationLink, ancestors: []});
 
         //@ToDo - get this to go through store so it can be done off-line as well
-        let startPage : ContentLink = this.getContext().getContentByRef("startPage")?.contentLink;
-        let startPageId : string = startPage ? ContentLinkService.createApiId(startPage) : '';
+        let startPage : Taxonomy.ContentLink = this.getContext().getContentByRef("startPage")?.contentLink;
+        let startPageId : string = startPage ? Services.ContentLink.createApiId(startPage) : '';
         this.getContext().contentDeliveryApi().getContentAncestors(destinationLink).then((list) => {
             list = list.reverse();
-            let startPageIdx = list.findIndex(i => ContentLinkService.createApiId(i.contentLink) == startPageId);
+            let startPageIdx = list.findIndex(i => Services.ContentLink.createApiId(i.contentLink) == startPageId);
             if (startPageIdx > 0) list = list.slice(startPageIdx);
             if (!this._unmounted) this.setState({
                 isLoading: false,
@@ -85,7 +80,7 @@ export default class BreadcrumbBlock extends EpiComponent<BreadcrumbBlockData, B
      * Retrieve the destination of the Breadcrumb block, if none set, it'll
      * take the path to the current page.
      */
-    protected getDestinationLink() : ContentLink
+    protected getDestinationLink() : Taxonomy.ContentLink
     {
         return this.props.data.destinationPage.value || this.getContext().getRoutedContent()?.contentLink;
     }

@@ -3,8 +3,7 @@ import React, { ReactNode } from 'react';
 import { NavItem, NavLink, UncontrolledDropdown, DropdownToggle, DropdownMenu, Alert, Button } from 'reactstrap';
 
 //Import Episerver Components
-import CmsComponent from '@episerver/spa-core/Components/CmsComponent';
-import EpiComponent from '@episerver/spa-core/EpiComponent';
+import { Components, ComponentTypes } from '@episerver/spa-core';
 
 import MenuItemBlockData from 'app/Models/Content/MenuItemBlockData';
 
@@ -13,7 +12,7 @@ interface MenuItemBlockState {
     show: boolean
 }
 
-export default class MenuItemBlock extends EpiComponent<MenuItemBlockData, MenuItemBlockState> {
+export default class MenuItemBlock extends ComponentTypes.AbstractComponent<MenuItemBlockData, MenuItemBlockState> {
 
     protected getInitialState() : MenuItemBlockState {
         return {
@@ -55,7 +54,7 @@ export default class MenuItemBlock extends EpiComponent<MenuItemBlockData, MenuI
                                 <Alert color="info">Links not available in ContentDeliveryAPI</Alert>
                             </div>
                             <div className="col-6 col-lg-3">
-                                <CmsComponent context={ this.props.context } contentLink={ this.props.data.menuImage.value } expandedValue={ this.props.data.menuImage.expandedValue } />
+                                <Components.EpiserverContent context={ this.props.context } contentLink={ this.props.data.menuImage.value } expandedValue={ this.props.data.menuImage.expandedValue } />
                             </div>
                             <div className="col-6 col-lg-3">
                             <div dangerouslySetInnerHTML={ this.htmlObject(this.props.data.teaserText.value) }></div>

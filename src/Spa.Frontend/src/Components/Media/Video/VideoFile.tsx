@@ -1,8 +1,8 @@
 import React, { ReactNode, ReactNodeArray } from 'react'
-import EpiComponent from '@episerver/spa-core/EpiComponent'
+import { ComponentTypes } from '@episerver/spa-core'
 import VideoFileData from 'app/Models/Content/VideoFileData'
 
-export default class VideoFile extends EpiComponent<VideoFileData>
+export default class VideoFile extends ComponentTypes.AbstractComponent<VideoFileData>
 {
     public render() : ReactNode | ReactNodeArray | null
     {

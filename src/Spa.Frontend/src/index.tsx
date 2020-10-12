@@ -1,5 +1,5 @@
 //Episerver library
-import Start from '@episerver/spa-core/InitBrowser';
+import Start from '@episerver/spa-core';
 
 //Application
 import config from 'app/Config';

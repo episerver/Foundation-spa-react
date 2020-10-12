@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
-import Spinner from '@episerver/spa-core/Components/Spinner';
+import { Components } from '@episerver/spa-core';
 
-export default class MoseyLoader extends Spinner {
+export default class MoseyLoader extends Components.Spinner {
     render() : ReactNode
     {
         return <div className="mosey-loader alert alert-primary text-center m-3" role="alert">

@@ -1,8 +1,8 @@
 import React, { ReactNode, ReactNodeArray } from "react";
-import EpiComponent from "@episerver/spa-core/EpiComponent";
+import { ComponentTypes } from '@episerver/spa-core';
 import ContentRecommendationsBlockData from 'app/Models/Content/ContentRecommendationsBlockData';
 
-export default class ContentRecommendationsBlock extends EpiComponent<ContentRecommendationsBlockData>
+export default class ContentRecommendationsBlock extends ComponentTypes.AbstractComponent<ContentRecommendationsBlockData>
 {
     public render() : null | ReactNode | ReactNodeArray
     {

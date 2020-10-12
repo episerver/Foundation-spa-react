@@ -1,9 +1,7 @@
-import { IContentType } from '@episerver/spa-core/Models/IContent';
-import EpiserverSpaContext from '@episerver/spa-core/Spa';
-import BaseTypeMapper, { TypeMapperTypeInfo } from '@episerver/spa-core/Loaders/BaseTypeMapper'
-;
-export default class TypeMapper extends BaseTypeMapper {
-  protected map : { [type: string]: TypeMapperTypeInfo } = {
+import { Taxonomy, Core, Loaders } from '@episerver/spa-core';
+
+export default class TypeMapper extends Loaders.BaseTypeMapper {
+  protected map : { [type: string]: Loaders.TypeInfo } = {
     'CookieDropBlock': {dataModel: 'CookieDropBlockData',instanceModel: 'CookieDropBlockType'},
     'BlogItemPage': {dataModel: 'BlogItemPageData',instanceModel: 'BlogItemPageType'},
     'LocationListPage': {dataModel: 'LocationListPageData',instanceModel: 'LocationListPageType'},
@@ -91,7 +89,7 @@ export default class TypeMapper extends BaseTypeMapper {
     'SysContentFolder': {dataModel: 'SysContentFolderData',instanceModel: 'SysContentFolderType'},
     'SysContentAssetFolder': {dataModel: 'SysContentAssetFolderData',instanceModel: 'SysContentAssetFolderType'},
   }
-  protected async doLoadType(typeInfo: TypeMapperTypeInfo) : Promise<IContentType> {
+  protected async doLoadType(typeInfo: Loaders.TypeInfo) : Promise<Taxonomy.IContentType> {
     return import(
     /* webpackInclude: /\.ts$/ */
     /* webpackExclude: /\.noimport\.ts$/ */
@@ -102,7 +100,7 @@ export default class TypeMapper extends BaseTypeMapper {
     "./" + typeInfo.dataModel).then(exports => {
       return exports[typeInfo.instanceModel];
     }).catch(reason => {
-      if (EpiserverSpaContext.isDebugActive()) {
+      if (Core.DefaultContext.isDebugActive()) {
         console.error(`Error while importing ${typeInfo.instanceModel} from ${typeInfo.dataModel} due to:`, reason);
       }
       return null;

@@ -4,7 +4,6 @@
     "compilerOptions": {
         "baseUrl": "./src/",
         "jsx": "react",
-        //"diagnostics": true,
         "esModuleInterop": true,
         "module": "CommonJS",
         "noImplicitAny": true,

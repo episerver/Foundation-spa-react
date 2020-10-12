@@ -1,19 +1,18 @@
 import React, { ReactNode, ReactNodeArray, CSSProperties } from "react";
-import EpiComponent from "@episerver/spa-core/EpiComponent";
-import Property from "@episerver/spa-core/Components/Property";
+import { Components, ComponentTypes } from '@episerver/spa-core';
 import TeaserBlockData from 'app/Models/Content/TeaserBlockData';
 
-export default class TeaserBlock extends EpiComponent<TeaserBlockData>
+export default class TeaserBlock extends ComponentTypes.AbstractComponent<TeaserBlockData>
 {
     public render() : null | ReactNode | ReactNodeArray
     {
         //console.log(this.props.data);
         return <div style={ this.getBlockStyles() } className={ this.getClasses().join(' ') }>
             <div className="card h-100">
-                <Property context={this.getContext() } iContent={ this.props.data } field="image" className="card-img-top" />
+                <Components.Property context={this.getContext() } iContent={ this.props.data } field="image" className="card-img-top" />
                 <div className="card-body">
-                    <h5 className="card-title"><Property context={this.getContext() } iContent={ this.props.data } field="heading" /></h5>
-                    <div className="card-text"><Property context={this.getContext() } iContent={ this.props.data } field="text" /></div>
+                    <h5 className="card-title"><Components.Property context={this.getContext() } iContent={ this.props.data } field="heading" /></h5>
+                    <div className="card-text"><Components.Property context={this.getContext() } iContent={ this.props.data } field="text" /></div>
                 </div>
             </div>
         </div>;

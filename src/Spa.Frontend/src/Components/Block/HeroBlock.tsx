@@ -1,10 +1,9 @@
 import React, { ReactNode } from 'react';
-import CmsComponent from '@episerver/spa-core/Components/CmsComponent';
-import EpiComponent from '@episerver/spa-core/EpiComponent';
+import { Components, ComponentTypes } from '@episerver/spa-core';
 import HeroBlockData from 'app/Models/Content/HeroBlockData';
 import './HeroBlock.scss';
 
-export default class HeroBlock extends EpiComponent<HeroBlockData> {
+export default class HeroBlock extends ComponentTypes.AbstractComponent<HeroBlockData> {
 
     public render() : ReactNode
     {
@@ -19,7 +18,7 @@ export default class HeroBlock extends EpiComponent<HeroBlockData> {
 
         return <div className={cssClasses.join(' ')}>
             <div className="hero-block__overlay"/>
-            <CmsComponent context={this.props.context} contentLink={ background.value } className="d-cover" expandedValue={ background.expandedValue } />
+            <Components.EpiserverContent context={this.props.context} contentLink={ background.value } className="d-cover" expandedValue={ background.expandedValue } />
             <div className="callout">
                 <div className="container h-100">
                     <div className="row h-100">

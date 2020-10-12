@@ -1,15 +1,12 @@
-//Episerver libraries
-import SSRResponse from '@episerver/spa-core/ServerSideRendering/Response';
-import RenderServerSide from '@episerver/spa-core/InitServer';
-
-//Application layout & config
+import startEpiserver, { ServerSideRendering } from '@episerver/spa-core';
 import appConfig from 'app/Config';
 
 //PreLoad components for SSR, auto injected by Webpack
 //@PreLoad("../src/components","PreLoad","app/Components/")
 
 //Bind appropriate rendering function
-declare var global: any;
-global.render = (): SSRResponse => {
-    return RenderServerSide(appConfig);
+declare const global : any;
+const dummyResponse : ServerSideRendering.Response = {
+    Body: ""
 }
+global.render = (): ServerSideRendering.Response => dummyResponse; // () => startEpiserver(appConfig, undefined, undefined, true);

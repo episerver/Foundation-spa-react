@@ -1,6 +1,6 @@
 // Stage global vars
-import getGlobal from '@episerver/spa-core/AppGlobal';
-const ctx = getGlobal();
+import { Core, ServerSideRendering, Components, ContentDelivery, getGlobalScope, Taxonomy } from '@episerver/spa-core';
+const ctx = getGlobalScope();
 if (!ctx.epi) ctx.epi = {};
 ctx.epi.isServerSideRendering = true;
 
@@ -18,15 +18,15 @@ import { Helmet } from 'react-helmet';
 import React from 'react';
 
 // Episerver Libraries
-import CmsSite from '@episerver/spa-core/Components/CmsSite';
+/*import CmsSite from '@episerver/spa-core/Components/CmsSite';
 import ServerContext from '@episerver/spa-core/ServerSideRendering/ServerContext';
 import DefaultServiceContainer from '@episerver/spa-core/Core/DefaultServiceContainer'; 
 import EpiSpaContext from '@episerver/spa-core/Spa';
-import { PathResponseIsIContent } from '@episerver/spa-core/ContentDeliveryAPI'
+import { PathResponseIsIContent } from '@episerver/spa-core/ContentDeliveryAPI';
+import IContent from '@episerver/spa-core/Models/IContent';*/
 
 // Implementation
 import config from 'app/Config';
-import IContent from '@episerver/spa-core/Models/IContent';
 
 // Run DotEnv configuration
 dotenv.config({path: path.resolve(__dirname, '.env')});
@@ -41,27 +41,27 @@ const pageTpl   = getenv('PAGE_TEMPLATE', 'index.html');
 
 // Initialize Episerver System
 console.log(' ----- Episerver NodeJS Delivery Server ----- ');
-const serviceContainer = new DefaultServiceContainer();
+const serviceContainer = new Core.DefaultServiceContainer();
 config.epiBaseUrl = epiUrl;
 config.basePath = epiPath;
 config.enableDebug = false;
-EpiSpaContext.init(config, serviceContainer, true);
+Core.DefaultContext.init(config, serviceContainer, true);
 
-console.log(`Context initialized - SSR: ${ EpiSpaContext.isServerSideRendering() ? 'Enabled' : 'Disabled' }`);
+console.log(`Context initialized - SSR: ${ Core.DefaultContext.isServerSideRendering() ? 'Enabled' : 'Disabled' }`);
 
 // PreLoad components for SSR, auto injected by the Webpack Loader
 // @PreLoad("../src/components","ctx.PreLoad","app/Components/")
 
 //Show endpoint
-console.log(`Episerver URL: ${EpiSpaContext.getEpiserverURL()}`);
+console.log(`Episerver URL: ${ Core.DefaultContext.getEpiserverURL() }`);
 if (debug) {
     console.log(`Root dir:      ${rootDir}`);
 }
 
 console.log('Loading websites');
-EpiSpaContext.loadCurrentWebsite().then(website => {
+Core.DefaultContext.loadCurrentWebsite().then(website => {
     console.log(` - Loaded website: ${website.name}`);
-    EpiSpaContext.loadContentByRef('startPage').then(content => {
+    Core.DefaultContext.loadContentByRef('startPage').then(content => {
         console.log(` - Loaded start page: ${content.name}`)
 
         const tplFile = path.resolve(__dirname, pageTpl);
@@ -106,13 +106,13 @@ EpiSpaContext.loadCurrentWebsite().then(website => {
 async function epiRouter(req: Request, res: Response, next: NextFunction) : Promise<void>
 {
     //Load content and add to repository - if needed
-    const response = await EpiSpaContext.contentDeliveryApi().getContentByPath(req.url);
-    let iContent : IContent;
+    const response = await Core.DefaultContext.contentDeliveryApi().getContentByPath(req.url);
+    let iContent : Taxonomy.IContent;
     let actionData : any = {};
-    if (PathResponseIsIContent(response)) {
+    if (ContentDelivery.PathResponseIsIContent(response)) {
         iContent = response;
     } else {
-        EpiSpaContext.injectContent(response.currentContent);
+        Core.DefaultContext.injectContent(response.currentContent);
         iContent = response.currentContent;
         actionData = response.data;
     }
@@ -127,16 +127,16 @@ async function epiRouter(req: Request, res: Response, next: NextFunction) : Prom
     }
     
     //Create CMS Site
-    const pageData : ServerContext = {
+    const pageData : ServerSideRendering.Context = {
         ContentLink: iContent.contentLink,
         IContent: iContent,
         Path: req.url,
         Location: {},
-        Website: EpiSpaContext.getCurrentWebsite(),
-        StartPageData: EpiSpaContext.getContentByRef('startPage')
+        Website: Core.DefaultContext.getCurrentWebsite(),
+        StartPageData: Core.DefaultContext.getContentByRef('startPage')
     }
-    const element = React.createElement(CmsSite, {
-        context: EpiSpaContext,
+    const element = React.createElement(Components.Site, {
+        context: Core.DefaultContext,
         //path: req.url,
         //pageData
     });

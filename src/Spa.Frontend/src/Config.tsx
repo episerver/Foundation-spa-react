@@ -1,12 +1,12 @@
 //Episerver library
-import AppConfig from "@episerver/spa-core/AppConfig";
+import { Core } from "@episerver/spa-core";
 
 //Referenced components for configuration
 import MoseyLoader from "app/Components/Shared/MoseyLoader";
 import MoseyLayout from "app/Components/Shared/MoseyLayout";
 
 //Website configuration
-const Config : AppConfig = {
+export const Config : Core.IConfig = {
     //Main setup
     enableDebug: true, //Will be forced to false if build with a "production" environment
     autoExpandRequests: true, //Should all properties be expanded by default
