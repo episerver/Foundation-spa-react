@@ -37,30 +37,32 @@ export default class Footer extends Component<FooterProps, FooterState> {
             //Intentionally ignored
         }
 
+        const StartPageProperty : Components.PropertyComponent<CmsHomePageData> = (props) => Components.Property(props);
+
         return <footer className="border-top mt-5">
             <div className="container">
                 <div className="row">
                     <div className="col text-center mt-4 mb-3">
-                        <p className="h4"><Components.Property iContent={ this.props.startPage } field="introduction" context={ this.props.context }/></p>
+                        <p className="h4"><StartPageProperty iContent={ this.props.startPage } field="introduction" /></p>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-12 col-lg-4">
-                        <h3 className="h5 text-uppercase"><Components.Property iContent={ this.props.startPage } field="companyHeader" context={ this.props.context }/></h3>
+                        <h3 className="h5 text-uppercase"><StartPageProperty iContent={ this.props.startPage } field="companyHeader"/></h3>
                         <dl className="row">
                             <dt className="col-3">Phone:</dt>
-                            <dd className="col-9"><Components.Property iContent={ this.props.startPage } field="companyPhone" context={ this.props.context }/></dd>
+                            <dd className="col-9"><StartPageProperty iContent={ this.props.startPage } field="companyPhone"/></dd>
                             <dt className="col-3">Email:</dt>
-                            <dd className="col-9"><Components.Property iContent={ this.props.startPage } field="companyEmail" context={ this.props.context }/></dd>
+                            <dd className="col-9"><StartPageProperty iContent={ this.props.startPage } field="companyEmail"/></dd>
                         </dl>
-                        <p><Components.Property iContent={ this.props.startPage } field="companyAddress" context={ this.props.context }/></p>
+                        <p><StartPageProperty iContent={ this.props.startPage } field="companyAddress"/></p>
                     </div>
                     <div className="col-6 col-lg-2">
-                        <h3 className="h5 text-uppercase"><Components.Property iContent={ this.props.startPage } field="linksHeader" context={ this.props.context }/></h3>
+                        <h3 className="h5 text-uppercase"><StartPageProperty iContent={ this.props.startPage } field="linksHeader"/></h3>
                         { this.renderLinks() }
                     </div>
                     <div className="col-6 col-lg-2">
-                        <h3 className="h5 text-uppercase"><Components.Property iContent={ this.props.startPage } field="socialHeader" context={ this.props.context }/></h3>
+                        <h3 className="h5 text-uppercase"><StartPageProperty iContent={ this.props.startPage } field="socialHeader"/></h3>
                         { this.renderSocialLinks() }
                     </div>
                     <div className="col-12 col-lg-4">
@@ -68,7 +70,7 @@ export default class Footer extends Component<FooterProps, FooterState> {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col my-3"><p className="font-weight-lighter">&copy; <span>{ (new Date()).getFullYear() }</span> <span><Components.Property iContent={ this.props.startPage } field="footerCopyrightText" context={ this.props.context }/></span></p></div>
+                    <div className="col my-3"><p className="font-weight-lighter">&copy; <span>{ (new Date()).getFullYear() }</span> <span><StartPageProperty iContent={ this.props.startPage } field="footerCopyrightText" /></span></p></div>
                 </div>
             </div>
         </footer>;
@@ -136,9 +138,10 @@ export default class Footer extends Component<FooterProps, FooterState> {
 
     protected currentPageIsStartPage()
     {
-        let routedId = Services.ContentLink.createApiId(this.props.context.getRoutedContent());
+        return false;
+        /*let routedId = Services.ContentLink.createApiId(this.props.context.getRoutedContent());
         let startPageId = Services.ContentLink.createApiId(this.props.startPage.contentLink);
-        return routedId == startPageId;
+        return routedId == startPageId;*/
     }
 }
 
