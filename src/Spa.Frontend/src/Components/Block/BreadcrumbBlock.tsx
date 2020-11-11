@@ -1,8 +1,8 @@
-import React, { ReactNode, ReactNodeArray, FunctionComponent, CSSProperties, useState, useEffect } from 'react';
+import React, { FunctionComponent, CSSProperties, useState, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
-import { Components, ComponentTypes, Taxonomy, Services, useIContentRepository, useEpiserver, useContentDeliveryAPI } from '@episerver/spa-core';
-import BreadcrumbBlockData, { BreadcrumbBlockProps } from 'app/Models/Content/BreadcrumbBlockData';
+import { Components, Taxonomy, Services, useIContentRepository, useContentDeliveryAPI } from '@episerver/spa-core';
+import { BreadcrumbBlockProps } from 'app/Models/Content/BreadcrumbBlockData';
 
 export const BreadcrumbBlock : FunctionComponent<BreadcrumbBlockProps> = (props) =>
 {

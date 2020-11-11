@@ -1,7 +1,7 @@
 import React, { Component, ReactNode, ReactNodeArray } from 'react';
 import { connect } from 'react-redux';
 import { merge } from 'lodash';
-import { Core, Services, Components } from '@episerver/spa-core';
+import { Core, Components } from '@episerver/spa-core';
 
 import CmsHomePageData from 'app/Models/Content/CmsHomePageData';
 

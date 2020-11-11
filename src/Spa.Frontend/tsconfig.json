@@ -8,20 +8,24 @@
         "module": "CommonJS",
         "noImplicitAny": true,
         "outDir": "./build/",
-        "removeComments": true,
-        "skipLibCheck": true,
+        "removeComments": false,
+        "skipLibCheck": false,
         "target": "ES6",
         "paths": {
             "app/*": [ "../src/*" ],
             "app.server/*": [ "../server/*" ],
-            "app.express/*": [ "../express/*" ],
-            "EPiServer.ContentApi.Forms/*": [ "../../Foundation/Scripts/EPiServer.ContentApi.Forms/*" ]
+            "app.express/*": [ "../express/*" ]
         },
-        "moduleResolution": "node"
+        "moduleResolution": "node",
+        "lib": ["DOM","DOM.Iterable","ES6"],
+        "downlevelIteration": true
     },
     "include": [
         "./src",
         "./server",
         "./express"
+    ],
+    "exclude": [
+        "./node_modules"
     ]
 }

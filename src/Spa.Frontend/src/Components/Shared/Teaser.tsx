@@ -6,13 +6,16 @@ import './Teaser.scss';
 
 export interface TeaserProps {
     content: IContentWithTeaser
+    /**
+     * @deprecated
+     */
     context?: Core.IEpiserverContext
     className?: string
 }
 
 export const Teaser : FunctionComponent<TeaserProps> = (props) =>
 {
-    const ctx = props.context || useEpiserver();
+    const ctx = useEpiserver();
     if (!isIContentWithTeaser(props.content)) {
         throw "Invalid content received";
     }

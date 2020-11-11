@@ -8,7 +8,6 @@ const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const { exit } = require('process');
 
 
 module.exports = (env) => {
@@ -87,11 +86,11 @@ module.exports = (env) => {
 		optimization: {
 			mergeDuplicateChunks: true,
             runtimeChunk: 'single',
-            noEmitOnErrors: true,
+            emitOnErrors: false,
 			splitChunks: {
 				chunks: 'all',
-				maxInitialRequests: 50,
-				maxAsyncRequests: 10,
+				maxInitialRequests: 1000,
+				maxAsyncRequests: 1000,
 				minSize: 1,
 				automaticNameDelimiter: '.',
 				cacheGroups: {
@@ -108,7 +107,7 @@ module.exports = (env) => {
 						}
                     },
                     
-                    // Split Application components into separate files
+                    // Split Application components into separate files, might be needed if you don't provide a loader
 					components: {
 						test: /[\\/]src[\\/][Cc]omponents[\\/]/,
 						name(module, chunks, cacheGroupKey) {
@@ -120,12 +119,12 @@ module.exports = (env) => {
 
 							// npm package names are URL-safe, but some servers don't like @ symbols
 							return `${cacheGroupKey}.${componentId.toLowerCase().replace('@', '')}`;
-						}
+                        }
 					}
 				},
 			},
 			minimize: forProduction,
-			minimizer: [new TerserPlugin({}), new OptimizeCSSAssetsPlugin({})]
+			minimizer: [new TerserPlugin({})]
 		},
         module: {
             rules: [
@@ -147,8 +146,7 @@ module.exports = (env) => {
                         {
                             loader: MiniCssExtractPlugin.loader,
                             options: {
-                                hmr: true,
-                                outputPath: 'Styles'
+                                publicPath: 'Styles'
                             }
                         }, {
                             loader: 'css-loader',
@@ -223,7 +221,7 @@ module.exports = (env) => {
     }
 
     const backConfig = {
-        target: 'node',
+        target: 'web',
         entry: path.join(srvPath, 'server.tsx'),
         node: {
             global: false,

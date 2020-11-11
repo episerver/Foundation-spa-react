@@ -1,17 +1,13 @@
 import React, { Component, ReactNode, ReactNodeArray } from 'react';
-import EpiContext from '@episerver/spa-core/Spa';
-import IContent, { namePropertyIsString } from '@episerver/spa-core/Models/IContent';
-import { ContentLinkService } from '@episerver/spa-core/Models/ContentLink';
-import Link from '@episerver/spa-core/Components/Link';
-import { StringProperty } from '@episerver/spa-core/Property';
+import { Core, Taxonomy, ContentDelivery, Services, Components } from '@episerver/spa-core';
 
 interface BreadcrumbsProps {
-    currentContent: IContent
+    currentContent: Taxonomy.IContent
 }
 
 export default class Breadcrumbs extends Component<BreadcrumbsProps> {
 
-    protected ancestors : Array<IContent> = [];
+    protected ancestors : Array<Taxonomy.IContent> = [];
     protected loading : boolean = false;
 
     public componentDidMount() : void
@@ -29,14 +25,14 @@ export default class Breadcrumbs extends Component<BreadcrumbsProps> {
         if (!this.loading) {
             this.loading = true;
             let me = this;
-            EpiContext.contentDeliveryApi().getContentAncestors(this.props.currentContent).then(a => {
+            Core.DefaultContext.contentDeliveryApi().getContentAncestors(this.props.currentContent).then(a => {
                 me.ancestors = a.reverse();
                 me.forceUpdate(() => {
                     me.loading = false;
                 });
             });
         } else {
-            if (EpiContext.isDebugActive()) {
+            if (Core.DefaultContext.isDebugActive()) {
                 console.log("Blocked breadcrumb update, as it's already loading");
             }
         }
@@ -47,13 +43,13 @@ export default class Breadcrumbs extends Component<BreadcrumbsProps> {
         let items : ReactNodeArray = [];
         this.ancestors.forEach(iContent => {
             if (iContent.parentLink) { //Do not show root-nodes
-                let key : string = `BreadCrumb-Link-${ ContentLinkService.createApiId(iContent) }`;
-                let name : string = namePropertyIsString(iContent.name) ? iContent.name : (iContent.name as StringProperty).value;
-                items.push(<li key={ key } className="breadcrumb-item"><Link href={ iContent } >{ name }</Link></li>);
+                let key : string = `BreadCrumb-Link-${ Services.ContentLink.createApiId(iContent) }`;
+                let name : string = ContentDelivery.namePropertyIsString(iContent.name) ? iContent.name : (iContent.name as ContentDelivery.StringProperty).value;
+                items.push(<li key={ key } className="breadcrumb-item"><Components.Link href={ iContent } >{ name }</Components.Link></li>);
             }
         });
-        let myKey : string = `BreadCrumb-Link-${ ContentLinkService.createApiId(this.props.currentContent) }`;
-        let myName : string = namePropertyIsString(this.props.currentContent.name) ? this.props.currentContent.name : (this.props.currentContent.name as StringProperty).value;
+        let myKey : string = `BreadCrumb-Link-${ Services.ContentLink.createApiId(this.props.currentContent) }`;
+        let myName : string = ContentDelivery.namePropertyIsString(this.props.currentContent.name) ? this.props.currentContent.name : (this.props.currentContent.name as ContentDelivery.StringProperty).value;
 
         return <nav aria-label="breadcrumb">
             <ol className="breadcrumb">

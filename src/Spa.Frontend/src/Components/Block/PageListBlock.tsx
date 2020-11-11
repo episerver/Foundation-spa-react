@@ -1,8 +1,8 @@
 import React, {ReactNode, ReactNodeArray } from 'react';
-import { Taxonomy, ComponentTypes, Components, Services } from '@episerver/spa-core';
+import { Taxonomy, ComponentTypes, Components, Services, Core, ContentDelivery } from '@episerver/spa-core';
 
 import PageListBlockData, { PageListBlockProps } from 'app/Models/Content/PageListBlockData';
-import IContentWithTeaser, { isIContentWithTeaser } from 'app/Models/IContentWithTeaser';
+import IContentWithTeaser from 'app/Models/IContentWithTeaser';
 import Teaser from 'app/Components/Shared/Teaser';
 
 import './PageListBlock/GridView.scss';
@@ -55,7 +55,14 @@ export default class PageListBlock extends ComponentTypes.AbstractComponent<Page
     {
         if (this.state.isLoading) return; //Do not start loading again if we're already loading
         this.setState({isLoading: true});
-        this.invokeTyped<any, PageListBlockViewModel>("Index").then(i => {
+        const api = this.getContext().serviceContainer.getService<ContentDelivery.IContentDeliveryAPI_V2>(Core.DefaultServices.ContentDeliveryAPI_V2);
+        api.invoke<PageListBlockViewModel>(this.props.data.contentLink, "Index").then(i => {
+            this.setState({
+                isLoading: false,
+                pages: (i.data as PageListBlockViewModel).pages || []
+            });
+        });
+        /*this.invokeTyped<any, PageListBlockViewModel>("Index").then(i => {
             if (i.data.pages) {
                 let me = this;
                 new Promise((resolve, reject) => {
@@ -73,7 +80,7 @@ export default class PageListBlock extends ComponentTypes.AbstractComponent<Page
                 isLoading: false,
                 pages: i.data.pages
             });
-        });
+        });*/
     }
 
     public render() : ReactNode | ReactNodeArray | null
@@ -102,7 +109,7 @@ export default class PageListBlock extends ComponentTypes.AbstractComponent<Page
         let heading : ReactNode = null;
         if (this.props.data.heading?.value || this.getContext().isEditable()) {
             heading = <div className="d-flex justify-content-center p-3 w-100">
-                <h2><Components.Property iContent={this.props.data} field="heading" context={ this.getContext() } /></h2>
+                <h2><Components.Property iContent={this.props.data} field="heading" /></h2>
             </div>;
         }
         return <div className={ classes.join(" ") }>
@@ -144,7 +151,7 @@ export default class PageListBlock extends ComponentTypes.AbstractComponent<Page
         cssClasses = cssClasses || [];
         cssClasses.push('tile');
 
-        return <Teaser content={teaser} className={ cssClasses.join(' ') } context={ this.getContext() } key={ "teaser-"+Services.ContentLink.createApiId(teaser.contentLink) } />;
+        return <Teaser content={teaser} className={ cssClasses.join(' ') } key={ "teaser-"+Services.ContentLink.createApiId(teaser.contentLink) } />;
     }
 
     protected renderTopTemplate(pages: Array<Taxonomy.IContent>, key: string, previewOption: string = "1/3")
@@ -157,7 +164,7 @@ export default class PageListBlock extends ComponentTypes.AbstractComponent<Page
                 let teaser: IContentWithTeaser = iContent as IContentWithTeaser;
                 return <div key={`${key}${teaser.contentLink.id}`} className={cssClasses.join(" ")}>
                     <div className="card mb-4">
-                        <Components.EpiserverContent contentLink={teaser.pageImage?.value} expandedValue={teaser.pageImage?.expandedValue} context={this.getContext()} className="card-img-top w-100" />
+                        <Components.Property iContent={ teaser } field="pageImage" className="card-img-top w-100" />
                         <div className="card-body">
                             <h5 className="card-title">{teaser.name}</h5>
                             <p className="card-text">{teaser.teaserText.value}</p>
