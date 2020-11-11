@@ -1,6 +1,6 @@
 {
     "compileOnSave": false,
-    "files": ["./src/index.tsx","./server/server.tsx","./express/server.ts"],
+    "files": ["./src/index.tsx","./server/server.tsx"],
     "compilerOptions": {
         "baseUrl": "./src/",
         "jsx": "react",
@@ -13,8 +13,7 @@
         "target": "ES6",
         "paths": {
             "app/*": [ "../src/*" ],
-            "app.server/*": [ "../server/*" ],
-            "app.express/*": [ "../express/*" ]
+            "app.server/*": [ "../server/*" ]
         },
         "moduleResolution": "node",
         "lib": ["DOM","DOM.Iterable","ES6"],
@@ -22,8 +21,7 @@
     },
     "include": [
         "./src",
-        "./server",
-        "./express"
+        "./server"
     ],
     "exclude": [
         "./node_modules"

@@ -44,7 +44,7 @@ namespace Foundation.SpaViewEngine
             {
                 var context = JsEngine.SetViewContext(viewContext);
                 JsEngine.ExecuteFile(ServerJS);
-                var result = (string)JsEngine.Evaluate("JSON.stringify(global.render());");
+                var result = (string)JsEngine.Evaluate("JSON.stringify(epi.render());");
                 response = Newtonsoft.Json.JsonConvert.DeserializeObject<SSRResponse>(result);
                 initialData = context.ToJson();
             }
