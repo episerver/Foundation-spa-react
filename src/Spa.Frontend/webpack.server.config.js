@@ -1,6 +1,8 @@
 const GlobalConfig = require('@episerver/webpack/Config');
 const path = require('path');
 const webpack = require('webpack');
+const ZipLibrary = require('zip-webpack-plugin');
+const DeployToEpiserverPlugin = require('./DeployToEpiserverPlugin');
 
 module.exports = (env) => {
 
@@ -12,6 +14,9 @@ module.exports = (env) => {
     const distPath      = path.resolve(__dirname, config.getEpiPath());
     const mode          = config.getNodeEnv();
     const forProduction = mode.toLowerCase() === 'production';
+    const zipPath = config.getEnvVariable('ZIP_PATH');
+    const epiBaseUrl = config.getEnvVariable('EPI_URL');
+    const epiDeployPath = config.getEnvVariable('EPI_DEPLOY_PATH');
 
     console.log('');
     console.log('Starting Episerver ' + mode.toLowerCase() + ' server build');
@@ -82,6 +87,19 @@ module.exports = (env) => {
 
             // Neither frontend nor backend is running in NodeJS, so define some variables
             new webpack.DefinePlugin(config.getDefineConfig(env)),
+
+            new ZipLibrary({
+                filename: 'app.server',
+                path: zipPath,
+                extension: 'spa'
+            }),
+
+            new DeployToEpiserverPlugin({
+                filename: 'app.server.spa',
+                filepath: path.resolve(distPath, zipPath),
+                base: epiBaseUrl,
+                path: epiDeployPath
+            })
         ]
     }
 

@@ -6,6 +6,9 @@ const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const ZipLibrary = require('zip-webpack-plugin');
+//const DeployToEpiserver = require('DeployToEpiserverPlugin');
+const DeployToEpiserverPlugin = require('./DeployToEpiserverPlugin');
 
 module.exports = (env) => {
 
@@ -17,6 +20,9 @@ module.exports = (env) => {
     const distPath      = path.resolve(__dirname, config.getEpiPath());
     const mode          = config.getNodeEnv();
     const forProduction = mode.toLowerCase() === 'production';
+    const zipPath = config.getEnvVariable('ZIP_PATH');
+    const epiBaseUrl = config.getEnvVariable('EPI_URL');
+    const epiDeployPath = config.getEnvVariable('EPI_DEPLOY_PATH');
 
     console.log('');
     console.log('Starting Episerver ' + mode.toLowerCase() + ' frontend build');
@@ -202,6 +208,19 @@ module.exports = (env) => {
                 dry: false,
                 verbose: false,
                 cleanOnceBeforeBuildPatterns: [outPrefix + '**/*', '!'+outPrefix+'**/server.js'],
+            }),
+
+            new ZipLibrary({
+                filename: 'app.html',
+                path: zipPath,
+                extension: 'spa'
+            }),
+
+            new DeployToEpiserverPlugin({
+                filename: 'app.html.spa',
+                filepath: path.resolve(distPath, zipPath),
+                base: epiBaseUrl,
+                path: epiDeployPath
             })
         ]
     }

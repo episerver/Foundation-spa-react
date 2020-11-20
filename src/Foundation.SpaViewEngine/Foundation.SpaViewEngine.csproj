@@ -11,6 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\SpaMediaController.cs" />
+    <Compile Remove="SpaStaticFileHandler.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Resources\ApplyContext.js" />
     <None Remove="Resources\PrepareContext.js" />
     <None Remove="Resources\Shims.js" />
@@ -35,6 +40,7 @@
     <PackageReference Include="JSPool" Version="4.0.0" />
     <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.IO.Compression" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>

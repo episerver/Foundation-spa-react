@@ -1,9 +1,8 @@
 ﻿using EPiServer.Core;
 using Foundation.SpaViewEngine.Configuration;
+using Foundation.SpaViewEngine.SpaContainer;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Foundation.SpaViewEngine
@@ -16,33 +15,45 @@ namespace Foundation.SpaViewEngine
 
         public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache) => CreateSpaView(controllerContext);
 
-        public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
-        {
-            return CreateSpaView(controllerContext);
-        }
+        public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache) => CreateSpaView(controllerContext);
+        
 
         private ViewEngineResult CreateSpaView(ControllerContext controllerContext)
         {
             var content = controllerContext.RequestContext.RouteData.DataTokens.FirstOrDefault(x => x.Key.Equals("routedData")).Value as IContent;
             if (content == null) //Only route iContent, or defined routes
             {
-                return new ViewEngineResult(new List<string>());
+                return GetStaticSpaView(controllerContext);
             }
-            string script = HttpContext.Current.Server.MapPath(Settings.GetConfigValue("server:script", "~\\Spa\\server.js"));
-            string index = HttpContext.Current.Server.MapPath(Settings.GetConfigValue("server:template", "~\\Spa\\index.html"));
 
-            if (!(File.Exists(script) && File.Exists(index)))
-            {
+            var serverJsContents = GetZipAssetString("server:script", "app.server.spa", "spa/server.js");
+            var indexHtmlContents = GetZipAssetString("server:template", "app.html.spa", "spa/index.html");
+
+            if (string.IsNullOrEmpty(serverJsContents) || string.IsNullOrEmpty(indexHtmlContents))
                 return new ViewEngineResult(new List<string>());
-            }
-            var view = new SpaView(script, index);
+
+            var view = new SpaView(serverJsContents, indexHtmlContents);
+
             return new ViewEngineResult(view, this);
+        }
+
+        private ViewEngineResult GetStaticSpaView(ControllerContext controllerContext)
+        {
+            if (controllerContext.HttpContext.Request.Url.ToString().Contains("Spa"))
+                return new ViewEngineResult(new List<string>());
+            return new ViewEngineResult(new List<string>());
         }
 
         public void ReleaseView(ControllerContext controllerContext, IView view)
         {
             //Not implemented yet
             //throw new NotImplementedException();
+        }
+
+        private string GetZipAssetString(string configKey, string defaultName, string filePath)
+        {
+            var assetName = Settings.GetConfigValue(configKey, defaultName);
+            return SpaFolderHelper.GetItemFromDeploymentAsString(assetName, filePath);
         }
     }
 }
