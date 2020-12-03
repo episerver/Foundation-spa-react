@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { Helmet } from 'react-helmet';
-import { Layout, useEpiserver, useIContentRepository } from '@episerver/spa-core';
+import { Layout, useEpiserver, useIContentRepository, useServerSideRendering } from '@episerver/spa-core';
 
 import Placeholder from 'app/Components/Placeholder';
 import Header from 'app/Components/Shared/Header';
@@ -11,8 +11,9 @@ import CmsHomePageData from 'app/Models/Content/CmsHomePageData';
 export const MoseyLayout : FunctionComponent<Layout.Props> = (props) => {
     const ctx = useEpiserver();
     const repo = useIContentRepository();
-    const location = useLocation();
-    const [ startPage, setStartPage ] = useState<CmsHomePageData | null>(null);
+    const ssr = useServerSideRendering();
+    const pathname = ctx.isServerSideRendering() ? ssr.Path : useLocation().pathname;
+    const [ startPage, setStartPage ] = useState<CmsHomePageData | null>(ssr.StartPage as CmsHomePageData || null);
 
     useEffect(() => {
         ctx.loadCurrentWebsite().then(w => {
@@ -38,7 +39,7 @@ export const MoseyLayout : FunctionComponent<Layout.Props> = (props) => {
             <title>Mosey Capital</title>
             <link rel="shortcut icon" href="/Spa/favicon.ico" type="image/x-icon" />
         </Helmet>
-        <Header context={ ctx } path={ location.pathname } startPage={ startPage } />
+        <Header context={ ctx } path={ pathname } startPage={ startPage } />
         { props.children }
         <Footer context={ ctx } startPage={ startPage } />
     </div>

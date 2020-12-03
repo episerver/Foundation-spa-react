@@ -245,6 +245,9 @@
     <Reference Include="EPiServer.Labs.LanguageManager, Version=4.0.1.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.Labs.LanguageManager.4.0.1\lib\EPiServer.Labs.LanguageManager.dll</HintPath>
     </Reference>
+    <Reference Include="EPiServer.Labs.ProjectEnhancements, Version=0.1.1.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EPiServer.Labs.ProjectEnhancements.0.1.1\lib\net45\EPiServer.Labs.ProjectEnhancements.dll</HintPath>
+    </Reference>
     <Reference Include="EPiServer.Licensing, Version=11.20.2.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.Framework.11.20.2\lib\net461\EPiServer.Licensing.dll</HintPath>
     </Reference>
@@ -662,6 +665,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\InitializeAddOns.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -987,12 +991,14 @@
     <Content Include="modules\_protected\advanced-cms-forms\advanced-cms-forms.zip" />
     <Content Include="modules\_protected\BVNetwork.404Handler\web.config" />
     <Content Include="modules\_protected\geta-epicategories\geta-epicategories.zip" />
+    <Content Include="modules\_protected\episerver-labs-project-enhancements\web.config" />
+    <Content Include="modules\_protected\episerver-labs-project-enhancements\episerver-labs-project-enhancements.zip" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
     <Content Include="Views\Web.config" />
     <Content Include="Spa\**" />
-    <Content Include="Views\Shared\Index.cshtml" />
+    <Content Include="Views\DefaultBlock\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

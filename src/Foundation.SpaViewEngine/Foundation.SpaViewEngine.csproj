@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <None Remove="Resources\ApplyContext.js" />
+    <None Remove="Resources\core.js.minified.js" />
     <None Remove="Resources\PrepareContext.js" />
     <None Remove="Resources\Shims.js" />
     <None Remove="Resources\window.js" />
@@ -45,5 +46,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Foundation.ContentDelivery\Foundation.ContentDelivery.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\core.js.minified.js" />
   </ItemGroup>
 </Project>
