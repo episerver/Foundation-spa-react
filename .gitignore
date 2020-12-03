@@ -92,3 +92,6 @@ resetup.cmd
 
 # Spa Stuff
 src/Foundation/Spa
+src/Foundation/spa
+src/Foundation/Zip
+src/Foundation/zip

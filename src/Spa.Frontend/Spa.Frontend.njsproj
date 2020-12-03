@@ -34,17 +34,11 @@
   <ItemGroup>
     <Content Include=".env.dist" />
     <Content Include=".gitignore" />
-    <Content Include="global.config.js" />
+    <Content Include="DeployToEpiserverPlugin.js" />
     <Content Include="libman.json" />
-    <Content Include="lib\EmptyLoader.js" />
-    <Content Include="lib\Episerver\Scripts\sync_models.js" />
-    <Content Include="lib\Episerver\Util\StringUtils.js" />
-    <Content Include="lib\PreLoadLoader.js">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="package.json" />
+    <Content Include="postcss.config.js" />
     <Content Include="README.md" />
-    <Content Include="server.webpack.config.js" />
     <Content Include="server\index.html" />
     <Content Include="server\tsconfig.json" />
     <Content Include="src\Components\Block\FormContainerBlock.scss" />
@@ -63,19 +57,11 @@
     <Content Include="src\web.config" />
     <Content Include="tsconfig.json" />
     <Content Include="webpack.config.js" />
+    <Content Include="webpack.frontend.config.js" />
+    <Content Include="webpack.server.config.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="lib\" />
-    <Folder Include="lib\Episerver\" />
-    <Folder Include="lib\Episerver\Components\" />
-    <Folder Include="lib\Episerver\Components\Errors\" />
-    <Folder Include="lib\Episerver\Loaders\" />
-    <Folder Include="lib\Episerver\Models\" />
-    <Folder Include="lib\Episerver\Repository\" />
-    <Folder Include="lib\Episerver\Routing\" />
-    <Folder Include="lib\Episerver\Scripts\" />
-    <Folder Include="lib\Episerver\ServerSideRendering\" />
-    <Folder Include="lib\Episerver\Util\" />
     <Folder Include="server\" />
     <Folder Include="src\" />
     <Folder Include="src\Components\" />
@@ -96,76 +82,6 @@
     <Folder Include="src\styles\" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="lib\Episerver\AppConfig.ts" />
-    <TypeScriptCompile Include="lib\Episerver\Components\CmsComponent.tsx" />
-    <TypeScriptCompile Include="lib\Episerver\Components\CmsSite.tsx" />
-    <TypeScriptCompile Include="lib\Episerver\Components\ContentArea.tsx" />
-    <TypeScriptCompile Include="lib\Episerver\Components\Errors\ComponentNotFound.tsx" />
-    <TypeScriptCompile Include="lib\Episerver\Components\Layout.tsx" />
-    <TypeScriptCompile Include="lib\Episerver\Components\Link.tsx" />
-    <TypeScriptCompile Include="lib\Episerver\Components\Property.tsx" />
-    <TypeScriptCompile Include="lib\Episerver\Components\Spinner.tsx" />
-    <TypeScriptCompile Include="lib\Episerver\ContentDeliveryAPI.ts" />
-    <TypeScriptCompile Include="lib\Episerver\EpiComponent.tsx" />
-    <TypeScriptCompile Include="lib\Episerver\EventEngine.ts" />
-    <TypeScriptCompile Include="lib\Episerver\Global.ts" />
-    <TypeScriptCompile Include="lib\Episerver\InitBrowser.tsx" />
-    <TypeScriptCompile Include="lib\Episerver\InitServer.tsx" />
-    <TypeScriptCompile Include="lib\Episerver\Loaders\ComponentLoader.tsx" />
-    <TypeScriptCompile Include="lib\Episerver\Loaders\ComponentPreLoader.ts" />
-    <TypeScriptCompile Include="lib\Episerver\Models\ActionResponse.ts" />
-    <TypeScriptCompile Include="lib\Episerver\Models\ContentLink.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="lib\Episerver\Models\ContentRootList.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="lib\Episerver\Models\ContentTypePath.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="lib\Episerver\Models\ErrorPage.ts" />
-    <TypeScriptCompile Include="lib\Episerver\Models\IContent.ts" />
-    <TypeScriptCompile Include="lib\Episerver\Models\Language.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="lib\Episerver\Models\LanguageList.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="lib\Episerver\Models\Website.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="lib\Episerver\Models\WebsiteList.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="lib\Episerver\Page.tsx" />
-    <TypeScriptCompile Include="lib\Episerver\PathProvider.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="lib\Episerver\Property.ts" />
-    <TypeScriptCompile Include="lib\Episerver\Repository\AbstractRepostory.ts" />
-    <TypeScriptCompile Include="lib\Episerver\Repository\IContent.ts" />
-    <TypeScriptCompile Include="lib\Episerver\Repository\ViewContext.ts" />
-    <TypeScriptCompile Include="lib\Episerver\Routing\History.ts" />
-    <TypeScriptCompile Include="lib\Episerver\Routing\Route.ts" />
-    <TypeScriptCompile Include="lib\Episerver\Routing\Router.ts" />
-    <TypeScriptCompile Include="lib\Episerver\ServerSideRendering\ContentDeliveryAPI.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="lib\Episerver\ServerSideRendering\Context.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="lib\Episerver\ServerSideRendering\PathProvider.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="lib\Episerver\ServerSideRendering\Response.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="lib\Episerver\ServerSideRendering\ServerContext.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="lib\Episerver\Sites.ts" />
-    <TypeScriptCompile Include="lib\Episerver\Spa.ts" />
-    <TypeScriptCompile Include="lib\Episerver\Util\StringUtils.d.ts" />
     <TypeScriptCompile Include="server\server.tsx">
       <SubType>Code</SubType>
     </TypeScriptCompile>

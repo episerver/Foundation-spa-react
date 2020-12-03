@@ -2,11 +2,8 @@
 using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
 using Foundation.SpaViewEngine.SpaContainer;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Routing;
 
@@ -46,6 +43,7 @@ namespace Foundation.SpaViewEngine
 
                 var newPath = reqPath.Replace($"/{_pathRoot}/", $"{url.Path}/");
 
+                // requestContext.HttpContext.Server.Transfer(newPath, true);
                 requestContext.HttpContext.Response.Redirect(newPath, true);
             }
 

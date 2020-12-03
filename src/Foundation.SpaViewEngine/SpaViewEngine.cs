@@ -26,8 +26,8 @@ namespace Foundation.SpaViewEngine
                 return GetStaticSpaView(controllerContext);
             }
 
-            var serverJsContents = GetZipAssetString("server:script", "app.server.spa", "spa/server.js");
-            var indexHtmlContents = GetZipAssetString("server:template", "app.html.spa", "spa/index.html");
+            var serverJsContents = GetZipAssetString("server:script", "app.server.spa", "server.js");
+            var indexHtmlContents = GetZipAssetString("server:template", "app.html.spa", "index.html");
 
             if (string.IsNullOrEmpty(serverJsContents) || string.IsNullOrEmpty(indexHtmlContents))
                 return new ViewEngineResult(new List<string>());

@@ -1,4 +1,4 @@
-import ImageMediaData from 'app/Components/Media/Image/ImageMediaData';
+import ImageMediaData from 'app/Components/Image/Media/ImageMediaData';
 
 /**
  * Image added as a block, render identical as a normal image.
