@@ -48,7 +48,7 @@ namespace Foundation.ContentDelivery.Models
         /// </summary>
         public override ContentApiModel TransformContent(IContent content, bool excludePersonalizedContent, string expand)
         {
-            var visitorGroupId = HttpContext.Current.Request.QueryString[VisitorGroupHelpers.VisitorGroupKeyByID];
+            var visitorGroupId = HttpContext.Current?.Request.QueryString[VisitorGroupHelpers.VisitorGroupKeyByID];
             if (!string.IsNullOrEmpty(visitorGroupId))
             {
                 // setup impersonate visitor group
