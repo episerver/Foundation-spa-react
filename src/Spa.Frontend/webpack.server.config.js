@@ -16,7 +16,7 @@ module.exports = (env) => {
     const mode          = config.getNodeEnv();
     const forProduction = mode.toLowerCase() === 'production';
     const epiBaseUrl = config.getEnvVariable('EPI_URL');
-    const epiDeployPath = config.getEnvVariable('EPI_DEPLOY_PATH');
+    const epiDeployPath = config.getEnvVariable('EPI_DEPLOY_PATH', '/api/episerver/v3/deploy');
 
     const webpackConfig = {
         entry: path.resolve(srcPath, 'server.tsx'),
