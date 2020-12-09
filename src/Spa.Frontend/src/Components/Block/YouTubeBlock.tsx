@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
+import ReactPlayer  from 'react-player';
 import { YouTubeBlockProps } from 'app/Models/Content/YouTubeBlockData';
 
 export const YouTubeBlock : FunctionComponent<YouTubeBlockProps> = (props) => {
@@ -11,8 +12,9 @@ export const YouTubeBlock : FunctionComponent<YouTubeBlockProps> = (props) => {
 
     return <div className="col-12">
         <div className="embed-responsive embed-responsive-16by9" style={ itemStyles }>
-            <iframe className="embed-responsive-item" src={ props.data.youTubeLink.value }></iframe>
+            <ReactPlayer url={ props.data.youTubeLink.value } className='embed-responsive-item' width='inherit' height='inherit' />
         </div>
     </div>
 }
+
 export default YouTubeBlock;

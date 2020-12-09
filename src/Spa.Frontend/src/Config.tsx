@@ -33,9 +33,13 @@ export const Config : Core.IConfig = {
     // Content area configuration
     contentArea: {
         displayOptions: {
-            'displaymode-screen': 'screen v-100',
+            'displaymode-screen': 'displaymode-screen col-12',
+            'displaymode-three-quarters': 'col-12 col-md-9',
+            'displaymode-two-thirds': 'col-12 col-md-8',
             'displaymode-half': 'col-12 col-md-6',
-            'displaymode-one-third': 'col-12 col-md-4'
+            'displaymode-one-third': 'col-12 col-md-4',
+            'displaymode-one-quarter': 'col-12 col-md-3',
+            'displaymode-one-sixth' : 'col-12 col-md-2'
         },
         defaultRowClass: 'row no-gutters',
         defaultBlockClass: 'col-12',
@@ -51,7 +55,8 @@ export const Config : Core.IConfig = {
         "Block/BreadcrumbBlock",
         "Page/CmsHomePage",
         "Page/LandingPage",
-        "Page/StandardPage"
+        "Page/StandardPage",
+        "Block/ContainerBlock"
     ],
     componentLoaders: [
         MoseyComponentLoader

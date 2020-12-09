@@ -15,35 +15,7 @@ namespace Foundation.Cms.Blocks
         [Required]
         [Editable(true)]
         [Display(Name = "YouTube link", Description = "URL link to YouTube video", GroupName = SystemTabNames.Content, Order = 10)]
-        public virtual string YouTubeLink
-        {
-            get
-            {
-                var linkName = this["YouTubeLink"] as string;
-                if (string.IsNullOrEmpty(linkName))
-                {
-                    return null;
-                }
-
-                if (!linkName.Contains("youtube") || !linkName.Contains("/watch?v=") && !linkName.Contains("/v/") &&
-                    !linkName.Contains("/embed/"))
-                {
-                    return null;
-                }
-
-                if (linkName.Contains("/watch?v="))
-                {
-                    linkName = linkName.Replace("/watch?v=", "/embed/");
-                }
-                else if (linkName.Contains("/v/"))
-                {
-                    linkName = linkName.Replace("/watch?v=", "/embed/");
-                }
-
-                return linkName;
-            }
-            set => this["YouTubeLink"] = value;
-        }
+        public virtual string YouTubeLink { get; set; }
 
         [Editable(true)]
         [CultureSpecific]
