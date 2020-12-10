@@ -2,12 +2,12 @@
 using EPiServer.ContentApi.Core.Security.Internal;
 using EPiServer.Core;
 using EPiServer.Framework.Blobs;
+using EPiServer.Security;
+using Foundation.SpaViewEngine.Security;
 using Foundation.SpaViewEngine.SpaContainer;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -32,6 +32,7 @@ namespace Foundation.SpaViewEngine.Controllers
         [HttpGet]
         public IHttpActionResult Index()
         {
+            if (!PrincipalInfo.Current.IsPermitted(SpaViewEnginePermissions.DeploySpa)) return NotFound();
             return Ok("This endpoint is working.");
         }
 
@@ -39,6 +40,7 @@ namespace Foundation.SpaViewEngine.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> DeployFiles()
         {
+            if (!PrincipalInfo.Current.IsPermitted(SpaViewEnginePermissions.DeploySpa)) return NotFound();
             HttpRequestMessage request = this.Request;
             if (!request.Content.IsMimeMultipartContent())
             {
