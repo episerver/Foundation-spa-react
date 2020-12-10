@@ -58,7 +58,12 @@ class EpiAuthCli {
     }
 
     async start() {
-        const auth = await this._auth.isAuthenticated()
+        const auth = await this._auth.isAuthenticated().catch(e => {
+            this._rli.write('ERROR!');
+            this._rli.close();
+            console.log();
+            process.exit(100);
+        })
         if (auth) {
             const user = await this._auth.currentUser()
             const answer = await this.ask(`You are currently authenticated${ user ? ' as\x1b[36m ' + user + '\x1b[0m': '' }, do you want to reauthenticate? (Y/N) `);

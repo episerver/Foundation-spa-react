@@ -27,7 +27,7 @@ module.exports = (env) => {
 			filename: 'server.js',
             chunkFilename: 'server.[name].[contenthash:8].js',
 			path: path.join(__dirname, 'dist', bundle),
-			publicPath: webPath + bundle + '/'
+			publicPath: webPath + 'spaview/' + bundle + '/'
         },
         resolve: config.getResolveConfig(),
         module: {

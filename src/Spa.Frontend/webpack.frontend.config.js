@@ -34,7 +34,7 @@ module.exports = (env) => {
 			filename: 'scripts/[name].[contenthash:8].js',
 			chunkFilename: 'scripts/[name].[contenthash:8].js',
 			path: path.join(__dirname, 'dist', bundle),
-			publicPath: webPath + bundle + '/'
+			publicPath: webPath + 'spaview/' + bundle + '/'
         },
         resolve: config.getResolveConfig(),
         module: {
