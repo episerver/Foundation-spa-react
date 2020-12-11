@@ -87,7 +87,7 @@ namespace Foundation.SpaViewEngine.Controllers
             var container = spaFileContent.BinaryDataContainer;
             spaFileContent.BinaryData = _blobFactory.CreateBlob(container, ".spa");
             spaFileContent.BinaryData.WriteAllBytes(data);
-            return _contentRepository.Save(spaFileContent, EPiServer.DataAccess.SaveAction.Publish, EPiServer.Security.AccessLevel.NoAccess);
+            return _contentRepository.Save(spaFileContent, EPiServer.DataAccess.SaveAction.Publish, AccessLevel.Create | AccessLevel.Edit | AccessLevel.Publish);
         }
     }
 }

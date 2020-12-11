@@ -27,7 +27,7 @@ export const MoseyLayout : FunctionComponent<Layout.Props> = (props) => {
         return <div className="mosey-layout">
             <Helmet>
                 <title>Mosey Capital</title>
-                <link rel="shortcut icon" href="/Spa/favicon.ico" type="image/x-icon" />
+                <link rel="shortcut icon" href="/spaview/app.html.spa/favicon.ico" type="image/x-icon" />
             </Helmet>
             <Placeholder style={ { width: '100vw', height: '253px' } } >Header</Placeholder>
             { props.children }
@@ -37,7 +37,7 @@ export const MoseyLayout : FunctionComponent<Layout.Props> = (props) => {
     return <div className="mosey-layout">
         <Helmet>
             <title>Mosey Capital</title>
-            <link rel="shortcut icon" href="/Spa/favicon.ico" type="image/x-icon" />
+            <link rel="shortcut icon" href="/spaview/app.html.spa/favicon.ico" type="image/x-icon" />
         </Helmet>
         <Header context={ ctx } path={ pathname } startPage={ startPage } />
         { props.children }
