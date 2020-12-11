@@ -36,7 +36,6 @@ export const RssReaderBlock : FunctionComponent<RssReaderBlockProps> = (props) =
     if (props.data.padding?.value) cssClasses.push(props.data.padding?.value);
     if (props.data.margin?.value) cssClasses.push(props.data.margin?.value);
 
-
     function RenderPubDate (item: RssItem) : ReactNode {
         if(viewModel.currentBlock.includePublishDate){
             return <div className="sub-title">

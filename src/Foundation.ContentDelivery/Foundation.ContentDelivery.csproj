@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controller\SpaDeploymentApiController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="dotenv.net" Version="2.1.0" />
     <PackageReference Include="EPiServer.CMS.AspNet" Version="11.15.0" />
     <PackageReference Include="EPiServer.CMS.Core" Version="11.15.0" />

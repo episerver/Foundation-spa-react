@@ -976,7 +976,6 @@
     </None>
     <Content Include="Views\Web.config" />
     <Content Include="Spa\**" />
-    <Content Include="Views\Shared\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1008,7 +1007,9 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\EPiServer.ContentApi.Forms\FormRenderingService.d.ts" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Shared\" />
+  </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
