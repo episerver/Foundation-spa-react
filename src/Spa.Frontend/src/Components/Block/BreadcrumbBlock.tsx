@@ -23,15 +23,17 @@ export const BreadcrumbBlock : FunctionComponent<BreadcrumbBlockProps> = (props)
         //Ignore
     }
 
+    const destinationLink = props.data.destinationPage.value;
+    const pathname = location.pathname;
+
     // Apply effects
     useEffect(() => {
-        console.log( destinationId, props.data, props.contentLink );
-        if (props.data.destinationPage.value) {
-            repo.load(props.data.destinationPage.value).then(iContent => setDestination(iContent));
+        if (destinationLink) {
+            repo.load(destinationLink).then(iContent => setDestination(iContent));
         } else {
-            repo.getByRoute(location.pathname).then(iContent => setDestination(iContent));
+            repo.getByRoute(pathname).then(iContent => setDestination(iContent));
         }
-    }, [ destinationId, props.data, props.contentLink ]);
+    }, [ destinationLink, pathname ]);
     useEffect(() => {
         if (destination) {
             api.getAncestors(destination).then(ancestors => setPath(ancestors));

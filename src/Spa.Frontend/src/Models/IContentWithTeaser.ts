@@ -1,66 +1,65 @@
-import { StringProperty, ContentReferenceProperty } from '@episerver/spa-core/Property'
-import IContent from '@episerver/spa-core/Models/IContent'
+import { Taxonomy as T, ContentDelivery as CD } from '@episerver/spa-core';
 
-export default interface IContentWithTeaser extends IContent
+export default interface IContentWithTeaser extends T.IContent
 {
     /**
      * Image
      *
      * No description available
      */
-    pageImage: ContentReferenceProperty
+    pageImage: CD.ContentReferenceProperty
 
     /**
      * Teaser ratio (width-height)
      *
      * No description available
      */
-    teaserRatio: StringProperty
+    teaserRatio: CD.StringProperty
 
     /**
      * Video
      *
      * No description available
      */
-    teaserVideo: ContentReferenceProperty
+    teaserVideo: CD.ContentReferenceProperty
 
     /**
      * Text
      *
      * No description available
      */
-    teaserText: StringProperty
+    teaserText: CD.StringProperty
 
     /**
      * Text alignment
      *
      * No description available
      */
-    teaserTextAlignment: StringProperty
+    teaserTextAlignment: CD.StringProperty
 
     /**
      * Color theme
      *
      * No description available
      */
-    teaserColorTheme: StringProperty
+    teaserColorTheme: CD.StringProperty
 
     /**
      * Button label
      *
      * No description available
      */
-    teaserButtonText: StringProperty
+    teaserButtonText: CD.StringProperty
 
     /**
      * Button theme
      *
      * No description available
      */
-    teaserButtonStyle: StringProperty
+    teaserButtonStyle: CD.StringProperty
 }
 
-export function isIContentWithTeaser(contentItem : IContent|IContentWithTeaser) : contentItem is IContentWithTeaser
+export function isIContentWithTeaser(contentItem : T.IContent|IContentWithTeaser) : contentItem is IContentWithTeaser
 {
     if ((contentItem as IContentWithTeaser)?.pageImage) {
         return true;

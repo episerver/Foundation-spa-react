@@ -19,13 +19,14 @@ namespace Foundation.SpaViewEngine.SpaContainer
     {
         //private static readonly Lazy<IContentRepository> _contentRepository = new Lazy<IContentRepository>(() => ServiceLocator.Current.GetInstance<IContentRepository>());
         private static Injected<IContentRepository> _contentRepository;
+        private static Injected<IContentLoader> _contentLoader;
 
         public static ContentReference GetOrCreateDeploymentFolder()
         {
             var epiRoot = ContentReference.RootPage;
             ContentReference spaFolder = null;
 
-            var spaFolders = _contentRepository.Service.GetChildren<SpaFolder>(epiRoot);
+            var spaFolders = _contentLoader.Service.GetChildren<SpaFolder>(epiRoot);
             if (!spaFolders.Any())
             {
                 var spaFolderContent = _contentRepository.Service.GetDefault<SpaFolder>(epiRoot);
@@ -43,7 +44,7 @@ namespace Foundation.SpaViewEngine.SpaContainer
         public static IEnumerable<SpaMedia> GetDeploymentItems()
         {
             var folderReference = GetOrCreateDeploymentFolder();
-            return _contentRepository.Service.GetChildren<SpaMedia>(folderReference);
+            return _contentLoader.Service.GetChildren<SpaMedia>(folderReference);
         }
 
         public static SpaMedia GetDeploymentItem(string name)
@@ -88,6 +89,17 @@ namespace Foundation.SpaViewEngine.SpaContainer
             }
 
             return fileBytes;
+        }
+
+        public static bool HasItemInDeployment(SpaMedia content, string filePath)
+        {
+            return GetDocumentFromContentMedia(content, filePath) != null;
+        }
+
+        public static Stream GetItemFromDeploymentAsStream(SpaMedia content, string filePath)
+        {
+            var document = GetDocumentFromContentMedia(content, filePath);
+            return document?.Open();
         }
 
         private static ZipArchiveEntry GetDocumentFromContentMedia(SpaMedia content, string filePath)

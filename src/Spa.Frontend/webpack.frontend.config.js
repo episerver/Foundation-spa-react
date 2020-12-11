@@ -6,41 +6,35 @@ const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const ZipLibrary = require('zip-webpack-plugin');
-//const DeployToEpiserver = require('DeployToEpiserverPlugin');
+const FileManagerPlugin = require('filemanager-webpack-plugin');
 const DeployToEpiserverPlugin = require('./DeployToEpiserverPlugin');
 
 module.exports = (env) => {
+    // Bundle info
+    const bundle        = 'app.html.spa';
 
+    //Configs
     /** @type {GlobalConfig} */
 	const config        = new GlobalConfig(__dirname, env);
-    const srcPath       = path.resolve(__dirname, config.getSourcePath());
+    const srcPath       = path.resolve(__dirname, 'src');
+
+    // Environment configs
     const webPath       = config.getWebPath();
-    const outPrefix     = config.getSpaPath();
-    const distPath      = path.resolve(__dirname, config.getEpiPath());
     const mode          = config.getNodeEnv();
     const forProduction = mode.toLowerCase() === 'production';
-    const zipPath = config.getEnvVariable('ZIP_PATH');
-    const epiBaseUrl = config.getEnvVariable('EPI_URL');
-    const epiDeployPath = config.getEnvVariable('EPI_DEPLOY_PATH');
-
-    console.log('');
-    console.log('Starting Episerver ' + mode.toLowerCase() + ' frontend build');
-    console.log('  - Building web application from: ' + srcPath);
-    console.log('  - Writing files to: '+ path.resolve(distPath, outPrefix));
-    console.log('  - Assuming site running at (relative to domain): ' + webPath);
-    console.log('');
+    const epiBaseUrl    = config.getEnvVariable('EPI_URL');
+    const epiDeployPath = config.getEnvVariable('EPI_DEPLOY_PATH', '/api/episerver/v3/deploy');
 
     const webpackConfig = {
-        entry: path.join(srcPath, 'index.tsx'),
+        entry: path.resolve(srcPath,'index.tsx'),
         target: 'web',
         mode: mode,
         devtool: forProduction ? 'source-map' : 'inline-source-map',
 		output: {
-			filename: outPrefix + 'Scripts/[name].[contenthash:8].js',
-			chunkFilename: outPrefix + 'Scripts/[name].[contenthash:8].js',
-			path: distPath,
-			publicPath: webPath
+			filename: 'scripts/[name].[contenthash:8].js',
+			chunkFilename: 'scripts/[name].[contenthash:8].js',
+			path: path.join(__dirname, 'dist', bundle),
+			publicPath: webPath + 'spaview/' + bundle + '/'
         },
         resolve: config.getResolveConfig(),
         module: {
@@ -73,7 +67,7 @@ module.exports = (env) => {
                             loader: 'file-loader',
                             options: {
                                 name: '[name].[ext]',
-                                outputPath: outPrefix + 'Fonts'
+                                outputPath: 'fonts'
                             }
                         }
                     ]
@@ -84,7 +78,7 @@ module.exports = (env) => {
                         {
                             loader: MiniCssExtractPlugin.loader,
                             options: {
-                                publicPath: 'Styles'
+                                publicPath: 'styles'
                             }
                         }, {
                             loader: 'css-loader',
@@ -161,28 +155,22 @@ module.exports = (env) => {
 				},
 			},
 			minimize: forProduction,
-			minimizer: [new TerserPlugin({})]
+			minimizer: forProduction ? [new TerserPlugin({})] : []
 		},
         plugins: [
-
-            //Embed jQuery globals
-            new webpack.ProvidePlugin({
-                $: 'jquery',
-                jQuery: 'jquery'
-            }),
 
             // Neither frontend nor backend is running in NodeJS, so define some variables
             new webpack.DefinePlugin(config.getDefineConfig(env)),
 
             new HtmlWebpackPlugin({
-                template: path.join(srcPath,'index.html'),
+                template: 'src/index.html',
                 title: 'Episerver Foundation Single Page Application',
-                filename: outPrefix + 'index.html'
+                filename: 'index.html'
             }),
 
             new MiniCssExtractPlugin({
-                filename: outPrefix+'Styles/[name].[contenthash:8].css',
-                chunkFilename: outPrefix+'Styles/[name].[contenthash:8].css',
+                filename: 'styles/[name].[contenthash:8].css',
+                chunkFilename: 'styles/[name].[contenthash:8].css',
                 ignoreOrder: true
             }),
 
@@ -191,13 +179,13 @@ module.exports = (env) => {
                     patterns: [
                         {
                             from: path.join(srcPath,'favicon.ico'),
-                            to: outPrefix+'favicon.ico'
+                            to: 'favicon.ico'
                         }, {
                             from: path.join(srcPath,'robots.txt'),
-                            to: outPrefix+'robots.txt'
+                            to: 'robots.txt'
                         }, {
                             from: path.join(srcPath,'web.config'),
-                            to: outPrefix+'web.config'
+                            to: 'web.config'
                         }
                     ]
                 }
@@ -207,18 +195,26 @@ module.exports = (env) => {
             new CleanWebpackPlugin({
                 dry: false,
                 verbose: false,
-                cleanOnceBeforeBuildPatterns: [outPrefix + '**/*', '!'+outPrefix+'**/server.js'],
+                cleanOnceBeforeBuildPatterns: [ '**/*' ],
             }),
 
-            new ZipLibrary({
-                filename: 'app.html',
-                path: zipPath,
-                extension: 'spa'
+            new FileManagerPlugin({
+                events: {
+                    onEnd: {
+                        archive: [
+                            {
+                                source: 'dist/' + bundle,
+                                destination: 'dist/epi-bundle/' + bundle,
+                                format: 'zip'
+                            }
+                        ]
+                    }
+                }
             }),
 
             new DeployToEpiserverPlugin({
-                filename: 'app.html.spa',
-                filepath: path.resolve(distPath, zipPath),
+                filename: bundle,
+                filepath: 'dist/epi-bundle',
                 base: epiBaseUrl,
                 path: epiDeployPath
             })

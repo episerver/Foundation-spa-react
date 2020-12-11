@@ -1,13 +1,11 @@
 ﻿using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
-using EPiServer.Web.Routing;
 using Foundation.SpaViewEngine.JsInterop;
 using Foundation.SpaViewEngine.SpaContainer;
 using JavaScriptEngineSwitcher.Core;
 using JavaScriptEngineSwitcher.V8;
 using System.Linq;
-using System.Web.Hosting;
 using System.Web.Routing;
 
 namespace Foundation.SpaViewEngine
@@ -37,6 +35,7 @@ namespace Foundation.SpaViewEngine
                 return switcher;
             });
 
+
             context.Services.AddTransient(locator =>
             {
                 var engine = locator.GetInstance<IJsEngineSwitcher>().CreateDefaultEngine();
@@ -50,17 +49,7 @@ namespace Foundation.SpaViewEngine
         public void Initialize(InitializationEngine context) { 
             
             System.Web.Mvc.ViewEngines.Engines.Insert(0, context.Locate.Advanced.GetInstance<SpaViewEngine>());
-
-            // Initialize SPA Router
-            var spaRouter = new SpaPartialRouter();
-            RouteTable.Routes.RegisterPartialRouter(spaRouter);
-
-            string[] paths = { "app.html.spa", "app.server.spa" };
-
-            foreach(var path in paths)
-            {
-                RouteTable.Routes.Add(new Route($"{path}/{{*path}}", new SpaRouteHandler(path)));
-            }
+            RouteTable.Routes.Add(new SpaViewAssetRoute());
             
         }
 

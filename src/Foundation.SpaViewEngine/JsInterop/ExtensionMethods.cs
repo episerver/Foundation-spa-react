@@ -44,13 +44,14 @@ namespace Foundation.SpaViewEngine.JsInterop
         {
             var builder = ServiceLocator.Current.GetInstance<ServerSideRenderingContextBuilder>();
             var context = builder.Build(viewContext);
-            ExecuteResource(jsEngine, "PrepareContext.js");
+            jsEngine.ExecuteResource("core.js.minified.js");
+            jsEngine.ExecuteResource("PrepareContext.js");
             jsEngine.EmbedHostObject("__INITIAL__DATA__", context);
-            ExecuteResource(jsEngine, "ApplyContext.js");
+            jsEngine.ExecuteResource("ApplyContext.js");
             return context;
         }
 
-        public static void ExecuteResource(IJsEngine jsEngine, string resourceName)
+        public static void ExecuteResource(this IJsEngine jsEngine, string resourceName)
         {
             var loader = new ResourceLoader();
             jsEngine.ExecuteResource(loader.BuildFullname(resourceName), loader.ResourceAssembly);

@@ -18,7 +18,7 @@ namespace Foundation.ContentDelivery
 
         public void Initialize(InitializationEngine context)
         {
-
+            
         }
 
         public void Uninitialize(InitializationEngine context)
