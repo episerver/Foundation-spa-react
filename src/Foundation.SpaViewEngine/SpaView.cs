@@ -43,7 +43,7 @@ namespace Foundation.SpaViewEngine
             else
             {
                 var context = JsEngine.SetViewContext(viewContext);
-                JsEngine.ExecuteFile(ServerJS);
+                JsEngine.Execute(ServerJS);
                 var result = (string)JsEngine.Evaluate("JSON.stringify(epi.render());");
                 response = Newtonsoft.Json.JsonConvert.DeserializeObject<SSRResponse>(result);
                 initialData = context.ToJson();
@@ -79,7 +79,7 @@ namespace Foundation.SpaViewEngine
             return sb.ToString();
         }
 
-        protected virtual string LoadTemplate() => File.ReadAllText(TemplateHtml);
+        protected virtual string LoadTemplate() => TemplateHtml;
 
         /// <summary>
         /// The "epieditmode" querystring parameter is added to URLs by Episerver as a way to keep track of what context is currently active.

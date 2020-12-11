@@ -69,16 +69,10 @@ namespace Foundation.ContentDelivery
                 }
 
                 c.EnablePreviewFeatures = true;
-
-                c.Default(RestVersion.Version_3_0)
+                c.Default()
                     .SetMinimumRoles(string.Empty)
                     .SetRequiredRole(string.Empty)
                     .SetEnablePreviewMode(true)
-                    .SetClients(clients);
-
-                c.Default(RestVersion.Version_2_0)
-                    .SetMinimumRoles(string.Empty)
-                    .SetRequiredRole(string.Empty)
                     .SetClients(clients);
             });
 

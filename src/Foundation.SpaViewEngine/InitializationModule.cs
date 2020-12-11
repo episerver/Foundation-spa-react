@@ -2,9 +2,11 @@
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
 using Foundation.SpaViewEngine.JsInterop;
+using Foundation.SpaViewEngine.SpaContainer;
 using JavaScriptEngineSwitcher.Core;
 using JavaScriptEngineSwitcher.V8;
 using System.Linq;
+using System.Web.Routing;
 
 namespace Foundation.SpaViewEngine
 {
@@ -33,6 +35,7 @@ namespace Foundation.SpaViewEngine
                 return switcher;
             });
 
+
             context.Services.AddTransient(locator =>
             {
                 var engine = locator.GetInstance<IJsEngineSwitcher>().CreateDefaultEngine();
@@ -43,7 +46,12 @@ namespace Foundation.SpaViewEngine
             });
         }
 
-        public void Initialize(InitializationEngine context) => System.Web.Mvc.ViewEngines.Engines.Insert(0, context.Locate.Advanced.GetInstance<SpaViewEngine>());
+        public void Initialize(InitializationEngine context) { 
+            
+            System.Web.Mvc.ViewEngines.Engines.Insert(0, context.Locate.Advanced.GetInstance<SpaViewEngine>());
+            RouteTable.Routes.Add(new SpaViewAssetRoute());
+            
+        }
 
         public void Uninitialize(InitializationEngine context)
         {

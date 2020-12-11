@@ -1,5 +1,6 @@
 ﻿using EPiServer.ContentApi.Routing;
 using EPiServer.Web.Routing.Segments;
+using System.Web;
 
 namespace Foundation.ContentDelivery.Infrastructure
 {
@@ -8,6 +9,11 @@ namespace Foundation.ContentDelivery.Infrastructure
     /// </summary>
     public class ContentDeliveryApiRouter : ContentApiRouteService
     {
+        public override bool ShouldRouteRequest(HttpRequestBase request)
+        {
+            return base.ShouldRouteRequest(request);
+        }
+
         /// <summary>
         /// Verify if the controller method has been explicitly specified in the routingContext
         /// if so, rewrite to the controller method handler.

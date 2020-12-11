@@ -11,13 +11,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\SpaMediaController.cs" />
+    <Compile Remove="SpaStaticFileHandler.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Lang\SpaViewEngine_EN.xml" />
     <None Remove="Resources\ApplyContext.js" />
+    <None Remove="Resources\core.js.minified.js" />
     <None Remove="Resources\PrepareContext.js" />
     <None Remove="Resources\Shims.js" />
     <None Remove="Resources\window.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Lang\SpaViewEngine_EN.xml" />
     <EmbeddedResource Include="Resources\ApplyContext.js" />
     <EmbeddedResource Include="Resources\PrepareContext.js" />
     <EmbeddedResource Include="Resources\Shims.js" />
@@ -25,19 +33,24 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EPiServer.CMS.AspNet" Version="11.15.0" />
-    <PackageReference Include="EPiServer.CMS.Core" Version="11.15.0" />
-    <PackageReference Include="EPiServer.CMS.UI.Core" Version="11.24.1" />
-    <PackageReference Include="EPiServer.Framework" Version="11.15.0" />
+    <PackageReference Include="EPiServer.CMS.AspNet" Version="11.20.2" />
+    <PackageReference Include="EPiServer.CMS.Core" Version="11.20.2" />
+    <PackageReference Include="EPiServer.CMS.UI.Core" Version="11.30.1" />
+    <PackageReference Include="EPiServer.Framework" Version="11.20.2" />
     <PackageReference Include="EPiServer.ServiceLocation.StructureMap" Version="2.0.3" />
-    <PackageReference Include="JavaScriptEngineSwitcher.V8" Version="3.8.3" />
-    <PackageReference Include="JavaScriptEngineSwitcher.V8.Native.win-x64" Version="3.8.3" />
+    <PackageReference Include="JavaScriptEngineSwitcher.V8" Version="3.9.0" />
+    <PackageReference Include="JavaScriptEngineSwitcher.V8.Native.win-x64" Version="3.9.0" />
     <PackageReference Include="JSPool" Version="4.0.0" />
     <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.IO.Compression" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Foundation.ContentDelivery\Foundation.ContentDelivery.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\core.js.minified.js" />
   </ItemGroup>
 </Project>

@@ -1,35 +1,33 @@
 const GlobalConfig = require('@episerver/webpack/Config');
 const path = require('path');
 const webpack = require('webpack');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const FileManagerPlugin = require('filemanager-webpack-plugin');
+const DeployToEpiserverPlugin = require('./DeployToEpiserverPlugin');
 
 module.exports = (env) => {
 
+    const bundle        = 'app.server.spa';
+    const srcPath       = path.resolve(__dirname, 'server');
+
     /** @type {GlobalConfig} */
 	const config        = new GlobalConfig(__dirname, env);
-    const srvPath       = path.resolve(__dirname, config.getServerPath());
     const webPath       = config.getWebPath();
-    const outPrefix     = config.getSpaPath();
-    const distPath      = path.resolve(__dirname, config.getEpiPath());
     const mode          = config.getNodeEnv();
     const forProduction = mode.toLowerCase() === 'production';
-
-    console.log('');
-    console.log('Starting Episerver ' + mode.toLowerCase() + ' server build');
-    console.log('  - Building Episerver Server Side Rendering from: ' + srvPath);
-    console.log('  - Writing files to: '+ path.resolve(distPath, outPrefix));
-    console.log('  - Assuming site running at (relative to domain): ' + webPath);
-    console.log('');
+    const epiBaseUrl = config.getEnvVariable('EPI_URL');
+    const epiDeployPath = config.getEnvVariable('EPI_DEPLOY_PATH', '/api/episerver/v3/deploy');
 
     const webpackConfig = {
-        entry: path.join(srvPath, 'server.tsx'),
+        entry: path.resolve(srcPath, 'server.tsx'),
         target: 'web',
         mode: mode,
         devtool: forProduction ? 'source-map' : 'inline-source-map',
 		output: {
-			filename: outPrefix+'server.js',
-            chunkFilename: outPrefix+'server.[name].[contenthash:8].js',
-			path: distPath,
-			publicPath: webPath
+			filename: 'server.js',
+            chunkFilename: 'server.[name].[contenthash:8].js',
+			path: path.join(__dirname, 'dist', bundle),
+			publicPath: webPath + 'spaview/' + bundle + '/'
         },
         resolve: config.getResolveConfig(),
         module: {
@@ -74,14 +72,36 @@ module.exports = (env) => {
                 }
             ),
 
-            // Embed jQuery globals
-            new webpack.ProvidePlugin({
-                $: 'jquery',
-                jQuery: 'jquery'
-            }),
-
             // Neither frontend nor backend is running in NodeJS, so define some variables
             new webpack.DefinePlugin(config.getDefineConfig(env)),
+
+            //Keep the Spa folder clean
+            new CleanWebpackPlugin({
+                dry: false,
+                verbose: false,
+                cleanOnceBeforeBuildPatterns: [ '**/*' ],
+            }),
+
+            new FileManagerPlugin({
+                events: {
+                    onEnd: {
+                        archive: [
+                            {
+                                source: 'dist/' + bundle,
+                                destination: 'dist/epi-bundle/' + bundle,
+                                format: 'zip'
+                            }
+                        ]
+                    }
+                }
+            }),
+
+            new DeployToEpiserverPlugin({
+                filename: bundle,
+                filepath: 'dist/epi-bundle',
+                base: epiBaseUrl,
+                path: epiDeployPath
+            })
         ]
     }
 
