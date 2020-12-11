@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="dotenv.net" Version="2.1.0" />
+    <PackageReference Include="dotenv.net" Version="2.1.1" />
     <PackageReference Include="EPiServer.CMS.AspNet" Version="11.20.2" />
     <PackageReference Include="EPiServer.CMS.Core" Version="11.20.2" />
     <PackageReference Include="EPiServer.CMS.UI.Core" Version="11.31.0" />
