@@ -20,7 +20,6 @@ namespace Foundation
                 RequireSsl = false,
                 AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(60)
             });
-            
         }
     }
 }

@@ -14,12 +14,13 @@ namespace Foundation.Cms.Extensions
             DependencyResolver.SetResolver(new StructureMapDependencyResolver(context.StructureMap()));
             GlobalConfiguration.Configure(config =>
             {
+                config.EnableCors();
                 config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.LocalOnly;
                 config.Formatters.JsonFormatter.SerializerSettings = new JsonSerializerSettings();
                 config.Formatters.XmlFormatter.UseXmlSerializer = true;
                 config.DependencyResolver = new StructureMapResolver(context.StructureMap());
                 config.MapHttpAttributeRoutes();
-                config.EnableCors();
+                
             });
 
             context.Services.Configure<TinyMceConfiguration>(config =>

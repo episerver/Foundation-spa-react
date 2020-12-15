@@ -36,7 +36,9 @@ module.exports = (env) => {
 			path: path.join(__dirname, 'dist', bundle),
 			publicPath: webPath + 'spaview/' + bundle + '/'
         },
-        resolve: config.getResolveConfig(),
+        resolve: config.getResolveConfig({
+            extensions: ['.css']
+        }),
         module: {
             rules: [
                 {
@@ -109,6 +111,14 @@ module.exports = (env) => {
                             }
                         }
                     ]
+                },
+                {
+                    test: /\.css$/,
+                    use: [ {
+                        loader: 'style-loader'
+                    }, {
+                        loader: 'css-loader'
+                    } ]
                 }
             ]
         },
