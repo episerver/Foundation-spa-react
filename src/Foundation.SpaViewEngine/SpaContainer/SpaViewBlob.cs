@@ -6,10 +6,12 @@ namespace Foundation.SpaViewEngine.SpaContainer
 {
     public class SpaViewBlob : Blob
     {
+        public new const string BlobUriScheme = "foundation.spaviewengine.asset";
+
         public SpaMedia Container { get; protected set; }
         public string FilePath { get; protected set; }
 
-        public SpaViewBlob(SpaMedia container, string path) : base(new Uri($"spa-asset://{ container.Name }/{ path }"))
+        public SpaViewBlob(SpaMedia container, string path) : base(new Uri($"{ BlobUriScheme }://{ container.Name }/{ path }"))
         {
             Container = container;
             FilePath = path;

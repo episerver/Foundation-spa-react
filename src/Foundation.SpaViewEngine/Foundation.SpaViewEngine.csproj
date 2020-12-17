@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\SpaMediaController.cs" />
+    <Compile Remove="SpaPartialRouter.cs" />
     <Compile Remove="SpaStaticFileHandler.cs" />
   </ItemGroup>
 

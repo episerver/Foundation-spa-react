@@ -48,12 +48,11 @@ namespace Foundation.ContentDelivery.Models
         /// </summary>
         public override ContentApiModel TransformContent(IContent content, bool excludePersonalizedContent, string expand)
         {
-            var visitorGroupId = HttpContext.Current?.Request.QueryString[VisitorGroupHelpers.VisitorGroupKeyByID];
+            var httpContext = _httpContextAccessor();
+            var visitorGroupId = httpContext?.Request.QueryString[VisitorGroupHelpers.VisitorGroupKeyByID];
             if (!string.IsNullOrEmpty(visitorGroupId))
             {
-                // setup impersonate visitor group
-                var httpContextBase = new HttpContextWrapper(HttpContext.Current);
-                httpContextBase.SetupVisitorGroupImpersonation(content, AccessLevel.Read);
+                httpContext.SetupVisitorGroupImpersonation(content, AccessLevel.Read);
             }
             var contentModel = base.TransformContent(content, excludePersonalizedContent, expand);
             return contentModel;
@@ -61,9 +60,9 @@ namespace Foundation.ContentDelivery.Models
         public override bool CanHandle<T>(T content)
         {
             // NOTE: you can uncomment the below code to make this custom mapper only active when in Edit Mode
-            //var contextMode = GetContextMode();
-            //return (contextMode == ContextMode.Edit || contextMode == ContextMode.Preview);
-            return content is IContent;
+            var contextMode = GetContextMode();
+            return (contextMode == ContextMode.Edit || contextMode == ContextMode.Preview) && content is IContent;
+            // return content is IContent;
         }
         private ContextMode GetContextMode()
         {

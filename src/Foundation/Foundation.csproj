@@ -149,9 +149,6 @@
     <Reference Include="EPiServer.ContentApi.Core, Version=2.17.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.ContentDeliveryApi.Core.2.17.0\lib\net461\EPiServer.ContentApi.Core.dll</HintPath>
     </Reference>
-    <Reference Include="EPiServer.ContentApi.Forms, Version=2.17.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EPiServer.ContentDeliveryApi.Forms.2.17.0\lib\net461\EPiServer.ContentApi.Forms.dll</HintPath>
-    </Reference>
     <Reference Include="EPiServer.ContentApi.OAuth, Version=2.6.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.ContentDeliveryApi.OAuth.2.6.0\lib\net461\EPiServer.ContentApi.OAuth.dll</HintPath>
     </Reference>
@@ -901,7 +898,6 @@
     <Content Include="modules\_protected\VisualCompareMode\EpiServerOverridenLibs\customWidgetSwitcher.js" />
     <Content Include="NotFound.aspx" />
     <Content Include="resources\languagefiles\Episerver.Marketing.Automation.Forms_EN.xml" />
-    <Content Include="Scripts\EPiServer.ContentApi.Forms\FormRenderingService.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Views\AdvancedTask\ChangeApproval.ascx" />
     <Content Include="Views\AdvancedTask\Index.ascx" />
@@ -999,6 +995,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Spa\**" />
     <Content Include="Views\DefaultBlock\Index.cshtml" />
+    <Content Include="Views\DefaultPage\index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
