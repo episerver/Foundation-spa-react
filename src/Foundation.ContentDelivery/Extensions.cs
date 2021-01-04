@@ -47,7 +47,7 @@ namespace Foundation.ContentDelivery
             context.Services.AddSingleton<UrlResolverService, CustomUrlResolverService>();
             context.Services.AddSingleton<IViewModelSerializer, DefaultViewModelSerializer>();
             context.Services.AddSingleton<IContentConverter>();
-            context.Services.AddSingleton<ContentLoaderService, CustomContentLoaderService>();
+            context.Services.AddSingleton<ContentLoaderService, ProjectAwareContentLoaderService>();
             context.Services.Configure<ContentApiConfiguration>(c =>
             {
                 var clients = new List<ContentApiClient>();

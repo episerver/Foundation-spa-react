@@ -165,7 +165,13 @@ module.exports = (env) => {
             new HtmlWebpackPlugin({
                 template: 'src/index.html',
                 title: 'Episerver Foundation Single Page Application',
-                filename: 'index.html'
+                filename: 'index.html',
+                minify: {
+                    removeComments: false,
+                    preserveLineBreaks: true,
+                    collapseWhitespace: false,
+                    collapseBooleanAttributes: true
+                }
             }),
 
             new MiniCssExtractPlugin({

@@ -13,10 +13,11 @@ using System.Web;
 namespace Foundation.ContentDelivery.Models
 {
     [ServiceConfiguration(typeof(IContentModelMapper))]
-    class CustomContentModelMapper : ContentModelMapperBase
+    class VisitorGroupContentModelMapper : ContentModelMapperBase
     {
         private readonly ServiceAccessor<HttpContextBase> _httpContextAccessor;
-        public CustomContentModelMapper(IContentTypeRepository contentTypeRepository, 
+        private readonly ServiceAccessor<EPiServer.Web.IContextModeResolver> _contextModeAccessor;
+        public VisitorGroupContentModelMapper(IContentTypeRepository contentTypeRepository, 
                                         ReflectionService reflectionService, 
                                         IContentModelReferenceConverter contentModelService, 
                                         IContentVersionRepository contentVersionRepository, 
@@ -24,7 +25,8 @@ namespace Foundation.ContentDelivery.Models
                                         UrlResolverService urlResolverService, 
                                         ContentApiConfiguration apiConfig, 
                                         IPropertyConverterResolver propertyConverterResolver,
-                                        ServiceAccessor<HttpContextBase> httpContextAccessor)
+                                        ServiceAccessor<HttpContextBase> httpContextAccessor,
+                                        ServiceAccessor<EPiServer.Web.IContextModeResolver> contextModeAccessor)
                                         : base(contentTypeRepository, 
                                                reflectionService, 
                                                contentModelService, 
@@ -35,6 +37,7 @@ namespace Foundation.ContentDelivery.Models
                                                propertyConverterResolver)
         {
             _httpContextAccessor = httpContextAccessor;
+            _contextModeAccessor = contextModeAccessor;
         }
         public override int Order
         {
@@ -57,25 +60,10 @@ namespace Foundation.ContentDelivery.Models
             var contentModel = base.TransformContent(content, excludePersonalizedContent, expand);
             return contentModel;
         }
+
         public override bool CanHandle<T>(T content)
         {
-            // NOTE: you can uncomment the below code to make this custom mapper only active when in Edit Mode
-            var contextMode = GetContextMode();
-            return (contextMode == ContextMode.Edit || contextMode == ContextMode.Preview) && content is IContent;
-            // return content is IContent;
-        }
-        private ContextMode GetContextMode()
-        {
-            var httpCtx = _httpContextAccessor();
-            if (httpCtx == null || httpCtx.Request == null || httpCtx.Request.QueryString[PageEditing.EpiEditMode] == null)
-            {
-                return ContextMode.Default;
-            }
-            if (bool.TryParse(httpCtx.Request.QueryString[PageEditing.EpiEditMode], out bool editMode))
-            {
-                return editMode ? ContextMode.Edit : ContextMode.Preview;
-            }
-            return ContextMode.Undefined;
+            return _contextModeAccessor().CurrentMode.EditOrPreview() && content is IContent;
         }
     }
 }

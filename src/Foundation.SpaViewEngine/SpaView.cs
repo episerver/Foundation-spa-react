@@ -17,24 +17,23 @@ namespace Foundation.SpaViewEngine
 
         protected virtual string TemplateHtml { get; set; }
 
-        protected virtual IJsEngine JsEngine { get; }
+        protected virtual IJsEngine JsEngine => ServiceLocator.Current.GetInstance<IJsEngine>();
 
-        private readonly ServiceAccessor<HttpContextBase> _httpContextAccessor;
+        protected virtual IContextModeResolver contextModeResolver => ServiceLocator.Current.GetInstance<IContextModeResolver>();
+
+        protected virtual string LoadTemplate() => TemplateHtml;
 
         public SpaView(string serverJs, string templateHtml)
         {
             ServerJS = serverJs;
             TemplateHtml = templateHtml;
-            JsEngine = ServiceLocator.Current.GetInstance<IJsEngine>();
-            _httpContextAccessor = ServiceLocator.Current.GetInstance<ServiceAccessor<HttpContextBase>>();
         }
 
         public virtual void Render(ViewContext viewContext, TextWriter writer)
         {
             SSRResponse response;
             string initialData;
-            var currentContextMode = GetContextMode();
-            if (currentContextMode == ContextMode.Edit || currentContextMode == ContextMode.Preview)
+            if (contextModeResolver.CurrentMode.EditOrPreview())
             {
                 //Disable server-side rendering for edit & preview due to errors in the Content-Delivery API when enabled.
                 response = new SSRResponse();
@@ -77,29 +76,6 @@ namespace Foundation.SpaViewEngine
             sb.Append(context);
             sb.Append(";</script>");
             return sb.ToString();
-        }
-
-        protected virtual string LoadTemplate() => TemplateHtml;
-
-        /// <summary>
-        /// The "epieditmode" querystring parameter is added to URLs by Episerver as a way to keep track of what context is currently active.
-        /// If there is no "epieditmode" parameter we're in regular view mode.
-        /// If the "epieditmode" parameter has value "True" we're in edit mode.
-        /// If the "epieditmode" parameter has value "False" we're in preview mode.
-        /// All of these different modes will resolve to different URLs for the same content.
-        /// </summary>
-        protected virtual ContextMode GetContextMode()
-        {
-            var httpCtx = _httpContextAccessor();
-            if (httpCtx == null || httpCtx.Request == null || httpCtx.Request.QueryString[PageEditing.EpiEditMode] == null)
-            {
-                return ContextMode.Default;
-            }
-            if (bool.TryParse(httpCtx.Request.QueryString[PageEditing.EpiEditMode], out var editMode))
-            {
-                return editMode ? ContextMode.Edit : ContextMode.Preview;
-            }
-            return ContextMode.Undefined;
         }
     }
 }
