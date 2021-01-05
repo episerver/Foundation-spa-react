@@ -17,7 +17,7 @@ namespace Foundation.SpaViewEngine
 
         protected virtual string TemplateHtml { get; set; }
 
-        protected virtual IJsEngine JsEngine => ServiceLocator.Current.GetInstance<IJsEngine>();
+        protected virtual IJsEngine GetJsEngine() => ServiceLocator.Current.GetInstance<IJsEngine>();
 
         protected virtual IContextModeResolver contextModeResolver => ServiceLocator.Current.GetInstance<IContextModeResolver>();
 
@@ -31,19 +31,16 @@ namespace Foundation.SpaViewEngine
 
         public virtual void Render(ViewContext viewContext, TextWriter writer)
         {
-            SSRResponse response;
-            string initialData;
-            if (contextModeResolver.CurrentMode.EditOrPreview())
+            SSRResponse response = new SSRResponse();
+            string initialData = "{}";
+
+            // Do not Pre-Render for Edit or Preview Mode, as there're some modules that will brake this
+            if (!contextModeResolver.CurrentMode.EditOrPreview())
             {
-                //Disable server-side rendering for edit & preview due to errors in the Content-Delivery API when enabled.
-                response = new SSRResponse();
-                initialData = "{}";
-            }
-            else
-            {
-                var context = JsEngine.SetViewContext(viewContext);
-                JsEngine.Execute(ServerJS);
-                var result = (string)JsEngine.Evaluate("JSON.stringify(epi.render());");
+                var jsEngine = GetJsEngine();
+                var context = jsEngine.SetViewContext(viewContext);
+                jsEngine.Execute(ServerJS);
+                var result = (string)jsEngine.Evaluate("JSON.stringify(epi.render());");
                 response = Newtonsoft.Json.JsonConvert.DeserializeObject<SSRResponse>(result);
                 initialData = context.ToJson();
             }

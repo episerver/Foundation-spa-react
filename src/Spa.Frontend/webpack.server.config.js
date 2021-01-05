@@ -3,6 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const FileManagerPlugin = require('filemanager-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 const DeployToEpiserverPlugin = require('./DeployToEpiserverPlugin');
 
 module.exports = (env) => {
@@ -62,6 +63,15 @@ module.exports = (env) => {
                     use: [{ loader: '@episerver/webpack/EmptyLoader' }]
                 }
             ]
+        },
+        optimization: {
+            minimize: true,
+            minimizer: [new TerserPlugin({
+                terserOptions: {
+                    keep_fnames: true,
+                    keep_classnames: true
+                }
+            })],
         },
         plugins: [
             // Ensure we run browser logic
