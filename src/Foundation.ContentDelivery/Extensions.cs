@@ -44,7 +44,7 @@ namespace Foundation.ContentDelivery
             }
 
             context.Services.Add(typeof(ContentApiRouteService), typeof(ContentDeliveryApiRouter), ServiceInstanceScope.HttpContext);
-            context.Services.AddSingleton<UrlResolverService, CustomUrlResolverService>();
+            context.Services.AddSingleton<UrlResolverService, CurrentContextUrlResolverService>();
             context.Services.AddSingleton<IViewModelSerializer, DefaultViewModelSerializer>();
             context.Services.AddSingleton<IContentConverter>();
             context.Services.AddSingleton<ContentLoaderService, ProjectAwareContentLoaderService>();

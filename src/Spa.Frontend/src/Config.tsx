@@ -12,7 +12,7 @@ ContentDelivery.FetchAdapter.isCachable.push(url => url.pathname.indexOf('/api/e
 // Website configuration
 export const Config : Core.IConfig = {
     // Main setup
-    enableDebug: true, //Will be forced to false if build with a "production" environment
+    enableDebug: process.env.NODE_ENV !== 'production',
     autoExpandRequests: true, //Should all properties be expanded by default
 
     // Connection details
