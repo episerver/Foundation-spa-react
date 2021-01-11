@@ -7,13 +7,12 @@ import MoseyLayout from "app/Components/Shared/MoseyLayout";
 
 // Referenced implementation
 import MoseyComponentLoader from "app/Infrastructure/ComponentLoader";
-
 ContentDelivery.FetchAdapter.isCachable.push(url => url.pathname.indexOf('/api/episerver/v3/action/') >= 0);
 
 // Website configuration
 export const Config : Core.IConfig = {
     // Main setup
-    enableDebug: true, //Will be forced to false if build with a "production" environment
+    enableDebug: process.env.NODE_ENV !== 'production',
     autoExpandRequests: true, //Should all properties be expanded by default
 
     // Connection details
@@ -58,10 +57,22 @@ export const Config : Core.IConfig = {
         "Page/StandardPage",
         "Block/ContainerBlock"
     ],
-    componentLoaders: [
-        MoseyComponentLoader
-    ]
 
+    // List of custom component loaders, app/Components is handled by the core library,
+    // so the MoseyComponentLoader is here as example.
+    componentLoaders: [
+        /*MoseyComponentLoader*/
+    ],
+
+    // Configuration of the V2 Content Repository
+    iContentRepository: {
+        debug: false // Override global debug to disable debug within the content repository
+    },
+
+    // Configuration of the V2 Content Delivery API, this overrides the old configuration
+    iContentDelivery: {
+        Debug: false // Override global debug to disable debug within the ContentDeliveryAPI
+    }
 };
-Config.componentLoaders.debug = Config.enableDebug || false;
+Config.componentLoaders.debug = false; // Override global debug to disable debug within the component loaders
 export default Config;

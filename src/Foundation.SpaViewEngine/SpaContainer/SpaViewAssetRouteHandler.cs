@@ -14,7 +14,7 @@ using System.Web.Routing;
 
 namespace Foundation.SpaViewEngine
 {
-    public class SpaRouteHandler : IRouteHandler
+    public class SpaViewAssetRouteHandler : IRouteHandler
     {
         public IHttpHandler GetHttpHandler(RequestContext requestContext)
         {

@@ -1,13 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using EPiServer.Core;
+﻿using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
-using EPiServer.Framework.Blobs;
 using EPiServer.Framework.DataAnnotations;
-using EPiServer.ServiceLocation;
-using EPiServer.Web;
-using EPiServer.Web.Routing;
 
 namespace Foundation.SpaViewEngine.SpaContainer
 {
@@ -21,8 +15,5 @@ namespace Foundation.SpaViewEngine.SpaContainer
     [AvailableContentTypes(
         Availability = Availability.Specific,
         IncludeOn = new[] { typeof(SpaFolder) })]
-    public class SpaMedia : MediaData
-    {
-        
-    }
+    public class SpaMedia : MediaData { }
 }

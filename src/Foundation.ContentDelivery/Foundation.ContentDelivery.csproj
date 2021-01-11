@@ -22,6 +22,7 @@
     <PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="2.17.0" />
     <PackageReference Include="EPiServer.ContentDeliveryApi.Search" Version="2.17.0" />
     <PackageReference Include="EPiServer.Framework" Version="11.20.2" />
+    <PackageReference Include="EPiServer.Labs.BlockEnhancements" Version="0.9.5" />
     <PackageReference Include="EPiServer.ServiceLocation.StructureMap" Version="2.0.3" />
     <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

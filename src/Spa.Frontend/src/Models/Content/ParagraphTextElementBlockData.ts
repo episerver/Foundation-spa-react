@@ -36,6 +36,13 @@ export default interface ParagraphTextElementBlockData extends Taxonomy.IContent
     conditions: ContentDelivery.Property<any> // Original type: Dependency conditions collection
 
     /**
+     * /contenttypes/paragraphtextelementblock/placeholdersetting
+     *
+     * No description available
+     */
+    disablePlaceholdersReplacement: ContentDelivery.BooleanProperty
+
+    /**
      * FormSubmissionId
      *
      * No description available
@@ -59,6 +66,7 @@ export class ParagraphTextElementBlockType extends Taxonomy.AbstractIContent<Par
         'satisfiedAction': 'LongString',
         'conditionCombination': 'Number',
         'conditions': 'Dependency conditions collection',
+        'disablePlaceholdersReplacement': 'Boolean',
         'formSubmissionId': 'LongString',
     }
 
@@ -89,6 +97,13 @@ export class ParagraphTextElementBlockType extends Taxonomy.AbstractIContent<Par
      * No description available
      */
     public get conditions() : ParagraphTextElementBlockData["conditions"] { return this.getProperty("conditions"); }
+
+    /**
+     * /contenttypes/paragraphtextelementblock/placeholdersetting
+     *
+     * No description available
+     */
+    public get disablePlaceholdersReplacement() : ParagraphTextElementBlockData["disablePlaceholdersReplacement"] { return this.getProperty("disablePlaceholdersReplacement"); }
 
     /**
      * FormSubmissionId

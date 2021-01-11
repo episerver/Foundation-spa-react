@@ -6,6 +6,7 @@ using EPiServer.ServiceLocation;
 using Schema.NET;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.IO.Compression;
@@ -102,14 +103,23 @@ namespace Foundation.SpaViewEngine.SpaContainer
             return document?.Open();
         }
 
+        public static ReadOnlyCollection<ZipArchiveEntry> GetAssetsFromContentMedia(SpaMedia content)
+        {
+            var blob = content?.BinaryData;
+            if (blob == null) return null;
+
+            var source = new ZipArchive(blob.OpenRead(), ZipArchiveMode.Read);
+            return source.Entries;
+        }
+
         private static ZipArchiveEntry GetDocumentFromContentMedia(SpaMedia content, string filePath)
         {
             if (content == null) return null;
 
-            var blob = (FileBlob)content.BinaryData;
+            var blob = content.BinaryData;
             if (blob == null) return null;
 
-            var source = ZipFile.Open(blob.FilePath, ZipArchiveMode.Read);
+            var source = new ZipArchive(blob.OpenRead(), ZipArchiveMode.Read);
             var document = source.GetEntry(filePath);
             return document;
         }

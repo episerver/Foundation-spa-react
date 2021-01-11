@@ -13,12 +13,10 @@ namespace Foundation.SpaViewEngine.SpaContainer
     [ModuleDependency(typeof(EPiServer.Web.InitializationModule))]
     public class SpaContainerInitialization : IInitializableModule
     {
-        private static ILogger Logger = LogManager.GetLogger();
-
         public void Initialize(InitializationEngine context)
         {
             // get container under root
-            var spaFolder = SpaFolderHelper.GetOrCreateDeploymentFolder();
+            SpaFolderHelper.GetOrCreateDeploymentFolder();
 
             // register partial router
 

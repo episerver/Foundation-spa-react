@@ -46,11 +46,11 @@ namespace Foundation.SpaViewEngine
             });
         }
 
-        public void Initialize(InitializationEngine context) {
-
+        public void Initialize(InitializationEngine context) { 
+            
             System.Web.Mvc.ViewEngines.Engines.Insert(0, context.Locate.Advanced.GetInstance<SpaViewEngine>());
             RouteTable.Routes.Add(new SpaViewAssetRoute());
-
+            
         }
 
         public void Uninitialize(InitializationEngine context)

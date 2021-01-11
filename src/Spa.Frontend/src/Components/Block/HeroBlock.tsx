@@ -8,7 +8,7 @@ export default class HeroBlock extends ComponentTypes.AbstractComponent<HeroBloc
     public render() : ReactNode
     {
 
-        console.warn(this.props);
+        //console.warn(this.props);
 
         let background = this.props.data.mainBackgroundVideo.value == null ? 
                                 this.props.data.backgroundImage : 
@@ -63,7 +63,7 @@ export default class HeroBlock extends ComponentTypes.AbstractComponent<HeroBloc
         overlayStyles.backgroundColor = this.props.data.backgroundColor.value;
         overlayStyles.opacity = this.props.data.blockOpacity.value;
 
-        console.log(overlayStyles);
+        //console.log(overlayStyles);
 
         let screenWidthStyles : any = {};
         screenWidthStyles.justifyContent = this.props.data.callout.calloutPosition.value;
