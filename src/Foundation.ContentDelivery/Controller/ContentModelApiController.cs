@@ -46,11 +46,21 @@ namespace Foundation.ContentDelivery.Controller
         public IHttpActionResult GetModel(string modelName)
         {
             var model = _contentTypeRepository.Load(modelName);
-            if (model == null)
-            {
-                return NotFound();
-            }
+            if (model == null) return NotFound();
+            return CreateModelOutput(model);
+        }
 
+        [Route("{modelGuid:guid}")]
+        [HttpGet]
+        public IHttpActionResult GetModel(Guid modelGuid)
+        {
+            var model = _contentTypeRepository.Load(modelGuid);
+            if (model == null) return NotFound();
+            return CreateModelOutput(model);
+        }
+
+        protected IHttpActionResult CreateModelOutput(ContentType model)
+        {
             var output = new FullContentTypeData
             {
                 GUID = model.GUID,

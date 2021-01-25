@@ -1,31 +1,23 @@
 ﻿using EPiServer;
 using EPiServer.Core;
-using EPiServer.Framework.Blobs;
-using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
-using Schema.NET;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Foundation.SpaViewEngine.SpaContainer
 {
     public static class SpaFolderHelper
     {
-        //private static readonly Lazy<IContentRepository> _contentRepository = new Lazy<IContentRepository>(() => ServiceLocator.Current.GetInstance<IContentRepository>());
         private static Injected<IContentRepository> _contentRepository;
         private static Injected<IContentLoader> _contentLoader;
 
         public static ContentReference GetOrCreateDeploymentFolder()
         {
             var epiRoot = ContentReference.RootPage;
-            ContentReference spaFolder = null;
+            ContentReference spaFolder;
 
             var spaFolders = _contentLoader.Service.GetChildren<SpaFolder>(epiRoot);
             if (!spaFolders.Any())
