@@ -1,22 +1,24 @@
-const GlobalConfig = require('@episerver/webpack/Config');
+// Node.JS
 const path = require('path');
+
+// Webpack
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const FileManagerPlugin = require('filemanager-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
-const DeployToEpiserverPlugin = require('./DeployToEpiserverPlugin');
+
+// Episerver Webpack Utilities
+const EpiWebpack = require('@episerver/webpack');
 
 module.exports = (env) => {
-
+    const epiEnv        = env.EPI_ENV || process.env.EPI_ENV;
     const bundle        = 'app.server.spa';
     const srcPath       = path.resolve(__dirname, 'server');
-
-    /** @type {GlobalConfig} */
-	const config        = new GlobalConfig(__dirname, env);
+	const config        = new EpiWebpack.Config(__dirname, env, epiEnv);
     const webPath       = config.getWebPath();
-    const mode          = config.getNodeEnv();
+    const mode          = config.getEpiEnvironment() === 'development' ? 'development' : 'production';
     const forProduction = mode.toLowerCase() === 'production';
-    const epiBaseUrl = config.getEnvVariable('EPI_URL');
+    const epiBaseUrl    = config.getEpiserverURL();
     const epiDeployPath = config.getEnvVariable('EPI_DEPLOY_PATH', '/api/episerver/v3/deploy');
 
     const webpackConfig = {
@@ -42,7 +44,7 @@ module.exports = (env) => {
                             onlyCompileBundledFiles: true
                         }
                     }, {
-                        loader: '@episerver/webpack/PreLoadLoader',
+                        loader: EpiWebpack.PreLoadLoader,
                         options: {
                             pattern: '**/*.tsx',
                             extension: '.tsx'
@@ -56,11 +58,11 @@ module.exports = (env) => {
                 },
                 {
                     test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-                    use: [{ loader: '@episerver/webpack/EmptyLoader' }]
+                    use: [{ loader: EpiWebpack.EmptyLoader }]
                 },
                 {
                     test: /\.(s[ca]ss)$/,
-                    use: [{ loader: '@episerver/webpack/EmptyLoader' }]
+                    use: [{ loader: EpiWebpack.EmptyLoader }]
                 }
             ]
         },
@@ -106,7 +108,7 @@ module.exports = (env) => {
                 }
             }),
 
-            new DeployToEpiserverPlugin({
+            new EpiWebpack.DeployToEpiserverPlugin({
                 filename: bundle,
                 filepath: 'dist/epi-bundle',
                 base: epiBaseUrl,
