@@ -5,6 +5,18 @@ set ROOTPATH=%cd%
 set ROOTDIR=%cd%
 set SOURCEPATH=%ROOTPATH%\src
 
+
+echo ## Generating Configuration From Dist Files ##
+IF NOT EXIST "%SOURCEPATH%\Foundation\appSettings.config" (
+    COPY "%SOURCEPATH%\Foundation\appSettings.config.dist" "%SOURCEPATH%\Foundation\appSettings.config"
+)
+IF NOT EXIST "%SOURCEPATH%\Foundation\appSettings.debug.config" (
+    COPY "%SOURCEPATH%\Foundation\appSettings.config.dist" "%SOURCEPATH%\Foundation\appSettings.debug.config"
+)
+IF NOT EXIST "%SOURCEPATH%\Foundation\find.config" (
+    COPY "%SOURCEPATH%\Foundation\find.config.dist" "%SOURCEPATH%\Foundation\find.config"
+)
+
 echo ## Building Foundation
 echo ## Gettting MSBuildPath ##
 for /f "usebackq tokens=*" %%i in (`.\build\vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath`) do (

@@ -958,6 +958,8 @@
     <Content Include="modules\_protected\advanced-cms.Reviews\advanced-cms.Reviews.zip" />
     <Content Include="modules\_protected\advanced-cms.ExternalReviews\web.config" />
     <Content Include="modules\_protected\advanced-cms.ExternalReviews\advanced-cms.ExternalReviews.zip" />
+    <Content Include="find.config" />
+    <Content Include="find.config.dist" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
