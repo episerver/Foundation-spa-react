@@ -103,6 +103,17 @@ for %%v in (15.0, 14.0) do (
 :finish
 echo msbuild.exe path: %InstallDir%%msBuildPath%
 
+echo ## Generating Configuration From Dist Files ##
+IF NOT EXIST "%SOURCEPATH%\Foundation\appSettings.config" (
+    COPY "%SOURCEPATH%\Foundation\appSettings.config.dist" "%SOURCEPATH%\Foundation\appSettings.config"
+)
+IF NOT EXIST "%SOURCEPATH%\Foundation\appSettings.debug.config" (
+    COPY "%SOURCEPATH%\Foundation\appSettings.config.dist" "%SOURCEPATH%\Foundation\appSettings.debug.config"
+)
+IF NOT EXIST "%SOURCEPATH%\Foundation\find.config" (
+    COPY "%SOURCEPATH%\Foundation\find.config.dist" "%SOURCEPATH%\Foundation\find.config"
+)
+
 echo ## Set folder permissions ##
 md "%ROOTPATH%\Build\Logs" 2>nul
 icacls "%ROOTPATH%\\" /grant *S-1-1-0:(OI)(CI)F /T > Build\Logs\Build.log
