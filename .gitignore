@@ -81,13 +81,6 @@ src/Foundation/Assets/scss/main.min.css
 src/Foundation/Assets/scss/main.min.css.map
 src/Foundation/Assets/js/main.min.js
 src/Foundation/Assets/js/main.min.js.map
-src/Foundation/connectionStrings.config
-src/Foundation/find.config
-src/Foundation.CommerceManager/connectionStrings.config
-src/Foundation.CommerceManager/App_Data/ImportExport/*
-src/Foundation/License.config
-src/License.config
-License.config
 rebuild.cmd
 resetup.cmd
 
@@ -96,3 +89,12 @@ src/Foundation/Spa
 src/Foundation/spa
 src/Foundation/Zip
 src/Foundation/zip
+
+# Environment configuration
+License.config
+src/License.config
+src/Foundation/License.config
+src/Foundation/find.config
+src/Foundation/connectionStrings.config
+src/Foundation/appSettings.config
+src/Foundation/appSettings.debug.config
