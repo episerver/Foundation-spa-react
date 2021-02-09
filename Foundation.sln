@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		build.cmd = build.cmd
 		default.ruleset = default.ruleset
 		README.md = README.md
+		setup.cmd = setup.cmd
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundation.ContentDelivery", "src\Foundation.ContentDelivery\Foundation.ContentDelivery.csproj", "{298347D6-3C36-4FD1-9E3A-97B44D109ADA}"

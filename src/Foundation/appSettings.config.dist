@@ -10,25 +10,6 @@
   <add key="aspnet:UseTaskFriendlySynchronizationContext" value="true" />
   <add key="episerver:UpdateDatabaseSchema" value="true" />
   <add key="episerver:tracking.Enabled" value="false" />
-  <!-- Content Analytics & Recs Configuration -->
-  <!-- <add key="episerver:personalization.content.Environment" value="idio.co" />
-  <add key="episerver:personalization.content.ClientId" value="CHANGEME" />
-  <add key="episerver:personalization.content.ApiToken" value="CHANGEME" >-->
-  <!-- Insight configuration -->
-  <!-- <add key="episerver:profiles.InsightApiBaseUrl" value="CHANGEME" />
-  <add key="episerver:profiles.InsightApiSubscriptionKey" value="CHANGEME" />
-  <add key="episerver:profiles.CloudUIBaseUrl" value="CHANGEME" />-->
-  <!-- Profile Store tracking configuration -->
-  <!-- <add key="episerver:profiles.TrackingApiBaseUrl" value="CHANGEME" />
-  <add key="episerver:profiles.ProfileStoreTrackingEnabled" value="false" />
-  <add key="episerver:profiles.TrackingApiSubscriptionKey" value="CHANGEME" />
-  <add key="episerver:profiles.Scope" value="foundation" />-->
-  <!-- Profile Store API configuration -->
-  <!-- <add key="ProfileStore.Url" value="CHANGEME" />
-  <add key="ProfileStore.SubscriptionKey" value="CHANGEME" />
-  <add key="profileStore.RootApiUrl" value="CHANGEME" />
-  <add key="Vision:Key" value="CHANGEME" />
-  <add key="Vision:ApiRoot" value="CHANGEME" />-->
   <!-- Content Delivery API -->
   <add key="episerver:contentdelivery:maphttpattributeroutes" value="false" />
   <add key="episerver:contentdeliverysearch:maphttpattributeroutes" value="false" />

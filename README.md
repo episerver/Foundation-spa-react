@@ -16,6 +16,7 @@ You can request a demo of the project by one of our Episerver experts on [Get a 
 - [System requirements](#system-requirements)
 - [Pre-installation set-up](#pre-installation-set-up)
   - [SQL server](#sql-server)
+  - [Licenses](#licenses)
   - [IIS settings](#iis-settings)
 - [Installation](#installation)
 - [Troubleshooting](#troubleshooting)
@@ -29,9 +30,10 @@ You can request a demo of the project by one of our Episerver experts on [Get a 
 
 * Visual Studio 2017 or higher - [Download](https://visualstudio.microsoft.com/downloads/)
   * With the Node.js development package installed
+* Microsoft Visual C++ Redistributable for Visual Studio 2019 - [Download](https://visualstudio.microsoft.com/downloads/)
 * SQL Server Express or Developer or SQL Azure Server - [Download](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) (If using SQL Azure [download sqlcmd](https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility?view=sql-server-2017))
 * Microsoft SQL Server Management Studio - [Download](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15)
-* Node.js LTS (12.16.3) - [Download](https://nodejs.org/en/download/)
+* Node.js LTS (> 12.16.3) - [Download](https://nodejs.org/en/download/)
 * Microsoft Internet Information Server (IIS) - [Download](https://www.iis.net/downloads)
 * IIS Url Rewrite module - [Download](https://www.iis.net/downloads/microsoft/url-rewrite)
 
@@ -48,6 +50,10 @@ See also the general [Episerver system requirements](https://world.episerver.com
 2. Right-click on your server and select Properties.
 3. Under **Security**, make sure that **SQL Server and Windows Authentication mode** is selected:
 ![SQL server authentication](https://i.ibb.co/2Sktyrb/SQLServer-Authentication.png")
+
+### Licenses
+1. Want to run the solution through IIS (not IIS Express)? You'll need an appropriate license obtainable from [license center](https://license.episerver.com/default.aspx)
+2. The solution comes with Episerver Search & Navigation configured, these can be requested from the [Episerver Partner portal](https://www.episerver.com/partner/client-delivery-support/request-a-demo-account)
 
 ### IIS settings
 
@@ -129,14 +135,23 @@ Or clone project using Git
 ```
 ![Build progress](https://i.ibb.co/GvZBcYY/Build-Progress.png)
 
-5.	When the installation is finished, a setup page is opened in your browser. If not, enter the URL http://_yourdomainname_/setup manually.
-6.	If the setup page throws an error, open your host file, found under **C:\Windows\System32\drivers\etc**, and add the two domain names you entered during the installation. Reload the page in your browser.
+5.	When the installation is finished, a setup page is opened in your browser. If it does, it will most likely result in a 500 error due to keys missing
+6.  Modify src/Foundation/find.config to have your Search & Navigation Index information present
+8.  Enter the URL http://_yourdomainname_/setup manually.
+9.	If the setup page throws an error, open your host file, found under **C:\Windows\System32\drivers\etc**, and add the two domain names you entered during the installation. Reload the page in your browser.
 ![Example host file](https://i.ibb.co/Ss79b55/Host-File-Example.png)
+10.  Enter the URL http://_yourdomainname_/episerver/cms manually.
+    -  Under CMS/Admin, make sure at least one account has the rights to the function right **DeploySpa** and you know the credentials
+11. Open a terminal/powershell and navigate to the src/Spa.Frontend folder, run the following commands to deploy the first frontend version
+    -  npm run-script login
+    -  npm run-script build
+    -  Restart the website
 
-7.	Log in with user: **admin@example.com** and password: **store** to access the Episerver user interface.  
+12.	Log in with user: **admin@example.com** and password: **store** to access the Episerver user interface.  
  **_Note:_** A **resetup.cmd** file has been created in your project which you can run to re-install the database.
 
-8. Developer licenses for evaluation purposes can be obtained from the [Episerver License Center](https://license.episerver.com/). Place the **License.config** file in your webroot. 
+13. Developer licenses for evaluation purposes can be obtained from the [Episerver License Center](https://license.episerver.com/). Place the **License.config** file in your webroot. 
+14. **Building a new site**: Adjust the git repository to your own and .gitignore to include some of the configuration in the repository.
 
 ## Troubleshooting
 ### The installation fails

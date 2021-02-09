@@ -219,12 +219,6 @@
     <Reference Include="EPiServer.ImageLibrary, Version=11.20.2.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.CMS.AspNet.11.20.2\lib\net461\EPiServer.ImageLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="EPiServer.Insight.Cms, Version=1.23.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EPiServer.Insight.Cms.1.23.0\lib\net461\EPiServer.Insight.Cms.dll</HintPath>
-    </Reference>
-    <Reference Include="EPiServer.Insight.UI, Version=1.23.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EPiServer.Insight.UI.1.23.0\lib\net461\EPiServer.Insight.UI.dll</HintPath>
-    </Reference>
     <Reference Include="EPiServer.Labs.BlockEnhancements, Version=0.9.5.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.Labs.BlockEnhancements.0.9.5\lib\net45\EPiServer.Labs.BlockEnhancements.dll</HintPath>
     </Reference>
@@ -281,9 +275,6 @@
     </Reference>
     <Reference Include="EPiServer.PdfPreview, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.PdfPreview.1.0.0\lib\net461\EPiServer.PdfPreview.dll</HintPath>
-    </Reference>
-    <Reference Include="EPiServer.Personalization.Content.UI, Version=0.2.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EPiServer.Personalization.Content.UI.0.2.0\lib\net461\EPiServer.Personalization.Content.UI.dll</HintPath>
     </Reference>
     <Reference Include="EPiServer.Personalization.MaxMindGeolocation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.Personalization.MaxMindGeolocation.1.0.0\lib\net461\EPiServer.Personalization.MaxMindGeolocation.dll</HintPath>
@@ -960,6 +951,7 @@
     <Content Include="modules\_protected\advanced-cms.ExternalReviews\advanced-cms.ExternalReviews.zip" />
     <Content Include="find.config" />
     <Content Include="find.config.dist" />
+    <None Include="appSettings.config.dist" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -1007,12 +999,10 @@
     <Content Include="modules\_protected\EPiServer.Forms.Samples\module.config" />
     <Content Include="modules\_protected\EPiServer.GoogleAnalytics\Views\Web.config" />
     <Content Include="modules\_protected\EPiServer.GoogleAnalytics\EPiServerGoogleAnalytics.config" />
-    <Content Include="modules\_protected\EPiServer.Insight.UI\module.config" />
     <Content Include="modules\_protected\EPiServer.Labs.LanguageManager\module.config" />
     <Content Include="modules\_protected\EPiServer.Labs.LanguageManager\EPiServer.LanguageManager.config" />
     <Content Include="modules\_protected\EPiServer.Labs.LanguageManager\EPiServer.Labs.LanguageManager.zip" />
     <Content Include="modules\_protected\EPiServer.PdfPreview\EPiServer.PdfPreview.zip" />
-    <Content Include="modules\_protected\EPiServer.Personalization.Content.UI\EPiServer.Personalization.Content.UI.zip" />
     <Content Include="modules\_protected\episerver-labs-block-enhancements\web.config" />
     <Content Include="modules\_protected\advanced-cms-forms\web.config" />
     <Content Include="modules\_protected\episerver-labs-content-manager\web.config" />
