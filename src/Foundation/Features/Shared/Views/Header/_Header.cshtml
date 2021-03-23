@@ -1,0 +1,37 @@
+﻿@using Foundation.Features.Header
+
+@model HeaderViewModel
+
+@if (Model.IsReadonlyMode)
+{
+    @Html.RenderReadonlyMessage()
+}
+else
+{
+    <div class="top-header" style="background: @Model.LayoutSettings.HeaderBackgroundColor">
+        <div class="container" >
+            <div class="row">
+                <div class="col-12">
+                    <div class="top-header__banner-text">
+                        @Html.PropertyFor(x => x.LayoutSettings.BannerText)
+                    </div>
+                    @if (!Request.IsAuthenticated)
+                    {
+                        <div class="login-button">
+                            <a class="login-url" href="/episerver">
+                                Login
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<header class="header @(Model.LayoutSettings.StickyTopHeader ? "sticky-top" : "")"> 
+    <div class="header__wrapper">
+        @Html.Partial("_MobileNavigation", Model)
+        @Html.Partial("_Navigation", Model)
+    </div>
+</header>

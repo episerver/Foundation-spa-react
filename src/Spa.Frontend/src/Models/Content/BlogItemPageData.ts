@@ -1,4 +1,3 @@
-import BlogCommentBlockData from './BlogCommentBlockData'
 import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Blog Item Page
@@ -114,13 +113,6 @@ export default interface BlogItemPageData extends Taxonomy.IContent {
     scripts: ContentDelivery.StringProperty
 
     /**
-     * Comment block
-     *
-     * The comment section of the page. Local comment block will display comments only for this page
-     */
-    comments: BlogCommentBlockData
-
-    /**
      * Page description
      *
      * No description available
@@ -205,6 +197,20 @@ export default interface BlogItemPageData extends Taxonomy.IContent {
     teaserButtonStyle: ContentDelivery.StringProperty
 
     /**
+     * Button color
+     *
+     * No description available
+     */
+    teaserButtonColor: ContentDelivery.StringProperty
+
+    /**
+     * Button text color
+     *
+     * No description available
+     */
+    teaserButtonTextColor: ContentDelivery.StringProperty
+
+    /**
      * Display hover effect
      *
      * No description available
@@ -253,7 +259,6 @@ export class BlogItemPageType extends Taxonomy.AbstractIContent<BlogItemPageData
         'teaserVideo': 'ContentReference',
         'css': 'LongString',
         'scripts': 'LongString',
-        'comments': 'BlogCommentBlock',
         'pageDescription': 'LongString',
         'hideSiteFooter': 'Boolean',
         'teaserText': 'LongString',
@@ -266,6 +271,8 @@ export class BlogItemPageType extends Taxonomy.AbstractIContent<BlogItemPageData
         'teaserColorTheme': 'LongString',
         'teaserButtonText': 'LongString',
         'teaserButtonStyle': 'LongString',
+        'teaserButtonColor': 'LongString',
+        'teaserButtonTextColor': 'LongString',
         'applyHoverEffect': 'Boolean',
         'padding': 'LongString',
         'margin': 'LongString',
@@ -377,13 +384,6 @@ export class BlogItemPageType extends Taxonomy.AbstractIContent<BlogItemPageData
     public get scripts() : BlogItemPageData["scripts"] { return this.getProperty("scripts"); }
 
     /**
-     * Comment block
-     *
-     * The comment section of the page. Local comment block will display comments only for this page
-     */
-    public get comments() : BlogItemPageData["comments"] { return this.getProperty("comments"); }
-
-    /**
      * Page description
      *
      * No description available
@@ -466,6 +466,20 @@ export class BlogItemPageType extends Taxonomy.AbstractIContent<BlogItemPageData
      * No description available
      */
     public get teaserButtonStyle() : BlogItemPageData["teaserButtonStyle"] { return this.getProperty("teaserButtonStyle"); }
+
+    /**
+     * Button color
+     *
+     * No description available
+     */
+    public get teaserButtonColor() : BlogItemPageData["teaserButtonColor"] { return this.getProperty("teaserButtonColor"); }
+
+    /**
+     * Button text color
+     *
+     * No description available
+     */
+    public get teaserButtonTextColor() : BlogItemPageData["teaserButtonTextColor"] { return this.getProperty("teaserButtonTextColor"); }
 
     /**
      * Display hover effect

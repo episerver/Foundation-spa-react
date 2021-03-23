@@ -12,6 +12,7 @@ namespace Foundation.ContentDelivery.Models
         public DefaultViewModelSerializer(
             IContentConverter iContentConverter,
             ContentReferenceConverter contentReferenceConverter,
+            SystemNetIPAddressConverter systemNetIPAddressConverter,
             IJsonSerializerConfiguration jsonSerializerConfiguration
         )
         {
@@ -28,6 +29,7 @@ namespace Foundation.ContentDelivery.Models
             }
             JsonSerializerSettings.Converters.Add(iContentConverter);
             JsonSerializerSettings.Converters.Add(contentReferenceConverter);
+            JsonSerializerSettings.Converters.Add(systemNetIPAddressConverter);
         }
 
         public virtual string ConvertToJson(object viewModel)

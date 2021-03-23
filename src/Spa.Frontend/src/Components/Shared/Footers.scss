@@ -1,0 +1,30 @@
+@import "../../styles/variables";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+footer {
+    background-color: theme-color("secondary");
+    color: $white;
+    font-size: $font-size-sm;
+
+    h1,  h2,  h3,  h4,  h5,
+    .h1, .h2, .h3, .h4, .h5
+    {
+        color: theme-color("primary");
+    }
+
+    a {
+        color: $white;
+
+        &:hover {
+            color: theme-color("primary");
+        }
+    }
+
+    .footer__heading {
+        text-transform: uppercase;
+        color: $white;
+        font-weight: $font-weight-bold;
+        font-size: $font-size-sm;
+    }
+}

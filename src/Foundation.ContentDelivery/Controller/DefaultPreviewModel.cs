@@ -1,13 +1,11 @@
 using EPiServer.Core;
-using Foundation.Cms.Pages;
-using Foundation.Cms.ViewModels;
 using System.Collections.Generic;
 
 namespace Foundation.ContentDelivery.Controller
 {
     public class DefaultPreviewModel : ContentViewModel<FoundationPageData>
     {
-        public DefaultPreviewModel(FoundationPageData currentPage, IContent previewContent)
+        public DefaultPreviewModel(PageData currentPage, IContent previewContent)
             : base(currentPage)
         {
             PreviewContent = previewContent;

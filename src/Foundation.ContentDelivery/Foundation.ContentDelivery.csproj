@@ -11,25 +11,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controller\CalendarBlockController.cs" />
+    <Compile Remove="Controller\DefaultPreviewModel.cs" />
+    <Compile Remove="Controller\PageListBlockController.cs" />
+    <Compile Remove="Controller\RssReaderBlockController.cs" />
     <Compile Remove="Controller\SpaDeploymentApiController.cs" />
+    <Compile Remove="Models\PageDataContentModelMapper.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="dotenv.net" Version="2.1.1" />
-    <PackageReference Include="EPiServer.CMS.AspNet" Version="11.20.2" />
-    <PackageReference Include="EPiServer.CMS.Core" Version="11.20.2" />
-    <PackageReference Include="EPiServer.CMS.UI.Core" Version="11.31.0" />
-    <PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="2.17.0" />
-    <PackageReference Include="EPiServer.ContentDeliveryApi.Search" Version="2.17.0" />
-    <PackageReference Include="EPiServer.Framework" Version="11.20.2" />
-    <PackageReference Include="EPiServer.Labs.BlockEnhancements" Version="0.9.5" />
+    <PackageReference Include="dotenv.net" Version="2.1.3" />
+    <PackageReference Include="EPiServer.CMS.AspNet" Version="11.20.4" />
+    <PackageReference Include="EPiServer.CMS.Core" Version="11.20.4" />
+    <PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="2.19.0" />
+    <PackageReference Include="EPiServer.ContentDeliveryApi.Search" Version="2.19.0" />
+    <PackageReference Include="EPiServer.Framework" Version="11.20.4" />
+    <PackageReference Include="EPiServer.Labs.BlockEnhancements" Version="0.10.0" />
     <PackageReference Include="EPiServer.ServiceLocation.StructureMap" Version="2.0.3" />
     <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
+    <PackageReference Include="Microsoft.Owin.Cors" Version="4.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Foundation.Cms\Foundation.Cms.csproj" />
-    <ProjectReference Include="..\Foundation.Find.Cms\Foundation.Find.Cms.csproj" />
   </ItemGroup>
 </Project>

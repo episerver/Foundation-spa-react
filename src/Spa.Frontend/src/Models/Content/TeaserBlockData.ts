@@ -64,6 +64,13 @@ export default interface TeaserBlockData extends Taxonomy.IContent {
     headingStyle: ContentDelivery.StringProperty
 
     /**
+     * Heading color
+     *
+     * No description available
+     */
+    headingColor: ContentDelivery.StringProperty
+
+    /**
      * Description
      *
      * No description available
@@ -85,13 +92,6 @@ export default interface TeaserBlockData extends Taxonomy.IContent {
     image: ContentDelivery.ContentReferenceProperty
 
     /**
-     * SecondImage
-     *
-     * No description available
-     */
-    secondImage: ContentDelivery.ContentReferenceProperty
-
-    /**
      * Image size (%)
      *
      * No description available
@@ -99,7 +99,14 @@ export default interface TeaserBlockData extends Taxonomy.IContent {
     imageSize: ContentDelivery.NumberProperty
 
     /**
-     * Second Image size (%)
+     * Second Image
+     *
+     * No description available
+     */
+    secondImage: ContentDelivery.ContentReferenceProperty
+
+    /**
+     * Image size (%)
      *
      * No description available
      */
@@ -113,32 +120,18 @@ export default interface TeaserBlockData extends Taxonomy.IContent {
     textColor: ContentDelivery.StringProperty
 
     /**
-     * Heading color
-     *
-     * No description available
-     */
-    headingColor: ContentDelivery.StringProperty
-
-    /**
-     * Elements order
-     *
-     * No description available
-     */
-    elementsOrder: ContentDelivery.StringProperty
-
-    /**
-     * Elements alignment (except Text)
-     *
-     * No description available
-     */
-    elementsAlignment: ContentDelivery.StringProperty
-
-    /**
      * Link
      *
      * No description available
      */
     link: ContentDelivery.ContentReferenceProperty
+
+    /**
+     * Height
+     *
+     * No description available
+     */
+    height: ContentDelivery.StringProperty
 
 }
 
@@ -161,17 +154,16 @@ export class TeaserBlockType extends Taxonomy.AbstractIContent<TeaserBlockData> 
         'heading': 'LongString',
         'headingSize': 'Number',
         'headingStyle': 'LongString',
+        'headingColor': 'LongString',
         'description': 'LongString',
         'text': 'XhtmlString',
         'image': 'ContentReference',
-        'secondImage': 'ContentReference',
         'imageSize': 'Number',
+        'secondImage': 'ContentReference',
         'secondImageSize': 'Number',
         'textColor': 'LongString',
-        'headingColor': 'LongString',
-        'elementsOrder': 'LongString',
-        'elementsAlignment': 'LongString',
         'link': 'PageReference',
+        'height': 'LongString',
     }
 
     /**
@@ -231,6 +223,13 @@ export class TeaserBlockType extends Taxonomy.AbstractIContent<TeaserBlockData> 
     public get headingStyle() : TeaserBlockData["headingStyle"] { return this.getProperty("headingStyle"); }
 
     /**
+     * Heading color
+     *
+     * No description available
+     */
+    public get headingColor() : TeaserBlockData["headingColor"] { return this.getProperty("headingColor"); }
+
+    /**
      * Description
      *
      * No description available
@@ -252,13 +251,6 @@ export class TeaserBlockType extends Taxonomy.AbstractIContent<TeaserBlockData> 
     public get image() : TeaserBlockData["image"] { return this.getProperty("image"); }
 
     /**
-     * SecondImage
-     *
-     * No description available
-     */
-    public get secondImage() : TeaserBlockData["secondImage"] { return this.getProperty("secondImage"); }
-
-    /**
      * Image size (%)
      *
      * No description available
@@ -266,7 +258,14 @@ export class TeaserBlockType extends Taxonomy.AbstractIContent<TeaserBlockData> 
     public get imageSize() : TeaserBlockData["imageSize"] { return this.getProperty("imageSize"); }
 
     /**
-     * Second Image size (%)
+     * Second Image
+     *
+     * No description available
+     */
+    public get secondImage() : TeaserBlockData["secondImage"] { return this.getProperty("secondImage"); }
+
+    /**
+     * Image size (%)
      *
      * No description available
      */
@@ -280,31 +279,17 @@ export class TeaserBlockType extends Taxonomy.AbstractIContent<TeaserBlockData> 
     public get textColor() : TeaserBlockData["textColor"] { return this.getProperty("textColor"); }
 
     /**
-     * Heading color
-     *
-     * No description available
-     */
-    public get headingColor() : TeaserBlockData["headingColor"] { return this.getProperty("headingColor"); }
-
-    /**
-     * Elements order
-     *
-     * No description available
-     */
-    public get elementsOrder() : TeaserBlockData["elementsOrder"] { return this.getProperty("elementsOrder"); }
-
-    /**
-     * Elements alignment (except Text)
-     *
-     * No description available
-     */
-    public get elementsAlignment() : TeaserBlockData["elementsAlignment"] { return this.getProperty("elementsAlignment"); }
-
-    /**
      * Link
      *
      * No description available
      */
     public get link() : TeaserBlockData["link"] { return this.getProperty("link"); }
+
+    /**
+     * Height
+     *
+     * No description available
+     */
+    public get height() : TeaserBlockData["height"] { return this.getProperty("height"); }
 
 }

@@ -29,11 +29,39 @@ export default interface StandardCategoryData extends Taxonomy.IContent {
     hideSiteHeader: ContentDelivery.BooleanProperty
 
     /**
+     * CSS files
+     *
+     * No description available
+     */
+    cssFiles: ContentDelivery.LinkListProperty
+
+    /**
+     * Script files
+     *
+     * No description available
+     */
+    scriptFiles: ContentDelivery.LinkListProperty
+
+    /**
      * Hide site footer
      *
      * No description available
      */
     hideSiteFooter: ContentDelivery.BooleanProperty
+
+    /**
+     * CSS
+     *
+     * No description available
+     */
+    css: ContentDelivery.StringProperty
+
+    /**
+     * Scripts
+     *
+     * No description available
+     */
+    scripts: ContentDelivery.StringProperty
 
 }
 
@@ -51,7 +79,11 @@ export class StandardCategoryType extends Taxonomy.AbstractIContent<StandardCate
         'description': 'LongString',
         'isSelectable': 'Boolean',
         'hideSiteHeader': 'Boolean',
+        'cssFiles': 'LinkCollection',
+        'scriptFiles': 'LinkCollection',
         'hideSiteFooter': 'Boolean',
+        'css': 'LongString',
+        'scripts': 'LongString',
     }
 
     /**
@@ -76,10 +108,38 @@ export class StandardCategoryType extends Taxonomy.AbstractIContent<StandardCate
     public get hideSiteHeader() : StandardCategoryData["hideSiteHeader"] { return this.getProperty("hideSiteHeader"); }
 
     /**
+     * CSS files
+     *
+     * No description available
+     */
+    public get cssFiles() : StandardCategoryData["cssFiles"] { return this.getProperty("cssFiles"); }
+
+    /**
+     * Script files
+     *
+     * No description available
+     */
+    public get scriptFiles() : StandardCategoryData["scriptFiles"] { return this.getProperty("scriptFiles"); }
+
+    /**
      * Hide site footer
      *
      * No description available
      */
     public get hideSiteFooter() : StandardCategoryData["hideSiteFooter"] { return this.getProperty("hideSiteFooter"); }
+
+    /**
+     * CSS
+     *
+     * No description available
+     */
+    public get css() : StandardCategoryData["css"] { return this.getProperty("css"); }
+
+    /**
+     * Scripts
+     *
+     * No description available
+     */
+    public get scripts() : StandardCategoryData["scripts"] { return this.getProperty("scripts"); }
 
 }

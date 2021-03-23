@@ -37,9 +37,15 @@ namespace Foundation.ContentDelivery.Models
             // Use HTTP Context
             var httpContext = _httpContextAccessor();
 
-            // Check if we have an HTTP Context with Request and an already resolved ContextMode
+            // If there's no HTTP Context return default
             if (httpContext == null || httpContext.Request == null)
                 return DefaultContextMode;
+
+            // For Sub-Requests to a different handler return default
+            if (httpContext.PreviousHandler != null && httpContext.CurrentHandler != httpContext.PreviousHandler)
+                return DefaultContextMode;
+
+            // Check if we have an HTTP Context with Request and an already resolved ContextMode
             if (httpContext.Request.RequestContext != null && httpContext.Request.RequestContext.HasApiContextMode())
                 return httpContext.Request.RequestContext.GetApiContextMode(DefaultContextMode);
 

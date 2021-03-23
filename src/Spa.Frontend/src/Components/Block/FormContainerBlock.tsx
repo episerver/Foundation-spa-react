@@ -1,26 +1,23 @@
-import React, { ReactNode, ReactNodeArray } from 'react';
+import React from 'react';
 
-import { Components, ComponentTypes } from '@episerver/spa-core';
+import { Components, useEpiserver } from '@episerver/spa-core';
 
-import BaseFormContainerBlockData from 'app/Models/Content/FormContainerBlockData';
+import { FormContainerBlockProps } from 'app/Models/Content/FormContainerBlockData';
 import './FormContainerBlock.scss';
 
-interface FormContainerBlockData extends BaseFormContainerBlockData {
-    name: string
-    formModel?: any
-}
+export const FormContainerBlock : React.FunctionComponent<FormContainerBlockProps> = (props) => {
+    const ctx = useEpiserver();
+    let supportNotice = null;
+    if (ctx.isDebugActive()) 
+        supportNotice = <div className="alert alert-warning">Episerver Forms support is experimental and incomplete!</div>;
 
-export default class FormContainerBlock extends ComponentTypes.AbstractComponent<FormContainerBlockData> {
-    render() : ReactNode | ReactNodeArray
-    {
-        //Render using React - Not yet fully supported by ContentDeliveryAPI
-        return <div className="episerver-form">
-            <div className="alert alert-warning">Episerver Forms support is experimental and incomplete!</div>
-            <h3><Components.Property context={ this.getContext() } iContent={ this.props.data } field="title" /></h3>
-            <p><Components.Property context={ this.getContext() } iContent={ this.props.data } field="description" /></p>
-            <form>
-                <Components.ContentArea data={ this.props.data.elementsArea } propertyName="elementsArea" context={ this.getContext() } itemContentType="FormElement" noWrap />
-            </form>
-        </div>
-    }
+    return <div className="episerver-form">
+        { supportNotice }
+        <h3><Components.Property iContent={ props.data } field="title" /></h3>
+        <p><Components.Property iContent={ props.data } field="description" /></p>
+        <form>
+            <Components.ContentArea data={ props.data.elementsArea } propertyName="elementsArea" context={ ctx } itemContentType="FormElement" noWrap />
+        </form>
+    </div>
 }
+export default FormContainerBlock;

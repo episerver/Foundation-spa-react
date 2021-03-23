@@ -1,0 +1,38 @@
+﻿@using Foundation.Features.MyAccount.ProfilePage
+
+@model ProfilePageViewModel
+
+@{
+    Layout = "~/Features/MyAccount/_MyAccountLayout.cshtml";
+}
+
+<div class="my-account">
+    <div class="page-title">
+        <h2>@Html.TranslateFallback("/Dashboard/Labels/MyDashboard", "My Dashboard")</h2>
+    </div>
+    <div class="dashboard">
+        <div class="welcome-msg">
+            <strong>@Html.TranslateFallback("/Dashboard/Labels/Hello", "Hello"), @Model.CurrentUser.UserName @Model.CurrentUser.LastName!</strong>
+            <div class="row">
+                @if ((Model.CurrentContent.MainBody != null && !Model.CurrentContent.MainBody.IsEmpty) || PageEditing.PageIsInEditMode)
+                {
+                    <div class="col-12">
+                        @Html.PropertyFor(m => m.CurrentContent.MainBody)
+                    </div>
+                }
+                <div class="col-12">
+                    @Html.PropertyFor(x => x.CurrentContent.MainContentArea)
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+    </div>
+</div>

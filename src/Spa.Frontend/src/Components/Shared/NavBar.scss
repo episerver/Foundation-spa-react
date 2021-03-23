@@ -1,0 +1,10 @@
+@import "../../styles/variables";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+.navbar-brand {
+    max-width: 10rem;
+}
+.navbar-light .navbar-nav .nav-link {
+    color: theme-color("secondary") !important;
+}

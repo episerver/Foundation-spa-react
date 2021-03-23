@@ -50,11 +50,39 @@ export default interface ButtonBlockData extends Taxonomy.IContent {
     buttonText: ContentDelivery.StringProperty
 
     /**
+     * Use transparent background
+     *
+     * This will determine whether or not to use transparent background
+     */
+    showTransparentBackground: ContentDelivery.BooleanProperty
+
+    /**
+     * Border Styles
+     *
+     * This will determine whether or not to show border
+     */
+    borderStyle: ContentDelivery.StringProperty
+
+    /**
      * Link
      *
      * No description available
      */
     buttonLink: ContentDelivery.StringProperty
+
+    /**
+     * Button background color
+     *
+     * No description available
+     */
+    buttonBackgroundColor: ContentDelivery.StringProperty
+
+    /**
+     * Border width (px)
+     *
+     * No description available
+     */
+    borderWidth: ContentDelivery.NumberProperty
 
     /**
      * Style
@@ -64,11 +92,25 @@ export default interface ButtonBlockData extends Taxonomy.IContent {
     buttonStyle: ContentDelivery.StringProperty
 
     /**
+     * Button Border color
+     *
+     * No description available
+     */
+    buttonBorderColor: ContentDelivery.StringProperty
+
+    /**
      * Reassuring caption
      *
      * No description available
      */
     buttonCaption: ContentDelivery.StringProperty
+
+    /**
+     * Button Text color
+     *
+     * No description available
+     */
+    buttonTextColor: ContentDelivery.StringProperty
 
 }
 
@@ -89,9 +131,15 @@ export class ButtonBlockType extends Taxonomy.AbstractIContent<ButtonBlockData> 
         'backgroundColor': 'LongString',
         'blockOpacity': 'FloatNumber',
         'buttonText': 'LongString',
+        'showTransparentBackground': 'Boolean',
+        'borderStyle': 'LongString',
         'buttonLink': 'Url',
+        'buttonBackgroundColor': 'LongString',
+        'borderWidth': 'Number',
         'buttonStyle': 'LongString',
+        'buttonBorderColor': 'LongString',
         'buttonCaption': 'LongString',
+        'buttonTextColor': 'LongString',
     }
 
     /**
@@ -137,11 +185,39 @@ export class ButtonBlockType extends Taxonomy.AbstractIContent<ButtonBlockData> 
     public get buttonText() : ButtonBlockData["buttonText"] { return this.getProperty("buttonText"); }
 
     /**
+     * Use transparent background
+     *
+     * This will determine whether or not to use transparent background
+     */
+    public get showTransparentBackground() : ButtonBlockData["showTransparentBackground"] { return this.getProperty("showTransparentBackground"); }
+
+    /**
+     * Border Styles
+     *
+     * This will determine whether or not to show border
+     */
+    public get borderStyle() : ButtonBlockData["borderStyle"] { return this.getProperty("borderStyle"); }
+
+    /**
      * Link
      *
      * No description available
      */
     public get buttonLink() : ButtonBlockData["buttonLink"] { return this.getProperty("buttonLink"); }
+
+    /**
+     * Button background color
+     *
+     * No description available
+     */
+    public get buttonBackgroundColor() : ButtonBlockData["buttonBackgroundColor"] { return this.getProperty("buttonBackgroundColor"); }
+
+    /**
+     * Border width (px)
+     *
+     * No description available
+     */
+    public get borderWidth() : ButtonBlockData["borderWidth"] { return this.getProperty("borderWidth"); }
 
     /**
      * Style
@@ -151,10 +227,24 @@ export class ButtonBlockType extends Taxonomy.AbstractIContent<ButtonBlockData> 
     public get buttonStyle() : ButtonBlockData["buttonStyle"] { return this.getProperty("buttonStyle"); }
 
     /**
+     * Button Border color
+     *
+     * No description available
+     */
+    public get buttonBorderColor() : ButtonBlockData["buttonBorderColor"] { return this.getProperty("buttonBorderColor"); }
+
+    /**
      * Reassuring caption
      *
      * No description available
      */
     public get buttonCaption() : ButtonBlockData["buttonCaption"] { return this.getProperty("buttonCaption"); }
+
+    /**
+     * Button Text color
+     *
+     * No description available
+     */
+    public get buttonTextColor() : ButtonBlockData["buttonTextColor"] { return this.getProperty("buttonTextColor"); }
 
 }

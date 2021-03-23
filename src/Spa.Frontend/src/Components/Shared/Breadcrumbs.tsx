@@ -1,61 +1,44 @@
-import React, { Component, ReactNode, ReactNodeArray } from 'react';
-import { Core, Taxonomy, ContentDelivery, Services, Components } from '@episerver/spa-core';
+import React, { useState, useEffect } from 'react';
+import { Taxonomy, ContentDelivery, Services, Components, useContentDeliveryAPI } from '@episerver/spa-core';
 
-interface BreadcrumbsProps {
+type BreadcrumbsProps = {
     currentContent: Taxonomy.IContent
 }
 
-export default class Breadcrumbs extends Component<BreadcrumbsProps> {
+export const Breadcrumbs : React.FunctionComponent<BreadcrumbsProps> = (props) =>
+{
+    const api = useContentDeliveryAPI();
+    const contentId = Services.ContentLink.createApiId(props.currentContent);
+    const [ ancestors, setAncestors ] = useState<Taxonomy.IContent[]>([]);
+    
+    useEffect(() => {
+        let isCancelled : boolean = false;
 
-    protected ancestors : Array<Taxonomy.IContent> = [];
-    protected loading : boolean = false;
-
-    public componentDidMount() : void
-    {
-        this.refreshAncestors();
-    }
-
-    public componentDidUpdate() : void
-    {
-        this.refreshAncestors();
-    }
-
-    public refreshAncestors() : void
-    {
-        if (!this.loading) {
-            this.loading = true;
-            let me = this;
-            Core.DefaultContext.contentDeliveryApi().getContentAncestors(this.props.currentContent).then(a => {
-                me.ancestors = a.reverse();
-                me.forceUpdate(() => {
-                    me.loading = false;
-                });
-            });
-        } else {
-            if (Core.DefaultContext.isDebugActive()) {
-                console.log("Blocked breadcrumb update, as it's already loading");
-            }
-        }
-    }
-
-    public render() : ReactNode | ReactNodeArray | null
-    {
-        let items : ReactNodeArray = [];
-        this.ancestors.forEach(iContent => {
-            if (iContent.parentLink) { //Do not show root-nodes
-                let key : string = `BreadCrumb-Link-${ Services.ContentLink.createApiId(iContent) }`;
-                let name : string = ContentDelivery.namePropertyIsString(iContent.name) ? iContent.name : (iContent.name as ContentDelivery.StringProperty).value;
-                items.push(<li key={ key } className="breadcrumb-item"><Components.Link href={ iContent } >{ name }</Components.Link></li>);
-            }
+        api.getAncestors(props.currentContent).then(x => {
+            if (isCancelled) return;
+            setAncestors(x.reverse());
         });
-        let myKey : string = `BreadCrumb-Link-${ Services.ContentLink.createApiId(this.props.currentContent) }`;
-        let myName : string = ContentDelivery.namePropertyIsString(this.props.currentContent.name) ? this.props.currentContent.name : (this.props.currentContent.name as ContentDelivery.StringProperty).value;
+        
+        return () => { isCancelled = true };
+    }, [ contentId ])
 
-        return <nav aria-label="breadcrumb">
-            <ol className="breadcrumb">
-                { items }
-                <li key={ myKey } className="breadcrumb-item active" aria-current="page">{ myName }</li>
-            </ol>
-        </nav>;
-    }
+    const itemKey = `BreadCrumb-Link-${ contentId }-${ contentId }`;
+
+    return <nav aria-label="breadcrumb">
+        <ol className="breadcrumb">
+            { ancestors.map(i => {
+                if (!i.parentLink) return null;
+                const key : string = `BreadCrumb-Link-${ contentId }-${ Services.ContentLink.createApiId(i) }`;
+                return <BreadcrumbItem currentContent={i} key={key} />
+            })}
+            <BreadcrumbItem currentContent={ props.currentContent } key={ itemKey } />
+        </ol>
+    </nav>
 }
+
+export const BreadcrumbItem : React.FunctionComponent<BreadcrumbsProps> = (props) => {
+    const name : string = ContentDelivery.namePropertyIsString(props.currentContent.name) ? props.currentContent.name : (props.currentContent.name as ContentDelivery.StringProperty).value;
+    return <li className="breadcrumb-item"><Components.Link href={ props.currentContent } >{ name }</Components.Link></li>;
+}
+
+export default Breadcrumbs;

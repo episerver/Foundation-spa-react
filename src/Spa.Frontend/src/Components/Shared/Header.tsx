@@ -1,78 +1,34 @@
 //Import generic libs
-import React, { Component, ReactNodeArray } from 'react';
-import { connect } from 'react-redux';
-import { Collapse, Nav, Navbar, NavbarToggler } from 'reactstrap';
-import { merge } from 'lodash';
+import React, { useEffect, useState } from 'react';
 
 //Import Episerver Libs
-import { Core, Components } from '@episerver/spa-core';
+import { Core, Components, Taxonomy, useIContentRepository } from '@episerver/spa-core';
 
 //Import App
-import CmsHomePageData from 'app/Models/Content/CmsHomePageData';
+import LanguageSelector from './LanguageSelector';
+import LayoutSettings from 'app/Models/Content/LayoutSettingsData';
+import './Header.scss';
 
-interface HeaderProps {
-    startPage: CmsHomePageData
-    context: Core.IEpiserverContext
-    path: string
-}
-interface HeaderState {
-    isOpen: boolean
+export interface HeaderProps {
+    settings: LayoutSettings
+    context?: Core.IEpiserverContext
+    path?: string
 }
 
-export default class Header extends Component<HeaderProps, HeaderState>
+export const Header : React.FunctionComponent<HeaderProps> = (props) =>
 {
-    public constructor(props: HeaderProps)
-    {
-        super(props);
-        this.state = {
-            isOpen: false
-        }
-    }
-
-    public render(): ReactNodeArray | null
-    {
-        return [<header key="MoseyHeader">
-            <div className="header-top bg-secondary text-white">
+    return <header key="MoseyHeader">
+            <div className="header-top">
                 <div className="container">
                     <div className="row">
-                        <div className="col text-center pt-3"><Components.Property iContent={this.props.startPage} field="bannerText" context={this.props.context} /></div>
+                        <div className="col-2 d-none d-md-block"></div>
+                        <div className="col-8 header-top-content text-center"><Components.Property iContent={ props.settings } field="bannerText" /></div>
+                        <div className="col-4 col-md-2 header-top-service">
+                            <LanguageSelector />
+                        </div>
                     </div>
                 </div>
             </div>
-            <div className="container">
-                <div className="row">
-                    <div className="col"></div>
-                    <div className="col py-4 d-flex justify-content-center">
-                        <Components.Link href={this.props.startPage.contentLink}>
-                            <Components.Property iContent={this.props.startPage} field="siteLogo" context={this.props.context} />
-                        </Components.Link>
-                    </div>
-                    <div className="col py-4 d-flex">
-                    </div>
-                </div>
-            </div>
-        </header>,
-        <Navbar expand="lg" key="NewMoseyHeaderNav" dark color="primary" className="sticky-top">
-            <div className="container">
-                <NavbarToggler onClick={ () => this.setState({isOpen: !this.state.isOpen})} />
-                <Collapse isOpen={ this.state.isOpen} navbar>
-                    <Nav className="mr-auto" navbar>
-                        <Components.ContentArea context={ this.props.context } data={ this.props.startPage.mainMenu } noWrap={ true } />
-                    </Nav>
-                </Collapse>
-            </div>
-        </Navbar>
-        ]
-    }
+        </header>
 }
-
-export type HeaderType = new () => Header;
-
-export const ConnectedHeader : HeaderType = connect( (state : any, ownProps : HeaderProps) => {
-    try {
-        const contentId = state.iContentRepo.refs['startPage'];
-        const content = state.iContentRepo.items[contentId].content;
-        return merge({}, ownProps, { startPage: content });
-    } catch (e) {}
-    return ownProps;
-} )(Header) as unknown as HeaderType;
+export default Header;

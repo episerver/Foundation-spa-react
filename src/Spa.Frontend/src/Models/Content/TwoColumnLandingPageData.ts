@@ -218,6 +218,20 @@ export default interface TwoColumnLandingPageData extends Taxonomy.IContent {
     teaserButtonStyle: ContentDelivery.StringProperty
 
     /**
+     * Button color
+     *
+     * No description available
+     */
+    teaserButtonColor: ContentDelivery.StringProperty
+
+    /**
+     * Button text color
+     *
+     * No description available
+     */
+    teaserButtonTextColor: ContentDelivery.StringProperty
+
+    /**
      * Display hover effect
      *
      * No description available
@@ -281,6 +295,8 @@ export class TwoColumnLandingPageType extends Taxonomy.AbstractIContent<TwoColum
         'teaserColorTheme': 'LongString',
         'teaserButtonText': 'LongString',
         'teaserButtonStyle': 'LongString',
+        'teaserButtonColor': 'LongString',
+        'teaserButtonTextColor': 'LongString',
         'applyHoverEffect': 'Boolean',
         'padding': 'LongString',
         'margin': 'LongString',
@@ -495,6 +511,20 @@ export class TwoColumnLandingPageType extends Taxonomy.AbstractIContent<TwoColum
      * No description available
      */
     public get teaserButtonStyle() : TwoColumnLandingPageData["teaserButtonStyle"] { return this.getProperty("teaserButtonStyle"); }
+
+    /**
+     * Button color
+     *
+     * No description available
+     */
+    public get teaserButtonColor() : TwoColumnLandingPageData["teaserButtonColor"] { return this.getProperty("teaserButtonColor"); }
+
+    /**
+     * Button text color
+     *
+     * No description available
+     */
+    public get teaserButtonTextColor() : TwoColumnLandingPageData["teaserButtonTextColor"] { return this.getProperty("teaserButtonTextColor"); }
 
     /**
      * Display hover effect

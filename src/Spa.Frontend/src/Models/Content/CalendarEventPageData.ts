@@ -211,6 +211,20 @@ export default interface CalendarEventPageData extends Taxonomy.IContent {
     teaserButtonStyle: ContentDelivery.StringProperty
 
     /**
+     * Button color
+     *
+     * No description available
+     */
+    teaserButtonColor: ContentDelivery.StringProperty
+
+    /**
+     * Button text color
+     *
+     * No description available
+     */
+    teaserButtonTextColor: ContentDelivery.StringProperty
+
+    /**
      * Display hover effect
      *
      * No description available
@@ -273,6 +287,8 @@ export class CalendarEventPageType extends Taxonomy.AbstractIContent<CalendarEve
         'teaserColorTheme': 'LongString',
         'teaserButtonText': 'LongString',
         'teaserButtonStyle': 'LongString',
+        'teaserButtonColor': 'LongString',
+        'teaserButtonTextColor': 'LongString',
         'applyHoverEffect': 'Boolean',
         'padding': 'LongString',
         'margin': 'LongString',
@@ -480,6 +496,20 @@ export class CalendarEventPageType extends Taxonomy.AbstractIContent<CalendarEve
      * No description available
      */
     public get teaserButtonStyle() : CalendarEventPageData["teaserButtonStyle"] { return this.getProperty("teaserButtonStyle"); }
+
+    /**
+     * Button color
+     *
+     * No description available
+     */
+    public get teaserButtonColor() : CalendarEventPageData["teaserButtonColor"] { return this.getProperty("teaserButtonColor"); }
+
+    /**
+     * Button text color
+     *
+     * No description available
+     */
+    public get teaserButtonTextColor() : CalendarEventPageData["teaserButtonTextColor"] { return this.getProperty("teaserButtonTextColor"); }
 
     /**
      * Display hover effect

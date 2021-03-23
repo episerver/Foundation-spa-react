@@ -1,5 +1,5 @@
 {
-    "compileOnSave": false,
+    "compileOnSave": true,
     "files": ["./src/index.tsx","./server/server.tsx"],
     "compilerOptions": {
         "baseUrl": "./src/",
@@ -9,7 +9,7 @@
         "noImplicitAny": true,
         "outDir": "./build/",
         "removeComments": false,
-        "skipLibCheck": false,
+        "skipLibCheck": true,
         "target": "ES6",
         "paths": {
             "app/*": [ "../src/*" ],

@@ -1,164 +1,81 @@
-import React, { Component, ReactNode, ReactNodeArray } from 'react';
-import { connect } from 'react-redux';
-import { merge } from 'lodash';
-import { Core, Components } from '@episerver/spa-core';
+import React from 'react';
+import { Components, ContentDelivery, useEpiserver } from '@episerver/spa-core';
+import LayoutSettings from 'app/Models/Content/LayoutSettingsData';
+import "./Footers.scss";
 
-import CmsHomePageData from 'app/Models/Content/CmsHomePageData';
-
-interface FooterProps {
-    startPage: CmsHomePageData
-    context: Core.IEpiserverContext
+export type FooterProps = {
+    settings: LayoutSettings
 }
-interface FooterState{}
 
-export default class Footer extends Component<FooterProps, FooterState> {
-    constructor(props: FooterProps)
-    {
-        super(props);
-    }
+export const Footer : React.FunctionComponent<FooterProps> = (props) =>
+{
+    const ctx = useEpiserver();
 
-    htmlObject(htmlValue : string) : any
-    {
-        return {
-            __html: htmlValue
-        };
-    }
-
-    render() : ReactNode
-    {
-        let socialLinks : ReactNodeArray = [];
-        
-        try {
-            socialLinks = this.props.startPage.socialLinks.value.map(link => {
-                let uri : string = link.href.substr(0,5) == 'http:' ? 'https' + link.href.substr(4) : link.href;
-                return <a className="nav-item" href={ uri } title={ link.title } target={ link.target } key={ "social-link-"+link.href}>{ link.text }</a>
-            });
-        } catch (e) { 
-            //Intentionally ignored
-        }
-
-        const StartPageProperty : Components.PropertyComponent<CmsHomePageData> = (props) => Components.Property(props);
-
-        return <footer className="border-top mt-5">
-            <div className="container">
-                <div className="row">
-                    <div className="col text-center mt-4 mb-3">
-                        <p className="h4"><StartPageProperty iContent={ this.props.startPage } field="introduction" /></p>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-12 col-lg-4">
-                        <h3 className="h5 text-uppercase"><StartPageProperty iContent={ this.props.startPage } field="companyHeader"/></h3>
-                        <dl className="row">
-                            <dt className="col-3">Phone:</dt>
-                            <dd className="col-9"><StartPageProperty iContent={ this.props.startPage } field="companyPhone"/></dd>
-                            <dt className="col-3">Email:</dt>
-                            <dd className="col-9"><StartPageProperty iContent={ this.props.startPage } field="companyEmail"/></dd>
-                        </dl>
-                        <p><StartPageProperty iContent={ this.props.startPage } field="companyAddress"/></p>
-                    </div>
-                    <div className="col-6 col-lg-2">
-                        <h3 className="h5 text-uppercase"><StartPageProperty iContent={ this.props.startPage } field="linksHeader"/></h3>
-                        { this.renderLinks() }
-                    </div>
-                    <div className="col-6 col-lg-2">
-                        <h3 className="h5 text-uppercase"><StartPageProperty iContent={ this.props.startPage } field="socialHeader"/></h3>
-                        { this.renderSocialLinks() }
-                    </div>
-                    <div className="col-12 col-lg-4">
-                        { this.renderContentArea() }
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col my-3"><p className="font-weight-lighter">&copy; <span>{ (new Date()).getFullYear() }</span> <span><StartPageProperty iContent={ this.props.startPage } field="footerCopyrightText" /></span></p></div>
+    return <footer className="border-top mt-5">
+        <div className="container">
+            <div className="row">
+                <div className="col text-center mt-4 mb-3">
+                    <p className="h4"><Components.Property iContent={ props.settings } field="introduction" /></p>
                 </div>
             </div>
-        </footer>;
-    }
+            <div className="row">
+                <CompanyAddressBlock { ...props } className="col-12 col-lg-4" />
+                <LinksListBlock { ...props } className="col-6 col-lg-2" listProp="links" titleProp="linksHeader" />
+                <LinksListBlock { ...props } className="col-6 col-lg-2" listProp="socialLinks" titleProp="socialHeader" />
+                <div className="col-12 col-lg-4">
+                    <Components.ContentArea context={ ctx } data={ props.settings.contentArea } noWrap />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col my-3"><p className="font-weight-lighter">&copy; <span>{ (new Date()).getFullYear() }</span> <span><Components.Property iContent={ props.settings } field="footerCopyrightText" /></span></p></div>
+            </div>
+        </div>
+    </footer>
+}
+export default Footer;
 
-    protected renderLinks()
-    {
-        let links : ReactNodeArray = [];
-        try {
-            links = this.props.startPage.links.value.map(link => {
-                let uri : string = link.href.substr(0,5) == 'http:' ? 'https' + link.href.substr(4) : link.href;
-                return <a className="nav-item" href={ uri } title={ link.title } target={ link.target } key={ "footer-link-"+link.href }>{ link.text}</a>
-            });
-        } catch (e) { 
-            //Intentionally ignored
-        }
-        let props : any = {
-            className: 'nav flex-column',
-            children: links
-        }
-        if (this.isEditable() && this.currentPageIsStartPage()) {
-            props['data-epi-edit'] = 'links';
-        }
-        return React.createElement('nav', props);
-    }
-
-    protected renderSocialLinks()
-    {
-        let links : ReactNodeArray = [];
-        try {
-            links = this.props.startPage.socialLinks.value.map(link => {
-                let uri : string = link.href.substr(0,5) == 'http:' ? 'https' + link.href.substr(4) : link.href;
-                return <a className="nav-item" href={ uri } title={ link.title } target={ link.target } key={ "footer-link-"+link.href }>{ link.text}</a>
-            });
-        } catch (e) { 
-            //Intentionally ignored
-        }
-        let props : any = {
-            className: 'nav flex-column',
-            children: links
-        }
-        if (this.isEditable() && this.currentPageIsStartPage()) {
-            props['data-epi-edit'] = 'socialLinks';
-        }
-        return React.createElement('nav', props);
-    }
-
-    protected renderContentArea()
-    {
-        let props : any = {
-            context: this.props.context,
-            data: this.props.startPage.contentArea,
-            noWrap: true
-        }
-        if (this.currentPageIsStartPage()) {
-            props['propertyName'] = 'contentArea';
-        }
-        return React.createElement(Components.ContentArea, props);
-    }
-
-    protected isEditable()
-    {
-        return this.props.context.isEditable();
-    }
-
-    protected currentPageIsStartPage()
-    {
-        return false;
-        /*let routedId = Services.ContentLink.createApiId(this.props.context.getRoutedContent());
-        let startPageId = Services.ContentLink.createApiId(this.props.startPage.contentLink);
-        return routedId == startPageId;*/
-    }
+type LinksListBlockProps = FooterProps & {
+    className?: string,
+    titleProp: keyof LayoutSettings,
+    listProp: keyof LayoutSettings
 }
 
-/**
- * Helper intrface to describe the static side of the Footer component
- */
-export interface FooterType {
-	new (props : FooterProps) : Footer
+const LinksListBlock : React.FunctionComponent<LinksListBlockProps> = (props) => {
+
+    const transformLink = (link: ContentDelivery.LinkProperty) => {
+        const url = new URL(link.href);
+        try {
+            if (window.location.protocol !== url.protocol && window.location.host === url.host) url.protocol = window.location.protocol;
+        } catch (e) {
+            // Ignored on purpose
+        }
+        const linkProps : any = {
+            title: link.title,
+            target: link.target,
+            className: "nav-item",
+            href: url.href,
+            key: `footer.${ props.listProp }.link.${ link.contentLink?.id || link.href }`
+        }
+        return <a { ...linkProps }>{link.text}</a>
+    }
+
+    return <div className={ props.className }>
+        <h5 className="footer__heading"><Components.Property iContent={ props.settings } field={ props.titleProp }/></h5>
+        <nav className="nav flex-column">
+            { (props.settings[props.listProp] as ContentDelivery.LinkListProperty).value.map(x => transformLink(x)) }
+        </nav>
+    </div>
 }
 
-export const ConnectedFooter : FooterType = (connect((state: any, ownProps: FooterProps) => {
-    try {
-        const contentId = state.iContentRepo.refs['startPage'];
-        const content = state.iContentRepo.items[contentId].content;
-        const footerProps : FooterProps = merge({}, ownProps);
-        footerProps.startPage = content;
-        return footerProps;
-    } catch (e) {}
-    return ownProps;
-})(Footer)) as unknown as FooterType;
+const CompanyAddressBlock : React.FunctionComponent<FooterProps & { className ?: string }> = (props) => {
+    return <div className={ props.className }>
+        <h5 className="footer__heading"><Components.Property iContent={ props.settings } field="companyHeader"/></h5>
+        <dl className="row">
+            <dt className="col-3">Phone:</dt>
+            <dd className="col-9"><Components.Property iContent={ props.settings } field="companyPhone"/></dd>
+            <dt className="col-3">Email:</dt>
+            <dd className="col-9"><Components.Property iContent={ props.settings } field="companyEmail"/></dd>
+        </dl>
+        <p><Components.Property iContent={ props.settings } field="companyAddress"/></p>
+    </div>
+}

@@ -2,7 +2,7 @@ import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Pdf File
  *
- * No Description available.
+ * Used for PDF file
  *
  * @GUID ee7e1eb6-2b6d-4cc9-8ed1-56ec0cbaa40b
  */
@@ -27,7 +27,7 @@ export class FoundationPdfFileType extends Taxonomy.AbstractIContent<FoundationP
      * Map of all property types within this content type.
      */
     protected _propertyMap : { [propName: string]: string } = {
-        'height': 'FloatNumber',
+        'height': 'Number',
     }
 
     /**

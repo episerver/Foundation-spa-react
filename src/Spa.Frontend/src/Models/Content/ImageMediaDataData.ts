@@ -1,8 +1,8 @@
 import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
- * ImageMediaData
+ * Image File
  *
- * No Description available.
+ * Used for image file types such as jpg, jpeg, jpe, ico, gif, bmp, png, svg, webp
  *
  * @GUID 20644be7-3ca1-4f84-b893-ee021b73ce6c
  */
@@ -15,11 +15,46 @@ export default interface ImageMediaDataData extends Taxonomy.IContent {
     largeThumbnail: ContentDelivery.Property<any> // Original type: Blob
 
     /**
+     * Image alignment
+     *
+     * No description available
+     */
+    imageAlignment: ContentDelivery.StringProperty
+
+    /**
      * File size
      *
      * No description available
      */
     fileSize: ContentDelivery.StringProperty
+
+    /**
+     * Padding top
+     *
+     * No description available
+     */
+    paddingTop: ContentDelivery.NumberProperty
+
+    /**
+     * Padding right
+     *
+     * No description available
+     */
+    paddingRight: ContentDelivery.NumberProperty
+
+    /**
+     * Padding bottom
+     *
+     * No description available
+     */
+    paddingBottom: ContentDelivery.NumberProperty
+
+    /**
+     * Padding left
+     *
+     * No description available
+     */
+    paddingLeft: ContentDelivery.NumberProperty
 
     /**
      * Accent color
@@ -168,7 +203,12 @@ export class ImageMediaDataType extends Taxonomy.AbstractIContent<ImageMediaData
      */
     protected _propertyMap : { [propName: string]: string } = {
         'largeThumbnail': 'Blob',
+        'imageAlignment': 'LongString',
         'fileSize': 'LongString',
+        'paddingTop': 'Number',
+        'paddingRight': 'Number',
+        'paddingBottom': 'Number',
+        'paddingLeft': 'Number',
         'accentColor': 'LongString',
         'caption': 'LongString',
         'clipArtType': 'LongString',
@@ -198,11 +238,46 @@ export class ImageMediaDataType extends Taxonomy.AbstractIContent<ImageMediaData
     public get largeThumbnail() : ImageMediaDataData["largeThumbnail"] { return this.getProperty("largeThumbnail"); }
 
     /**
+     * Image alignment
+     *
+     * No description available
+     */
+    public get imageAlignment() : ImageMediaDataData["imageAlignment"] { return this.getProperty("imageAlignment"); }
+
+    /**
      * File size
      *
      * No description available
      */
     public get fileSize() : ImageMediaDataData["fileSize"] { return this.getProperty("fileSize"); }
+
+    /**
+     * Padding top
+     *
+     * No description available
+     */
+    public get paddingTop() : ImageMediaDataData["paddingTop"] { return this.getProperty("paddingTop"); }
+
+    /**
+     * Padding right
+     *
+     * No description available
+     */
+    public get paddingRight() : ImageMediaDataData["paddingRight"] { return this.getProperty("paddingRight"); }
+
+    /**
+     * Padding bottom
+     *
+     * No description available
+     */
+    public get paddingBottom() : ImageMediaDataData["paddingBottom"] { return this.getProperty("paddingBottom"); }
+
+    /**
+     * Padding left
+     *
+     * No description available
+     */
+    public get paddingLeft() : ImageMediaDataData["paddingLeft"] { return this.getProperty("paddingLeft"); }
 
     /**
      * Accent color

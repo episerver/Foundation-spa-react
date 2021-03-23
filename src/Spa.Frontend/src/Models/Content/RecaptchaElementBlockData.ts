@@ -15,6 +15,13 @@ export default interface RecaptchaElementBlockData extends Taxonomy.IContent {
     validators: ContentDelivery.StringProperty
 
     /**
+     * ScoreThreshold
+     *
+     * No description available
+     */
+    scoreThreshold: ContentDelivery.NumberProperty
+
+    /**
      * SiteKey
      *
      * No description available
@@ -49,6 +56,7 @@ export class RecaptchaElementBlockType extends Taxonomy.AbstractIContent<Recaptc
      */
     protected _propertyMap : { [propName: string]: string } = {
         'validators': 'LongString',
+        'scoreThreshold': 'FloatNumber',
         'siteKey': 'LongString',
         'secretKey': 'LongString',
         'validatorMessages': 'Validator with message collection',
@@ -60,6 +68,13 @@ export class RecaptchaElementBlockType extends Taxonomy.AbstractIContent<Recaptc
      * No description available
      */
     public get validators() : RecaptchaElementBlockData["validators"] { return this.getProperty("validators"); }
+
+    /**
+     * ScoreThreshold
+     *
+     * No description available
+     */
+    public get scoreThreshold() : RecaptchaElementBlockData["scoreThreshold"] { return this.getProperty("scoreThreshold"); }
 
     /**
      * SiteKey

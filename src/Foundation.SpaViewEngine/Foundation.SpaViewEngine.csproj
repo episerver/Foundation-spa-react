@@ -34,14 +34,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EPiServer.CMS.AspNet" Version="11.20.2" />
-    <PackageReference Include="EPiServer.CMS.Core" Version="11.20.2" />
-    <PackageReference Include="EPiServer.CMS.UI.Core" Version="11.31.0" />
-    <PackageReference Include="EPiServer.Framework" Version="11.20.2" />
+    <PackageReference Include="EPiServer.CMS.AspNet" Version="11.20.4" />
+    <PackageReference Include="EPiServer.CMS.Core" Version="11.20.4" />
+    <PackageReference Include="EPiServer.ContentDeliveryApi.Core" Version="2.19.0" />
+    <PackageReference Include="EPiServer.Framework" Version="11.20.4" />
     <PackageReference Include="EPiServer.ServiceLocation.StructureMap" Version="2.0.3" />
-    <PackageReference Include="JavaScriptEngineSwitcher.V8" Version="3.9.0" />
-    <PackageReference Include="JavaScriptEngineSwitcher.V8.Native.win-x64" Version="3.9.0" />
-    <PackageReference Include="JavaScriptEngineSwitcher.V8.Native.win-x86" Version="3.9.0" />
+    <PackageReference Include="JavaScriptEngineSwitcher.V8" Version="3.10.0" />
+    <PackageReference Include="JavaScriptEngineSwitcher.V8.Native.win-x64" Version="3.10.0" />
+    <PackageReference Include="JavaScriptEngineSwitcher.V8.Native.win-x86" Version="3.10.0" />
     <PackageReference Include="JSPool" Version="4.0.0" />
     <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -49,10 +49,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Foundation.ContentDelivery\Foundation.ContentDelivery.csproj" />
+    <EmbeddedResource Include="Resources\core.js.minified.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\core.js.minified.js" />
+    <ProjectReference Include="..\Foundation.ContentDelivery\Foundation.ContentDelivery.csproj" />
   </ItemGroup>
 </Project>

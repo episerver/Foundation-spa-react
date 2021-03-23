@@ -6,6 +6,10 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="preconnect" href="https://a.idio.co" /> <!-- Improve connection speed to IDIO -->
         <link rel="preconnect" href="https://s.idio.co" /> <!-- Improve connection speed to IDIO -->
+        <link rel="manifest" href="<%= htmlWebpackPlugin.options.packagePath %>manifest.json" crossorigin="use-credentials">
+        <link rel="icon" href="<%= htmlWebpackPlugin.options.packagePath %>favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.packagePath %>favicon.ico" type="image/x-icon"/>
+        <title><%= htmlWebpackPlugin.options.title %></title>
         <!--SSR-META-->
         <!--SSR-LINK-->
         <!--SSR-TITLE-->
@@ -16,6 +20,7 @@
     </head>
     <body data-attrs="body">
         <div id="epi-page-container"><!--SSR-BODY--></div>
+        <%= htmlWebpackPlugin.tags.bodyTags %>
         <!--FOOTER-RESOURCES-->
     </body>
 </html>

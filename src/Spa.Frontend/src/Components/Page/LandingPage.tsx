@@ -5,12 +5,9 @@ import { LandingPageProps } from 'app/Models/Content/LandingPageData';
 
 export const LandingPage : FunctionComponent<LandingPageProps> = (props) => {
     return <div className="container pt-3" key="landingpage-container">
-        <Helmet key="landingpage-helmet"></Helmet>
-        <div className="row">
-            <div className="col-12">
-                <h1><Components.Property iContent={ props.data } field="name" /></h1>
-            </div>
-        </div>
+        <Helmet>
+            <title>{ props.data.metaTitle?.value || props.data.name }</title>
+        </Helmet>
         <Components.Property iContent={ props.data } field="topContentArea" />
         <div className="row">
             <Components.Property iContent={ props.data } field="mainBody" className="col-12" />

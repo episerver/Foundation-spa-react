@@ -4,7 +4,6 @@ using EPiServer.ContentApi.Core.Serialization;
 using EPiServer.ContentApi.Core.Serialization.Models;
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
-using EPiServer.Editor;
 using EPiServer.Security;
 using EPiServer.ServiceLocation;
 using EPiServer.Web;
@@ -57,8 +56,7 @@ namespace Foundation.ContentDelivery.Models
             {
                 httpContext.SetupVisitorGroupImpersonation(content, AccessLevel.Read);
             }
-            var contentModel = base.TransformContent(content, excludePersonalizedContent, expand);
-            return contentModel;
+            return base.TransformContent(content, excludePersonalizedContent, expand);
         }
 
         public override bool CanHandle<T>(T content)

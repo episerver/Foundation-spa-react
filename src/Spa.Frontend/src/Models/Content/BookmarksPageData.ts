@@ -190,6 +190,20 @@ export default interface BookmarksPageData extends Taxonomy.IContent {
     teaserButtonStyle: ContentDelivery.StringProperty
 
     /**
+     * Button color
+     *
+     * No description available
+     */
+    teaserButtonColor: ContentDelivery.StringProperty
+
+    /**
+     * Button text color
+     *
+     * No description available
+     */
+    teaserButtonTextColor: ContentDelivery.StringProperty
+
+    /**
      * Display hover effect
      *
      * No description available
@@ -249,6 +263,8 @@ export class BookmarksPageType extends Taxonomy.AbstractIContent<BookmarksPageDa
         'teaserColorTheme': 'LongString',
         'teaserButtonText': 'LongString',
         'teaserButtonStyle': 'LongString',
+        'teaserButtonColor': 'LongString',
+        'teaserButtonTextColor': 'LongString',
         'applyHoverEffect': 'Boolean',
         'padding': 'LongString',
         'margin': 'LongString',
@@ -435,6 +451,20 @@ export class BookmarksPageType extends Taxonomy.AbstractIContent<BookmarksPageDa
      * No description available
      */
     public get teaserButtonStyle() : BookmarksPageData["teaserButtonStyle"] { return this.getProperty("teaserButtonStyle"); }
+
+    /**
+     * Button color
+     *
+     * No description available
+     */
+    public get teaserButtonColor() : BookmarksPageData["teaserButtonColor"] { return this.getProperty("teaserButtonColor"); }
+
+    /**
+     * Button text color
+     *
+     * No description available
+     */
+    public get teaserButtonTextColor() : BookmarksPageData["teaserButtonTextColor"] { return this.getProperty("teaserButtonTextColor"); }
 
     /**
      * Display hover effect

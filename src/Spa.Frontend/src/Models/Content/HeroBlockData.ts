@@ -44,7 +44,7 @@ export default interface HeroBlockData extends Taxonomy.IContent {
     blockOpacity: ContentDelivery.NumberProperty
 
     /**
-     * Block ratio (width-height)
+     * Block ratio (width:height)
      *
      * No description available
      */
@@ -139,7 +139,7 @@ export class HeroBlockType extends Taxonomy.AbstractIContent<HeroBlockData> impl
     public get blockOpacity() : HeroBlockData["blockOpacity"] { return this.getProperty("blockOpacity"); }
 
     /**
-     * Block ratio (width-height)
+     * Block ratio (width:height)
      *
      * No description available
      */

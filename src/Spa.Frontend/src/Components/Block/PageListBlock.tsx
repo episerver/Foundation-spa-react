@@ -115,6 +115,7 @@ export default class PageListBlock extends ComponentTypes.AbstractComponent<Page
         return <div className={ classes.join(" ") }>
             { heading }
             { pages }
+            <div className="clearfix"/>
         </div>
     }
 
@@ -190,13 +191,16 @@ export default class PageListBlock extends ComponentTypes.AbstractComponent<Page
         return <div className="row no-gutters">{items}</div>
     }
 
-    protected previewOptionToCssClass(previewOption: string) 
+    protected previewOptionToCssClass(previewOption: string) : string
     {
-        switch (previewOption) {
+        let cssClasses = previewOption;
+        switch (cssClasses) {
             case "1/3":
-                return "col-12 col-md-4";
+                cssClasses = "col-12 col-md-4";
             default: 
-                return "col";
+                cssClasses = "col";
         }
+        cssClasses = cssClasses.replace(":","-");
+        return cssClasses;
     }
 }

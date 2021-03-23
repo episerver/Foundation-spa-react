@@ -8,7 +8,7 @@ using System;
 namespace Foundation.ContentDelivery
 {
     [InitializableModule]
-    [ModuleDependency(new Type[] { typeof(EPiServer.Web.InitializationModule), typeof(ContentApiCmsInitialization) , typeof(RoutingInitialization), typeof(Cms.Initialize)})]
+    [ModuleDependency(new Type[] { typeof(EPiServer.Web.InitializationModule), typeof(ContentApiCmsInitialization) , typeof(RoutingInitialization)})]
     public class InitializeModule : IConfigurableModule
     {
         public void ConfigureContainer(ServiceConfigurationContext context)

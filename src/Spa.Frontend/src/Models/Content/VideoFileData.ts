@@ -2,11 +2,18 @@ import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Video File
  *
- * No Description available.
+ * Used for video file types such as mp4, flv, webm
  *
  * @GUID 8a9d9d4b-cd4b-40e8-a777-414cfbda7770
  */
 export default interface VideoFileData extends Taxonomy.IContent {
+    /**
+     * Preview image
+     *
+     * No description available
+     */
+    previewImage: ContentDelivery.ContentReferenceProperty
+
     /**
      * Copyright
      *
@@ -15,18 +22,18 @@ export default interface VideoFileData extends Taxonomy.IContent {
     copyright: ContentDelivery.StringProperty
 
     /**
-     * PreviewImage
+     * Display controls
      *
      * No description available
      */
-    previewImage: ContentDelivery.ContentReferenceProperty
+    displayControls: ContentDelivery.BooleanProperty
 
     /**
-     * FileSize
+     * Autoplay
      *
      * No description available
      */
-    fileSize: ContentDelivery.StringProperty
+    autoplay: ContentDelivery.BooleanProperty
 
 }
 
@@ -41,10 +48,18 @@ export class VideoFileType extends Taxonomy.AbstractIContent<VideoFileData> impl
      * Map of all property types within this content type.
      */
     protected _propertyMap : { [propName: string]: string } = {
-        'copyright': 'LongString',
         'previewImage': 'ContentReference',
-        'fileSize': 'LongString',
+        'copyright': 'LongString',
+        'displayControls': 'Boolean',
+        'autoplay': 'Boolean',
     }
+
+    /**
+     * Preview image
+     *
+     * No description available
+     */
+    public get previewImage() : VideoFileData["previewImage"] { return this.getProperty("previewImage"); }
 
     /**
      * Copyright
@@ -54,17 +69,17 @@ export class VideoFileType extends Taxonomy.AbstractIContent<VideoFileData> impl
     public get copyright() : VideoFileData["copyright"] { return this.getProperty("copyright"); }
 
     /**
-     * PreviewImage
+     * Display controls
      *
      * No description available
      */
-    public get previewImage() : VideoFileData["previewImage"] { return this.getProperty("previewImage"); }
+    public get displayControls() : VideoFileData["displayControls"] { return this.getProperty("displayControls"); }
 
     /**
-     * FileSize
+     * Autoplay
      *
      * No description available
      */
-    public get fileSize() : VideoFileData["fileSize"] { return this.getProperty("fileSize"); }
+    public get autoplay() : VideoFileData["autoplay"] { return this.getProperty("autoplay"); }
 
 }

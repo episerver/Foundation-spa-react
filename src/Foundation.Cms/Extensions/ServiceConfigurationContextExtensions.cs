@@ -20,7 +20,6 @@ namespace Foundation.Cms.Extensions
                 config.Formatters.XmlFormatter.UseXmlSerializer = true;
                 config.DependencyResolver = new StructureMapResolver(context.StructureMap());
                 config.MapHttpAttributeRoutes();
-                
             });
 
             context.Services.Configure<TinyMceConfiguration>(config =>
@@ -32,9 +31,9 @@ namespace Foundation.Cms.Extensions
                     .AddSetting("image_advtab", true);
 
                 config.Default()
-                    .AddExternalPlugin("icons", "/Assets/js/plugins/fontawesomeicons.js")
+                    .AddExternalPlugin("icons", "/ClientResources/Scripts/fontawesomeicons.js")
                     .AddSetting("extended_valid_elements", "i[class], span")
-                    .ContentCss(new[] { "/Assets/scss/vendors/font-awesome-5.9.0/css/all.min.css",
+                    .ContentCss(new[] { "/ClientResources/Styles/fontawesome.min.css",
                         "https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i",
                         "/ClientResources/Styles/TinyMCE.css" });
             });

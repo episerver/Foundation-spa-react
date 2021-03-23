@@ -1,49 +1,29 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
-import { useLocation } from 'react-router';
 import { Helmet } from 'react-helmet';
-import { Layout, useEpiserver, useIContentRepository, useServerSideRendering, Taxonomy } from '@episerver/spa-core';
+import { connect } from 'react-redux';
+import { Layout, State } from '@episerver/spa-core';
+import { useSettings } from '@episerver/foundation-settings';
 
-import Placeholder from 'app/Components/Placeholder';
-import Header from 'app/Components/Shared/Header';
-import Footer from 'app/Components/Shared/Footer';
-import CmsHomePageData from 'app/Models/Content/CmsHomePageData';
+import Placeholder from '../Placeholder';
+import Header from './Header';
+import NavBar from './NavBar';
+import Footer from './Footer';
 
-export const MoseyLayout : FunctionComponent<Layout.Props> = (props) => {
-    const ctx = useEpiserver();
-    const repo = useIContentRepository();
-    const ssr = useServerSideRendering();
-    const pathname = ctx.isServerSideRendering() ? ssr.Path : useLocation().pathname;
-    const [ startPage, setStartPage ] = useState<CmsHomePageData | null>(ssr.StartPage as CmsHomePageData || null);
+import LayoutSettings from 'app/Models/Content/LayoutSettingsData';
 
-    // Initial load of the startPage
+type MoseyLayoutProps = Layout.Props & Partial<State.CmsState>
+
+export const MoseyLayout : FunctionComponent<MoseyLayoutProps> = (props) => {
+    const settingsService = useSettings();
+    const [layoutSettings, setLayoutSettings] = useState<LayoutSettings | null>(null);
     useEffect(() => {
-        repo.getByReference('startPage')
-            .then(c => {
-                // In edit mode the routed content can be the draft version we actually want to show
-                if (ctx.hasRoutedContent() && ctx.getRoutedContent().contentLink.guidValue === c.contentLink.guidValue)
-                    setStartPage(ctx.getRoutedContent() as CmsHomePageData)
-                else
-                    setStartPage(c as CmsHomePageData | null)
-            })
-            .catch(() => setStartPage(null));
-    }, []);
+        settingsService.getContainer<LayoutSettings>('LayoutSettings').then(x => setLayoutSettings(x));
+    }, [ props.currentLanguage ]);
 
-    // Listen to content updates
-    useEffect(() => {
-        if (!startPage) return;
-        const onContentPatched = (link : Taxonomy.ContentLink, oldItem : Taxonomy.IContent, newItem : Taxonomy.IContent) => {
-            if (ctx.isDebugActive()) console.log('MoseyLayout updating StartPage...', ctx, startPage, newItem);
-            if (!startPage) return;
-            if (link.guidValue === startPage.contentLink.guidValue) setStartPage(newItem as CmsHomePageData);
-        };
-        repo.addListener('afterPatch', onContentPatched);
-        return () => repo.removeListener('afterPatch', onContentPatched);
-    }, [ startPage ]);
-
-    if (!startPage) {
+    if (!layoutSettings) {
         return <div className="mosey-layout">
             <Helmet>
-                <title>Mosey Capital</title>
+                <title>Frontline Services</title>
                 <link rel="shortcut icon" href="/spaview/app.html.spa/favicon.ico" type="image/x-icon" />
             </Helmet>
             <Placeholder style={ { width: '100vw', height: '253px' } } >Header</Placeholder>
@@ -53,12 +33,19 @@ export const MoseyLayout : FunctionComponent<Layout.Props> = (props) => {
     }
     return <div className="mosey-layout">
         <Helmet>
-            <title>Mosey Capital</title>
+            <title>Frontline Services</title>
             <link rel="shortcut icon" href="/spaview/app.html.spa/favicon.ico" type="image/x-icon" />
         </Helmet>
-        <Header context={ ctx } path={ pathname } startPage={ startPage } />
+        <Header settings={ layoutSettings } />
+        <NavBar settings={ layoutSettings } />
         { props.children }
-        <Footer context={ ctx } startPage={ startPage } />
+        <Footer settings={ layoutSettings } />
     </div>
 }
-export default MoseyLayout;
+
+export const ConnectedMoseyLayout = connect((state : State.CmsAppState, ownProps : MoseyLayoutProps) => {
+    const propsFromState = state.OptiContentCloud || {}
+    return { ...ownProps, ...propsFromState }
+})(MoseyLayout);
+
+export default ConnectedMoseyLayout;

@@ -7,6 +7,8 @@
 *.vspscc
 *config.artgri-pc.yml
 *.orig
+*.mdf
+*.ldf
 tmp
 node_modules
 .sass-cache

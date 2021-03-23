@@ -32,7 +32,7 @@ export default class StandardPage extends Components.Page<StandardPageData>
                         <Components.Property iContent={this.props.data} field="mainBody" context={this.props.context} />
                     </div>
                 </div>
-                <Components.ContentArea context={ this.props.context } data={ this.props.data.mainContentArea } />
+                <Components.ContentArea context={ this.props.context } data={ this.props.data.mainContentArea } propertyName="mainContentArea" />
             </div>,
         ]
     } 

@@ -61,7 +61,15 @@ module.exports = (env) => {
                     use: [{ loader: EpiWebpack.EmptyLoader }]
                 },
                 {
+                    test: /\.(png|jpg|jpeg|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                    use: [{ loader: EpiWebpack.EmptyLoader }]
+                },
+                {
                     test: /\.(s[ca]ss)$/,
+                    use: [{ loader: EpiWebpack.EmptyLoader }]
+                },
+                {
+                    test: /\.css$/,
                     use: [{ loader: EpiWebpack.EmptyLoader }]
                 }
             ]

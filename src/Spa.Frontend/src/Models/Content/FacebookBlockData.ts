@@ -49,6 +49,20 @@ export default interface FacebookBlockData extends Taxonomy.IContent {
      */
     accountName: ContentDelivery.StringProperty
 
+    /**
+     * Width
+     *
+     * No description available
+     */
+    width: ContentDelivery.NumberProperty
+
+    /**
+     * Height
+     *
+     * No description available
+     */
+    height: ContentDelivery.NumberProperty
+
 }
 
 /**
@@ -68,6 +82,8 @@ export class FacebookBlockType extends Taxonomy.AbstractIContent<FacebookBlockDa
         'backgroundColor': 'LongString',
         'blockOpacity': 'FloatNumber',
         'accountName': 'LongString',
+        'width': 'Number',
+        'height': 'Number',
     }
 
     /**
@@ -111,5 +127,19 @@ export class FacebookBlockType extends Taxonomy.AbstractIContent<FacebookBlockDa
      * No description available
      */
     public get accountName() : FacebookBlockData["accountName"] { return this.getProperty("accountName"); }
+
+    /**
+     * Width
+     *
+     * No description available
+     */
+    public get width() : FacebookBlockData["width"] { return this.getProperty("width"); }
+
+    /**
+     * Height
+     *
+     * No description available
+     */
+    public get height() : FacebookBlockData["height"] { return this.getProperty("height"); }
 
 }

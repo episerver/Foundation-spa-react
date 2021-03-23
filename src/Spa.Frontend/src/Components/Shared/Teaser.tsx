@@ -1,11 +1,13 @@
 import React, { ReactNode, FunctionComponent } from "react";
 import { Core, Components, Services, Taxonomy, useEpiserver } from "@episerver/spa-core";
-import IContentWithTeaser, { isIContentWithTeaser } from 'app/Models/IContentWithTeaser';
+import * as IContentWithTeaserNS from 'app/Models/IContentWithTeaser';
 
 import './Teaser.scss';
 
+export import isIContentWithTeaser = IContentWithTeaserNS.isIContentWithTeaser;
+
 export interface TeaserProps {
-    content: IContentWithTeaser
+    content: IContentWithTeaserNS.default
     /**
      * @deprecated
      */
@@ -22,7 +24,7 @@ export const Teaser : FunctionComponent<TeaserProps> = (props) =>
 
     // Determine classes
     const myClassName = `teaser ${ props.className }`;
-    const ratioClass : string = props.content.teaserRatio?.value ? `r-${ props.content.teaserRatio.value }` : ''; 
+    const ratioClass : string = props.content.teaserRatio?.value ? `r-${ props.content.teaserRatio.value.replace(":","-") }` : ''; 
     const contentClasses : Array<string> = ['teaser-content','p-3','d-flex','flex-column'];
     const contentTextClasses : Array<string> = [];
 
@@ -61,7 +63,7 @@ export const Teaser : FunctionComponent<TeaserProps> = (props) =>
     // Build teaser
     const button : ReactNode = renderButton(props.content);
     const body : ReactNode = props.content.teaserText?.value ? <p className={ contentTextClasses.join(' ') }>{ props.content.teaserText.value }</p> : null;
-    const container = <div className={ ratioClass} >
+    const container = <div className={ ratioClass } >
         <Components.EpiserverContent contentLink={ teaserBackground } context={ ctx } expandedValue={ teaserBackgroundExpanded } className="d-cover" />
         <div className={ contentClasses.join(' ') }>
             <div className={`teaser-header ${ contentTextClasses.join(' ') }`}>{ title }</div>
@@ -81,7 +83,7 @@ export const Teaser : FunctionComponent<TeaserProps> = (props) =>
 }
 export default Teaser;
 
-const renderButton : (teaser: IContentWithTeaser) => ReactNode | null = (teaser) =>
+const renderButton : (teaser: IContentWithTeaserNS.default) => ReactNode | null = (teaser) =>
 {
     if (!teaser.teaserButtonText?.value) {
         return null;

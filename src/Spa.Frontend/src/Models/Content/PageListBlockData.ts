@@ -78,11 +78,11 @@ export default interface PageListBlockData extends Taxonomy.IContent {
     sortOrder: ContentDelivery.NumberProperty
 
     /**
-     * Root
+     * Roots
      *
      * No description available
      */
-    root: ContentDelivery.ContentReferenceProperty
+    roots: ContentDelivery.ContentAreaProperty
 
     /**
      * Filter by page type
@@ -113,21 +113,21 @@ export default interface PageListBlockData extends Taxonomy.IContent {
     template: ContentDelivery.StringProperty
 
     /**
-     * Preview option (not available in the Grid template)
+     * Preview option (only available in 'Image on the top' templates)
      *
      * No description available
      */
     previewOption: ContentDelivery.StringProperty
 
     /**
-     * Overlay color (hex or rgba)
+     * Overlay color (only for Card template)
      *
      * Apply for Card template
      */
     overlayColor: ContentDelivery.StringProperty
 
     /**
-     * Overlay text color (hex or rgba)
+     * Overlay text color (only for Card template)
      *
      * Apply for Card template
      */
@@ -156,7 +156,7 @@ export class PageListBlockType extends Taxonomy.AbstractIContent<PageListBlockDa
         'includeTeaserText': 'Boolean',
         'count': 'Number',
         'sortOrder': 'Number',
-        'root': 'PageReference',
+        'roots': 'ContentArea',
         'pageTypeFilter': 'PageType',
         'categoryListFilter': 'ContentReferenceList',
         'recursive': 'Boolean',
@@ -237,11 +237,11 @@ export class PageListBlockType extends Taxonomy.AbstractIContent<PageListBlockDa
     public get sortOrder() : PageListBlockData["sortOrder"] { return this.getProperty("sortOrder"); }
 
     /**
-     * Root
+     * Roots
      *
      * No description available
      */
-    public get root() : PageListBlockData["root"] { return this.getProperty("root"); }
+    public get roots() : PageListBlockData["roots"] { return this.getProperty("roots"); }
 
     /**
      * Filter by page type
@@ -272,21 +272,21 @@ export class PageListBlockType extends Taxonomy.AbstractIContent<PageListBlockDa
     public get template() : PageListBlockData["template"] { return this.getProperty("template"); }
 
     /**
-     * Preview option (not available in the Grid template)
+     * Preview option (only available in 'Image on the top' templates)
      *
      * No description available
      */
     public get previewOption() : PageListBlockData["previewOption"] { return this.getProperty("previewOption"); }
 
     /**
-     * Overlay color (hex or rgba)
+     * Overlay color (only for Card template)
      *
      * Apply for Card template
      */
     public get overlayColor() : PageListBlockData["overlayColor"] { return this.getProperty("overlayColor"); }
 
     /**
-     * Overlay text color (hex or rgba)
+     * Overlay text color (only for Card template)
      *
      * Apply for Card template
      */

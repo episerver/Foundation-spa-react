@@ -10,7 +10,6 @@ using System.Web.Http.ValueProviders;
 using EPiServer.ContentApi.Core.Internal;
 using System.Linq;
 using System.Globalization;
-using Foundation.Cms.Extensions;
 using Foundation.ContentDelivery.Models;
 
 namespace Foundation.ContentDelivery.Controller
@@ -52,18 +51,15 @@ namespace Foundation.ContentDelivery.Controller
         private readonly ISiteDefinitionResolver _siteDefinitionResolver;
         private readonly IUrlResolver _urlResolver;
         private readonly ISiteDefinitionRepository _siteDefinitionRepository;
-        private readonly IViewModelSerializer _viewModelSerializer;
 
         public ContentRouteApiController(
             ISiteDefinitionResolver siteDefinitionResolver, 
             IUrlResolver urlResolver, 
-            ISiteDefinitionRepository siteDefinitionRepository,
-            IViewModelSerializer viewModelSerializer
+            ISiteDefinitionRepository siteDefinitionRepository
         ) {
             _siteDefinitionResolver = siteDefinitionResolver;
             _urlResolver = urlResolver;
             _siteDefinitionRepository = siteDefinitionRepository;
-            _viewModelSerializer = viewModelSerializer;
         }
 
         [HttpGet]

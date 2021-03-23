@@ -5,6 +5,7 @@ using EPiServer.ContentApi.Core.Security.Internal;
 using EPiServer.Core;
 using EPiServer.ServiceLocation;
 using EPiServer.Web;
+using EPiServer.Web.Routing;
 using Foundation.ContentDelivery.Models;
 using Foundation.ContentDelivery.Models.Responses;
 using System;
@@ -65,7 +66,7 @@ namespace Foundation.ContentDelivery.Controller
         [HttpGet]
         [HttpPost]
         public async Task<IHttpActionResult> GetContent(
-            int contentReference,
+            string contentReference,
             [ValueProvider(typeof(AcceptLanguageHeaderValueProviderFactory))] List<string> languages)
         {
             return await GetContent(contentReference, "index", languages);
@@ -99,7 +100,7 @@ namespace Foundation.ContentDelivery.Controller
         [HttpGet]
         [HttpPost]
         public async Task<IHttpActionResult> GetContent(
-            int contentReference,
+            string contentReference,
             string controllerAction,
             [ValueProvider(typeof(AcceptLanguageHeaderValueProviderFactory))] List<string> languages)
         {
