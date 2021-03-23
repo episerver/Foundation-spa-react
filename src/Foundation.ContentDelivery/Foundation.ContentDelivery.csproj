@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <Compile Remove="Controller\CalendarBlockController.cs" />
+    <Compile Remove="Controller\ContentRouteApiController.cs" />
     <Compile Remove="Controller\DefaultPreviewModel.cs" />
     <Compile Remove="Controller\PageListBlockController.cs" />
     <Compile Remove="Controller\RssReaderBlockController.cs" />
