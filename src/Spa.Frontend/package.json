@@ -18,7 +18,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@episerver/foundation-settings": "file:lib/foundation-settings",
-    "@episerver/spa-core": "git+https://github.com/episerver/foundation-lib-spa-core.git#0.1.0",
+    "@episerver/spa-core": "github:episerver/foundation-lib-spa-core#Develop",
     "@fullcalendar/daygrid": "^5.4.0",
     "@fullcalendar/list": "^5.4.0",
     "@fullcalendar/react": "^5.4.0",
@@ -43,7 +43,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@episerver/webpack": "git+https://github.com/episerver/foundation-lib-spa-webpack.git#0.1.0",
+    "@episerver/webpack": "github:episerver/foundation-lib-spa-webpack#0.1.2",
     "@fortawesome/fontawesome-free": "^5.15.2",
     "@types/bootstrap": "^4.6.0",
     "@types/html-entities": "^1.2.16",
