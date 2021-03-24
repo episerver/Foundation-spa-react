@@ -98,5 +98,3 @@ src/License.config
 src/Foundation/License.config
 src/Foundation/find.config
 src/Foundation/connectionStrings.config
-src/Foundation/appSettings.config
-src/Foundation/appSettings.debug.config
