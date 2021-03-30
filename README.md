@@ -20,6 +20,7 @@ You can request a demo of the project by one of our Episerver experts on [Get a 
   - [IIS settings](#iis-settings)
 - [Installation](#installation)
 - [Troubleshooting](#troubleshooting)
+  - [General Issues](#general-issues)
   - [The installation fails](#the-installation-fails)
   - [The site does not start](#the-site-does-not-start)
 - [Contributing](#contributing)
@@ -126,34 +127,31 @@ Or clone project using Git
 •	gulp Saas task
 •	Build solution
 •	Install Databases
-•	Create two application pools
-•	Create two websites
+•	Create an application pool
+•	Create a website
 •	Update host file
 •	Copy License file
-•	create connectionstrings files
+•	Create connectionstrings files
+•	Set the authentication to the default admin user, build and deploy the Spa.Frontend (Note:In production you will want to lock down the Foundation.SpaViewEngine.Controllers.DeployFiles API to an authenticated user)
 •	Start the site to finish setup in browser
 ```
 ![Build progress](https://i.ibb.co/GvZBcYY/Build-Progress.png)
 
-5.	When the installation is finished, a setup page is opened in your browser. If it does, it will most likely result in a 500 error due to keys missing
-6.  Modify src/Foundation/find.config to have your Search & Navigation Index information present
-8.  Enter the URL http://_yourdomainname_/setup manually.
-9.	If the setup page throws an error, open your host file, found under **C:\Windows\System32\drivers\etc**, and add the two domain names you entered during the installation. Reload the page in your browser.
+5. Running the setup command will open the application url in the default browser
+
+## Troubleshooting
+### General issues
+* Modify src/Foundation/find.config to have your Search & Navigation Index information present
+*	If the setup page throws an error, open your host file, found under **C:\Windows\System32\drivers\etc**, and add the domain name you entered during the installation. Reload the page in your browser.
 ![Example host file](https://i.ibb.co/Ss79b55/Host-File-Example.png)
-10.  Enter the URL http://_yourdomainname_/episerver/cms manually.
-    -  Under CMS/Admin, make sure at least one account has the rights to the function right **DeploySpa** and you know the credentials
-11. Open a terminal/powershell and navigate to the src/Spa.Frontend folder, run the following commands to deploy the first frontend version
+* To confirm that the frontend is configured correctly:
+  Open a terminal/powershell and navigate to the src/Spa.Frontend folder, run the following commands to deploy the first frontend version
     -  npm run-script login
     -  npm run-script build
     -  Restart the website
-
-12.	Log in with user: **admin@example.com** and password: **store** to access the Episerver user interface.  
- **_Note:_** A **resetup.cmd** file has been created in your project which you can run to re-install the database.
-
-13. Developer licenses for evaluation purposes can be obtained from the [Episerver License Center](https://license.episerver.com/). Place the **License.config** file in your webroot. 
-14. **Building a new site**: Adjust the git repository to your own and .gitignore to include some of the configuration in the repository.
-
-## Troubleshooting
+* If you experience difficulty logging in using /episerver/cms try using the path util/login.aspx and then try /episerver/cms again.
+* Developer licenses for evaluation purposes can be obtained from the [Episerver License Center](https://license.episerver.com/). Place the **License.config** file in your webroot. 
+* If you are **Building a new site**: Adjust the git repository to your own and .gitignore to include some of the configuration in the repository.
 ### The installation fails
 * Check that you have full access rights to the project folder.
 * Check that you meet [the system requirements](#system-requirements).

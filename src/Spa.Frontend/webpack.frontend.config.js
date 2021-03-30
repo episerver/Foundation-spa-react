@@ -119,7 +119,7 @@ module.exports = (env) => {
                             loader: 'resolve-url-loader',
                             options: {
                                 debug: true,
-                                root: outPath,
+                                //root: outPath,
                                 sourceMap: true
                             }
                         }

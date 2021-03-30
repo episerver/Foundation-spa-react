@@ -40,7 +40,7 @@ namespace Foundation.SpaViewEngine.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> DeployFiles()
         {
-            if (!PrincipalInfo.Current.IsPermitted(SpaViewEnginePermissions.DeploySpa)) return NotFound();
+           // if (!PrincipalInfo.Current.IsPermitted(SpaViewEnginePermissions.DeploySpa)) return NotFound();
             HttpRequestMessage request = this.Request;
             if (!request.Content.IsMimeMultipartContent())
             {
