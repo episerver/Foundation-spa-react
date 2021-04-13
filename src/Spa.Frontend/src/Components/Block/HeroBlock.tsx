@@ -1,7 +1,6 @@
 import React, { CSSProperties, ReactNode } from 'react';
 import { Components, ComponentTypes } from '@episerver/spa-core';
 import HeroBlockData from 'app/Models/Content/HeroBlockData';
-import './HeroBlock.scss';
 
 export default class HeroBlock extends ComponentTypes.AbstractComponent<HeroBlockData> {
 
