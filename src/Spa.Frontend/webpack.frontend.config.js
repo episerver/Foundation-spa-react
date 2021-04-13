@@ -37,6 +37,8 @@ module.exports = (env) => {
     const outPath       = webPath + 'spaview/' + bundle + '/';
     const distPath      = path.join(__dirname, 'dist', bundle);
 
+    console.log("Starting a "+ ( forProduction ? 'production' : 'development' )+" build");
+
     const webpackConfig = {
         entry: path.resolve(srcPath,'index.tsx'),
         target: 'web',
@@ -119,7 +121,6 @@ module.exports = (env) => {
                             loader: 'resolve-url-loader',
                             options: {
                                 debug: true,
-                                root: outPath,
                                 sourceMap: true
                             }
                         }
@@ -225,12 +226,12 @@ module.exports = (env) => {
                 title: manifest.name,
                 filename: 'index.html',
                 packagePath: outPath,
-                minify: {
+                minify: forProduction ? {
                     removeComments: false,
                     preserveLineBreaks: true,
                     collapseWhitespace: false,
                     collapseBooleanAttributes: true
-                }
+                } : false
             }),
 
             new WebpackManifestPlugin({

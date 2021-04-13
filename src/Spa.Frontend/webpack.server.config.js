@@ -75,13 +75,13 @@ module.exports = (env) => {
             ]
         },
         optimization: {
-            minimize: true,
-            minimizer: [new TerserPlugin({
+            minimize: forProduction,
+            minimizer: forProduction ? [new TerserPlugin({
                 terserOptions: {
                     keep_fnames: true,
                     keep_classnames: true
                 }
-            })],
+            })] : [],
         },
         plugins: [
             // Ensure we run browser logic

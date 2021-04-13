@@ -5,9 +5,9 @@ using EPiServer.ContentApi.Core.Security.Internal;
 using EPiServer.Core;
 using EPiServer.ServiceLocation;
 using EPiServer.Web;
-using EPiServer.Web.Routing;
 using Foundation.ContentDelivery.Models;
 using Foundation.ContentDelivery.Models.Responses;
+using Foundation.SpaViewEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,6 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.ValueProviders;
 using System.Web.Routing;
-using MvcActionResult = System.Web.Mvc.ActionResult;
 using MvcController = System.Web.Mvc.Controller;
 using MvcControllerContext = System.Web.Mvc.ControllerContext;
 
@@ -33,6 +32,7 @@ namespace Foundation.ContentDelivery.Controller
         protected readonly ContentLoaderService _contentLoader;
         protected readonly ITemplateResolver _templateResolver;
         protected readonly UrlResolverService _urlResolverService;
+        protected readonly ResultModelResolver _resultModelResolver;
         protected IServiceLocator ServiceLocator
         {
             get
@@ -44,12 +44,14 @@ namespace Foundation.ContentDelivery.Controller
         public ControllerActionApiController(
             ContentLoaderService contentLoaderService,
             ITemplateResolver templateResolver,
-            UrlResolverService urlResolverService
+            UrlResolverService urlResolverService,
+            ResultModelResolver resultModelResolver
         )
         {
             _contentLoader = contentLoaderService;
             _templateResolver = templateResolver;
             _urlResolverService = urlResolverService;
+            _resultModelResolver = resultModelResolver;
         }
 
         [Route("{contentGuid:guid}")]
@@ -148,14 +150,7 @@ namespace Foundation.ContentDelivery.Controller
             var result = method.Invoke(controller, parameters);
 
             //Await response if needed
-            if (result is Task<MvcActionResult> taskResult)
-            {
-                result = await taskResult;
-            }
-            else if (result is Task<System.Web.Mvc.ViewResult> taskViewResult)
-            {
-                result = await taskViewResult;
-            }
+            result = await _resultModelResolver.ResultAwaiter(result);
 
             //Transform
             if (result is System.Web.Mvc.HttpStatusCodeResult)
@@ -183,19 +178,8 @@ namespace Foundation.ContentDelivery.Controller
                 Language = language
             };
 
-            //Get data
-            if (result is System.Web.Mvc.PartialViewResult)
-            {
-                model.Data = ((System.Web.Mvc.PartialViewResult)result).Model;
-            }
-            else if (result is System.Web.Mvc.ViewResult)
-            {
-                model.Data = ((System.Web.Mvc.ViewResult)result).Model;
-            }
-            else if (result is System.Web.Mvc.JsonResult)
-            {
-                model.Data = ((System.Web.Mvc.JsonResult)result).Data;
-            }
+            //Retrieve data
+            if (_resultModelResolver.TryResolve(result, out var viewModel)) model.Data = viewModel;
 
             //Return model
             return model;
@@ -223,7 +207,7 @@ namespace Foundation.ContentDelivery.Controller
             if (allParametersPrimitiveOrContentType)
             {
                 var requestContent = await GetRequestBody();
-                var requestData = String.IsNullOrWhiteSpace(requestContent) ?
+                var requestData = string.IsNullOrWhiteSpace(requestContent) ?
                     new Dictionary<string, object>() :
                     Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(requestContent);
 
@@ -241,7 +225,7 @@ namespace Foundation.ContentDelivery.Controller
                         {
                             case "Int32":
                                 int intValue;
-                                if (Int32.TryParse(requestData[info.Name].ToString(), out intValue))
+                                if (int.TryParse(requestData[info.Name].ToString(), out intValue))
                                 {
                                     parameters.Add(intValue);
                                     continue;
@@ -252,7 +236,7 @@ namespace Foundation.ContentDelivery.Controller
                                 continue;
                             case "Int64":
                                 long longValue;
-                                if (Int64.TryParse(requestData[info.Name].ToString(), out longValue))
+                                if (long.TryParse(requestData[info.Name].ToString(), out longValue))
                                 {
                                     parameters.Add(longValue);
                                     continue;

@@ -20,6 +20,13 @@ namespace Foundation.Cms.Settings
         ContentReference GlobalSettingsRoot { get; set; }
         ConcurrentDictionary<Guid, Dictionary<Type, object>> SiteSettings { get; }
         T GetSiteSettings<T>(Guid? siteId = null);
+
+        /// <summary>
+        /// Simplified method to retrieve site settings for the current site from the service, used when accessing the settings from within JavaScript.
+        /// </summary>
+        /// <param name="typeName">The name (without namespace) of the settings type to fetch</param>
+        /// <returns>The stored site settings</returns>
+        SettingsBase GetSiteSettings(string typeName);
         void InitializeSettings();
         void UnintializeSettings();
         void UpdateSettings(Guid siteId, IContent content);
@@ -308,6 +315,25 @@ namespace Foundation.Cms.Settings
                 return Guid.Empty;
             }
             return site.Id;
+        }
+
+        public SettingsBase GetSiteSettings(string typeName)
+        {
+            var siteId = ResolveSiteId();
+            if (siteId == Guid.Empty)
+                return null;
+
+            var settingGroups = SiteSettings.Where(x => x.Key == siteId).SelectMany(x => x.Value).Where(x => x.Key.Name.Equals(typeName));
+            if (settingGroups.Count() == 0)
+                return null;
+
+            if (settingGroups.Count() > 1)
+                throw new Exception("Multiple setting groups match this name");
+
+            if (settingGroups.First().Value is SettingsBase contentData)
+                return contentData;
+
+            return null;
         }
     }
 }

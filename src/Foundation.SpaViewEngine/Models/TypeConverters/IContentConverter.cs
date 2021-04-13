@@ -1,10 +1,13 @@
 ﻿
 using EPiServer.ContentApi.Core.Serialization;
 using EPiServer.Core;
+using EPiServer.ServiceLocation;
 using Newtonsoft.Json;
 
-namespace Foundation.ContentDelivery.Models.TypeConverters
+namespace Foundation.SpaViewEngine.Models.TypeConverters
 {
+    [ServiceConfiguration(typeof(IContentConverter), Lifecycle = ServiceInstanceScope.Singleton)]
+    [ServiceConfiguration(typeof(SpaViewJsonConverter), Lifecycle = ServiceInstanceScope.Singleton)]
     public class IContentConverter : ContentApiTypeConverter<IContent>
     {
         protected IContentModelMapper ContentModelMapper { get; }

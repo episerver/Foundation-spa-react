@@ -7,12 +7,9 @@ export default class HeroBlock extends ComponentTypes.AbstractComponent<HeroBloc
 
     public render() : ReactNode
     {
-
-        //console.warn(this.props);
-
-        let background = this.props.data.mainBackgroundVideo.value == null ? 
-                                this.props.data.backgroundImage : 
-                                this.props.data.mainBackgroundVideo;
+        let background = this.props.data.mainBackgroundVideo?.value ? 
+                                this.props.data.mainBackgroundVideo :
+                                this.props.data.backgroundImage;
 
         let cssClasses : Array<string> = [];
         if (this.props.data.margin?.value) cssClasses.push(this.props.data.margin.value);
@@ -23,9 +20,9 @@ export default class HeroBlock extends ComponentTypes.AbstractComponent<HeroBloc
         if(this.props.data.callout.margin?.value) calloutClasses.push(this.props.data.callout.margin.value);
         if(this.props.data.callout.padding?.value) calloutClasses.push(this.props.data.callout.padding.value);
 
+        
         let innerContainerStyles : CSSProperties = {};
-        //console.log(this.props.data.blockRatio);
-        switch(this.props.data.blockRatio.value){
+        switch(this.props.data.blockRatio?.value || ''){
             case '5:1':
                 innerContainerStyles.paddingBottom = '20%';
                 break;
@@ -60,27 +57,28 @@ export default class HeroBlock extends ComponentTypes.AbstractComponent<HeroBloc
         }
 
         let overlayStyles : any = {};
-        overlayStyles.backgroundColor = this.props.data.backgroundColor.value;
-        overlayStyles.opacity = this.props.data.blockOpacity.value;
-
-        //console.log(overlayStyles);
+        overlayStyles.backgroundColor = this.props.data.backgroundColor?.value;
+        overlayStyles.opacity = this.props.data.blockOpacity?.value;
 
         let screenWidthStyles : any = {};
-        screenWidthStyles.justifyContent = this.props.data.callout.calloutPosition.value;
+        screenWidthStyles.justifyContent = this.props.data.callout.calloutPosition?.value;
 
         const calloutStyles : any = {
-            color: this.props.data.callout.calloutTextColor.value,
-            textAlign: this.props.data.callout.calloutContentAlignment.value,
-            backgroundColor: this.props.data.callout.backgroundColor.value
+            color: this.props.data.callout.calloutTextColor?.value,
+            textAlign: this.props.data.callout.calloutContentAlignment?.value,
+            backgroundColor: this.props.data.callout.backgroundColor?.value
         };
 
-
         let blockId : string = 'hero-block-' + this.props.data.contentLink.id;
+
+        const bgComponent = background?.value ? 
+                <Components.EpiserverContent context={this.props.context} contentLink={ background.value } className="d-cover" expandedValue={ background.expandedValue } /> :
+                null;
 
         return <div className={cssClasses.join(' ')} id={blockId} data-blockid={this.props.data.contentLink.id} data-name={this.props.data.name}>
             <div className="hero-block" style={innerContainerStyles}>
                 <div className="hero-block__image">
-                    <Components.EpiserverContent context={this.props.context} contentLink={ background.value } className="d-cover" expandedValue={ background.expandedValue } />
+                    { bgComponent }       
                 </div>
             
                 <div className="hero-block__overlay" style={overlayStyles}/>
@@ -90,7 +88,7 @@ export default class HeroBlock extends ComponentTypes.AbstractComponent<HeroBloc
                             <div className="hero-block-link" onClick={this.goToLink.bind(this)}></div>
                         }
                         <div className={calloutClasses.join(' ')} style={calloutStyles}>
-                            <div className="hero-block__callout-content"  dangerouslySetInnerHTML={ this.htmlObject(this.props.data.callout.calloutContent.value) }></div>
+                            <div className="hero-block__callout-content"  dangerouslySetInnerHTML={ this.htmlObject(this.props.data.callout.calloutContent?.value) }></div>
                         </div>
                     </div>
                 </div>

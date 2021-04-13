@@ -40,16 +40,15 @@ namespace Foundation.SpaViewEngine.SpaContainer
             return _contentLoader.Service.GetChildren<SpaMedia>(folderReference);
         }
 
-        public static SpaMedia GetDeploymentItem(string name)
+        public static SpaMedia GetDeploymentItem(string fileName)
         {
             var items = GetDeploymentItems();
-            return items.Where(x => x.Name == name).DefaultIfEmpty(null).FirstOrDefault();
+            return items.Where(x => x.Name == fileName).DefaultIfEmpty(null).FirstOrDefault();
         }
 
-        public static string GetItemFromDeploymentAsString(string fileName, string filePath)
+        public static string GetItemFromDeploymentAsString(SpaMedia file, string filePath)
         {
-            var item = GetDeploymentItem(fileName);
-            var document = GetDocumentFromContentMedia(item, filePath);
+            var document = GetDocumentFromContentMedia(file, filePath);
 
             if (document == null) return null;
             using (var stream = document.Open())
@@ -60,6 +59,7 @@ namespace Foundation.SpaViewEngine.SpaContainer
                 }
             }
         }
+        public static string GetItemFromDeploymentAsString(string fileName, string filePath) => GetItemFromDeploymentAsString(GetDeploymentItem(fileName), filePath);
 
         public static byte[] GetItemFromDeploymentAsBytes(SpaMedia content, string filePath)
         {
@@ -84,11 +84,6 @@ namespace Foundation.SpaViewEngine.SpaContainer
             return fileBytes;
         }
 
-        public static bool HasItemInDeployment(SpaMedia content, string filePath)
-        {
-            return GetDocumentFromContentMedia(content, filePath) != null;
-        }
-
         public static Stream GetItemFromDeploymentAsStream(SpaMedia content, string filePath)
         {
             var document = GetDocumentFromContentMedia(content, filePath);
@@ -107,13 +102,13 @@ namespace Foundation.SpaViewEngine.SpaContainer
         private static ZipArchiveEntry GetDocumentFromContentMedia(SpaMedia content, string filePath)
         {
             if (content == null) return null;
-
-            var blob = content.BinaryData;
-            if (blob == null) return null;
-
-            var source = new ZipArchive(blob.OpenRead(), ZipArchiveMode.Read);
-            var document = source.GetEntry(filePath);
-            return document;
+            var entries = GetAssetsFromContentMedia(content);
+            if (entries == null) return null;
+            return entries.Where(e => e.FullName.Equals(filePath)).FirstOrDefault();
         }
+
+        public static bool HasItemInDeployment(SpaMedia content, string filePath) => GetAssetsFromContentMedia(content).Any(file => file.FullName.Equals(filePath));
+
+        public static bool HasItemInDeployment(string content, string filePath) => HasItemInDeployment(GetDeploymentItem(content), filePath);
     }
 }

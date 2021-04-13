@@ -59,10 +59,13 @@ const LinksListBlock : React.FunctionComponent<LinksListBlockProps> = (props) =>
         return <a { ...linkProps }>{link.text}</a>
     }
 
+    const links : JSX.Element[] = [];
+    (props.settings[props.listProp] as ContentDelivery.LinkListProperty)?.value.forEach(x => links.push(transformLink(x)));
+
     return <div className={ props.className }>
         <h5 className="footer__heading"><Components.Property iContent={ props.settings } field={ props.titleProp }/></h5>
         <nav className="nav flex-column">
-            { (props.settings[props.listProp] as ContentDelivery.LinkListProperty).value.map(x => transformLink(x)) }
+            { links }
         </nav>
     </div>
 }

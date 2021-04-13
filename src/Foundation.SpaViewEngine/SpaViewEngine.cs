@@ -1,59 +1,63 @@
-﻿using EPiServer.Core;
-using Foundation.SpaViewEngine.Configuration;
+﻿using EPiServer.ServiceLocation;
+using Foundation.SpaViewEngine.Infrastructure;
 using Foundation.SpaViewEngine.SpaContainer;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace Foundation.SpaViewEngine
 {
     public class SpaViewEngine : IViewEngine
     {
-        protected SpaSettings Settings { get; set; }
+        private SpaView _sharedView;
 
-        public SpaViewEngine(SpaSettings settings) => Settings = settings;
+        private readonly SpaSettings _spaSettings;
 
-        public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache) => CreateSpaView(controllerContext);
-
-        public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache) => CreateSpaView(controllerContext);
-        
-
-        private ViewEngineResult CreateSpaView(ControllerContext controllerContext)
+        protected SpaView SharedView
         {
-            var content = controllerContext.RequestContext.RouteData.DataTokens.FirstOrDefault(x => x.Key.Equals("routedData")).Value as IContent;
-            if (content == null) //Only route iContent, or defined routes
+            get
             {
-                return GetStaticSpaView(controllerContext);
+                if (_sharedView == null) _sharedView = CreateSpaView();
+                return _sharedView;
             }
-
-            var serverJsContents = GetZipAssetString("server:script", "app.server.spa", "server.js");
-            var indexHtmlContents = GetZipAssetString("server:template", "app.html.spa", "index.html");
-
-            if (string.IsNullOrEmpty(serverJsContents) || string.IsNullOrEmpty(indexHtmlContents))
-                return new ViewEngineResult(new List<string>());
-
-            var view = new SpaView(serverJsContents, indexHtmlContents);
-
-            return new ViewEngineResult(view, this);
         }
 
-        private ViewEngineResult GetStaticSpaView(ControllerContext controllerContext)
+        public SpaViewEngine(SpaSettings spaSettings)
         {
-            if (controllerContext.HttpContext.Request.Url.ToString().Contains("Spa"))
-                return new ViewEngineResult(new List<string>());
-            return new ViewEngineResult(new List<string>());
+            _spaSettings = spaSettings;
+        }
+
+        public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache) => CreateSpaView(controllerContext, partialViewName, useCache);
+
+        public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache) => CreateSpaView(controllerContext, viewName + "." + masterName, useCache);
+
+        private ViewEngineResult CreateSpaView(ControllerContext controllerContext, string viewName, bool useCache)
+        {
+            if (controllerContext.RequestContext.TryGetRoutedContent(out _))
+                return new ViewEngineResult(useCache ? SharedView : CreateSpaView(), this);
+            
+            // The SpaViewEngine will only return for iContent (at the moment...)
+            return new ViewEngineResult(new string[] {
+                $"{ SpaViewBlob.BlobUriScheme }://{ _spaSettings.BrowserContainerName }/{ _spaSettings.HtmlTemplateName }/{ viewName }",
+                $"{ SpaViewBlob.BlobUriScheme }://{ _spaSettings.ServerContainerName }/{ _spaSettings.ServerJsName }/{ viewName }"
+            });
+        }
+
+        protected virtual SpaView CreateSpaView() => ServiceLocator.Current.GetInstance<SpaView>(); // SpaView is a transient service, so we'll get a new one every time we invoke this method
+
+        private bool _hasDeployedSpa = false;
+        protected virtual bool HasDeployedSpa
+        {
+            get {
+                if (!_hasDeployedSpa)
+                    _hasDeployedSpa = SpaFolderHelper.HasItemInDeployment(_spaSettings.BrowserContainerName, _spaSettings.HtmlTemplateName) &&
+                                            SpaFolderHelper.HasItemInDeployment(_spaSettings.ServerContainerName, _spaSettings.HtmlTemplateName);
+                return _hasDeployedSpa;
+            }
         }
 
         public void ReleaseView(ControllerContext controllerContext, IView view)
         {
             //Not implemented yet
             //throw new NotImplementedException();
-        }
-
-        private string GetZipAssetString(string configKey, string defaultName, string filePath)
-        {
-            var assetName = Settings.GetConfigValue(configKey, defaultName);
-            return SpaFolderHelper.GetItemFromDeploymentAsString(assetName, filePath);
         }
     }
 }

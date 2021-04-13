@@ -1,4 +1,5 @@
 ﻿using EPiServer.Logging;
+using EPiServer.ServiceLocation;
 
 namespace Foundation.SpaViewEngine.JsInterop
 {
@@ -7,6 +8,7 @@ namespace Foundation.SpaViewEngine.JsInterop
     /// to the Episerver logger. It'll maintain the log level of the original message
     /// pushed to the JavaScript console.
     /// </summary>
+    [ServiceConfiguration(ServiceType = typeof(Console), Lifecycle = ServiceInstanceScope.Singleton)]
     public class Console
     {
         private static readonly ILogger _logger = LogManager.GetLogger();
@@ -16,26 +18,26 @@ namespace Foundation.SpaViewEngine.JsInterop
 
         public void log(params object[] messages)
         {
-            foreach (var message in messages) _logger.Debug(message.ToString());
+            foreach (var message in messages) _logger.Debug(message == null ? "null" : message.ToString());
         }
 
         public void debug(params object[] messages)
         {
-            foreach (var message in messages) _logger.Debug(message.ToString());
+            foreach (var message in messages) _logger.Debug(message == null ? "null" : message.ToString());
         }
         public void info(params object[] messages)
         {
-            foreach (var message in messages) _logger.Information(message.ToString());
+            foreach (var message in messages) _logger.Information(message == null ? "null" : message.ToString());
         }
 
         public void warn(params object[] messages)
         {
-            foreach (var message in messages) _logger.Warning(message.ToString());
+            foreach (var message in messages) _logger.Warning(message == null ? "null" : message.ToString());
         }
 
         public void error(params object[] messages)
         {
-            foreach (var message in messages) _logger.Error(message.ToString());
+            foreach (var message in messages) _logger.Error(message == null ? "null" : message.ToString());
         }
 #pragma warning restore IDE1006
     }

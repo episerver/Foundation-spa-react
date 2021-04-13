@@ -10,9 +10,11 @@
     "clean": "echo \"Clean: not implemented\" && exit 0",
     "start": "npx webpack serve --env EPI_ENV=development --config webpack.dev.config.js",
     "build": "npx webpack --env EPI_ENV=development",
+    "build:development:server": "npx webpack --env EPI_ENV=development --config webpack.server.config.js",
+    "build:development:frontend": "npx webpack --env EPI_ENV=development --config webpack.frontend.config.js",
     "build:production": "npx epi-sync-models -e production && npx webpack --env EPI_ENV=production && npx epi-sync-models -e development",
-    "watch": "webpack --watch --progress --env EPI_ENV=development",
-    "compile": "tsc --pretty --project ./tsconfig.json"
+    "watch": "npx webpack --watch --progress --env EPI_ENV=development",
+    "compile": "npx tsc --pretty --project ./tsconfig.json"
   },
   "author": "Remko Jantzen",
   "license": "Apache-2.0",

@@ -1,56 +1,104 @@
-﻿using EPiServer.Editor;
+﻿using EPiServer.Framework.Cache;
 using EPiServer.ServiceLocation;
 using EPiServer.Web;
+using EPiServer.Framework.Web.Resources;
+using JavaScriptEngineSwitcher.Core;
+using System;
+using System.IO;
+using System.Web.Mvc;
+using Newtonsoft.Json;
+using EPiServer.Logging;
+using Foundation.SpaViewEngine.Infrastructure;
 using Foundation.SpaViewEngine.JsInterop;
 using Foundation.SpaViewEngine.JsInterop.Models;
-using JavaScriptEngineSwitcher.Core;
-using System.IO;
-using System.Text;
-using System.Web;
-using System.Web.Mvc;
+using Foundation.SpaViewEngine.SpaContainer;
+using EPiServer.Core;
 
 namespace Foundation.SpaViewEngine
 {
     public class SpaView : IView
     {
-        protected virtual string ServerJS { get; set; }
+        private static readonly ILogger _logger = LogManager.GetLogger();
+        protected readonly SpaSettings Settings;
+        protected readonly SpaViewCache Cache;
+        protected readonly IContextModeResolver ContextModeResolver;
 
-        protected virtual string TemplateHtml { get; set; }
-
-        protected virtual IJsEngine GetJsEngine() => ServiceLocator.Current.GetInstance<IJsEngine>();
-
-        protected virtual IContextModeResolver contextModeResolver => ServiceLocator.Current.GetInstance<IContextModeResolver>();
-
-        protected virtual string LoadTemplate() => TemplateHtml;
-
-        public SpaView(string serverJs, string templateHtml)
-        {
-            ServerJS = serverJs;
-            TemplateHtml = templateHtml;
+        public SpaView(
+            SpaSettings spaSettings,
+            SpaViewCache spaViewCache,
+            IContextModeResolver contextModeResolver
+        ) {
+            Settings = spaSettings;
+            Cache = spaViewCache;
+            ContextModeResolver = contextModeResolver;
         }
+
+        protected virtual string HtmlTemplate {
+            get
+            {
+                var media = SpaFolderHelper.GetDeploymentItem(Settings.BrowserContainerName);
+                if (media == null) return string.Empty;
+                var key = Cache.CreateCacheKey(Settings.BrowserContainerName + "\\" + Settings.HtmlTemplateName, CacheType.Asset, media);
+                if (Cache.TryGet(key, ReadStrategy.Immediate, out string tpl))
+                    return tpl;
+
+                tpl = SpaFolderHelper.GetItemFromDeploymentAsString(media, Settings.HtmlTemplateName);
+                Cache.Insert(key, tpl, media);
+                return tpl;
+            }
+        }
+
+        protected virtual string ServerJS {
+            get
+            {
+                if (ServerContainer == null) return string.Empty;
+                var key = Cache.CreateCacheKey(Settings.ServerContainerName + "\\" + Settings.ServerJsName, CacheType.Asset, ServerContainer);
+                if (Cache.TryGet(key, ReadStrategy.Immediate, out string js))
+                    return js;
+
+                js = SpaFolderHelper.GetItemFromDeploymentAsString(ServerContainer, Settings.ServerJsName);
+                Cache.Insert(key, js, ServerContainer);
+                return js;
+            }
+        }
+
+        protected virtual SpaMedia ServerContainer => SpaFolderHelper.GetDeploymentItem(Settings.ServerContainerName);
 
         public virtual void Render(ViewContext viewContext, TextWriter writer)
         {
-            SSRResponse response = new SSRResponse();
-            string initialData = "{}";
+            var renderData = new SpaViewRenderData();
+            var cacheKey = Cache.CreateCacheKey(CacheType.RenderData, viewContext.GetRoutedContent());
 
-            // Do not Pre-Render for Edit or Preview Mode, as there're some modules that will brake this
-            if (!contextModeResolver.CurrentMode.EditOrPreview())
+            if (!ContextModeResolver.CurrentMode.EditOrPreview() && !Cache.TryGet(cacheKey, ReadStrategy.Immediate, out renderData))
             {
+                renderData = new SpaViewRenderData();
                 var jsEngine = GetJsEngine();
                 var context = jsEngine.SetViewContext(viewContext);
-                jsEngine.Execute(ServerJS);
-                var result = (string)jsEngine.Evaluate("JSON.stringify(epi.render());");
-                response = Newtonsoft.Json.JsonConvert.DeserializeObject<SSRResponse>(result);
-                initialData = context.ToJson();
+                try
+                {
+                    jsEngine.Execute(ServerJS);
+                    var result = (string)jsEngine.Evaluate("JSON.stringify(epi.render());");
+                    renderData.Response = JsonConvert.DeserializeObject<SSRResponse>(result);
+                }
+                catch (Exception ex)
+                {
+                    if (_logger.IsErrorEnabled())
+                        _logger.Error("Error while executing JavaScript", ex);
+                    renderData.Response.Title = "<title>500: Error while server side rendering</title>";
+                    renderData.Response.Body = ex.GetType().Name + " " + ex.Message;
+                    renderData.IsError = true;
+                }
+                renderData.InitialData = context.AsJson();
+                if (!renderData.IsError) Cache.Insert(cacheKey, renderData, new IContent[] { viewContext.GetRoutedContent(), ServerContainer });
             }
-            writer.Write(ApplyReplacements(LoadTemplate(), response, initialData));
+
+            writer.Write(ApplyReplacements(HtmlTemplate, renderData.Response, renderData.InitialData));
         }
 
         protected virtual string ApplyReplacements(string template, SSRResponse response, string context)
         {
-            var header_resources = EPiServer.Framework.Web.Resources.ClientResources.RenderRequiredResources("header");
-            var footer_resources = EPiServer.Framework.Web.Resources.ClientResources.RenderRequiredResources("footer");
+            var header_resources = ClientResources.RenderRequiredResources("header");
+            var footer_resources = ClientResources.RenderRequiredResources("footer");
 
             return template
                 .Replace("<!--SSR-BODY-->", response.Body)
@@ -66,13 +114,21 @@ namespace Foundation.SpaViewEngine
                 .Replace("<!--FOOTER-RESOURCES-->", footer_resources);
         }
 
-        protected virtual string BuildContext(string context)
+        protected virtual string BuildContext(string context) => "<script type=\"text/javascript\">var __INITIAL__DATA__ = " + context + ";</script>";
+
+        protected virtual IJsEngine GetJsEngine() => ServiceLocator.Current.GetInstance<IJsEngine>();
+
+        private string GetZipAssetString(string configKey, string defaultName, string filePath)
         {
-            var sb = new StringBuilder();
-            sb.Append("<script type=\"text/javascript\">var __INITIAL__DATA__ = ");
-            sb.Append(context);
-            sb.Append(";</script>");
-            return sb.ToString();
+            var assetName = Settings.GetConfigValue(configKey, defaultName);
+            return SpaFolderHelper.GetItemFromDeploymentAsString(assetName, filePath);
         }
+    }
+
+    public class SpaViewRenderData
+    {
+        public virtual bool IsError { get; set; } = false;
+        public virtual SSRResponse Response { get; set; } = new SSRResponse();
+        public virtual string InitialData { get; set; } = "{}";
     }
 }

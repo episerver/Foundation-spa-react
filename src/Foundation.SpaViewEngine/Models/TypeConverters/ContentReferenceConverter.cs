@@ -3,9 +3,10 @@ using EPiServer.ContentApi.Core.Serialization;
 using EPiServer.ServiceLocation;
 using Newtonsoft.Json;
 
-namespace Foundation.ContentDelivery.Models.TypeConverters
+namespace Foundation.SpaViewEngine.Models.TypeConverters
 {
     [ServiceConfiguration(typeof(ContentReferenceConverter), Lifecycle = ServiceInstanceScope.Singleton)]
+    [ServiceConfiguration(typeof(SpaViewJsonConverter), Lifecycle = ServiceInstanceScope.Singleton)]
     public class ContentReferenceConverter : ContentApiTypeConverter<ContentReference>
     {
         protected IContentModelReferenceConverter ContentModelReferenceConverter { get; }

@@ -1,13 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using EPiServer.ServiceLocation;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Foundation.ContentDelivery.Models.TypeConverters
+namespace Foundation.SpaViewEngine.Models.TypeConverters
 {
+    [ServiceConfiguration(typeof(SystemNetIPAddressConverter), Lifecycle = ServiceInstanceScope.Singleton)]
+    [ServiceConfiguration(typeof(SpaViewJsonConverter), Lifecycle = ServiceInstanceScope.Singleton)]
     public class SystemNetIPAddressConverter : ContentApiTypeConverter<IPAddress>
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

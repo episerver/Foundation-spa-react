@@ -13,17 +13,21 @@ import LayoutSettings from 'app/Models/Content/LayoutSettingsData';
 
 type MoseyLayoutProps = Layout.Props & Partial<State.CmsState>
 
+const LayoutSettingsContainer : string = 'LayoutSettings';
+
 export const MoseyLayout : FunctionComponent<MoseyLayoutProps> = (props) => {
     const settingsService = useSettings();
-    const [layoutSettings, setLayoutSettings] = useState<LayoutSettings | null>(null);
+    const [layoutSettings, setLayoutSettings] = useState<LayoutSettings | undefined>(settingsService.getContainerOnServer<LayoutSettings>(LayoutSettingsContainer));
+
+    const language = props.currentLanguage;
     useEffect(() => {
-        settingsService.getContainer<LayoutSettings>('LayoutSettings').then(x => setLayoutSettings(x));
-    }, [ props.currentLanguage ]);
+        settingsService.getContainer<LayoutSettings>(LayoutSettingsContainer).then(x => setLayoutSettings(x));
+    }, [ language ]);
 
     if (!layoutSettings) {
         return <div className="mosey-layout">
             <Helmet>
-                <title>Frontline Services</title>
+                <title>Frontline Services - A fictitious demo company by Optimizely</title>
                 <link rel="shortcut icon" href="/spaview/app.html.spa/favicon.ico" type="image/x-icon" />
             </Helmet>
             <Placeholder style={ { width: '100vw', height: '253px' } } >Header</Placeholder>
@@ -33,7 +37,7 @@ export const MoseyLayout : FunctionComponent<MoseyLayoutProps> = (props) => {
     }
     return <div className="mosey-layout">
         <Helmet>
-            <title>Frontline Services</title>
+            <title>Frontline Services - A fictitious demo company by Optimizely</title>
             <link rel="shortcut icon" href="/spaview/app.html.spa/favicon.ico" type="image/x-icon" />
         </Helmet>
         <Header settings={ layoutSettings } />

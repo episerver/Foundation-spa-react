@@ -15,9 +15,12 @@ export class SettingsInitialization extends Core.BaseInitializableModule {
             throw new Error(`The ${this.name} module requires the Content Repository API to be registered in the container`);
         if (!container.hasService(Core.DefaultServices.ContentDeliveryAPI_V2))
             throw new Error(`The ${this.name} module requires the Content Delivery API to be registered in the container`);
+        if (!container.hasService(Core.DefaultServices.ServerContext))
+            throw new Error(`The ${this.name} module requires the Server Context to be registered in the container`);
         const api = container.getService(Core.DefaultServices.ContentDeliveryAPI_V2);
         const repo = container.getService(Core.DefaultServices.IContentRepository_V2);
-        container.addService(DefaultServices.SettingsApi, new SettingsApi(api, repo));
+        const ctx = container.getService(Core.DefaultServices.ServerContext);
+        container.addService(DefaultServices.SettingsApi, new SettingsApi(api, repo, ctx));
     }
     StartModule(context) {
     }
