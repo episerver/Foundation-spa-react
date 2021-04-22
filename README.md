@@ -132,7 +132,7 @@ Or clone project using Git
 •	Update host file
 •	Copy License file
 •	Create connectionstrings files
-•	Set the authentication to the default admin user, build and deploy the Spa.Frontend (Note:In production you will want to lock down the Foundation.SpaViewEngine.Controllers.DeployFiles API to an authenticated user)
+•	Set the authentication to the default admin user, build and deploy the Spa.Frontend (Note:In production you will want to lock down the Foundation.SpaViewEngine.Controllers.DeployFiles API to only users you determine appropriate.)
 •	Start the site to finish setup in browser
 ```
 ![Build progress](https://i.ibb.co/GvZBcYY/Build-Progress.png)
