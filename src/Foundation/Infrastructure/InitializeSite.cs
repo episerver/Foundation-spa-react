@@ -48,6 +48,8 @@ namespace Foundation.Infrastructure
             _services = context.Services;
             context.ConfigureFoundationCms();
 
+            _services.ConfigureForExternalTemplates();
+            _services.ConfigureForContentDeliveryClient();
             _services.Configure<ContentApiConfiguration>(c =>
             {
                 c.EnablePreviewFeatures = true;

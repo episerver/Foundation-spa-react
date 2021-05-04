@@ -1,9 +1,12 @@
 ﻿using EPiServer.ContentApi.Core.Serialization;
+using EPiServer.Core;
 using EPiServer.Framework.Cache;
 using EPiServer.ServiceLocation;
 using Foundation.SpaViewEngine.Infrastructure;
 using Foundation.SpaViewEngine.JsInterop.Models;
 using Foundation.SpaViewEngine.Models;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Foundation.SpaViewEngine.JsInterop
@@ -26,12 +29,14 @@ namespace Foundation.SpaViewEngine.JsInterop
             ResultModelResolver = resultModelResolver;
         }
 
+        public virtual ServerSideRenderingContext Build(ViewContext context) => Build(context, new IContent[0]);
+
         /// <summary>
         /// Perform the actual construction of the server side rendering context
         /// </summary>
         /// <param name="context">The view for which the context must be constructed</param>
         /// <returns>The context for the JavaScript engine to execute against</returns>
-        public virtual ServerSideRenderingContext Build(ViewContext context)
+        public virtual ServerSideRenderingContext Build(ViewContext context, IEnumerable<IContent> masters)
         {
             var iContent = context.GetRoutedContent();
             var action = string.Empty;
@@ -46,8 +51,8 @@ namespace Foundation.SpaViewEngine.JsInterop
             ssrContext.ContextInfo = context.Controller.GetType().FullName;
             ssrContext.Action = action;
             ssrContext.ActionResponse = context.ViewData.Model;
-            
-            Cache.Insert(cacheKey, ssrContext, iContent);
+
+            Cache.Insert(cacheKey, ssrContext, masters.Append(iContent));
 
             return ssrContext;
         }

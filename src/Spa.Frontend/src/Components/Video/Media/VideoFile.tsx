@@ -6,9 +6,7 @@ export default class VideoFile extends ComponentTypes.AbstractComponent<VideoFil
 {
     public render() : ReactNode | ReactNodeArray | null
     {
-        //console.log(this.props.data);
         let vidUrl = this.getContext().getEpiserverUrl(this.props.data.contentLink.url);
-        //let imgUrl = "";//this.getContext().getEpiserverUrl(this.props.data.previewImage.value.url);
 
         let classes : Array<string> = ['img-fluid'];
         if (this.props.className) { classes.push(this.props.className); }

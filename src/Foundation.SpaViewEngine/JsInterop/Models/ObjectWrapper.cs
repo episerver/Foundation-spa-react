@@ -4,7 +4,6 @@ using System.Linq;
 using System.Dynamic;
 using JavaScriptEngineSwitcher.Core;
 using EPiServer.Logging;
-using Foundation.SpaViewEngine;
 using EPiServer.Core;
 using EPiServer.ServiceLocation;
 using EPiServer.ContentApi.Core.Serialization;
@@ -46,22 +45,64 @@ namespace Foundation.SpaViewEngine.JsInterop.Models
             return allMembers;
         }
 
-        public override bool TryGetMember(GetMemberBinder binder, out object result)
+        public override bool TrySetMember(SetMemberBinder binder, object value)
         {
             if (WrappedObjectType.TryGetPropertyByNameCI(binder.Name, out var prop))
+            {
+                try
+                {
+                    prop.SetValue(_wrappedObject, value);
+                    return true;
+                } catch (Exception)
+                {
+                    return false;
+                }
+            }
+            if (WrappedObjectType.TryGetMethodByNameCI("TrySetMember", out var methodInfo))
+            {
+                return (bool)methodInfo.Invoke(_wrappedObject, new object[] { binder, value });
+            }
+
+            return base.TrySetMember(binder, value);
+        }
+
+        public override bool TryGetMember(GetMemberBinder binder, out object result)
+        {
+            if (TryGetWrappedProperty(binder.Name, out result))
+                return true;
+
+            return base.TryGetMember(binder, out result);
+        }
+
+        public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
+        {
+            if (indexes.Length == 1 && TryGetWrappedProperty(indexes[0].ToString(), out result))
+                return true;
+
+            return base.TryGetIndex(binder, indexes, out result);
+        }
+
+        protected virtual bool TryGetWrappedProperty(string propertyName, out object result)
+        {
+            result = null;
+            if (WrappedObjectType.TryGetPropertyByNameCI(propertyName, out var prop))
             {
                 result = MakeJavaScriptSafe(prop.GetValue(_wrappedObject));
                 return true;
             }
-
-            if (_wrappedObject is ContentApiModel contentApiModel && contentApiModel.Properties.Any(x => x.Key.Equals(binder.Name, StringComparison.OrdinalIgnoreCase)))
+            if (_wrappedObject is IContentApiModel contentApiModel && contentApiModel.Properties.Any(x => x.Key.Equals(propertyName, StringComparison.OrdinalIgnoreCase)))
             {
-                var propValue = contentApiModel.Properties.Where(x => x.Key.Equals(binder.Name, StringComparison.OrdinalIgnoreCase)).Select(x => x.Value).DefaultIfEmpty(Undefined.Value).FirstOrDefault();
+                var propValue = contentApiModel.Properties.Where(x => x.Key.Equals(propertyName, StringComparison.OrdinalIgnoreCase)).Select(x => x.Value).DefaultIfEmpty(Undefined.Value).FirstOrDefault();
                 result = MakeJavaScriptSafe(propValue);
                 return true;
             }
-
-            return base.TryGetMember(binder, out result);
+            if (_wrappedObject is BlockPropertyModel blockPropertyModel && blockPropertyModel.Properties.Any(x => x.Key.Equals(propertyName, StringComparison.OrdinalIgnoreCase)))
+            {
+                var propValue = blockPropertyModel.Properties.Where(x => x.Key.Equals(propertyName, StringComparison.OrdinalIgnoreCase)).Select(x => x.Value).DefaultIfEmpty(Undefined.Value).FirstOrDefault();
+                result = MakeJavaScriptSafe(propValue);
+                return true;
+            }
+            return false;
         }
 
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
@@ -80,8 +121,7 @@ namespace Foundation.SpaViewEngine.JsInterop.Models
 
         public override string ToString()
         {
-            return _wrappedObject.ToString();
-            //return GetType().FullName + "<" + _wrappedObject.GetType().FullName +">";
+            return GetType().Name + "<" + WrappedObjectType.FullName +">";
         }
 
         protected static bool IsNativeJavaScriptType(Type resultType) => resultType.IsPrimitive || resultType.IsString();
@@ -93,6 +133,7 @@ namespace Foundation.SpaViewEngine.JsInterop.Models
             if (IsNativeJavaScriptType(inValue.GetType())) return inValue;
             if (inValue is INonWrappableObject nonWrappable) return nonWrappable;
             if (inValue is IEnumerable<object> ienum) return ienum.Select(x => MakeJavaScriptSafe(x)).ToJSArray();
+            if (inValue is IDictionary<string, ContentModelReference> dict) return new DictionaryWrapper<string, ContentModelReference>(dict);
             if (inValue is IContent iContent)
             {
                 var mapper = ServiceLocator.Current.GetInstance<IContentModelMapper>();

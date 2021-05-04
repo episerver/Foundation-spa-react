@@ -1,9 +1,8 @@
 ﻿using EPiServer.ServiceLocation;
-using Foundation.SpaViewEngine.Infrastructure;
 using Foundation.SpaViewEngine.SpaContainer;
 using System.Web.Mvc;
 
-namespace Foundation.SpaViewEngine
+namespace Foundation.SpaViewEngine.Infrastructure
 {
     public class SpaViewEngine : IViewEngine
     {

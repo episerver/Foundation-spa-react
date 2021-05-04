@@ -50,7 +50,6 @@ export default class HeroBlock extends ComponentTypes.AbstractComponent<HeroBloc
                 innerContainerStyles.paddingBottom = '175%';
                 break;
             default:
-                //console.log("Attempting Padding Set");
                 innerContainerStyles.paddingBottom = '50%';
                 break;
         }

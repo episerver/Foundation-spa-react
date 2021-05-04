@@ -8,13 +8,12 @@ using System.IO;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using EPiServer.Logging;
-using Foundation.SpaViewEngine.Infrastructure;
 using Foundation.SpaViewEngine.JsInterop;
 using Foundation.SpaViewEngine.JsInterop.Models;
 using Foundation.SpaViewEngine.SpaContainer;
 using EPiServer.Core;
 
-namespace Foundation.SpaViewEngine
+namespace Foundation.SpaViewEngine.Infrastructure
 {
     public class SpaView : IView
     {
@@ -114,7 +113,9 @@ namespace Foundation.SpaViewEngine
                 .Replace("<!--FOOTER-RESOURCES-->", footer_resources);
         }
 
-        protected virtual string BuildContext(string context) => "<script type=\"text/javascript\">var __INITIAL__DATA__ = " + context + ";</script>";
+        protected virtual string BuildContext(string context) => "" +
+            "<script type=\"text/javascript\">var __INITIAL__DATA__ = {status: 'loading' };</script>" +
+            "<script type=\"text/javascript\" async defer>__INITIAL__DATA__ = " + context + "; __INITIAL__DATA__.status = 'available'; if (__INITIAL__DATA__.onReady) __INITIAL__DATA__.onReady();</script>";
 
         protected virtual IJsEngine GetJsEngine() => ServiceLocator.Current.GetInstance<IJsEngine>();
 

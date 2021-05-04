@@ -4,7 +4,6 @@ using System.Web.Http;
 using EPiServer.ContentApi.Core.Security.Internal;
 using System;
 using System.Linq;
-using EPiServer.Core;
 using EPiServer.ContentApi.Core.Serialization;
 using EPiServer.ContentApi.Core.ContentResult;
 using System.Net;
@@ -13,7 +12,6 @@ using System.Web.Http.ValueProviders;
 using EPiServer.ContentApi.Core.Internal;
 using EPiServer.ServiceLocation;
 using EPiServer;
-using EPiServer.Cms.Shell;
 
 namespace Foundation.Cms.Settings
 {

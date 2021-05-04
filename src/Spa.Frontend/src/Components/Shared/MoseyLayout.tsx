@@ -21,7 +21,8 @@ export const MoseyLayout : FunctionComponent<MoseyLayoutProps> = (props) => {
 
     const language = props.currentLanguage;
     useEffect(() => {
-        settingsService.getContainer<LayoutSettings>(LayoutSettingsContainer).then(x => setLayoutSettings(x));
+        if (layoutSettings?.language?.name !== language)
+            settingsService.getContainer<LayoutSettings>(LayoutSettingsContainer).then(x => setLayoutSettings(x));
     }, [ language ]);
 
     if (!layoutSettings) {

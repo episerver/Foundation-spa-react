@@ -44,17 +44,22 @@ const LinksListBlock : React.FunctionComponent<LinksListBlockProps> = (props) =>
 
     const transformLink = (link: ContentDelivery.LinkProperty) => {
         const url = new URL(link.href);
+        let offDomain : boolean = true;
         try {
             if (window.location.protocol !== url.protocol && window.location.host === url.host) url.protocol = window.location.protocol;
+            offDomain = window.location.host !== url.host
         } catch (e) {
             // Ignored on purpose
         }
-        const linkProps : any = {
+        const linkProps : React.AnchorHTMLAttributes<HTMLAnchorElement> & { key: string } = {
             title: link.title,
             target: link.target,
             className: "nav-item",
             href: url.href,
             key: `footer.${ props.listProp }.link.${ link.contentLink?.id || link.href }`
+        }
+        if (offDomain) {
+            linkProps.rel = "noreferrer"
         }
         return <a { ...linkProps }>{link.text}</a>
     }
@@ -63,7 +68,7 @@ const LinksListBlock : React.FunctionComponent<LinksListBlockProps> = (props) =>
     (props.settings[props.listProp] as ContentDelivery.LinkListProperty)?.value.forEach(x => links.push(transformLink(x)));
 
     return <div className={ props.className }>
-        <h5 className="footer__heading"><Components.Property iContent={ props.settings } field={ props.titleProp }/></h5>
+        <p className="h5 footer__heading"><Components.Property iContent={ props.settings } field={ props.titleProp }/></p>
         <nav className="nav flex-column">
             { links }
         </nav>
@@ -72,7 +77,7 @@ const LinksListBlock : React.FunctionComponent<LinksListBlockProps> = (props) =>
 
 const CompanyAddressBlock : React.FunctionComponent<FooterProps & { className ?: string }> = (props) => {
     return <div className={ props.className }>
-        <h5 className="footer__heading"><Components.Property iContent={ props.settings } field="companyHeader"/></h5>
+        <p className="h5 footer__heading"><Components.Property iContent={ props.settings } field="companyHeader"/></p>
         <dl className="row">
             <dt className="col-3">Phone:</dt>
             <dd className="col-9"><Components.Property iContent={ props.settings } field="companyPhone"/></dd>

@@ -5,8 +5,8 @@ import { Core, ContentDelivery } from "@episerver/spa-core";
 import { SettingsInitialization as SettingsModule } from '@episerver/foundation-settings';
 
 // Referenced components for configuration
-import MoseyLoader from "app/Components/Shared/MoseyLoader";
-import MoseyLayout from "app/Components/Shared/MoseyLayout";
+import Loader from "app/Components/Shared/MoseyLoader";
+import Layout, { MoseyLayout as ServerSideLayout } from "app/Components/Shared/MoseyLayout";
 
 // Referenced implementation
 import MoseyComponentLoader from "app/Infrastructure/ComponentLoader";
@@ -14,22 +14,24 @@ import MoseyComponentLoader from "app/Infrastructure/ComponentLoader";
 // Enable caching of action calls
 // ContentDelivery.FetchAdapter.isCachable.push(url => url.pathname.indexOf('/api/episerver/v3/action/') >= 0 && !url.searchParams.has('epieditmode') && !url.searchParams.has('EpiEditMode'));
 
+const appDebug = process.env.NODE_ENV !== 'production';
+
 // Website configuration
 export const Config : Core.IConfig = {
     // Main setup
-    enableDebug: process.env.NODE_ENV !== 'production',
+    enableDebug: appDebug,
 
     // Connection details
     basePath: process.env.WEB_PATH, //There's no prefix, set to /spa if the spa is located at https://your.domain/spa/ - this should match your webpack configuration
     epiBaseUrl: process.env.EPI_URL, //The main URL where Episerver is running
     defaultLanguage: "en", //The language to send to Episerver
     
-    // Site layout (i.e. wrapper for routed IContent)
-    layout: MoseyLayout,
+    // Site layout
+    layout: Layout,
 
-    // Spinner
+    // Spinner section
     enableSpinner: true,
-    spinner: MoseyLoader,
+    spinner: Loader,
     spinnerTimeout: 250,
 
     // Content area configuration
@@ -49,17 +51,23 @@ export const Config : Core.IConfig = {
         containerBreakBlockClass: 'displaymode-screen'
     },
 
-    // (Pre)Loading of components
+    // (Pre)Loading of components, pre-load those components that make up your key landing pages
     preLoadComponents: [
-        "Media/Image/ImageMediaData",
-        "Block/Media/Image/ImageMediaData",
-        "Block/MenuItemBlock",
-        "Block/TextBlock",
-        "Block/BreadcrumbBlock",
-        "Page/CmsHomePage",
-        "Page/LandingPage",
-        "Page/StandardPage",
-        "Block/ContainerBlock"
+        "app/Components/Image/Media/ImageMediaData",
+        "app/Components/NavItem/Block/MenuItemBlock",
+        "app/Components/NavItem/Page/LandingPage",
+        "app/Components/NavItem/Page/LocationListPage",
+        "app/Components/Block/Image/Media/ImageMediaData",
+        "app/Components/Block/TextBlock",
+        "app/Components/Block/BreadcrumbBlock",
+        "app/Components/Block/HeroBlock",
+        "app/Components/Block/ContainerBlock",
+        "app/Components/Block/PageListBlock",
+        "app/Components/Block/TeaserBlock",
+        "app/Components/Block/FormContainerBlock",
+        "app/Components/Page/HomePage",
+        "app/Components/Page/LandingPage",
+        "app/Components/Page/StandardPage"
     ],
 
     // List SPA Modules that inject into the bootstrapping process
@@ -75,14 +83,14 @@ export const Config : Core.IConfig = {
 
     // Configuration of the V2 Content Repository
     iContentRepository: {
-        debug: true, // Override global debug to disable debug within the content repository,
+        debug: appDebug, // Override global debug to disable debug within the content repository,
         policy: ContentDelivery.IRepositoryPolicy.PreferOffline
     },
 
     // Configuration of the V2 Content Delivery API, this overrides the old configuration
     iContentDelivery: {
         Debug: false, // Override global debug to disable debug within the ContentDeliveryAPI
-        AutoExpandAll: false, 
+        AutoExpandAll: false,
     }
 };
 Config.componentLoaders.debug = false; // Override global debug to disable debug within the component loaders

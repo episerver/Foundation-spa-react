@@ -40,7 +40,7 @@ namespace Foundation.SpaViewEngine.Infrastructure
         public string CreateCacheKey(string uniquePart, CacheType cacheType, IContent forContent, string action)
         {
             var iContentCacheKey = forContent == null ? string.Empty : GetVersionKey(forContent.ContentLink);
-            var key = string.Join("::", (new string[] { ScopeName, uniquePart, cacheType.ToString(), iContentCacheKey, action }).Where(s => !string.IsNullOrWhiteSpace(s)));
+            var key = string.Join(":", (new string[] { ScopeName, uniquePart, cacheType.ToString(), iContentCacheKey, action }).Where(s => !string.IsNullOrWhiteSpace(s)));
             return key;
         }
 
@@ -61,7 +61,7 @@ namespace Foundation.SpaViewEngine.Infrastructure
         public void Insert(string cacheKey, object data, IEnumerable<ContentReference> forContents)
         {
             if (!IsEnabled) return;
-            var masterKeys = forContents == null ? new List<string>() : forContents.Select(c => GetVersionKey(c));
+            var masterKeys = forContents == null ? new List<string>() : forContents.Select(c => GetCommonVersionKey(c));
             var policy = new CacheEvictionPolicy(
                 expiration: TimeSpan.FromMinutes(60),
                 timeoutType: CacheTimeoutType.Sliding,
@@ -85,11 +85,30 @@ namespace Foundation.SpaViewEngine.Infrastructure
             if (latestPublishedVersion != null)
             {
                 versionCacheKey = _cacheKeyCreator.CreateVersionCacheKey(latestPublishedVersion.ContentLink);
+            } else
+            {
+                versionCacheKey = _cacheKeyCreator.CreateCommonCacheKey(contentLink);
             }
 
             return versionCacheKey;
         }
-            
+        protected virtual string GetCommonVersionKey(ContentReference contentLink)
+        {
+            var versionCacheKey = string.Empty;
+            var latestPublishedVersion = _contentVersionRepository.List(contentLink).FirstOrDefault(v => v.Status == VersionStatus.Published);
+
+            if (latestPublishedVersion != null)
+            {
+                versionCacheKey = _cacheKeyCreator.CreateVersionCommonCacheKey(latestPublishedVersion.ContentLink);
+            }
+            else
+            {
+                versionCacheKey = _cacheKeyCreator.CreateCommonCacheKey(contentLink);
+            }
+
+            return versionCacheKey;
+        }
+
     }
 
     public enum CacheType

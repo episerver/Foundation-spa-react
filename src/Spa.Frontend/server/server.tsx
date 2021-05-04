@@ -10,6 +10,3 @@ declare const epi : {
     render: () => ServerSideRendering.Response
 };
 epi.render = (): ServerSideRendering.Response => startEpiserver(appConfig, undefined, undefined, true);
-
-declare const __EpiserverAPI__ : any;
-console.error(__EpiserverAPI__);

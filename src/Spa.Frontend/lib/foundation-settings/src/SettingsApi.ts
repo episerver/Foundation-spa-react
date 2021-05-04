@@ -4,6 +4,10 @@ type ISettingsService = {
     GetSiteSettings<T extends Taxonomy.IContent = Taxonomy.IContent>(container: string) : T | undefined;
 }
 
+type SettingApiContext = {
+    Settings : { [container: string ] : Taxonomy.IContent }
+}
+
 export default class SettingsApi
 {
     public serviceEndpoint : Readonly<string> = 'api/foundation/v1/settings';
@@ -21,12 +25,23 @@ export default class SettingsApi
         this._ctx = serverContext;
     }
 
+    /**
+     * Get a settings container, either during server side rendering or from the initial context delivered by the
+     * server side rendering.
+     * 
+     * @param       container 
+     * @returns     The settings container, or undefined if not found
+     */
     public getContainerOnServer<T extends Taxonomy.IContent = Taxonomy.IContent>(container: string) : T | undefined
     {
-        if (!this._ctx.IsServerSideRendering) return undefined;
-
-        var ISettingsService = this._ctx.getEpiserverService<ISettingsService>("Foundation.Cms.Settings.ISettingsService");
-        return this._ctx.makeSafe<T>(ISettingsService.GetSiteSettings<T>(container));
+        const ssrPropName = container.toLowerCase();
+        let settingsContainer  = this._ctx.getProp<T>(ssrPropName);
+        if (!settingsContainer && this._ctx.IsServerSideRendering) {
+            const ISettingsService = this._ctx.getEpiserverService<ISettingsService>("Foundation.Cms.Settings.ISettingsService");
+            settingsContainer = ISettingsService.GetSiteSettings<T>(container);
+            this._ctx.setProp(ssrPropName, settingsContainer);
+        }
+        return this._ctx.makeSafe(settingsContainer);
     }
 
     public async listContainers(site ?: Taxonomy.Website) : Promise<string[]>

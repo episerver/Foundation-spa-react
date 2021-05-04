@@ -33,6 +33,7 @@ export const NavBar : React.FunctionComponent<NavBarProps> = (props) => {
             <Navbar light expand="lg">
                 <NavbarBrand href={ startPageHref } className="mr-4 mw-60">
                     <Components.Property iContent={ props.settings } field="siteLogo" />
+                    <span className="sr-only">{ props.settings.companyName?.value || "Site title"}</span>
                 </NavbarBrand>
                 <NavbarToggler className={ `mr-2 ${ isOpen ? '' : 'collapsed'}`} onClick={ toggleNavBar } />
                 <Collapse isOpen={ isOpen} navbar>

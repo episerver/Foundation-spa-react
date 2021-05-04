@@ -10,11 +10,13 @@ footer {
     h1,  h2,  h3,  h4,  h5,
     .h1, .h2, .h3, .h4, .h5
     {
-        color: theme-color("primary");
+        color: $white;
     }
 
     a {
         color: $white;
+        line-height: 3rem;     // Ensure proper tap-area
+        margin-bottom: 0.5rem; // Ensure proper tap-area spacing
 
         &:hover {
             color: theme-color("primary");

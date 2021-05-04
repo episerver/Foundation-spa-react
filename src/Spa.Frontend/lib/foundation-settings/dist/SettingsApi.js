@@ -15,11 +15,22 @@ export default class SettingsApi {
         this._repo = contentRepositoryApi;
         this._ctx = serverContext;
     }
+    /**
+     * Get a settings container, either during server side rendering or from the initial context delivered by the
+     * server side rendering.
+     *
+     * @param       container
+     * @returns     The settings container, or undefined if not found
+     */
     getContainerOnServer(container) {
-        if (!this._ctx.IsServerSideRendering)
-            return undefined;
-        var ISettingsService = this._ctx.getEpiserverService("Foundation.Cms.Settings.ISettingsService");
-        return this._ctx.makeSafe(ISettingsService.GetSiteSettings(container));
+        const ssrPropName = container.toLowerCase();
+        let settingsContainer = this._ctx.getProp(ssrPropName);
+        if (!settingsContainer && this._ctx.IsServerSideRendering) {
+            const ISettingsService = this._ctx.getEpiserverService("Foundation.Cms.Settings.ISettingsService");
+            settingsContainer = ISettingsService.GetSiteSettings(container);
+            this._ctx.setProp(ssrPropName, settingsContainer);
+        }
+        return this._ctx.makeSafe(settingsContainer);
     }
     listContainers(site) {
         return __awaiter(this, void 0, void 0, function* () {

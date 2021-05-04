@@ -52,12 +52,12 @@ namespace Foundation.SpaViewEngine
     {
         public static void InjectViewEngine(this InitializationEngine context)
         {
-            var engine = context.Locate.Advanced.GetInstance<SpaViewEngine>();
+            var engine = context.Locate.Advanced.GetInstance<Infrastructure.SpaViewEngine>();
             ViewEngines.Engines.Insert(0, engine);
         }
         public static void RemoveViewEngine(this InitializationEngine context)
         {
-            foreach (var engine in ViewEngines.Engines.OfType<SpaViewEngine>())
+            foreach (var engine in ViewEngines.Engines.OfType<Infrastructure.SpaViewEngine>())
                 ViewEngines.Engines.Remove(engine);
         }
         public static void InjectAssetRoute(this InitializationEngine context)
@@ -74,9 +74,7 @@ namespace Foundation.SpaViewEngine
         public static void RegisterJavaScriptEngine(this ServiceConfigurationContext context)
         {
             context.Services.AddSingleton(_ => new V8Settings());
-
             context.Services.AddSingleton(locator => new V8JsEngineFactory(locator.GetInstance<V8Settings>()));
-
             context.Services.AddSingleton<IJsEngineSwitcher>(locator =>
             {
                 var switcher = new JsEngineSwitcher();
@@ -86,15 +84,14 @@ namespace Foundation.SpaViewEngine
                 JsEngineSwitcher.Current = switcher;
                 return switcher;
             });
-
-            context.Services.Add(locator => {
+            context.Services.AddTransient(locator => {
                 var engine = locator.GetInstance<IJsEngineSwitcher>().CreateDefaultEngine();
                 engine.ApplyShims();
                 engine.AddWindowObject();
                 engine.AddCoreJS();
                 engine.EnableConsole();
                 return engine;
-            }, ServiceInstanceScope.HttpContext);
+            });
         }
 
         public static void RegisterViewEngine(this ServiceConfigurationContext context)

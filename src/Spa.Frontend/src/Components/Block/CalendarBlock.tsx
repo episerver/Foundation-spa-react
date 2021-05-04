@@ -9,16 +9,13 @@ interface CalendarBlockViewModel {
 }
 
 export const CalendarBlock : FunctionComponent<CalendarBlockProps> = (props) => {
-    const ctx = useEpiserver();
     const api = useContentDeliveryAPI();
 
     let [viewModel, setViewModel] = useState<CalendarBlockViewModel>(undefined);
 
     useEffect(() => {
-        console.log("Props data", props.data);
         if(props.data.eventsRoot.value){
             api.invoke<CalendarBlockViewModel>(props.data.contentLink, "Index").then(f => {
-                console.log("F", f);
                 setViewModel(f.data as CalendarBlockViewModel || undefined);
             });
         }

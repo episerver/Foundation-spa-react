@@ -105,5 +105,10 @@ namespace Foundation.SpaViewEngine
     public static class ObjectExtension
     {
         public static object ToJSSafeObject(this object toProcess) => ObjectWrapper.MakeJavaScriptSafe(toProcess);
+
+        public static bool IsDictionary(this object toCheck)
+        {
+            return toCheck.GetType().FullName.StartsWith("System.Collections.Generic.Dictionary`2");
+        }
     }
 }

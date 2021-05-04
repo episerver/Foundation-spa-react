@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { ComponentTypes, useEpiserver } from '@episerver/spa-core';
 
-export const MoseyLoader : ComponentTypes.Spinner<ComponentTypes.SpinnerProps> = (props) => {
+export const MoseyLoader : ComponentTypes.Spinner = (props) => {
     var ctx = useEpiserver();
 	var timeout = props.timeout || ctx.config().spinnerTimeout || 0;
 	var [isVisible, setIsVisible] = useState<boolean>(timeout === 0);
-	if (ctx.config().enableSpinner) return null;
+	if (ctx.config().enableSpinner !== true) return null;
 
 	useEffect(() => {
 		if (timeout === 0) return;
 		setIsVisible(false);
-		const timeoutHandle = setTimeout(() => { setIsVisible(true) }, timeout);
+		const timeoutHandle = setTimeout(() => { setIsVisible(true); }, timeout);
 		return () => {
 			clearTimeout(timeoutHandle)
 		}
