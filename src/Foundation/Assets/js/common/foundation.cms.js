@@ -7,6 +7,7 @@ import Dropdown from "./dropdown";
 import SearchBox from "../../../Features/Search/search-box";
 import ContentSearch from "../../../Features/Search/search";
 import Blog from "../../../Features/Blog/blog";
+import CalendarBlock from "../../../Features/Events/CalendarBlock/calendar-block";
 import Locations from "../../../Features/Locations/locations";
 import People from "Features/People/people";
 
@@ -83,5 +84,8 @@ export default class FoundationCms {
 
         let people = new People();
         people.init();
+
+        let calendar = new CalendarBlock();
+        calendar.init();
     }       
 }

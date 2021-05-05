@@ -15,7 +15,7 @@ namespace Foundation.Features.Locations.Blocks
         Description = "Temperature slider for locations",
         GroupName = TabNames.Location)]
     [ImageUrl("~/assets/icons/cms/blocks/map.png")]
-    //[AvailableContentTypes(Include = new Type[] { typeof(LocationListPage.LocationListPage) })]
+    [AvailableContentTypes(Include = new Type[] { typeof(LocationListPage.LocationListPage) })]
     public class FilterTemperaturesBlock : FoundationBlockData, IFilterBlock
     {
         [CultureSpecific]

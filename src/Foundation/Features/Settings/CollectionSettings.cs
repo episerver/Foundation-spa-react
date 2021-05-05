@@ -121,10 +121,10 @@ namespace Foundation.Features.Settings
             var collectionSettings = _settingService.GetSiteSettings<CollectionSettings>();
             var buttonBackgroundColor = collectionSettings.ButtonBackgroundColor;
 
-            if( buttonBackgroundColor is null )
+            if (buttonBackgroundColor is null)
             {
                 return new ISelectItem[] { };
-            } 
+            }
             else
             {
                 return buttonBackgroundColor.Select(d => (new SelectItem() { Text = d.ColorName, Value = d.ColorCode })).ToList();

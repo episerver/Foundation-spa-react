@@ -7,8 +7,6 @@
 *.vspscc
 *config.artgri-pc.yml
 *.orig
-*.mdf
-*.ldf
 tmp
 node_modules
 .sass-cache
@@ -83,18 +81,7 @@ src/Foundation/Assets/scss/main.min.css
 src/Foundation/Assets/scss/main.min.css.map
 src/Foundation/Assets/js/main.min.js
 src/Foundation/Assets/js/main.min.js.map
+src/Foundation/License.config
+src/Foundation/connectionStrings.config
 rebuild.cmd
 resetup.cmd
-
-# Spa Stuff
-src/Foundation/Spa
-src/Foundation/spa
-src/Foundation/Zip
-src/Foundation/zip
-
-# Environment configuration
-License.config
-src/License.config
-src/Foundation/License.config
-src/Foundation/find.config
-src/Foundation/connectionStrings.config

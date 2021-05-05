@@ -186,6 +186,15 @@ ul.none-style-type {
     }
 }
 
+.editMode .screen-width-block {
+    width: 98vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -49vw;
+    margin-right: -49vw;
+}
+
 .disabled {
     pointer-events: none;
     cursor: default;

@@ -19,7 +19,7 @@ namespace Foundation.Features.Locations.Blocks
         Description = "Distance facets for locations",
         GroupName = TabNames.Location)]
     [ImageUrl("~/assets/icons/cms/blocks/map.png")]
-    //[AvailableContentTypes(Include = new Type[] { typeof(LocationListPage.LocationListPage) })]
+    [AvailableContentTypes(Include = new Type[] { typeof(LocationListPage.LocationListPage) })]
     public class FilterDistancesBlock : FoundationBlockData, IFilterBlock
     {
         [CultureSpecific]

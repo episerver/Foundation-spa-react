@@ -13,7 +13,7 @@ namespace Foundation.Features.Locations.LocationListPage
         Description = "Used to display a list of all locations",
         GroupName = TabNames.Location)]
     [ImageUrl("~/assets/icons/cms/pages/cms-icon-page-27.png")]
-    [AvailableContentTypes(Availability = Availability.Specific, Include = new[] { typeof(LocationItemPage.LocationItemPage), typeof(FilterActivitiesBlock), typeof(FilterContinentsBlock), typeof(FilterDistancesBlock), typeof(FilterTemperaturesBlock) })]
+    [AvailableContentTypes(Availability = Availability.Specific, Include = new[] { typeof(LocationItemPage.LocationItemPage) })]
     public class LocationListPage : FoundationPageData
     {
         [AllowedTypes(new[] { typeof(FilterActivitiesBlock), typeof(FilterContinentsBlock), typeof(FilterDistancesBlock), typeof(FilterTemperaturesBlock) })]

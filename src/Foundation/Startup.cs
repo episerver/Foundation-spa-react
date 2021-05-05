@@ -3,7 +3,6 @@ using EPiServer.ContentApi.OAuth;
 using Foundation;
 using Foundation.Cms.Extensions;
 using Foundation.Cms.Identity;
-using Foundation.ContentDelivery;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
@@ -16,7 +15,6 @@ namespace Foundation
     {
         public void Configuration(IAppBuilder app)
         {
-            app.UseContentApiCors();
             app.ConfigureAuthentication("EpiServerDB");
             app.UseContentApiIdentityOAuthAuthorization<ApplicationUserManager<SiteUser>, SiteUser>(new ContentApiOAuthOptions()
             {

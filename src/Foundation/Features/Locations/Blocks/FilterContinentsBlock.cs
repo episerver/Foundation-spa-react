@@ -16,7 +16,7 @@ namespace Foundation.Features.Locations.Blocks
         Description = "Continent facets for locations",
         GroupName = TabNames.Location)]
     [ImageUrl("~/assets/icons/cms/blocks/map.png")]
-    //[AvailableContentTypes(Include = new Type[] { typeof(LocationListPage.LocationListPage) })]
+    [AvailableContentTypes(Include = new Type[] { typeof(LocationListPage.LocationListPage) })]
     public class FilterContinentsBlock : FoundationBlockData, IFilterBlock
     {
         [CultureSpecific]
