@@ -277,7 +277,7 @@ IF %errorlevel% NEQ 0 (
 	goto error
 )
 call npx epi-auth -d "http://%FOUNDATIONDOMAIN%" -u admin@example.com -p store -f  
-call npm run build
+call npm run build:production
 
 start http://%FOUNDATIONDOMAIN%/
 :error
