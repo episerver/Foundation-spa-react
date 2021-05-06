@@ -43,6 +43,27 @@ export default interface ButtonBlockData extends Taxonomy.IContent {
     blockOpacity: ContentDelivery.NumberProperty
 
     /**
+     * Use Custom Text Color
+     *
+     * This will determine whether or not to overdride text color
+     */
+    textColorOverdrive: ContentDelivery.BooleanProperty
+
+    /**
+     * Use Custom Background Color
+     *
+     * This will determine whether or not to overdride background color
+     */
+    backgroundColorOverdrive: ContentDelivery.BooleanProperty
+
+    /**
+     * Use Custom Border
+     *
+     * This will determine whether or not to overdride border style
+     */
+    borderStyleOverdrive: ContentDelivery.BooleanProperty
+
+    /**
      * Label
      *
      * No description available
@@ -130,6 +151,9 @@ export class ButtonBlockType extends Taxonomy.AbstractIContent<ButtonBlockData> 
         'margin': 'LongString',
         'backgroundColor': 'LongString',
         'blockOpacity': 'FloatNumber',
+        'textColorOverdrive': 'Boolean',
+        'backgroundColorOverdrive': 'Boolean',
+        'borderStyleOverdrive': 'Boolean',
         'buttonText': 'LongString',
         'showTransparentBackground': 'Boolean',
         'borderStyle': 'LongString',
@@ -176,6 +200,27 @@ export class ButtonBlockType extends Taxonomy.AbstractIContent<ButtonBlockData> 
      * No description available
      */
     public get blockOpacity() : ButtonBlockData["blockOpacity"] { return this.getProperty("blockOpacity"); }
+
+    /**
+     * Use Custom Text Color
+     *
+     * This will determine whether or not to overdride text color
+     */
+    public get textColorOverdrive() : ButtonBlockData["textColorOverdrive"] { return this.getProperty("textColorOverdrive"); }
+
+    /**
+     * Use Custom Background Color
+     *
+     * This will determine whether or not to overdride background color
+     */
+    public get backgroundColorOverdrive() : ButtonBlockData["backgroundColorOverdrive"] { return this.getProperty("backgroundColorOverdrive"); }
+
+    /**
+     * Use Custom Border
+     *
+     * This will determine whether or not to overdride border style
+     */
+    public get borderStyleOverdrive() : ButtonBlockData["borderStyleOverdrive"] { return this.getProperty("borderStyleOverdrive"); }
 
     /**
      * Label

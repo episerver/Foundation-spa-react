@@ -1,12 +1,12 @@
 import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
- * Image File
+ * Webp Image File
  *
- * Used for image file types such as jpg, jpeg, jpe, ico, gif, bmp, png
+ * Used for webp image file type
  *
- * @GUID 20644be7-3ca1-4f84-b893-ee021b73ce6c
+ * @GUID 46652356-ef68-4ef2-b57e-293aa4f87be8
  */
-export default interface ImageMediaDataData extends Taxonomy.IContent {
+export default interface WebImageMediaDataData extends Taxonomy.IContent {
     /**
      * Large thumbnail
      *
@@ -194,10 +194,10 @@ export default interface ImageMediaDataData extends Taxonomy.IContent {
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface ImageMediaDataProps extends ComponentTypes.AbstractComponentProps<ImageMediaDataData> {}
+export interface WebImageMediaDataProps extends ComponentTypes.AbstractComponentProps<WebImageMediaDataData> {}
 
-export class ImageMediaDataType extends Taxonomy.AbstractIContent<ImageMediaDataData> implements ImageMediaDataData {
-    protected _typeName : string = "ImageMediaData";
+export class WebImageMediaDataType extends Taxonomy.AbstractIContent<WebImageMediaDataData> implements WebImageMediaDataData {
+    protected _typeName : string = "WebImageMediaData";
     /**
      * Map of all property types within this content type.
      */
@@ -235,181 +235,181 @@ export class ImageMediaDataType extends Taxonomy.AbstractIContent<ImageMediaData
      *
      * No description available
      */
-    public get largeThumbnail() : ImageMediaDataData["largeThumbnail"] { return this.getProperty("largeThumbnail"); }
+    public get largeThumbnail() : WebImageMediaDataData["largeThumbnail"] { return this.getProperty("largeThumbnail"); }
 
     /**
      * Image alignment
      *
      * No description available
      */
-    public get imageAlignment() : ImageMediaDataData["imageAlignment"] { return this.getProperty("imageAlignment"); }
+    public get imageAlignment() : WebImageMediaDataData["imageAlignment"] { return this.getProperty("imageAlignment"); }
 
     /**
      * File size
      *
      * No description available
      */
-    public get fileSize() : ImageMediaDataData["fileSize"] { return this.getProperty("fileSize"); }
+    public get fileSize() : WebImageMediaDataData["fileSize"] { return this.getProperty("fileSize"); }
 
     /**
      * Padding top
      *
      * No description available
      */
-    public get paddingTop() : ImageMediaDataData["paddingTop"] { return this.getProperty("paddingTop"); }
+    public get paddingTop() : WebImageMediaDataData["paddingTop"] { return this.getProperty("paddingTop"); }
 
     /**
      * Padding right
      *
      * No description available
      */
-    public get paddingRight() : ImageMediaDataData["paddingRight"] { return this.getProperty("paddingRight"); }
+    public get paddingRight() : WebImageMediaDataData["paddingRight"] { return this.getProperty("paddingRight"); }
 
     /**
      * Padding bottom
      *
      * No description available
      */
-    public get paddingBottom() : ImageMediaDataData["paddingBottom"] { return this.getProperty("paddingBottom"); }
+    public get paddingBottom() : WebImageMediaDataData["paddingBottom"] { return this.getProperty("paddingBottom"); }
 
     /**
      * Padding left
      *
      * No description available
      */
-    public get paddingLeft() : ImageMediaDataData["paddingLeft"] { return this.getProperty("paddingLeft"); }
+    public get paddingLeft() : WebImageMediaDataData["paddingLeft"] { return this.getProperty("paddingLeft"); }
 
     /**
      * Accent color
      *
      * No description available
      */
-    public get accentColor() : ImageMediaDataData["accentColor"] { return this.getProperty("accentColor"); }
+    public get accentColor() : WebImageMediaDataData["accentColor"] { return this.getProperty("accentColor"); }
 
     /**
      * Caption
      *
      * No description available
      */
-    public get caption() : ImageMediaDataData["caption"] { return this.getProperty("caption"); }
+    public get caption() : WebImageMediaDataData["caption"] { return this.getProperty("caption"); }
 
     /**
      * Clip art type
      *
      * No description available
      */
-    public get clipArtType() : ImageMediaDataData["clipArtType"] { return this.getProperty("clipArtType"); }
+    public get clipArtType() : WebImageMediaDataData["clipArtType"] { return this.getProperty("clipArtType"); }
 
     /**
      * Dominant color background
      *
      * No description available
      */
-    public get dominantColorBackground() : ImageMediaDataData["dominantColorBackground"] { return this.getProperty("dominantColorBackground"); }
+    public get dominantColorBackground() : WebImageMediaDataData["dominantColorBackground"] { return this.getProperty("dominantColorBackground"); }
 
     /**
      * Dominant color foreground
      *
      * No description available
      */
-    public get dominantColorForeground() : ImageMediaDataData["dominantColorForeground"] { return this.getProperty("dominantColorForeground"); }
+    public get dominantColorForeground() : WebImageMediaDataData["dominantColorForeground"] { return this.getProperty("dominantColorForeground"); }
 
     /**
      * Dominant colors
      *
      * No description available
      */
-    public get dominantColors() : ImageMediaDataData["dominantColors"] { return this.getProperty("dominantColors"); }
+    public get dominantColors() : WebImageMediaDataData["dominantColors"] { return this.getProperty("dominantColors"); }
 
     /**
      * Image categories
      *
      * No description available
      */
-    public get imageCategories() : ImageMediaDataData["imageCategories"] { return this.getProperty("imageCategories"); }
+    public get imageCategories() : WebImageMediaDataData["imageCategories"] { return this.getProperty("imageCategories"); }
 
     /**
      * Is adult content
      *
      * No description available
      */
-    public get isAdultContent() : ImageMediaDataData["isAdultContent"] { return this.getProperty("isAdultContent"); }
+    public get isAdultContent() : WebImageMediaDataData["isAdultContent"] { return this.getProperty("isAdultContent"); }
 
     /**
      * Is black & white image
      *
      * No description available
      */
-    public get isBwImg() : ImageMediaDataData["isBwImg"] { return this.getProperty("isBwImg"); }
+    public get isBwImg() : WebImageMediaDataData["isBwImg"] { return this.getProperty("isBwImg"); }
 
     /**
      * Is racy content
      *
      * No description available
      */
-    public get isRacyContent() : ImageMediaDataData["isRacyContent"] { return this.getProperty("isRacyContent"); }
+    public get isRacyContent() : WebImageMediaDataData["isRacyContent"] { return this.getProperty("isRacyContent"); }
 
     /**
      * Line drawing type
      *
      * No description available
      */
-    public get lineDrawingType() : ImageMediaDataData["lineDrawingType"] { return this.getProperty("lineDrawingType"); }
+    public get lineDrawingType() : WebImageMediaDataData["lineDrawingType"] { return this.getProperty("lineDrawingType"); }
 
     /**
      * Tags
      *
      * No description available
      */
-    public get tags() : ImageMediaDataData["tags"] { return this.getProperty("tags"); }
+    public get tags() : WebImageMediaDataData["tags"] { return this.getProperty("tags"); }
 
     /**
      * Title
      *
      * No description available
      */
-    public get title() : ImageMediaDataData["title"] { return this.getProperty("title"); }
+    public get title() : WebImageMediaDataData["title"] { return this.getProperty("title"); }
 
     /**
      * Description
      *
      * Description of the image
      */
-    public get description() : ImageMediaDataData["description"] { return this.getProperty("description"); }
+    public get description() : WebImageMediaDataData["description"] { return this.getProperty("description"); }
 
     /**
      * Alternate text
      *
      * No description available
      */
-    public get altText() : ImageMediaDataData["altText"] { return this.getProperty("altText"); }
+    public get altText() : WebImageMediaDataData["altText"] { return this.getProperty("altText"); }
 
     /**
      * Credits text
      *
      * No description available
      */
-    public get creditsText() : ImageMediaDataData["creditsText"] { return this.getProperty("creditsText"); }
+    public get creditsText() : WebImageMediaDataData["creditsText"] { return this.getProperty("creditsText"); }
 
     /**
      * Credits link
      *
      * No description available
      */
-    public get creditsLink() : ImageMediaDataData["creditsLink"] { return this.getProperty("creditsLink"); }
+    public get creditsLink() : WebImageMediaDataData["creditsLink"] { return this.getProperty("creditsLink"); }
 
     /**
      * Link
      *
      * Link to content
      */
-    public get link() : ImageMediaDataData["link"] { return this.getProperty("link"); }
+    public get link() : WebImageMediaDataData["link"] { return this.getProperty("link"); }
 
     /**
      * Copyright
      *
      * No description available
      */
-    public get copyright() : ImageMediaDataData["copyright"] { return this.getProperty("copyright"); }
+    public get copyright() : WebImageMediaDataData["copyright"] { return this.getProperty("copyright"); }
 
 }

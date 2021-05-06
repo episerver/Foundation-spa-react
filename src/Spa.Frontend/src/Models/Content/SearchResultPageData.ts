@@ -57,13 +57,6 @@ export default interface SearchResultPageData extends Taxonomy.IContent {
     cssFiles: ContentDelivery.LinkListProperty
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    scriptFiles: ContentDelivery.LinkListProperty
-
-    /**
      * Main content area
      *
      * No description available
@@ -97,13 +90,6 @@ export default interface SearchResultPageData extends Taxonomy.IContent {
      * No description available
      */
     css: ContentDelivery.StringProperty
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    scripts: ContentDelivery.StringProperty
 
     /**
      * Top content area
@@ -258,13 +244,11 @@ export class SearchResultPageType extends Taxonomy.AbstractIContent<SearchResult
         'excludeFromSearch': 'Boolean',
         'pageImage': 'ContentReference',
         'cssFiles': 'LinkCollection',
-        'scriptFiles': 'LinkCollection',
         'mainContentArea': 'ContentArea',
         'keywords': 'LongString',
         'hideSiteHeader': 'Boolean',
         'teaserVideo': 'ContentReference',
         'css': 'LongString',
-        'scripts': 'LongString',
         'topContentArea': 'ContentArea',
         'showRecommendations': 'Boolean',
         'pageDescription': 'LongString',
@@ -336,13 +320,6 @@ export class SearchResultPageType extends Taxonomy.AbstractIContent<SearchResult
     public get cssFiles() : SearchResultPageData["cssFiles"] { return this.getProperty("cssFiles"); }
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    public get scriptFiles() : SearchResultPageData["scriptFiles"] { return this.getProperty("scriptFiles"); }
-
-    /**
      * Main content area
      *
      * No description available
@@ -376,13 +353,6 @@ export class SearchResultPageType extends Taxonomy.AbstractIContent<SearchResult
      * No description available
      */
     public get css() : SearchResultPageData["css"] { return this.getProperty("css"); }
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    public get scripts() : SearchResultPageData["scripts"] { return this.getProperty("scripts"); }
 
     /**
      * Top content area

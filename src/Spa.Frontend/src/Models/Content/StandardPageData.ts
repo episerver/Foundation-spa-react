@@ -57,13 +57,6 @@ export default interface StandardPageData extends Taxonomy.IContent {
     cssFiles: ContentDelivery.LinkListProperty
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    scriptFiles: ContentDelivery.LinkListProperty
-
-    /**
      * Main content area
      *
      * No description available
@@ -97,13 +90,6 @@ export default interface StandardPageData extends Taxonomy.IContent {
      * No description available
      */
     css: ContentDelivery.StringProperty
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    scripts: ContentDelivery.StringProperty
 
     /**
      * Title color
@@ -286,13 +272,11 @@ export class StandardPageType extends Taxonomy.AbstractIContent<StandardPageData
         'excludeFromSearch': 'Boolean',
         'pageImage': 'ContentReference',
         'cssFiles': 'LinkCollection',
-        'scriptFiles': 'LinkCollection',
         'mainContentArea': 'ContentArea',
         'keywords': 'LongString',
         'hideSiteHeader': 'Boolean',
         'teaserVideo': 'ContentReference',
         'css': 'LongString',
-        'scripts': 'LongString',
         'titleColor': 'LongString',
         'backgroundColor': 'LongString',
         'backgroundOpacity': 'FloatNumber',
@@ -368,13 +352,6 @@ export class StandardPageType extends Taxonomy.AbstractIContent<StandardPageData
     public get cssFiles() : StandardPageData["cssFiles"] { return this.getProperty("cssFiles"); }
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    public get scriptFiles() : StandardPageData["scriptFiles"] { return this.getProperty("scriptFiles"); }
-
-    /**
      * Main content area
      *
      * No description available
@@ -408,13 +385,6 @@ export class StandardPageType extends Taxonomy.AbstractIContent<StandardPageData
      * No description available
      */
     public get css() : StandardPageData["css"] { return this.getProperty("css"); }
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    public get scripts() : StandardPageData["scripts"] { return this.getProperty("scripts"); }
 
     /**
      * Title color

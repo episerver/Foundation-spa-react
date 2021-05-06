@@ -133,13 +133,14 @@ namespace Foundation.SpaViewEngine.JsInterop.Models
             if (IsNativeJavaScriptType(inValue.GetType())) return inValue;
             if (inValue is INonWrappableObject nonWrappable) return nonWrappable;
             if (inValue is IEnumerable<object> ienum) return ienum.Select(x => MakeJavaScriptSafe(x)).ToJSArray();
-            if (inValue is IDictionary<string, ContentModelReference> dict) return new DictionaryWrapper<string, ContentModelReference>(dict);
+            if (inValue is Guid guid) return guid.ToString();
             if (inValue is IContent iContent)
             {
                 var mapper = ServiceLocator.Current.GetInstance<IContentModelMapper>();
                 var model = mapper.TransformContent(iContent, true);
                 return new ObjectWrapper(model);
             }
+            if (inValue is IDictionary<string, ContentModelReference> dict) return new DictionaryWrapper<string, ContentModelReference>(dict);
             return new ObjectWrapper(inValue);
         }
     }

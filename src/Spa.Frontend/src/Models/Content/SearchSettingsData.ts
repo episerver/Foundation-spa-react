@@ -1,6 +1,6 @@
 import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
- * SearchSettings
+ * Search Settings
  *
  * No Description available.
  *

@@ -84,7 +84,7 @@ export const Config : Core.IConfig = {
     // Configuration of the V2 Content Repository
     iContentRepository: {
         debug: appDebug, // Override global debug to disable debug within the content repository,
-        policy: ContentDelivery.IRepositoryPolicy.PreferOffline
+        policy: ContentDelivery.IRepositoryPolicy.LocalStorageFirst
     },
 
     // Configuration of the V2 Content Delivery API, this overrides the old configuration

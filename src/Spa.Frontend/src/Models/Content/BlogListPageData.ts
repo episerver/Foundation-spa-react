@@ -127,13 +127,6 @@ export default interface BlogListPageData extends Taxonomy.IContent {
     cssFiles: ContentDelivery.LinkListProperty
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    scriptFiles: ContentDelivery.LinkListProperty
-
-    /**
      * Overlay text color (hex or rgba)
      *
      * Apply for Card template
@@ -174,13 +167,6 @@ export default interface BlogListPageData extends Taxonomy.IContent {
      * No description available
      */
     css: ContentDelivery.StringProperty
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    scripts: ContentDelivery.StringProperty
 
     /**
      * Page description
@@ -331,14 +317,12 @@ export class BlogListPageType extends Taxonomy.AbstractIContent<BlogListPageData
         'excludeFromSearch': 'Boolean',
         'pageImage': 'ContentReference',
         'cssFiles': 'LinkCollection',
-        'scriptFiles': 'LinkCollection',
         'overlayTextColor': 'LongString',
         'mainContentArea': 'ContentArea',
         'keywords': 'LongString',
         'hideSiteHeader': 'Boolean',
         'teaserVideo': 'ContentReference',
         'css': 'LongString',
-        'scripts': 'LongString',
         'pageDescription': 'LongString',
         'hideSiteFooter': 'Boolean',
         'teaserText': 'LongString',
@@ -478,13 +462,6 @@ export class BlogListPageType extends Taxonomy.AbstractIContent<BlogListPageData
     public get cssFiles() : BlogListPageData["cssFiles"] { return this.getProperty("cssFiles"); }
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    public get scriptFiles() : BlogListPageData["scriptFiles"] { return this.getProperty("scriptFiles"); }
-
-    /**
      * Overlay text color (hex or rgba)
      *
      * Apply for Card template
@@ -525,13 +502,6 @@ export class BlogListPageType extends Taxonomy.AbstractIContent<BlogListPageData
      * No description available
      */
     public get css() : BlogListPageData["css"] { return this.getProperty("css"); }
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    public get scripts() : BlogListPageData["scripts"] { return this.getProperty("scripts"); }
 
     /**
      * Page description
