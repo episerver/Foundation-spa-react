@@ -65,7 +65,7 @@ const LinksListBlock : React.FunctionComponent<LinksListBlockProps> = (props) =>
     }
 
     const links : JSX.Element[] = [];
-    (props.settings[props.listProp] as ContentDelivery.LinkListProperty)?.value.forEach(x => links.push(transformLink(x)));
+    (props.settings[props.listProp] as ContentDelivery.LinkListProperty)?.value?.forEach(x => links.push(transformLink(x)));
 
     return <div className={ props.className }>
         <p className="h5 footer__heading"><Components.Property iContent={ props.settings } field={ props.titleProp }/></p>

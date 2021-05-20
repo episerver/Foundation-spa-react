@@ -22,6 +22,39 @@ namespace Foundation.SpaViewEngine.Infrastructure
         protected readonly SpaViewCache Cache;
         protected readonly IContextModeResolver ContextModeResolver;
 
+        protected virtual string HtmlTemplate
+        {
+            get
+            {
+                if (BrowserContainer == null) return string.Empty;
+                var key = Cache.CreateCacheKey(Settings.BrowserContainerName + "\\" + Settings.HtmlTemplateName, CacheType.Asset, BrowserContainer);
+                if (Cache.TryGet(key, ReadStrategy.Immediate, out string tpl) && !string.IsNullOrWhiteSpace(tpl))
+                    return tpl;
+
+                tpl = SpaFolderHelper.GetItemFromDeploymentAsString(BrowserContainer, Settings.HtmlTemplateName);
+                Cache.Insert(key, tpl, new SpaMedia[] { BrowserContainer, ServerContainer });
+                return tpl;
+            }
+        }
+
+        protected virtual string ServerJS
+        {
+            get
+            {
+                if (ServerContainer == null) return string.Empty;
+                var key = Cache.CreateCacheKey(Settings.ServerContainerName + "\\" + Settings.ServerJsName, CacheType.Asset, ServerContainer);
+                if (Cache.TryGet(key, ReadStrategy.Immediate, out string js) && !string.IsNullOrWhiteSpace(js))
+                    return js;
+
+                js = SpaFolderHelper.GetItemFromDeploymentAsString(ServerContainer, Settings.ServerJsName);
+                Cache.Insert(key, js, new SpaMedia[] { BrowserContainer, ServerContainer });
+                return js;
+            }
+        }
+
+        protected virtual SpaMedia ServerContainer => SpaFolderHelper.GetDeploymentItem(Settings.ServerContainerName);
+        protected virtual SpaMedia BrowserContainer => SpaFolderHelper.GetDeploymentItem(Settings.BrowserContainerName);
+
         public SpaView(
             SpaSettings spaSettings,
             SpaViewCache spaViewCache,
@@ -31,37 +64,6 @@ namespace Foundation.SpaViewEngine.Infrastructure
             Cache = spaViewCache;
             ContextModeResolver = contextModeResolver;
         }
-
-        protected virtual string HtmlTemplate {
-            get
-            {
-                var media = SpaFolderHelper.GetDeploymentItem(Settings.BrowserContainerName);
-                if (media == null) return string.Empty;
-                var key = Cache.CreateCacheKey(Settings.BrowserContainerName + "\\" + Settings.HtmlTemplateName, CacheType.Asset, media);
-                if (Cache.TryGet(key, ReadStrategy.Immediate, out string tpl))
-                    return tpl;
-
-                tpl = SpaFolderHelper.GetItemFromDeploymentAsString(media, Settings.HtmlTemplateName);
-                Cache.Insert(key, tpl, media);
-                return tpl;
-            }
-        }
-
-        protected virtual string ServerJS {
-            get
-            {
-                if (ServerContainer == null) return string.Empty;
-                var key = Cache.CreateCacheKey(Settings.ServerContainerName + "\\" + Settings.ServerJsName, CacheType.Asset, ServerContainer);
-                if (Cache.TryGet(key, ReadStrategy.Immediate, out string js))
-                    return js;
-
-                js = SpaFolderHelper.GetItemFromDeploymentAsString(ServerContainer, Settings.ServerJsName);
-                Cache.Insert(key, js, ServerContainer);
-                return js;
-            }
-        }
-
-        protected virtual SpaMedia ServerContainer => SpaFolderHelper.GetDeploymentItem(Settings.ServerContainerName);
 
         public virtual void Render(ViewContext viewContext, TextWriter writer)
         {
@@ -88,7 +90,7 @@ namespace Foundation.SpaViewEngine.Infrastructure
                     renderData.IsError = true;
                 }
                 renderData.InitialData = context.AsJson();
-                if (!renderData.IsError) Cache.Insert(cacheKey, renderData, new IContent[] { viewContext.GetRoutedContent(), ServerContainer });
+                if (!renderData.IsError) Cache.Insert(cacheKey, renderData, new IContent[] { viewContext.GetRoutedContent(), ServerContainer, BrowserContainer });
             }
 
             writer.Write(ApplyReplacements(HtmlTemplate, renderData.Response, renderData.InitialData));
@@ -118,12 +120,6 @@ namespace Foundation.SpaViewEngine.Infrastructure
             "<script type=\"text/javascript\" async defer>__INITIAL__DATA__ = " + context + "; __INITIAL__DATA__.status = 'available'; if (__INITIAL__DATA__.onReady) __INITIAL__DATA__.onReady();</script>";
 
         protected virtual IJsEngine GetJsEngine() => ServiceLocator.Current.GetInstance<IJsEngine>();
-
-        private string GetZipAssetString(string configKey, string defaultName, string filePath)
-        {
-            var assetName = Settings.GetConfigValue(configKey, defaultName);
-            return SpaFolderHelper.GetItemFromDeploymentAsString(assetName, filePath);
-        }
     }
 
     public class SpaViewRenderData

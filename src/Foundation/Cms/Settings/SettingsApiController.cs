@@ -9,6 +9,7 @@ using EPiServer.ContentApi.Core.ContentResult;
 using System.Net;
 using EPiServer.ContentApi.Core.Serialization.Models;
 using System.Web.Http.ValueProviders;
+using EPiServer.Core;
 using EPiServer.ContentApi.Core.Internal;
 using EPiServer.ServiceLocation;
 using EPiServer;
@@ -72,7 +73,7 @@ namespace Foundation.Cms.Settings
                 var culture = contentData.ExistingLanguages.Where(x => x.Name == language).DefaultIfEmpty(null).FirstOrDefault();
                 if (culture == null)
                     return NotFound();
-                contentData = ServiceLocator.Current.GetInstance<IContentLoader>().Get<SettingsBase>(contentData.ContentLink, culture);
+                contentData = ServiceLocator.Current.GetInstance<IContentLoader>().Get<SettingsBase>(contentData.ContentLink.ToReferenceWithoutVersion(), culture);
             }
 
             var contentModel = ContentModelMapper.TransformContent(contentData, true, expand);

@@ -48,10 +48,19 @@ namespace Foundation.Infrastructure
             _services = context.Services;
             context.ConfigureFoundationCms();
 
+            _services.ConfigureForContentDeliveryClient();
+            _services.ConfigureForExternalTemplates();
             _services.Configure<ContentApiConfiguration>(c =>
             {
+
                 c.EnablePreviewFeatures = true;
-                c.Default().SetMinimumRoles(string.Empty).SetRequiredRole(string.Empty);
+                c.Default()
+                    .SetEnablePreviewMode(true)
+                    .SetSiteDefinitionApiEnabled(true)
+                    .SetIncludeSiteHosts(true)
+                    .SetFlattenPropertyModel(false)
+                    .SetMinimumRoles(string.Empty)
+                    .SetRequiredRole(string.Empty);
             });
 
             _services.Configure<ContentApiSearchConfiguration>(config =>

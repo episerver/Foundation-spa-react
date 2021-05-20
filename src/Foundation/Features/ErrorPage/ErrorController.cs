@@ -12,8 +12,8 @@ namespace Foundation.Features.ErrorPage
         {
             //Response.StatusCode = 500;
             var model = Url.GetUserViewModel("/", "Error");
-            model.ErrorMessage = exception.Message;
-            model.StackTrace = exception.StackTrace;
+            model.ErrorMessage = exception!= null ? exception.Message ?? "" : "";
+            model.StackTrace = exception != null ? exception.StackTrace ?? "" : "";
             return View("ErrorPage", model);
         }
     }

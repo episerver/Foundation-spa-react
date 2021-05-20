@@ -658,6 +658,7 @@
     <Compile Include="Cms\SelectionItem.cs" />
     <Compile Include="Cms\Settings\GlobalSettingsComponent.cs" />
     <Compile Include="Cms\Settings\GlobalSettingsRepositoryDescriptor.cs" />
+    <Compile Include="Cms\Settings\SettingsApiController.cs" />
     <Compile Include="Cms\Settings\SettingsBase.cs" />
     <Compile Include="Cms\Settings\SettingsContentTypeAttribute.cs" />
     <Compile Include="Cms\Settings\SettingsController.cs" />

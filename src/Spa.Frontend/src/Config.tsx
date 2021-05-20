@@ -6,7 +6,7 @@ import { SettingsInitialization as SettingsModule } from '@episerver/foundation-
 
 // Referenced components for configuration
 import Loader from "app/Components/Shared/MoseyLoader";
-import Layout, { MoseyLayout as ServerSideLayout } from "app/Components/Shared/MoseyLayout";
+import Layout from "app/Components/Shared/MoseyLayout";
 
 // Referenced implementation
 import MoseyComponentLoader from "app/Infrastructure/ComponentLoader";
@@ -14,7 +14,7 @@ import MoseyComponentLoader from "app/Infrastructure/ComponentLoader";
 // Enable caching of action calls
 // ContentDelivery.FetchAdapter.isCachable.push(url => url.pathname.indexOf('/api/episerver/v3/action/') >= 0 && !url.searchParams.has('epieditmode') && !url.searchParams.has('EpiEditMode'));
 
-const appDebug = false;
+const appDebug = process.env.NODE_ENV === 'development';
 
 // Website configuration
 export const Config : Core.IConfig = {
@@ -83,7 +83,7 @@ export const Config : Core.IConfig = {
 
     // Configuration of the V2 Content Repository
     iContentRepository: {
-        debug: appDebug,
+        debug: true,
         policy: ContentDelivery.IRepositoryPolicy.LocalStorageFirst
     },
 

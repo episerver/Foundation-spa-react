@@ -29,8 +29,9 @@ export default class SettingsApi {
             const ISettingsService = this._ctx.getEpiserverService("Foundation.Cms.Settings.ISettingsService");
             settingsContainer = ISettingsService.GetSiteSettings(container);
             this._ctx.setProp(ssrPropName, settingsContainer);
+            settingsContainer = this._ctx.makeSafe(settingsContainer);
         }
-        return this._ctx.makeSafe(settingsContainer);
+        return settingsContainer;
     }
     listContainers(site) {
         return __awaiter(this, void 0, void 0, function* () {

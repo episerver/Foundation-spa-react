@@ -13,12 +13,12 @@ export default class SettingsApi
     public serviceEndpoint : Readonly<string> = 'api/foundation/v1/settings';
     protected _repo : Readonly<ContentDelivery.IIContentRepositoryV2>;
     protected _api : Readonly<ContentDelivery.IContentDeliveryAPI_V2>;
-    protected _ctx : Readonly<ServerSideRendering.Accessor>;
+    protected _ctx : Readonly<ServerSideRendering.IAccessor>;
 
     public constructor (
         contentDeliveryApi: ContentDelivery.IContentDeliveryAPI_V2,
         contentRepositoryApi: ContentDelivery.IIContentRepositoryV2,
-        serverContext: ServerSideRendering.Accessor
+        serverContext: ServerSideRendering.IAccessor
     ) {
         this._api = contentDeliveryApi;
         this._repo = contentRepositoryApi;
@@ -37,11 +37,12 @@ export default class SettingsApi
         const ssrPropName = container.toLowerCase();
         let settingsContainer  = this._ctx.getProp<T>(ssrPropName);
         if (!settingsContainer && this._ctx.IsServerSideRendering) {
-            const ISettingsService = this._ctx.getEpiserverService<ISettingsService>("Foundation.Cms.Settings.ISettingsService");
+            const ISettingsService = (this._ctx as ServerSideRendering.DotNetAccessor).getEpiserverService<ISettingsService>("Foundation.Cms.Settings.ISettingsService");
             settingsContainer = ISettingsService.GetSiteSettings<T>(container);
             this._ctx.setProp(ssrPropName, settingsContainer);
+            settingsContainer = (this._ctx as ServerSideRendering.DotNetAccessor).makeSafe(settingsContainer);
         }
-        return this._ctx.makeSafe(settingsContainer);
+        return settingsContainer;
     }
 
     public async listContainers(site ?: Taxonomy.Website) : Promise<string[]>

@@ -115,15 +115,6 @@ module.exports = (env) => {
                             options: { 
                                 sourceMap: true 
                             }
-                        }, 
-                        'postcss-loader',
-                        {
-                            loader: 'resolve-url-loader',
-                            options: {
-                                debug: true,
-                                //root: outPath,
-                                sourceMap: true
-                            }
                         }
                     ],
                 },
