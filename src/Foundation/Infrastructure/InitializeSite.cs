@@ -18,10 +18,10 @@ using Foundation.Cms.Settings;
 using Foundation.Features.Blog.BlogItemPage;
 using Foundation.Features.Header;
 using Foundation.Features.Home;
-using Foundation.Features.Shared;
 using Foundation.Features.Locations.LocationItemPage;
 using Foundation.Features.Locations.LocationListPage;
 using Foundation.Features.Search;
+using Foundation.Features.Shared;
 using Foundation.Find;
 using Foundation.Infrastructure.Display;
 using Foundation.Infrastructure.PowerSlices;
@@ -48,10 +48,19 @@ namespace Foundation.Infrastructure
             _services = context.Services;
             context.ConfigureFoundationCms();
 
+            _services.ConfigureForContentDeliveryClient();
+            _services.ConfigureForExternalTemplates();
             _services.Configure<ContentApiConfiguration>(c =>
             {
+
                 c.EnablePreviewFeatures = true;
-                c.Default().SetMinimumRoles(string.Empty).SetRequiredRole(string.Empty);
+                c.Default()
+                    .SetEnablePreviewMode(true)
+                    .SetSiteDefinitionApiEnabled(true)
+                    .SetIncludeSiteHosts(true)
+                    .SetFlattenPropertyModel(false)
+                    .SetMinimumRoles(string.Empty)
+                    .SetRequiredRole(string.Empty);
             });
 
             _services.Configure<ContentApiSearchConfiguration>(config =>

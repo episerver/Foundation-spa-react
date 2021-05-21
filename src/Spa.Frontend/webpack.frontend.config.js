@@ -37,6 +37,8 @@ module.exports = (env) => {
     const outPath       = webPath + 'spaview/' + bundle + '/';
     const distPath      = path.join(__dirname, 'dist', bundle);
 
+    console.log("Starting a "+ ( forProduction ? 'production' : 'development' )+" build");
+
     const webpackConfig = {
         entry: path.resolve(srcPath,'index.tsx'),
         target: 'web',
@@ -113,15 +115,6 @@ module.exports = (env) => {
                             options: { 
                                 sourceMap: true 
                             }
-                        }, 
-                        'postcss-loader',
-                        {
-                            loader: 'resolve-url-loader',
-                            options: {
-                                debug: true,
-                                //root: outPath,
-                                sourceMap: true
-                            }
                         }
                     ],
                 },
@@ -162,13 +155,13 @@ module.exports = (env) => {
             emitOnErrors: false,
 			splitChunks: {
 				chunks: 'all',
-				maxInitialRequests: 50,
-				maxAsyncRequests: 1000,
-				minSize: 1,
+				maxInitialRequests: 10,
+				maxAsyncRequests: 100,
+				minSize: 10,
 				automaticNameDelimiter: '.',
 				cacheGroups: {
                     // Split Node Modules into separate files
-					lib: {
+					/*lib: {
 						test: /[\\/]node_modules[\\/]/,
 						name(module, chunks, cacheGroupKey) {
 							// get the name. E.g. node_modules/packageName/not/this/part.js
@@ -179,7 +172,7 @@ module.exports = (env) => {
 							return `${cacheGroupKey}.${packageName.replace('@', '')}`;
 						},
                         
-                    },
+                    },*/
                     
                     // Split Application components into separate files, might be needed if you don't provide a loader
 					components: {
@@ -193,7 +186,8 @@ module.exports = (env) => {
 
 							// npm package names are URL-safe, but some servers don't like @ symbols
 							return `${cacheGroupKey}.${componentId.toLowerCase().replace('@', '')}`;
-                        }
+                        },
+                        reuseExistingChunk: true
 					},
                     
                     // Split Application components into separate files, might be needed if you don't provide a loader
@@ -208,7 +202,8 @@ module.exports = (env) => {
 
 							// npm package names are URL-safe, but some servers don't like @ symbols
 							return `${cacheGroupKey}.${componentId.toLowerCase().replace('@', '')}`;
-                        }
+                        },
+                        reuseExistingChunk: true
 					}
 				},
 			},
@@ -225,12 +220,12 @@ module.exports = (env) => {
                 title: manifest.name,
                 filename: 'index.html',
                 packagePath: outPath,
-                minify: {
+                minify: forProduction ? {
                     removeComments: false,
                     preserveLineBreaks: true,
                     collapseWhitespace: false,
                     collapseBooleanAttributes: true
-                }
+                } : false
             }),
 
             new WebpackManifestPlugin({

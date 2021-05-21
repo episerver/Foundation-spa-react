@@ -17,7 +17,7 @@ namespace Foundation.Features.Locations.Blocks
         Description = "Activity facets for locations",
         GroupName = TabNames.Location)]
     [ImageUrl("~/assets/icons/cms/blocks/map.png")]
-    //[AvailableContentTypes(IncludeOn = new Type[] { typeof(LocationListPage.LocationListPage) })]
+    [AvailableContentTypes(Include = new Type[] { typeof(LocationListPage.LocationListPage) })]
     public class FilterActivitiesBlock : FoundationBlockData, IFilterBlock
     {
         [CultureSpecific]

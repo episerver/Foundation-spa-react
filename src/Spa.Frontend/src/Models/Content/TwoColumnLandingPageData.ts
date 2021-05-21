@@ -64,13 +64,6 @@ export default interface TwoColumnLandingPageData extends Taxonomy.IContent {
     cssFiles: ContentDelivery.LinkListProperty
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    scriptFiles: ContentDelivery.LinkListProperty
-
-    /**
      * Main content area
      *
      * No description available
@@ -104,13 +97,6 @@ export default interface TwoColumnLandingPageData extends Taxonomy.IContent {
      * No description available
      */
     css: ContentDelivery.StringProperty
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    scripts: ContentDelivery.StringProperty
 
     /**
      * Right content area
@@ -273,13 +259,11 @@ export class TwoColumnLandingPageType extends Taxonomy.AbstractIContent<TwoColum
         'excludeFromSearch': 'Boolean',
         'pageImage': 'ContentReference',
         'cssFiles': 'LinkCollection',
-        'scriptFiles': 'LinkCollection',
         'mainContentArea': 'ContentArea',
         'keywords': 'LongString',
         'hideSiteHeader': 'Boolean',
         'teaserVideo': 'ContentReference',
         'css': 'LongString',
-        'scripts': 'LongString',
         'rightContentArea': 'ContentArea',
         'leftColumn': 'Number',
         'rightColumn': 'Number',
@@ -359,13 +343,6 @@ export class TwoColumnLandingPageType extends Taxonomy.AbstractIContent<TwoColum
     public get cssFiles() : TwoColumnLandingPageData["cssFiles"] { return this.getProperty("cssFiles"); }
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    public get scriptFiles() : TwoColumnLandingPageData["scriptFiles"] { return this.getProperty("scriptFiles"); }
-
-    /**
      * Main content area
      *
      * No description available
@@ -399,13 +376,6 @@ export class TwoColumnLandingPageType extends Taxonomy.AbstractIContent<TwoColum
      * No description available
      */
     public get css() : TwoColumnLandingPageData["css"] { return this.getProperty("css"); }
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    public get scripts() : TwoColumnLandingPageData["scripts"] { return this.getProperty("scripts"); }
 
     /**
      * Right content area

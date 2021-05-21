@@ -65,7 +65,7 @@
 
         a
         {
-            color: #0000cc;
+            color: 0000cc;
         }
         a:hover
         {

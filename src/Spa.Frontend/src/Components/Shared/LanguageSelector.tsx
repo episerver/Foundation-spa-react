@@ -8,7 +8,7 @@ export type LanguageSelectorProps = Partial<State.CmsState> & {
     dispatch ?: (action: State.CmsStateAction) => void
 }
 
-export const LanguageSelector : React.FunctionComponent<LanguageSelectorProps> = (props) =>
+export const DefaultLanguageSelector : React.FunctionComponent<LanguageSelectorProps> = (props) =>
 {
     const repo = useIContentRepository();
     const [ languages, setLanguages ] = useState<Taxonomy.LanguageList>([]);
@@ -51,6 +51,14 @@ export const LanguageSelector : React.FunctionComponent<LanguageSelectorProps> =
     </Dropdown>
 }
 
-export const ConnectedLanguageSelector = connect((state : State.CmsAppState ) => state.OptiContentCloud || {})(LanguageSelector);
+export const ConnectedLanguageSelector = connect((state : State.CmsAppState ) => state.OptiContentCloud || {})(DefaultLanguageSelector);
 
-export default ConnectedLanguageSelector;
+export const LanguageSelector : React.FunctionComponent<LanguageSelectorProps> = (props) =>
+{
+    const ctx = useEpiserver();
+    if (ctx.isServerSideRendering())
+        return <DefaultLanguageSelector { ...props } />
+    return <ConnectedLanguageSelector { ...props } />
+}
+
+export default LanguageSelector;

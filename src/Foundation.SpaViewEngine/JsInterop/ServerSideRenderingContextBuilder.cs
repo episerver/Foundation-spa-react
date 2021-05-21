@@ -1,10 +1,11 @@
-﻿using EPiServer;
+﻿using EPiServer.ContentApi.Core.Serialization;
 using EPiServer.Core;
-using EPiServer.DataAbstraction;
+using EPiServer.Framework.Cache;
 using EPiServer.ServiceLocation;
-using EPiServer.Web.Routing;
-using Foundation.ContentDelivery.Models;
+using Foundation.SpaViewEngine.Infrastructure;
 using Foundation.SpaViewEngine.JsInterop.Models;
+using Foundation.SpaViewEngine.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -13,64 +14,47 @@ namespace Foundation.SpaViewEngine.JsInterop
     [ServiceConfiguration(typeof(ServerSideRenderingContextBuilder), Lifecycle = ServiceInstanceScope.Singleton)]
     public class ServerSideRenderingContextBuilder
     {
-        protected virtual IViewModelSerializer ViewModelSerializer { get; }
-
-        protected virtual IUrlResolver UrlResolver { get; }
-
-        protected virtual ILanguageBranchRepository LanguageBranchRepository { get; }
-
-        protected virtual IContentLoader ContentLoader { get; }
+        protected virtual IContentModelMapper ContentModelMapper { get; }
+        protected virtual ResultModelResolver ResultModelResolver { get; }
+        protected virtual SpaViewCache Cache { get; }
 
         public ServerSideRenderingContextBuilder(
-            IViewModelSerializer viewModelSerializer,
-            IUrlResolver urlResolver,
-            ILanguageBranchRepository languageBranchRepository,
-            IContentLoader contentLoader
+            IContentModelMapper contentModelMapper,
+            ResultModelResolver resultModelResolver,
+            SpaViewCache spaViewCache
         )
         {
-            ViewModelSerializer = viewModelSerializer;
-            UrlResolver = urlResolver;
-            LanguageBranchRepository = languageBranchRepository;
-            ContentLoader = contentLoader;
+            ContentModelMapper = contentModelMapper;
+            Cache = spaViewCache;
+            ResultModelResolver = resultModelResolver;
         }
 
-        /// <summary>
-        /// Helper method that enables plugging a completely different JSON
-        /// serialization engine when the ViewModelSerializer isn't the desired
-        /// JSON serialization engine.
-        /// </summary>
-        /// <param name="data">The data to be serialized</param>
-        /// <returns>JSON Representation of provided data</returns>
-        public virtual string AsJson(object data) => ViewModelSerializer.ConvertToJson(data);
+        public virtual ServerSideRenderingContext Build(ViewContext context) => Build(context, new IContent[0]);
 
         /// <summary>
         /// Perform the actual construction of the server side rendering context
         /// </summary>
         /// <param name="context">The view for which the context must be constructed</param>
         /// <returns>The context for the JavaScript engine to execute against</returns>
-        public virtual ServerSideRenderingContext Build(ViewContext context)
+        public virtual ServerSideRenderingContext Build(ViewContext context, IEnumerable<IContent> masters)
         {
-            var iContent = GetCurrentContent(context);
-            var ssrContext = ServiceLocator.Current.GetInstance<ServerSideRenderingContext>();
-            ssrContext.IContent = AsJson(iContent);
-            ssrContext.ContentLink = AsJson(BuildContentLink(iContent));
+            var iContent = context.GetRoutedContent();
+            var action = string.Empty;
+            if (context.RouteData.Values.TryGetValue("action", out object actionData)) action = actionData.ToString();
+            var cacheKey = Cache.CreateCacheKey(action, CacheType.Context, iContent);
+            if (Cache.TryGet<ServerSideRenderingContext>(cacheKey, ReadStrategy.Immediate, out var ssrContext))
+                return ssrContext;
+
+            ssrContext = ServiceLocator.Current.GetInstance<ServerSideRenderingContext>();
+            ssrContext.IContent = ContentModelMapper.TransformContent(iContent, true, "*");
+            ssrContext.ContentLink = ssrContext.IContent.ContentLink;
             ssrContext.ContextInfo = context.Controller.GetType().FullName;
+            ssrContext.Action = action;
+            ssrContext.ActionResponse = context.ViewData.Model;
+
+            Cache.Insert(cacheKey, ssrContext, masters.Append(iContent));
+
             return ssrContext;
-        }
-
-        protected virtual IContent GetCurrentContent(ViewContext context) => context.RequestContext.RouteData.DataTokens.FirstOrDefault(x => x.Key.Equals("routedData")).Value as IContent;
-
-        protected virtual ContentLink BuildContentLink(IContent content)
-        {
-            if (content == null) { return new ContentLink(); }
-            return new ContentLink()
-            {
-                id = content.ContentLink.ID,
-                guidValue = content?.ContentGuid,
-                providerName = content.ContentLink.ProviderName,
-                workId = content.ContentLink.WorkID,
-                url = UrlResolver.GetUrl(content.ContentLink)
-            };
         }
     }
 }

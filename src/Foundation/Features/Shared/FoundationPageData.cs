@@ -254,23 +254,14 @@ namespace Foundation.Features.Shared
 
         #region Styles
 
+        [Searchable(false)]
         [Display(Name = "CSS files", GroupName = TabNames.Styles, Order = 100)]
         public virtual LinkItemCollection CssFiles { get; set; }
 
+        [Searchable(false)]
+        [UIHint(UIHint.Textarea)]
         [Display(Name = "CSS", GroupName = TabNames.Styles, Order = 200)]
-        [UIHint(UIHint.Textarea)]
         public virtual string Css { get; set; }
-
-        #endregion
-
-        #region Scripts
-
-        [Display(Name = "Script files", GroupName = TabNames.Scripts, Order = 100)]
-        public virtual LinkItemCollection ScriptFiles { get; set; }
-
-        [UIHint(UIHint.Textarea)]
-        [Display(GroupName = TabNames.Scripts, Order = 200)]
-        public virtual string Scripts { get; set; }
 
         #endregion
 

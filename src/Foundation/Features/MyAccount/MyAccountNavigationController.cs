@@ -6,7 +6,6 @@ using Foundation.Cms;
 using Foundation.Cms.Settings;
 using Foundation.Features.Header;
 using Foundation.Features.Settings;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace Foundation.Features.MyAccount

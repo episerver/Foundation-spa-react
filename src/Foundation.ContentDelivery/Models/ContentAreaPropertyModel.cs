@@ -4,7 +4,6 @@ using EPiServer.ContentApi.Core.Serialization;
 using EPiServer.ContentApi.Core.Serialization.Models;
 using EPiServer.Core;
 using EPiServer.Core.Html.StringParsing;
-using EPiServer.Editor;
 using EPiServer.Security;
 using EPiServer.ServiceLocation;
 using EPiServer.SpecializedProperties;

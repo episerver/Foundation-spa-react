@@ -146,6 +146,7 @@
         text-transform: none;
         margin: 0 0 1rem;
         font-size: 4.5vw;
+        text-shadow: 2px 2px 5px black;
 
         @media screen and (min-width: 768px) {
             font-size: 2vw;
@@ -247,6 +248,10 @@
             bottom: 2rem;
             left: 2rem;
             right: 2rem;
+        }
+
+        p {
+            text-shadow: 2px 2px 5px black;
         }
     }
 

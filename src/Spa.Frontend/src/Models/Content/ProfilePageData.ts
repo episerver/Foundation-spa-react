@@ -57,13 +57,6 @@ export default interface ProfilePageData extends Taxonomy.IContent {
     cssFiles: ContentDelivery.LinkListProperty
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    scriptFiles: ContentDelivery.LinkListProperty
-
-    /**
      * Main content area
      *
      * No description available
@@ -97,13 +90,6 @@ export default interface ProfilePageData extends Taxonomy.IContent {
      * No description available
      */
     css: ContentDelivery.StringProperty
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    scripts: ContentDelivery.StringProperty
 
     /**
      * Page description
@@ -244,13 +230,11 @@ export class ProfilePageType extends Taxonomy.AbstractIContent<ProfilePageData> 
         'excludeFromSearch': 'Boolean',
         'pageImage': 'ContentReference',
         'cssFiles': 'LinkCollection',
-        'scriptFiles': 'LinkCollection',
         'mainContentArea': 'ContentArea',
         'keywords': 'LongString',
         'hideSiteHeader': 'Boolean',
         'teaserVideo': 'ContentReference',
         'css': 'LongString',
-        'scripts': 'LongString',
         'pageDescription': 'LongString',
         'hideSiteFooter': 'Boolean',
         'teaserText': 'LongString',
@@ -320,13 +304,6 @@ export class ProfilePageType extends Taxonomy.AbstractIContent<ProfilePageData> 
     public get cssFiles() : ProfilePageData["cssFiles"] { return this.getProperty("cssFiles"); }
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    public get scriptFiles() : ProfilePageData["scriptFiles"] { return this.getProperty("scriptFiles"); }
-
-    /**
      * Main content area
      *
      * No description available
@@ -360,13 +337,6 @@ export class ProfilePageType extends Taxonomy.AbstractIContent<ProfilePageData> 
      * No description available
      */
     public get css() : ProfilePageData["css"] { return this.getProperty("css"); }
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    public get scripts() : ProfilePageData["scripts"] { return this.getProperty("scripts"); }
 
     /**
      * Page description

@@ -1,14 +1,11 @@
 ﻿using EPiServer.Cms.UI.AspNetIdentity;
 using EPiServer.Core;
 using EPiServer.Personalization;
-using EPiServer.Security;
 using EPiServer.Web.Routing;
 using Foundation.Cms.Identity;
 using Foundation.Cms.Settings;
 
 using Foundation.Features.Settings;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace Foundation.Features.MyAccount.ProfilePage

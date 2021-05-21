@@ -113,7 +113,7 @@ export default interface PageListBlockData extends Taxonomy.IContent {
     template: ContentDelivery.StringProperty
 
     /**
-     * Preview option (only available in 'Image on the top' templates)
+     * Preview option (not available in the Grid, Insight templates)
      *
      * No description available
      */
@@ -272,7 +272,7 @@ export class PageListBlockType extends Taxonomy.AbstractIContent<PageListBlockDa
     public get template() : PageListBlockData["template"] { return this.getProperty("template"); }
 
     /**
-     * Preview option (only available in 'Image on the top' templates)
+     * Preview option (not available in the Grid, Insight templates)
      *
      * No description available
      */

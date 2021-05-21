@@ -64,13 +64,6 @@ export default interface ThreeColumnLandingPageData extends Taxonomy.IContent {
     cssFiles: ContentDelivery.LinkListProperty
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    scriptFiles: ContentDelivery.LinkListProperty
-
-    /**
      * Left content area
      *
      * No description available
@@ -111,13 +104,6 @@ export default interface ThreeColumnLandingPageData extends Taxonomy.IContent {
      * No description available
      */
     css: ContentDelivery.StringProperty
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    scripts: ContentDelivery.StringProperty
 
     /**
      * Right content area
@@ -287,14 +273,12 @@ export class ThreeColumnLandingPageType extends Taxonomy.AbstractIContent<ThreeC
         'excludeFromSearch': 'Boolean',
         'pageImage': 'ContentReference',
         'cssFiles': 'LinkCollection',
-        'scriptFiles': 'LinkCollection',
         'leftContentArea': 'ContentArea',
         'mainContentArea': 'ContentArea',
         'keywords': 'LongString',
         'hideSiteHeader': 'Boolean',
         'teaserVideo': 'ContentReference',
         'css': 'LongString',
-        'scripts': 'LongString',
         'rightContentArea': 'ContentArea',
         'leftColumn': 'Number',
         'centerColumn': 'Number',
@@ -375,13 +359,6 @@ export class ThreeColumnLandingPageType extends Taxonomy.AbstractIContent<ThreeC
     public get cssFiles() : ThreeColumnLandingPageData["cssFiles"] { return this.getProperty("cssFiles"); }
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    public get scriptFiles() : ThreeColumnLandingPageData["scriptFiles"] { return this.getProperty("scriptFiles"); }
-
-    /**
      * Left content area
      *
      * No description available
@@ -422,13 +399,6 @@ export class ThreeColumnLandingPageType extends Taxonomy.AbstractIContent<ThreeC
      * No description available
      */
     public get css() : ThreeColumnLandingPageData["css"] { return this.getProperty("css"); }
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    public get scripts() : ThreeColumnLandingPageData["scripts"] { return this.getProperty("scripts"); }
 
     /**
      * Right content area

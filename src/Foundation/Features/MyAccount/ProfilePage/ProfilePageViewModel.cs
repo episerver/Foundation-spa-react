@@ -1,7 +1,6 @@
 using EPiServer.Personalization;
 using Foundation.Cms.Identity;
 using Foundation.Features.Shared;
-using System.Collections.Generic;
 
 namespace Foundation.Features.MyAccount.ProfilePage
 {

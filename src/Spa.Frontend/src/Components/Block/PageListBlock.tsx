@@ -133,7 +133,7 @@ export default class PageListBlock extends ComponentTypes.AbstractComponent<Page
         if (pages.length > 1) {
             let lastIndex = Math.min(pages.length-1, 5);
             items.push(<div className="col-12 col-md-6 row no-gutters" key={ `pagelist-grid-group-${this.props.data.contentLink.id}` }>
-                { pages.slice(1,lastIndex).map(iContent => this.renderGridTemplateTile(iContent as IContentWithTeaser, ['col-6'])) }
+                { pages.slice(1,lastIndex).map(iContent => this.renderGridTemplateTile(iContent as IContentWithTeaser, ['col-12', 'col-md-6'])) }
             </div>);
         }
         if (pages.length > 5) {

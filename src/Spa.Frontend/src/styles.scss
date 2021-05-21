@@ -12,6 +12,9 @@
 @import "styles/aspect_ratios"; // Classes for configurable aspect ratios
 @import "styles/utils";
 
+/** Import some components for SSR **/
+@import "Components/Block/HeroBlock";
+
 /** Start classes embedded in demo-content **/
 .button-origin {
     @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-line-height, $btn-border-radius);

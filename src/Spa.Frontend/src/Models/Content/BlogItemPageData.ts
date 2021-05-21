@@ -64,13 +64,6 @@ export default interface BlogItemPageData extends Taxonomy.IContent {
     cssFiles: ContentDelivery.LinkListProperty
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    scriptFiles: ContentDelivery.LinkListProperty
-
-    /**
      * Main content area
      *
      * No description available
@@ -104,13 +97,6 @@ export default interface BlogItemPageData extends Taxonomy.IContent {
      * No description available
      */
     css: ContentDelivery.StringProperty
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    scripts: ContentDelivery.StringProperty
 
     /**
      * Page description
@@ -252,13 +238,11 @@ export class BlogItemPageType extends Taxonomy.AbstractIContent<BlogItemPageData
         'excludeFromSearch': 'Boolean',
         'pageImage': 'ContentReference',
         'cssFiles': 'LinkCollection',
-        'scriptFiles': 'LinkCollection',
         'mainContentArea': 'ContentArea',
         'keywords': 'LongString',
         'hideSiteHeader': 'Boolean',
         'teaserVideo': 'ContentReference',
         'css': 'LongString',
-        'scripts': 'LongString',
         'pageDescription': 'LongString',
         'hideSiteFooter': 'Boolean',
         'teaserText': 'LongString',
@@ -335,13 +319,6 @@ export class BlogItemPageType extends Taxonomy.AbstractIContent<BlogItemPageData
     public get cssFiles() : BlogItemPageData["cssFiles"] { return this.getProperty("cssFiles"); }
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    public get scriptFiles() : BlogItemPageData["scriptFiles"] { return this.getProperty("scriptFiles"); }
-
-    /**
      * Main content area
      *
      * No description available
@@ -375,13 +352,6 @@ export class BlogItemPageType extends Taxonomy.AbstractIContent<BlogItemPageData
      * No description available
      */
     public get css() : BlogItemPageData["css"] { return this.getProperty("css"); }
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    public get scripts() : BlogItemPageData["scripts"] { return this.getProperty("scripts"); }
 
     /**
      * Page description

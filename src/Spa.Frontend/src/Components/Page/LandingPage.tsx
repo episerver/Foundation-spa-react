@@ -4,6 +4,7 @@ import { Components } from '@episerver/spa-core';
 import { LandingPageProps } from 'app/Models/Content/LandingPageData';
 
 export const LandingPage : FunctionComponent<LandingPageProps> = (props) => {
+    console.log('LandingPage: ', props.data);
     return <div className="container pt-3" key="landingpage-container">
         <Helmet>
             <title>{ props.data.metaTitle?.value || props.data.name }</title>

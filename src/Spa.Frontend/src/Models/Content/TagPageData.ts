@@ -78,13 +78,6 @@ export default interface TagPageData extends Taxonomy.IContent {
     cssFiles: ContentDelivery.LinkListProperty
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    scriptFiles: ContentDelivery.LinkListProperty
-
-    /**
      * Main content area
      *
      * No description available
@@ -118,13 +111,6 @@ export default interface TagPageData extends Taxonomy.IContent {
      * No description available
      */
     css: ContentDelivery.StringProperty
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    scripts: ContentDelivery.StringProperty
 
     /**
      * Bottom content area
@@ -275,13 +261,11 @@ export class TagPageType extends Taxonomy.AbstractIContent<TagPageData> implemen
         'excludeFromSearch': 'Boolean',
         'pageImage': 'ContentReference',
         'cssFiles': 'LinkCollection',
-        'scriptFiles': 'LinkCollection',
         'mainContentArea': 'ContentArea',
         'keywords': 'LongString',
         'hideSiteHeader': 'Boolean',
         'teaserVideo': 'ContentReference',
         'css': 'LongString',
-        'scripts': 'LongString',
         'bottomArea': 'ContentArea',
         'pageDescription': 'LongString',
         'hideSiteFooter': 'Boolean',
@@ -373,13 +357,6 @@ export class TagPageType extends Taxonomy.AbstractIContent<TagPageData> implemen
     public get cssFiles() : TagPageData["cssFiles"] { return this.getProperty("cssFiles"); }
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    public get scriptFiles() : TagPageData["scriptFiles"] { return this.getProperty("scriptFiles"); }
-
-    /**
      * Main content area
      *
      * No description available
@@ -413,13 +390,6 @@ export class TagPageType extends Taxonomy.AbstractIContent<TagPageData> implemen
      * No description available
      */
     public get css() : TagPageData["css"] { return this.getProperty("css"); }
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    public get scripts() : TagPageData["scripts"] { return this.getProperty("scripts"); }
 
     /**
      * Bottom content area

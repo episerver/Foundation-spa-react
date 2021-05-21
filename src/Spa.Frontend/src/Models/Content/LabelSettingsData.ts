@@ -1,6 +1,6 @@
 import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
- * LabelSettings
+ * Label Settings
  *
  * No Description available.
  *

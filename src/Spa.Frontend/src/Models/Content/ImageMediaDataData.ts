@@ -2,7 +2,7 @@ import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Image File
  *
- * Used for image file types such as jpg, jpeg, jpe, ico, gif, bmp, png, svg, webp
+ * Used for image file types such as jpg, jpeg, jpe, ico, gif, bmp, png
  *
  * @GUID 20644be7-3ca1-4f84-b893-ee021b73ce6c
  */

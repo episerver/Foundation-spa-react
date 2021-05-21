@@ -14,8 +14,6 @@ export default class StandardPage extends Components.Page<StandardPageData>
     protected pageType = Tracking.PageType.Other;
 
     public render(): Array<ReactNode> {
-        //console.log(this.props.data);
-        //<div dangerouslySetInnerHTML={ this.htmlObject(this.props.data.mainBody.value) }></div>
         return [
             <Helmet key="page-helmet">
                 <title>{ this.props.data.metaTitle.value ? this.props.data.metaTitle.value : this.props.data.name } :: Mosey Capital</title>

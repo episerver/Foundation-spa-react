@@ -1,4 +1,4 @@
-import { Core, ContentDelivery, useServiceContainer } from '@episerver/spa-core';
+import { Core, ContentDelivery, ServerSideRendering, useServiceContainer } from '@episerver/spa-core';
 import SettingsApi from './SettingsApi';
 
 export enum DefaultServices {
@@ -17,11 +17,14 @@ export class SettingsInitialization extends Core.BaseInitializableModule
             throw new Error(`The ${ this.name } module requires the Content Repository API to be registered in the container`);
         if (!container.hasService(Core.DefaultServices.ContentDeliveryAPI_V2))
             throw new Error(`The ${ this.name } module requires the Content Delivery API to be registered in the container`);
+        if (!container.hasService(Core.DefaultServices.ServerContext))
+            throw new Error(`The ${ this.name } module requires the Server Context to be registered in the container`);
 
         const api = container.getService<ContentDelivery.IContentDeliveryAPI_V2>(Core.DefaultServices.ContentDeliveryAPI_V2);
         const repo = container.getService<ContentDelivery.IIContentRepositoryV2>(Core.DefaultServices.IContentRepository_V2);
+        const ctx = container.getService<ServerSideRendering.Accessor>(Core.DefaultServices.ServerContext);
 
-        container.addService(DefaultServices.SettingsApi, new SettingsApi(api, repo));        
+        container.addService(DefaultServices.SettingsApi, new SettingsApi(api, repo, ctx));        
     }
 
     public StartModule(context: Core.IEpiserverContext): void

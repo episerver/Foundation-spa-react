@@ -9,7 +9,7 @@
         "noImplicitAny": true,
         "outDir": "./dist/",
         "removeComments": false,
-        "skipLibCheck": false,
+        "skipLibCheck": true,
         "target": "ES6",
         "paths": {
             "app/*": [ "../src/*" ],

@@ -65,7 +65,7 @@ namespace Foundation.Features.Blocks.PageListBlock
         [SelectOne(SelectionFactoryType = typeof(TemplateListSelectionFactory))]
         public virtual string Template { get; set; }
 
-        [Display(Name = "Preview option (only available in 'Image on the top' templates)", GroupName = SystemTabNames.Content, Order = 110)]
+        [Display(Name = "Preview option (not available in the Grid, Insight templates)", GroupName = SystemTabNames.Content, Order = 110)]
         [SelectOne(SelectionFactoryType = typeof(PreviewOptionSelectionFactory))]
         public virtual string PreviewOption { get; set; }
 
@@ -96,7 +96,7 @@ namespace Foundation.Features.Blocks.PageListBlock
     {
         public IEnumerable<ValidationError> Validate(PageListBlock block)
         {
-            if (block.Template == TemplateSelections.Card || block.Template == TemplateSelections.Insight)
+            if (block.Template == TemplateSelections.Insight)
             {
                 if (block.Count % 3 != 0)
                 {
@@ -104,7 +104,7 @@ namespace Foundation.Features.Blocks.PageListBlock
                     {
                         new ValidationError()
                         {
-                             ErrorMessage = "The property Count must be divisible by 3 (with Template is Card or Insight)",
+                             ErrorMessage = "The property Number of results must be divisible by 3 if Template is Insight",
                              PropertyName = block.GetPropertyName(p => p.Count),
                              Severity = ValidationErrorSeverity.Error,
                              ValidationType = ValidationErrorType.StorageValidation

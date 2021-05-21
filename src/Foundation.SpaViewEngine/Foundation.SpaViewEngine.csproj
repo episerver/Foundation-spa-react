@@ -51,8 +51,4 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\core.js.minified.js" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Foundation.ContentDelivery\Foundation.ContentDelivery.csproj" />
-  </ItemGroup>
 </Project>

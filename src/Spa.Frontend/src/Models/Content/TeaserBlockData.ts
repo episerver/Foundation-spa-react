@@ -43,7 +43,7 @@ export default interface TeaserBlockData extends Taxonomy.IContent {
     blockOpacity: ContentDelivery.NumberProperty
 
     /**
-     * Heading
+     * Heading text
      *
      * No description available
      */
@@ -76,6 +76,13 @@ export default interface TeaserBlockData extends Taxonomy.IContent {
      * No description available
      */
     description: ContentDelivery.StringProperty
+
+    /**
+     * Link
+     *
+     * No description available
+     */
+    link: ContentDelivery.ContentReferenceProperty
 
     /**
      * Text
@@ -120,13 +127,6 @@ export default interface TeaserBlockData extends Taxonomy.IContent {
     textColor: ContentDelivery.StringProperty
 
     /**
-     * Link
-     *
-     * No description available
-     */
-    link: ContentDelivery.ContentReferenceProperty
-
-    /**
      * Height
      *
      * No description available
@@ -156,13 +156,13 @@ export class TeaserBlockType extends Taxonomy.AbstractIContent<TeaserBlockData> 
         'headingStyle': 'LongString',
         'headingColor': 'LongString',
         'description': 'LongString',
+        'link': 'PageReference',
         'text': 'XhtmlString',
         'image': 'ContentReference',
         'imageSize': 'Number',
         'secondImage': 'ContentReference',
         'secondImageSize': 'Number',
         'textColor': 'LongString',
-        'link': 'PageReference',
         'height': 'LongString',
     }
 
@@ -202,7 +202,7 @@ export class TeaserBlockType extends Taxonomy.AbstractIContent<TeaserBlockData> 
     public get blockOpacity() : TeaserBlockData["blockOpacity"] { return this.getProperty("blockOpacity"); }
 
     /**
-     * Heading
+     * Heading text
      *
      * No description available
      */
@@ -235,6 +235,13 @@ export class TeaserBlockType extends Taxonomy.AbstractIContent<TeaserBlockData> 
      * No description available
      */
     public get description() : TeaserBlockData["description"] { return this.getProperty("description"); }
+
+    /**
+     * Link
+     *
+     * No description available
+     */
+    public get link() : TeaserBlockData["link"] { return this.getProperty("link"); }
 
     /**
      * Text
@@ -277,13 +284,6 @@ export class TeaserBlockType extends Taxonomy.AbstractIContent<TeaserBlockData> 
      * No description available
      */
     public get textColor() : TeaserBlockData["textColor"] { return this.getProperty("textColor"); }
-
-    /**
-     * Link
-     *
-     * No description available
-     */
-    public get link() : TeaserBlockData["link"] { return this.getProperty("link"); }
 
     /**
      * Height

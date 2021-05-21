@@ -57,13 +57,6 @@ export default interface ResetPasswordPageData extends Taxonomy.IContent {
     cssFiles: ContentDelivery.LinkListProperty
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    scriptFiles: ContentDelivery.LinkListProperty
-
-    /**
      * Main content area
      *
      * No description available
@@ -97,13 +90,6 @@ export default interface ResetPasswordPageData extends Taxonomy.IContent {
      * No description available
      */
     css: ContentDelivery.StringProperty
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    scripts: ContentDelivery.StringProperty
 
     /**
      * Page description
@@ -244,13 +230,11 @@ export class ResetPasswordPageType extends Taxonomy.AbstractIContent<ResetPasswo
         'excludeFromSearch': 'Boolean',
         'pageImage': 'ContentReference',
         'cssFiles': 'LinkCollection',
-        'scriptFiles': 'LinkCollection',
         'mainContentArea': 'ContentArea',
         'keywords': 'LongString',
         'hideSiteHeader': 'Boolean',
         'teaserVideo': 'ContentReference',
         'css': 'LongString',
-        'scripts': 'LongString',
         'pageDescription': 'LongString',
         'hideSiteFooter': 'Boolean',
         'teaserText': 'LongString',
@@ -320,13 +304,6 @@ export class ResetPasswordPageType extends Taxonomy.AbstractIContent<ResetPasswo
     public get cssFiles() : ResetPasswordPageData["cssFiles"] { return this.getProperty("cssFiles"); }
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    public get scriptFiles() : ResetPasswordPageData["scriptFiles"] { return this.getProperty("scriptFiles"); }
-
-    /**
      * Main content area
      *
      * No description available
@@ -360,13 +337,6 @@ export class ResetPasswordPageType extends Taxonomy.AbstractIContent<ResetPasswo
      * No description available
      */
     public get css() : ResetPasswordPageData["css"] { return this.getProperty("css"); }
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    public get scripts() : ResetPasswordPageData["scripts"] { return this.getProperty("scripts"); }
 
     /**
      * Page description

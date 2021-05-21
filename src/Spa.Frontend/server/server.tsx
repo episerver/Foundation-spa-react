@@ -10,6 +10,3 @@ declare const epi : {
     render: () => ServerSideRendering.Response
 };
 epi.render = (): ServerSideRendering.Response => startEpiserver(appConfig, undefined, undefined, true);
-
-// const dummyResponse : ServerSideRendering.Response = { Body: "" };
-// global.render = (): any => dummyResponse;*/

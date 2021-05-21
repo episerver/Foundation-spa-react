@@ -7,18 +7,38 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { ContentDelivery } from '@episerver/spa-core';
 export default class SettingsApi {
-    constructor(contentDeliveryApi, contentRepositoryApi) {
+    constructor(contentDeliveryApi, contentRepositoryApi, serverContext) {
         this.serviceEndpoint = 'api/foundation/v1/settings';
         this._api = contentDeliveryApi;
         this._repo = contentRepositoryApi;
+        this._ctx = serverContext;
+    }
+    /**
+     * Get a settings container, either during server side rendering or from the initial context delivered by the
+     * server side rendering.
+     *
+     * @param       container
+     * @returns     The settings container, or undefined if not found
+     */
+    getContainerOnServer(container) {
+        const ssrPropName = container.toLowerCase();
+        let settingsContainer = this._ctx.getProp(ssrPropName);
+        if (!settingsContainer && this._ctx.IsServerSideRendering) {
+            const ISettingsService = this._ctx.getEpiserverService("Foundation.Cms.Settings.ISettingsService");
+            settingsContainer = ISettingsService.GetSiteSettings(container);
+            this._ctx.setProp(ssrPropName, settingsContainer);
+            settingsContainer = this._ctx.makeSafe(settingsContainer);
+        }
+        return settingsContainer;
     }
     listContainers(site) {
         return __awaiter(this, void 0, void 0, function* () {
             site = site || (yield this._repo.getCurrentWebsite());
             // @ToDo: Implement local storage caching...
             let url = this.serviceEndpoint + '/' + site.id;
-            return this._api.raw(url).then(r => r[0]);
+            return this._api.raw(url).then(r => ContentDelivery.isNetworkError(r[0]) ? [] : r[0]);
         });
     }
     getContainer(container, site) {

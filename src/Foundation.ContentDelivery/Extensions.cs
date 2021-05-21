@@ -12,7 +12,6 @@ using EPiServer.Web;
 using EPiServer.Web.Routing;
 using Foundation.ContentDelivery.Infrastructure;
 using Foundation.ContentDelivery.Models;
-using Foundation.ContentDelivery.Models.TypeConverters;
 using Microsoft.Owin.Cors;
 using Owin;
 using System;
@@ -61,8 +60,8 @@ namespace Foundation.ContentDelivery
 
             context.Services.Add(typeof(ContentApiRouteService), typeof(ContentDeliveryApiRouter), ServiceInstanceScope.HttpContext);
             context.Services.AddSingleton<UrlResolverService, CurrentContextUrlResolverService>();
-            context.Services.AddSingleton<IViewModelSerializer, DefaultViewModelSerializer>();
-            context.Services.AddSingleton<IContentConverter>();
+            // context.Services.AddSingleton<IViewModelSerializer, DefaultViewModelSerializer>();
+            // context.Services.AddSingleton<IContentConverter>();
             context.Services.AddSingleton<ContentLoaderService, ProjectAwareContentLoaderService>();
             context.Services.Configure<ContentApiConfiguration>(c =>
             {

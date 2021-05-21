@@ -23,10 +23,8 @@ export const RssReaderBlock : FunctionComponent<RssReaderBlockProps> = (props) =
     const [viewModel, setViewModel] = useState<RssReaderBlockViewModel>(undefined);
 
     useEffect(() => {
-        console.log("Props data", props.data);
         if(props.data.rssUrl.value){
             api.invoke<RssReaderBlockViewModel>(props.data.contentLink, "Index").then(f => {
-                console.log("F", f);
                 setViewModel(f.data as RssReaderBlockViewModel || undefined);
             });
         }
@@ -57,7 +55,6 @@ export const RssReaderBlock : FunctionComponent<RssReaderBlockProps> = (props) =
 
     function RenderList(viewModel : RssReaderBlockViewModel) : ReactNode {
         if(viewModel && viewModel.rssList){
-            console.log("list", viewModel.rssList);
             return viewModel.rssList.map((item, index) => {
                 return <a key={`rss-item-${index}`} href={item.url} className="list-group--header__item" style= {{display: 'flex'}}>
                     <div className="col-12 content__item">

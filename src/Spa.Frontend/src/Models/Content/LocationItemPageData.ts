@@ -113,13 +113,6 @@ export default interface LocationItemPageData extends Taxonomy.IContent {
     cssFiles: ContentDelivery.LinkListProperty
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    scriptFiles: ContentDelivery.LinkListProperty
-
-    /**
      * Image
      *
      * No description available
@@ -160,13 +153,6 @@ export default interface LocationItemPageData extends Taxonomy.IContent {
      * No description available
      */
     css: ContentDelivery.StringProperty
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    scripts: ContentDelivery.StringProperty
 
     /**
      * Left content area
@@ -336,14 +322,12 @@ export class LocationItemPageType extends Taxonomy.AbstractIContent<LocationItem
         'excludeFromSearch': 'Boolean',
         'pageImage': 'ContentReference',
         'cssFiles': 'LinkCollection',
-        'scriptFiles': 'LinkCollection',
         'image': 'ContentReference',
         'mainContentArea': 'ContentArea',
         'keywords': 'LongString',
         'hideSiteHeader': 'Boolean',
         'teaserVideo': 'ContentReference',
         'css': 'LongString',
-        'scripts': 'LongString',
         'leftContentArea': 'ContentArea',
         'new': 'Boolean',
         'promoted': 'Boolean',
@@ -472,13 +456,6 @@ export class LocationItemPageType extends Taxonomy.AbstractIContent<LocationItem
     public get cssFiles() : LocationItemPageData["cssFiles"] { return this.getProperty("cssFiles"); }
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    public get scriptFiles() : LocationItemPageData["scriptFiles"] { return this.getProperty("scriptFiles"); }
-
-    /**
      * Image
      *
      * No description available
@@ -519,13 +496,6 @@ export class LocationItemPageType extends Taxonomy.AbstractIContent<LocationItem
      * No description available
      */
     public get css() : LocationItemPageData["css"] { return this.getProperty("css"); }
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    public get scripts() : LocationItemPageData["scripts"] { return this.getProperty("scripts"); }
 
     /**
      * Left content area

@@ -57,13 +57,6 @@ export default interface HomePageData extends Taxonomy.IContent {
     cssFiles: ContentDelivery.LinkListProperty
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    scriptFiles: ContentDelivery.LinkListProperty
-
-    /**
      * Top content area
      *
      * No description available
@@ -104,13 +97,6 @@ export default interface HomePageData extends Taxonomy.IContent {
      * No description available
      */
     css: ContentDelivery.StringProperty
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    scripts: ContentDelivery.StringProperty
 
     /**
      * Bottom content area
@@ -258,14 +244,12 @@ export class HomePageType extends Taxonomy.AbstractIContent<HomePageData> implem
         'excludeFromSearch': 'Boolean',
         'pageImage': 'ContentReference',
         'cssFiles': 'LinkCollection',
-        'scriptFiles': 'LinkCollection',
         'topContentArea': 'ContentArea',
         'mainContentArea': 'ContentArea',
         'keywords': 'LongString',
         'hideSiteHeader': 'Boolean',
         'teaserVideo': 'ContentReference',
         'css': 'LongString',
-        'scripts': 'LongString',
         'bottomContentArea': 'ContentArea',
         'pageDescription': 'LongString',
         'hideSiteFooter': 'Boolean',
@@ -336,13 +320,6 @@ export class HomePageType extends Taxonomy.AbstractIContent<HomePageData> implem
     public get cssFiles() : HomePageData["cssFiles"] { return this.getProperty("cssFiles"); }
 
     /**
-     * Script files
-     *
-     * No description available
-     */
-    public get scriptFiles() : HomePageData["scriptFiles"] { return this.getProperty("scriptFiles"); }
-
-    /**
      * Top content area
      *
      * No description available
@@ -383,13 +360,6 @@ export class HomePageType extends Taxonomy.AbstractIContent<HomePageData> implem
      * No description available
      */
     public get css() : HomePageData["css"] { return this.getProperty("css"); }
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    public get scripts() : HomePageData["scripts"] { return this.getProperty("scripts"); }
 
     /**
      * Bottom content area
