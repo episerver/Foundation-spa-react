@@ -10,10 +10,10 @@
   "author": "Remko Jantzen <remko.jantzen@optimizely.com>",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@episerver/spa-core": "https+git://github.com/episerver/foundation-lib-spa-core#Develop",
+    "@episerver/spa-core": "github:episerver/foundation-lib-spa-core#semver:0.1.2",
     "typescript": "^4.2.2"
   },
   "peerDependencies": {
-    "@episerver/spa-core": "https+git://github.com/episerver/foundation-lib-spa-core#Develop"
+    "@episerver/spa-core": "github:episerver/foundation-lib-spa-core#semver:0.1.2"
   }
 }
