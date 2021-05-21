@@ -45,7 +45,7 @@ if "%check%"=="true" (
 )
 
 :main
-if "%FOUNDATIONDOMAIN%"=="" (set FOUNDATIONDOMAIN="%APPNAME%")
+if "%FOUNDATIONDOMAIN%"=="" (set FOUNDATIONDOMAIN=%APPNAME%)
 if "%SQLSERVER%"=="" (set SQLSERVER=.)
 if "%ADDITIONAL_SQLCMD%"=="" (set ADDITIONAL_SQLCMD=-E)
 if "%LICENSEPATH%"=="" (set LICENSEPATH="")

@@ -32,7 +32,7 @@ namespace Foundation.SpaViewEngine.Controllers
         [HttpGet]
         public IHttpActionResult Index()
         {
-            if (!PrincipalInfo.Current.IsPermitted(SpaViewEnginePermissions.DeploySpa)) return NotFound();
+            if (!(PrincipalInfo.Current.IsPermitted(SpaViewEnginePermissions.DeploySpa) || PrincipalInfo.HasAdminAccess)) return NotFound();
             return Ok("This endpoint is working.");
         }
 
@@ -40,7 +40,7 @@ namespace Foundation.SpaViewEngine.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> DeployFiles()
         {
-            if (!PrincipalInfo.Current.IsPermitted(SpaViewEnginePermissions.DeploySpa) || !PrincipalInfo.HasAdminAccess) return NotFound();
+            if (!(PrincipalInfo.Current.IsPermitted(SpaViewEnginePermissions.DeploySpa) || PrincipalInfo.HasAdminAccess)) return NotFound();
             HttpRequestMessage request = this.Request;
             if (!request.Content.IsMimeMultipartContent())
             {
