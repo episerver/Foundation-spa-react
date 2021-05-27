@@ -12,6 +12,7 @@ using System.Linq;
 using System.Web.Routing;
 using System.Web.Mvc;
 using Foundation.SpaViewEngine.Models.TypeConverters;
+using System.Web;
 
 namespace Foundation.SpaViewEngine
 {
@@ -40,13 +41,11 @@ namespace Foundation.SpaViewEngine
         public void Initialize(InitializationEngine context)
         {
             context.InjectViewEngine();
-            context.InjectAssetRoute();
         }
 
         public void Uninitialize(InitializationEngine context)
         {
             context.RemoveViewEngine();
-            context.RemoveAssetRoute();
         }
     }
 
@@ -61,16 +60,6 @@ namespace Foundation.SpaViewEngine
         {
             foreach (var engine in ViewEngines.Engines.OfType<Infrastructure.SpaViewEngine>())
                 ViewEngines.Engines.Remove(engine);
-        }
-        public static void InjectAssetRoute(this InitializationEngine context)
-        {
-            var route = context.Locate.Advanced.GetInstance<SpaViewAssetRoute>();
-            RouteTable.Routes.Add(route);
-        }
-        public static void RemoveAssetRoute(this InitializationEngine context)
-        {
-            foreach (var route in RouteTable.Routes.OfType<SpaViewAssetRoute>())
-                RouteTable.Routes.Remove(route);
         }
 
         public static void RegisterJavaScriptEngine(this ServiceConfigurationContext context)
@@ -99,7 +88,6 @@ namespace Foundation.SpaViewEngine
         public static void RegisterViewEngine(this ServiceConfigurationContext context)
         {
             context.Services.AddSingleton<SpaViewCache>();
-            context.Services.AddSingleton<SpaViewAssetRoute>();
             context.Services.AddSingleton<SpaSettings>();
             context.Services.AddTransient<SpaView>();
         }

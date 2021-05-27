@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Web.Mvc;
+using System.Web.Routing;
 using System.Web.UI.WebControls;
 using EPiServer;
 using EPiServer.Core;
@@ -17,14 +19,17 @@ namespace Foundation.SpaViewEngine.SpaContainer
         {
             // get container under root
             SpaFolderHelper.GetOrCreateDeploymentFolder();
-
-            // register partial router
-
+            RouteTable.Routes.MapRoute(
+                "SpaViewAssetRoute", 
+                "spaview/{container}/{*path}", 
+                new { controller = "SpaViewAsset", action = "Index", container = "", path="" }, 
+                new { controller = "SpaViewAsset", action = "Index"}, 
+                new string[] { "Foundation.SpaViewEngine.SpaContainer" }
+            );
         }
 
         public void Uninitialize(InitializationEngine context)
         {
-            //Add uninitialization logic
         }
     }
 }
