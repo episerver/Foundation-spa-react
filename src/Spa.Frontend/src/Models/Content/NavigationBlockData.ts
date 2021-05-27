@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Navigation Block
  *
@@ -10,64 +6,64 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 7c53f707-c932-4fdd-a654-37ff2a1258eb
  */
-export default interface NavigationBlockData extends IContent {
+export default interface NavigationBlockData extends Taxonomy.IContent {
     /**
      * Categories
      *
      * Categories associated with this content
      */
-    categories: Property<Array<ContentLink>>
+    categories: ContentDelivery.ContentReferenceListProperty
 
     /**
      * Padding
      *
      * No description available
      */
-    padding: StringProperty
+    padding: ContentDelivery.StringProperty
 
     /**
      * Margin
      *
      * No description available
      */
-    margin: StringProperty
+    margin: ContentDelivery.StringProperty
 
     /**
      * Background color
      *
      * No description available
      */
-    backgroundColor: StringProperty
+    backgroundColor: ContentDelivery.StringProperty
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    blockOpacity: NumberProperty
+    blockOpacity: ContentDelivery.NumberProperty
 
     /**
      * Heading
      *
      * No description available
      */
-    heading: StringProperty
+    heading: ContentDelivery.StringProperty
 
     /**
      * Root page
      *
      * No description available
      */
-    rootPage: ContentReferenceProperty
+    rootPage: ContentDelivery.ContentReferenceProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface NavigationBlockProps extends ComponentProps<NavigationBlockData> {}
+export interface NavigationBlockProps extends ComponentTypes.AbstractComponentProps<NavigationBlockData> {}
 
-export class NavigationBlockType extends BaseIContent<NavigationBlockData> implements NavigationBlockData {
+export class NavigationBlockType extends Taxonomy.AbstractIContent<NavigationBlockData> implements NavigationBlockData {
     protected _typeName : string = "NavigationBlock";
     /**
      * Map of all property types within this content type.
@@ -87,48 +83,48 @@ export class NavigationBlockType extends BaseIContent<NavigationBlockData> imple
      *
      * Categories associated with this content
      */
-    public categories: Property<Array<ContentLink>>;
+    public get categories() : NavigationBlockData["categories"] { return this.getProperty("categories"); }
 
     /**
      * Padding
      *
      * No description available
      */
-    public padding: StringProperty;
+    public get padding() : NavigationBlockData["padding"] { return this.getProperty("padding"); }
 
     /**
      * Margin
      *
      * No description available
      */
-    public margin: StringProperty;
+    public get margin() : NavigationBlockData["margin"] { return this.getProperty("margin"); }
 
     /**
      * Background color
      *
      * No description available
      */
-    public backgroundColor: StringProperty;
+    public get backgroundColor() : NavigationBlockData["backgroundColor"] { return this.getProperty("backgroundColor"); }
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    public blockOpacity: NumberProperty;
+    public get blockOpacity() : NavigationBlockData["blockOpacity"] { return this.getProperty("blockOpacity"); }
 
     /**
      * Heading
      *
      * No description available
      */
-    public heading: StringProperty;
+    public get heading() : NavigationBlockData["heading"] { return this.getProperty("heading"); }
 
     /**
      * Root page
      *
      * No description available
      */
-    public rootPage: ContentReferenceProperty;
+    public get rootPage() : NavigationBlockData["rootPage"] { return this.getProperty("rootPage"); }
 
 }

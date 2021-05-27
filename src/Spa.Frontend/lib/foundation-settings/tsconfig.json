@@ -1,0 +1,28 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "baseUrl": "./src/",
+        "jsx": "react",
+        "declaration": true,
+        "esModuleInterop": true,
+        "module": "ES2015",
+        "noImplicitAny": true,
+        "outDir": "./dist/",
+        "removeComments": false,
+        "skipLibCheck": true,
+        "target": "ES6",
+        "paths": {
+            "app/*": [ "../src/*" ],
+            "app.server/*": [ "../server/*" ]
+        },
+        "moduleResolution": "node",
+        "lib": ["DOM","DOM.Iterable","ES6"],
+        "downlevelIteration": true
+    },
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./node_modules"
+    ]
+}

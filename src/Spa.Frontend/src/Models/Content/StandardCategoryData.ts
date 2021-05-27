@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Standard Category
  *
@@ -10,43 +6,71 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID a9bbd7fc-27c5-4718-890a-e28acbe5ee26
  */
-export default interface StandardCategoryData extends IContent {
+export default interface StandardCategoryData extends Taxonomy.IContent {
     /**
      * Description
      *
      * No description available
      */
-    description: StringProperty
+    description: ContentDelivery.StringProperty
 
     /**
      * IsSelectable
      *
      * No description available
      */
-    isSelectable: BooleanProperty
+    isSelectable: ContentDelivery.BooleanProperty
 
     /**
      * Hide site header
      *
      * No description available
      */
-    hideSiteHeader: BooleanProperty
+    hideSiteHeader: ContentDelivery.BooleanProperty
+
+    /**
+     * CSS files
+     *
+     * No description available
+     */
+    cssFiles: ContentDelivery.LinkListProperty
+
+    /**
+     * Script files
+     *
+     * No description available
+     */
+    scriptFiles: ContentDelivery.LinkListProperty
 
     /**
      * Hide site footer
      *
      * No description available
      */
-    hideSiteFooter: BooleanProperty
+    hideSiteFooter: ContentDelivery.BooleanProperty
+
+    /**
+     * CSS
+     *
+     * No description available
+     */
+    css: ContentDelivery.StringProperty
+
+    /**
+     * Scripts
+     *
+     * No description available
+     */
+    scripts: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface StandardCategoryProps extends ComponentProps<StandardCategoryData> {}
+export interface StandardCategoryProps extends ComponentTypes.AbstractComponentProps<StandardCategoryData> {}
 
-export class StandardCategoryType extends BaseIContent<StandardCategoryData> implements StandardCategoryData {
+export class StandardCategoryType extends Taxonomy.AbstractIContent<StandardCategoryData> implements StandardCategoryData {
     protected _typeName : string = "StandardCategory";
     /**
      * Map of all property types within this content type.
@@ -55,7 +79,11 @@ export class StandardCategoryType extends BaseIContent<StandardCategoryData> imp
         'description': 'LongString',
         'isSelectable': 'Boolean',
         'hideSiteHeader': 'Boolean',
+        'cssFiles': 'LinkCollection',
+        'scriptFiles': 'LinkCollection',
         'hideSiteFooter': 'Boolean',
+        'css': 'LongString',
+        'scripts': 'LongString',
     }
 
     /**
@@ -63,27 +91,55 @@ export class StandardCategoryType extends BaseIContent<StandardCategoryData> imp
      *
      * No description available
      */
-    public description: StringProperty;
+    public get description() : StandardCategoryData["description"] { return this.getProperty("description"); }
 
     /**
      * IsSelectable
      *
      * No description available
      */
-    public isSelectable: BooleanProperty;
+    public get isSelectable() : StandardCategoryData["isSelectable"] { return this.getProperty("isSelectable"); }
 
     /**
      * Hide site header
      *
      * No description available
      */
-    public hideSiteHeader: BooleanProperty;
+    public get hideSiteHeader() : StandardCategoryData["hideSiteHeader"] { return this.getProperty("hideSiteHeader"); }
+
+    /**
+     * CSS files
+     *
+     * No description available
+     */
+    public get cssFiles() : StandardCategoryData["cssFiles"] { return this.getProperty("cssFiles"); }
+
+    /**
+     * Script files
+     *
+     * No description available
+     */
+    public get scriptFiles() : StandardCategoryData["scriptFiles"] { return this.getProperty("scriptFiles"); }
 
     /**
      * Hide site footer
      *
      * No description available
      */
-    public hideSiteFooter: BooleanProperty;
+    public get hideSiteFooter() : StandardCategoryData["hideSiteFooter"] { return this.getProperty("hideSiteFooter"); }
+
+    /**
+     * CSS
+     *
+     * No description available
+     */
+    public get css() : StandardCategoryData["css"] { return this.getProperty("css"); }
+
+    /**
+     * Scripts
+     *
+     * No description available
+     */
+    public get scripts() : StandardCategoryData["scripts"] { return this.getProperty("scripts"); }
 
 }

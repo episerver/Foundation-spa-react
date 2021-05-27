@@ -1,157 +1,89 @@
-import React, { Component, ReactNode, ReactNodeArray } from 'react';
-import Property from '@episerver/spa-core/Components/Property';
-import ContentArea from '@episerver/spa-core/Components/ContentArea';
-import IEpiserverContext from '@episerver/spa-core/Core/IEpiserverContext';
+import React from 'react';
+import { Components, ContentDelivery, useEpiserver } from '@episerver/spa-core';
+import LayoutSettings from 'app/Models/Content/LayoutSettingsData';
+import "./Footers.scss";
 
-import CmsHomePageData from 'app/Models/Content/CmsHomePageData';
-import { ContentLinkService } from '@episerver/spa-core/Models/ContentLink';
-
-export interface FooterProps {
-    startPage: CmsHomePageData
-    context: IEpiserverContext
+export type FooterProps = {
+    settings: LayoutSettings
 }
-interface FooterState{}
 
-export default class Footer extends Component<FooterProps, FooterState> {
-    constructor(props: FooterProps)
-    {
-        super(props);
-    }
+export const Footer : React.FunctionComponent<FooterProps> = (props) =>
+{
+    const ctx = useEpiserver();
 
-    htmlObject(htmlValue : string) : any
-    {
-        return {
-            __html: htmlValue
-        };
-    }
-
-    shouldComponentUpdate(nextProps: Readonly<FooterProps>, nextState: Readonly<FooterState>, nextContext: any) : boolean
-    {
-        var needsUpdate = (nextProps.startPage.contentLink.id !== this.props.startPage.contentLink.id);
-        return needsUpdate;
-    }
-
-    render() : ReactNode
-    {
-        let socialLinks : ReactNodeArray = [];
-        
-        try {
-            socialLinks = this.props.startPage.socialLinks.value.map(link => {
-                let uri : string = link.href.substr(0,5) == 'http:' ? 'https' + link.href.substr(4) : link.href;
-                return <a className="nav-item" href={ uri } title={ link.title } target={ link.target } key={ "social-link-"+link.href}>{ link.text }</a>
-            });
-        } catch (e) { 
-            //Intentionally ignored
-        }
-
-        return <footer className="border-top mt-5">
-            <div className="container">
-                <div className="row">
-                    <div className="col text-center mt-4 mb-3">
-                        <p className="h4"><Property iContent={ this.props.startPage } field="introduction" context={ this.props.context }/></p>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-12 col-lg-4">
-                        <h3 className="h5 text-uppercase"><Property iContent={ this.props.startPage } field="companyHeader" context={ this.props.context }/></h3>
-                        <dl className="row">
-                            <dt className="col-3">Phone:</dt>
-                            <dd className="col-9"><Property iContent={ this.props.startPage } field="companyPhone" context={ this.props.context }/></dd>
-                            <dt className="col-3">Email:</dt>
-                            <dd className="col-9"><Property iContent={ this.props.startPage } field="companyEmail" context={ this.props.context }/></dd>
-                        </dl>
-                        <p><Property iContent={ this.props.startPage } field="companyAddress" context={ this.props.context }/></p>
-                    </div>
-                    <div className="col-6 col-lg-2">
-                        <h3 className="h5 text-uppercase"><Property iContent={ this.props.startPage } field="linksHeader" context={ this.props.context }/></h3>
-                        { this.renderLinks() }
-                    </div>
-                    <div className="col-6 col-lg-2">
-                        <h3 className="h5 text-uppercase"><Property iContent={ this.props.startPage } field="socialHeader" context={ this.props.context }/></h3>
-                        { this.renderSocialLinks() }
-                    </div>
-                    <div className="col-12 col-lg-4">
-                        { this.renderContentArea() }
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col my-3"><p className="font-weight-lighter">&copy; <span>{ (new Date()).getFullYear() }</span> <span><Property iContent={ this.props.startPage } field="footerCopyrightText" context={ this.props.context }/></span></p></div>
+    return <footer className="border-top mt-5">
+        <div className="container">
+            <div className="row">
+                <div className="col text-center mt-4 mb-3">
+                    <p className="h4"><Components.Property iContent={ props.settings } field="introduction" /></p>
                 </div>
             </div>
-        </footer>;
-    }
+            <div className="row">
+                <CompanyAddressBlock { ...props } className="col-12 col-lg-4" />
+                <LinksListBlock { ...props } className="col-6 col-lg-2" listProp="links" titleProp="linksHeader" />
+                <LinksListBlock { ...props } className="col-6 col-lg-2" listProp="socialLinks" titleProp="socialHeader" />
+                <div className="col-12 col-lg-4">
+                    <Components.ContentArea context={ ctx } data={ props.settings.contentArea } noWrap />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col my-3"><p className="font-weight-lighter">&copy; <span>{ (new Date()).getFullYear() }</span> <span><Components.Property iContent={ props.settings } field="footerCopyrightText" /></span></p></div>
+            </div>
+        </div>
+    </footer>
+}
+export default Footer;
 
-    protected renderLinks()
-    {
-        let links : ReactNodeArray = [];
-        try {
-            links = this.props.startPage.links.value.map(link => {
-                let uri : string = link.href.substr(0,5) == 'http:' ? 'https' + link.href.substr(4) : link.href;
-                return <a className="nav-item" href={ uri } title={ link.title } target={ link.target } key={ "footer-link-"+link.href }>{ link.text}</a>
-            });
-        } catch (e) { 
-            //Intentionally ignored
-        }
-        let props : any = {
-            className: 'nav flex-column',
-            children: links
-        }
-        if (this.isEditable() && this.currentPageIsStartPage()) {
-            props['data-epi-edit'] = 'links';
-        }
-        return React.createElement('nav', props);
-    }
-
-    protected renderSocialLinks()
-    {
-        let links : ReactNodeArray = [];
-        try {
-            links = this.props.startPage.socialLinks.value.map(link => {
-                let uri : string = link.href.substr(0,5) == 'http:' ? 'https' + link.href.substr(4) : link.href;
-                return <a className="nav-item" href={ uri } title={ link.title } target={ link.target } key={ "footer-link-"+link.href }>{ link.text}</a>
-            });
-        } catch (e) { 
-            //Intentionally ignored
-        }
-        let props : any = {
-            className: 'nav flex-column',
-            children: links
-        }
-        if (this.isEditable() && this.currentPageIsStartPage()) {
-            props['data-epi-edit'] = 'socialLinks';
-        }
-        return React.createElement('nav', props);
-    }
-
-    protected renderContentArea()
-    {
-        let props : any = {
-            context: this.props.context,
-            data: this.props.startPage.contentArea,
-            noWrap: true
-        }
-        if (this.currentPageIsStartPage()) {
-            props['propertyName'] = 'contentArea';
-        }
-        return React.createElement(ContentArea, props);
-    }
-
-    protected isEditable()
-    {
-        return this.props.context.isEditable();
-    }
-
-    protected currentPageIsStartPage()
-    {
-        let routedId = ContentLinkService.createApiId(this.props.context.getRoutedContent());
-        let startPageId = ContentLinkService.createApiId(this.props.startPage.contentLink);
-        return routedId == startPageId;
-    }
+type LinksListBlockProps = FooterProps & {
+    className?: string,
+    titleProp: keyof LayoutSettings,
+    listProp: keyof LayoutSettings
 }
 
-/**
- * Helper intrface to describe the static side of the Footer component
- */
-export interface FooterType {
-	new (props : FooterProps) : Footer
+const LinksListBlock : React.FunctionComponent<LinksListBlockProps> = (props) => {
+
+    const transformLink = (link: ContentDelivery.LinkProperty) => {
+        const url = new URL(link.href);
+        let offDomain : boolean = true;
+        try {
+            if (window.location.protocol !== url.protocol && window.location.host === url.host) url.protocol = window.location.protocol;
+            offDomain = window.location.host !== url.host
+        } catch (e) {
+            // Ignored on purpose
+        }
+        const linkProps : React.AnchorHTMLAttributes<HTMLAnchorElement> & { key: string } = {
+            title: link.title,
+            target: link.target,
+            className: "nav-item",
+            href: url.href,
+            key: `footer.${ props.listProp }.link.${ link.contentLink?.id || link.href }`
+        }
+        if (offDomain) {
+            linkProps.rel = "noreferrer"
+        }
+        return <a { ...linkProps }>{link.text}</a>
+    }
+
+    const links : JSX.Element[] = [];
+    (props.settings[props.listProp] as ContentDelivery.LinkListProperty)?.value?.forEach(x => links.push(transformLink(x)));
+
+    return <div className={ props.className }>
+        <p className="h5 footer__heading"><Components.Property iContent={ props.settings } field={ props.titleProp }/></p>
+        <nav className="nav flex-column">
+            { links }
+        </nav>
+    </div>
+}
+
+const CompanyAddressBlock : React.FunctionComponent<FooterProps & { className ?: string }> = (props) => {
+    return <div className={ props.className }>
+        <p className="h5 footer__heading"><Components.Property iContent={ props.settings } field="companyHeader"/></p>
+        <dl className="row">
+            <dt className="col-3">Phone:</dt>
+            <dd className="col-9"><Components.Property iContent={ props.settings } field="companyPhone"/></dd>
+            <dt className="col-3">Email:</dt>
+            <dd className="col-9"><Components.Property iContent={ props.settings } field="companyEmail"/></dd>
+        </dl>
+        <p><Components.Property iContent={ props.settings } field="companyAddress"/></p>
+    </div>
 }

@@ -1,9 +1,5 @@
 import ButtonBlockData from './ButtonBlockData'
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Call To Action Block
  *
@@ -11,76 +7,76 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID f82da800-c923-48f6-b701-fd093078c5d9
  */
-export default interface CallToActionBlockData extends IContent {
+export default interface CallToActionBlockData extends Taxonomy.IContent {
     /**
      * Categories
      *
      * Categories associated with this content
      */
-    categories: Property<Array<ContentLink>>
+    categories: ContentDelivery.ContentReferenceListProperty
 
     /**
      * Padding
      *
      * No description available
      */
-    padding: StringProperty
+    padding: ContentDelivery.StringProperty
 
     /**
      * Margin
      *
      * No description available
      */
-    margin: StringProperty
+    margin: ContentDelivery.StringProperty
 
     /**
      * Background color
      *
      * No description available
      */
-    backgroundColor: StringProperty
+    backgroundColor: ContentDelivery.StringProperty
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    blockOpacity: NumberProperty
+    blockOpacity: ContentDelivery.NumberProperty
 
     /**
      * Title
      *
      * Title displayed
      */
-    title: StringProperty
+    title: ContentDelivery.StringProperty
 
     /**
      * Subtext
      *
      * No description available
      */
-    subtext: StringProperty
+    subtext: ContentDelivery.StringProperty
 
     /**
      * Text color
      *
      * No description available
      */
-    textColor: StringProperty
+    textColor: ContentDelivery.StringProperty
 
     /**
      * Background image
      *
      * No description available
      */
-    backgroundImage: ContentReferenceProperty
+    backgroundImage: ContentDelivery.ContentReferenceProperty
 
     /**
      * Choose image style to fit the block
      *
      * No description available
      */
-    backgroundImageSetting: StringProperty
+    backgroundImageSetting: ContentDelivery.StringProperty
 
     /**
      * Button
@@ -94,9 +90,9 @@ export default interface CallToActionBlockData extends IContent {
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface CallToActionBlockProps extends ComponentProps<CallToActionBlockData> {}
+export interface CallToActionBlockProps extends ComponentTypes.AbstractComponentProps<CallToActionBlockData> {}
 
-export class CallToActionBlockType extends BaseIContent<CallToActionBlockData> implements CallToActionBlockData {
+export class CallToActionBlockType extends Taxonomy.AbstractIContent<CallToActionBlockData> implements CallToActionBlockData {
     protected _typeName : string = "CallToActionBlock";
     /**
      * Map of all property types within this content type.
@@ -120,76 +116,76 @@ export class CallToActionBlockType extends BaseIContent<CallToActionBlockData> i
      *
      * Categories associated with this content
      */
-    public categories: Property<Array<ContentLink>>;
+    public get categories() : CallToActionBlockData["categories"] { return this.getProperty("categories"); }
 
     /**
      * Padding
      *
      * No description available
      */
-    public padding: StringProperty;
+    public get padding() : CallToActionBlockData["padding"] { return this.getProperty("padding"); }
 
     /**
      * Margin
      *
      * No description available
      */
-    public margin: StringProperty;
+    public get margin() : CallToActionBlockData["margin"] { return this.getProperty("margin"); }
 
     /**
      * Background color
      *
      * No description available
      */
-    public backgroundColor: StringProperty;
+    public get backgroundColor() : CallToActionBlockData["backgroundColor"] { return this.getProperty("backgroundColor"); }
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    public blockOpacity: NumberProperty;
+    public get blockOpacity() : CallToActionBlockData["blockOpacity"] { return this.getProperty("blockOpacity"); }
 
     /**
      * Title
      *
      * Title displayed
      */
-    public title: StringProperty;
+    public get title() : CallToActionBlockData["title"] { return this.getProperty("title"); }
 
     /**
      * Subtext
      *
      * No description available
      */
-    public subtext: StringProperty;
+    public get subtext() : CallToActionBlockData["subtext"] { return this.getProperty("subtext"); }
 
     /**
      * Text color
      *
      * No description available
      */
-    public textColor: StringProperty;
+    public get textColor() : CallToActionBlockData["textColor"] { return this.getProperty("textColor"); }
 
     /**
      * Background image
      *
      * No description available
      */
-    public backgroundImage: ContentReferenceProperty;
+    public get backgroundImage() : CallToActionBlockData["backgroundImage"] { return this.getProperty("backgroundImage"); }
 
     /**
      * Choose image style to fit the block
      *
      * No description available
      */
-    public backgroundImageSetting: StringProperty;
+    public get backgroundImageSetting() : CallToActionBlockData["backgroundImageSetting"] { return this.getProperty("backgroundImageSetting"); }
 
     /**
      * Button
      *
      * No description available
      */
-    public button: ButtonBlockData;
+    public get button() : CallToActionBlockData["button"] { return this.getProperty("button"); }
 
 }

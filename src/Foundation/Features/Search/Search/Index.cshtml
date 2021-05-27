@@ -1,0 +1,41 @@
+﻿@using Foundation.Features.Search
+@using Foundation.Features.Search.Search
+
+@model SearchViewModel<SearchResultPage>
+
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+
+<div class="category-page">
+    <div class="row">
+        <div class="col-12">
+            @Html.PropertyFor(x => x.CurrentContent.TopContentArea, new { CssClass = "row" })
+        </div>
+        @if ((Model.CurrentContent.MainBody != null && !Model.CurrentContent.MainBody.IsEmpty) || PageEditing.PageIsInEditMode)
+        {
+            <div class="col-12">
+                @Html.PropertyFor(m => m.CurrentContent.MainBody)
+            </div>
+        }
+        <div class="col-12">
+            @Html.PropertyFor(x => x.CurrentContent.MainContentArea)
+        </div>
+    </div>
+        <div class="row">
+            <div class="col-lg-3">
+                @Html.Partial("_FacetContent", Model)
+            </div>
+            <div class="col-lg-9">
+                @{
+                    ViewDataDictionary values = new ViewDataDictionary();
+                    values.Add(new KeyValuePair<string, object>("SearchLabel", "Contents"));
+                    values.Add(new KeyValuePair<string, object>("FilterId", "SearchContent"));
+                    Html.RenderPartial("_SearchContent", Model, values);
+                }
+            </div>
+        </div>
+</div>

@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * ChoiceElementBlock
  *
@@ -10,92 +6,92 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 104bba6b-d3de-4806-abe3-02b2cba730ee
  */
-export default interface ChoiceElementBlockData extends IContent {
+export default interface ChoiceElementBlockData extends Taxonomy.IContent {
     /**
      * Label
      *
      * No description available
      */
-    label: StringProperty
+    label: ContentDelivery.StringProperty
 
     /**
      * Description
      *
      * No description available
      */
-    description: StringProperty
+    description: ContentDelivery.StringProperty
 
     /**
      * Validators
      *
      * No description available
      */
-    validators: StringProperty
+    validators: ContentDelivery.StringProperty
 
     /**
      * AllowMultiSelect
      *
      * No description available
      */
-    allowMultiSelect: BooleanProperty
+    allowMultiSelect: ContentDelivery.BooleanProperty
 
     /**
      * Feed
      *
      * No description available
      */
-    feed: StringProperty
+    feed: ContentDelivery.StringProperty
 
     /**
      * Items
      *
      * No description available
      */
-    items: Property<any> // Original type: OptionList
+    items: ContentDelivery.Property<any> // Original type: OptionList
 
     /**
      * SatisfiedAction
      *
      * No description available
      */
-    satisfiedAction: StringProperty
+    satisfiedAction: ContentDelivery.StringProperty
 
     /**
      * External system field mapping
      *
      * No description available
      */
-    forms_ExternalSystemsFieldMappings: Property<any> // Original type: Property Field Mapping Collection
+    forms_ExternalSystemsFieldMappings: ContentDelivery.Property<any> // Original type: Property Field Mapping Collection
 
     /**
      * ConditionCombination
      *
      * No description available
      */
-    conditionCombination: NumberProperty
+    conditionCombination: ContentDelivery.NumberProperty
 
     /**
      * Conditions
      *
      * No description available
      */
-    conditions: Property<any> // Original type: Dependency conditions collection
+    conditions: ContentDelivery.Property<any> // Original type: Dependency conditions collection
 
     /**
      * ValidatorMessages
      *
      * No description available
      */
-    validatorMessages: Property<any> // Original type: Validator with message collection
+    validatorMessages: ContentDelivery.Property<any> // Original type: Validator with message collection
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface ChoiceElementBlockProps extends ComponentProps<ChoiceElementBlockData> {}
+export interface ChoiceElementBlockProps extends ComponentTypes.AbstractComponentProps<ChoiceElementBlockData> {}
 
-export class ChoiceElementBlockType extends BaseIContent<ChoiceElementBlockData> implements ChoiceElementBlockData {
+export class ChoiceElementBlockType extends Taxonomy.AbstractIContent<ChoiceElementBlockData> implements ChoiceElementBlockData {
     protected _typeName : string = "ChoiceElementBlock";
     /**
      * Map of all property types within this content type.
@@ -119,76 +115,76 @@ export class ChoiceElementBlockType extends BaseIContent<ChoiceElementBlockData>
      *
      * No description available
      */
-    public label: StringProperty;
+    public get label() : ChoiceElementBlockData["label"] { return this.getProperty("label"); }
 
     /**
      * Description
      *
      * No description available
      */
-    public description: StringProperty;
+    public get description() : ChoiceElementBlockData["description"] { return this.getProperty("description"); }
 
     /**
      * Validators
      *
      * No description available
      */
-    public validators: StringProperty;
+    public get validators() : ChoiceElementBlockData["validators"] { return this.getProperty("validators"); }
 
     /**
      * AllowMultiSelect
      *
      * No description available
      */
-    public allowMultiSelect: BooleanProperty;
+    public get allowMultiSelect() : ChoiceElementBlockData["allowMultiSelect"] { return this.getProperty("allowMultiSelect"); }
 
     /**
      * Feed
      *
      * No description available
      */
-    public feed: StringProperty;
+    public get feed() : ChoiceElementBlockData["feed"] { return this.getProperty("feed"); }
 
     /**
      * Items
      *
      * No description available
      */
-    public items: Property<any> // Original type: OptionList;
+    public get items() : ChoiceElementBlockData["items"] { return this.getProperty("items"); }
 
     /**
      * SatisfiedAction
      *
      * No description available
      */
-    public satisfiedAction: StringProperty;
+    public get satisfiedAction() : ChoiceElementBlockData["satisfiedAction"] { return this.getProperty("satisfiedAction"); }
 
     /**
      * External system field mapping
      *
      * No description available
      */
-    public forms_ExternalSystemsFieldMappings: Property<any> // Original type: Property Field Mapping Collection;
+    public get forms_ExternalSystemsFieldMappings() : ChoiceElementBlockData["forms_ExternalSystemsFieldMappings"] { return this.getProperty("forms_ExternalSystemsFieldMappings"); }
 
     /**
      * ConditionCombination
      *
      * No description available
      */
-    public conditionCombination: NumberProperty;
+    public get conditionCombination() : ChoiceElementBlockData["conditionCombination"] { return this.getProperty("conditionCombination"); }
 
     /**
      * Conditions
      *
      * No description available
      */
-    public conditions: Property<any> // Original type: Dependency conditions collection;
+    public get conditions() : ChoiceElementBlockData["conditions"] { return this.getProperty("conditions"); }
 
     /**
      * ValidatorMessages
      *
      * No description available
      */
-    public validatorMessages: Property<any> // Original type: Validator with message collection;
+    public get validatorMessages() : ChoiceElementBlockData["validatorMessages"] { return this.getProperty("validatorMessages"); }
 
 }

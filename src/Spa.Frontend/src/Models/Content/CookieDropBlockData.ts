@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Cookie Drop Block
  *
@@ -10,36 +6,36 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 21957414-ab47-4788-b043-9dbe13b7eeb4
  */
-export default interface CookieDropBlockData extends IContent {
+export default interface CookieDropBlockData extends Taxonomy.IContent {
     /**
      * Cookie Name
      *
      * The name of the cookie to drop on the page
      */
-    cookieName: StringProperty
+    cookieName: ContentDelivery.StringProperty
 
     /**
      * Cookie Value
      *
      * The value to set for the cookie
      */
-    cookieValue: StringProperty
+    cookieValue: ContentDelivery.StringProperty
 
     /**
      * Hide edit mode message
      *
      * If checked will hide the yellow message shown in on page edit mode
      */
-    hideEditModeMessage: BooleanProperty
+    hideEditModeMessage: ContentDelivery.BooleanProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface CookieDropBlockProps extends ComponentProps<CookieDropBlockData> {}
+export interface CookieDropBlockProps extends ComponentTypes.AbstractComponentProps<CookieDropBlockData> {}
 
-export class CookieDropBlockType extends BaseIContent<CookieDropBlockData> implements CookieDropBlockData {
+export class CookieDropBlockType extends Taxonomy.AbstractIContent<CookieDropBlockData> implements CookieDropBlockData {
     protected _typeName : string = "CookieDropBlock";
     /**
      * Map of all property types within this content type.
@@ -55,20 +51,20 @@ export class CookieDropBlockType extends BaseIContent<CookieDropBlockData> imple
      *
      * The name of the cookie to drop on the page
      */
-    public cookieName: StringProperty;
+    public get cookieName() : CookieDropBlockData["cookieName"] { return this.getProperty("cookieName"); }
 
     /**
      * Cookie Value
      *
      * The value to set for the cookie
      */
-    public cookieValue: StringProperty;
+    public get cookieValue() : CookieDropBlockData["cookieValue"] { return this.getProperty("cookieValue"); }
 
     /**
      * Hide edit mode message
      *
      * If checked will hide the yellow message shown in on page edit mode
      */
-    public hideEditModeMessage: BooleanProperty;
+    public get hideEditModeMessage() : CookieDropBlockData["hideEditModeMessage"] { return this.getProperty("hideEditModeMessage"); }
 
 }

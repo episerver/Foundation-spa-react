@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * FileUploadElementBlock
  *
@@ -10,85 +6,85 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID b2401dfd-e792-4583-a74b-f053ac54a9a6
  */
-export default interface FileUploadElementBlockData extends IContent {
+export default interface FileUploadElementBlockData extends Taxonomy.IContent {
     /**
      * Label
      *
      * No description available
      */
-    label: StringProperty
+    label: ContentDelivery.StringProperty
 
     /**
      * Description
      *
      * No description available
      */
-    description: StringProperty
+    description: ContentDelivery.StringProperty
 
     /**
      * FileSize
      *
      * No description available
      */
-    fileSize: NumberProperty
+    fileSize: ContentDelivery.NumberProperty
 
     /**
      * FileTypes
      *
      * No description available
      */
-    fileTypes: StringProperty
+    fileTypes: ContentDelivery.StringProperty
 
     /**
      * Validators
      *
      * No description available
      */
-    validators: StringProperty
+    validators: ContentDelivery.StringProperty
 
     /**
      * AllowMultiple
      *
      * No description available
      */
-    allowMultiple: BooleanProperty
+    allowMultiple: ContentDelivery.BooleanProperty
 
     /**
      * /episerver/forms/contentediting/fielddependency/satisfiedaction
      *
      * No description available
      */
-    satisfiedAction: StringProperty
+    satisfiedAction: ContentDelivery.StringProperty
 
     /**
      * /episerver/forms/contentediting/fielddependency/conditioncombination
      *
      * No description available
      */
-    conditionCombination: NumberProperty
+    conditionCombination: ContentDelivery.NumberProperty
 
     /**
      * /episerver/forms/contentediting/fielddependency/fielddependencies
      *
      * No description available
      */
-    conditions: Property<any> // Original type: Dependency conditions collection
+    conditions: ContentDelivery.Property<any> // Original type: Dependency conditions collection
 
     /**
      * ValidatorMessages
      *
      * No description available
      */
-    validatorMessages: Property<any> // Original type: Validator with message collection
+    validatorMessages: ContentDelivery.Property<any> // Original type: Validator with message collection
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface FileUploadElementBlockProps extends ComponentProps<FileUploadElementBlockData> {}
+export interface FileUploadElementBlockProps extends ComponentTypes.AbstractComponentProps<FileUploadElementBlockData> {}
 
-export class FileUploadElementBlockType extends BaseIContent<FileUploadElementBlockData> implements FileUploadElementBlockData {
+export class FileUploadElementBlockType extends Taxonomy.AbstractIContent<FileUploadElementBlockData> implements FileUploadElementBlockData {
     protected _typeName : string = "FileUploadElementBlock";
     /**
      * Map of all property types within this content type.
@@ -111,69 +107,69 @@ export class FileUploadElementBlockType extends BaseIContent<FileUploadElementBl
      *
      * No description available
      */
-    public label: StringProperty;
+    public get label() : FileUploadElementBlockData["label"] { return this.getProperty("label"); }
 
     /**
      * Description
      *
      * No description available
      */
-    public description: StringProperty;
+    public get description() : FileUploadElementBlockData["description"] { return this.getProperty("description"); }
 
     /**
      * FileSize
      *
      * No description available
      */
-    public fileSize: NumberProperty;
+    public get fileSize() : FileUploadElementBlockData["fileSize"] { return this.getProperty("fileSize"); }
 
     /**
      * FileTypes
      *
      * No description available
      */
-    public fileTypes: StringProperty;
+    public get fileTypes() : FileUploadElementBlockData["fileTypes"] { return this.getProperty("fileTypes"); }
 
     /**
      * Validators
      *
      * No description available
      */
-    public validators: StringProperty;
+    public get validators() : FileUploadElementBlockData["validators"] { return this.getProperty("validators"); }
 
     /**
      * AllowMultiple
      *
      * No description available
      */
-    public allowMultiple: BooleanProperty;
+    public get allowMultiple() : FileUploadElementBlockData["allowMultiple"] { return this.getProperty("allowMultiple"); }
 
     /**
      * /episerver/forms/contentediting/fielddependency/satisfiedaction
      *
      * No description available
      */
-    public satisfiedAction: StringProperty;
+    public get satisfiedAction() : FileUploadElementBlockData["satisfiedAction"] { return this.getProperty("satisfiedAction"); }
 
     /**
      * /episerver/forms/contentediting/fielddependency/conditioncombination
      *
      * No description available
      */
-    public conditionCombination: NumberProperty;
+    public get conditionCombination() : FileUploadElementBlockData["conditionCombination"] { return this.getProperty("conditionCombination"); }
 
     /**
      * /episerver/forms/contentediting/fielddependency/fielddependencies
      *
      * No description available
      */
-    public conditions: Property<any> // Original type: Dependency conditions collection;
+    public get conditions() : FileUploadElementBlockData["conditions"] { return this.getProperty("conditions"); }
 
     /**
      * ValidatorMessages
      *
      * No description available
      */
-    public validatorMessages: Property<any> // Original type: Validator with message collection;
+    public get validatorMessages() : FileUploadElementBlockData["validatorMessages"] { return this.getProperty("validatorMessages"); }
 
 }

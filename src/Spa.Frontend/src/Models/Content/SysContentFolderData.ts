@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * SysContentFolder
  *
@@ -10,15 +6,15 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 52f8d1e9-6d87-4db6-a465-41890289fb78
  */
-export default interface SysContentFolderData extends IContent {
+export default interface SysContentFolderData extends Taxonomy.IContent {
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface SysContentFolderProps extends ComponentProps<SysContentFolderData> {}
+export interface SysContentFolderProps extends ComponentTypes.AbstractComponentProps<SysContentFolderData> {}
 
-export class SysContentFolderType extends BaseIContent<SysContentFolderData> implements SysContentFolderData {
+export class SysContentFolderType extends Taxonomy.AbstractIContent<SysContentFolderData> implements SysContentFolderData {
     protected _typeName : string = "SysContentFolder";
     /**
      * Map of all property types within this content type.

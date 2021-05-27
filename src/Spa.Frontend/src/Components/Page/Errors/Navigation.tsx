@@ -1,13 +1,12 @@
 import React, { ReactNode, ReactNodeArray } from 'react';
 import {Helmet} from 'react-helmet';
-import IContent from "@episerver/spa-core/Models/IContent";
-import EpiComponent from '@episerver/spa-core/EpiComponent';
+import { Taxonomy, ComponentTypes } from "@episerver/spa-core";
 
-interface NavigationData extends IContent {
+interface NavigationData extends Taxonomy.IContent {
     name: string
 }
 
-export default class Navigation extends EpiComponent<NavigationData>
+export default class Navigation extends ComponentTypes.AbstractComponent<NavigationData>
 {
     render() : ReactNode | ReactNodeArray | null
     {

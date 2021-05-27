@@ -1,15 +1,27 @@
-import React, { ReactNode, ReactNodeArray } from 'react';
-import {Helmet} from 'react-helmet';
+import React, { FunctionComponent } from 'react';
+import { Helmet } from 'react-helmet';
+import { Components } from '@episerver/spa-core';
+import { LandingPageProps } from 'app/Models/Content/LandingPageData';
 
-import ContentArea from '@episerver/spa-core/Components/ContentArea';
-import Property from '@episerver/spa-core/Components/Property';
-import Page, { PageType } from '@episerver/spa-core/Page';
+export const LandingPage : FunctionComponent<LandingPageProps> = (props) => {
+    console.log('LandingPage: ', props.data);
+    return <div className="container pt-3" key="landingpage-container">
+        <Helmet>
+            <title>{ props.data.metaTitle?.value || props.data.name }</title>
+        </Helmet>
+        <Components.Property iContent={ props.data } field="topContentArea" />
+        <div className="row">
+            <Components.Property iContent={ props.data } field="mainBody" className="col-12" />
+        </div>
+        <Components.Property iContent={ props.data } field="mainContentArea" />
+    </div>;
+}
+export default LandingPage;
 
-import LandingPageData from 'app/Models/Content/LandingPageData';
-
-export default class LandingPage extends Page<LandingPageData>
+/* Old Class Implementation
+export default class LandingPage extends Components.Page<LandingPageData>
 {
-    protected pageType = PageType.Other;
+    protected pageType = Tracking.PageType.Other;
 
     public render() : null | ReactNode | ReactNodeArray
     {
@@ -18,15 +30,16 @@ export default class LandingPage extends Page<LandingPageData>
             <div className="container pt-3" key="landingpage-container">
                 <div className="row">
                     <div className="col-12">
-                        <h1><Property iContent={ this.props.data } field="name" context={ this.getContext() } /></h1>
+                        <Components.Property iContent={ this.props.data } field="name" />
+                        <h1><Components.Property iContent={ this.props.data } field="name" context={ this.getContext() } /></h1>
                     </div>
                 </div>
-                <ContentArea context={ this.getContext() } data={ this.props.data.topContentArea } propertyName="topContentArea" />
+                <Components.ContentArea context={ this.getContext() } data={ this.props.data.topContentArea } propertyName="topContentArea" />
                 <div className="row">
-                    <Property iContent={ this.props.data } field="mainBody" context={ this.getContext() } className="col-12" />
+                    <Components.Property iContent={ this.props.data } field="mainBody" context={ this.getContext() } className="col-12" />
                 </div>
-                <ContentArea context={ this.getContext() } data={ this.props.data.mainContentArea } propertyName="mainContentArea" />
+                <Components.ContentArea context={ this.getContext() } data={ this.props.data.mainContentArea } propertyName="mainContentArea" />
             </div>
         ];
     }
-}
+}*/

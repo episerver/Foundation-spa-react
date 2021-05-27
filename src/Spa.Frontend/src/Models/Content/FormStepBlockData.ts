@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * FormStepBlock
  *
@@ -10,57 +6,57 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 4daf691c-1dc9-4182-b04e-f0ed5d449bb9
  */
-export default interface FormStepBlockData extends IContent {
+export default interface FormStepBlockData extends Taxonomy.IContent {
     /**
      * Label
      *
      * No description available
      */
-    label: StringProperty
+    label: ContentDelivery.StringProperty
 
     /**
      * Description
      *
      * No description available
      */
-    description: StringProperty
+    description: ContentDelivery.StringProperty
 
     /**
      * AttachedContentLink
      *
      * No description available
      */
-    attachedContentLink: StringProperty
+    attachedContentLink: ContentDelivery.StringProperty
 
     /**
      * DependField
      *
      * No description available
      */
-    dependField: ContentReferenceProperty
+    dependField: ContentDelivery.ContentReferenceProperty
 
     /**
      * DependCondition
      *
      * No description available
      */
-    dependCondition: NumberProperty
+    dependCondition: ContentDelivery.NumberProperty
 
     /**
      * DependValue
      *
      * No description available
      */
-    dependValue: StringProperty
+    dependValue: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface FormStepBlockProps extends ComponentProps<FormStepBlockData> {}
+export interface FormStepBlockProps extends ComponentTypes.AbstractComponentProps<FormStepBlockData> {}
 
-export class FormStepBlockType extends BaseIContent<FormStepBlockData> implements FormStepBlockData {
+export class FormStepBlockType extends Taxonomy.AbstractIContent<FormStepBlockData> implements FormStepBlockData {
     protected _typeName : string = "FormStepBlock";
     /**
      * Map of all property types within this content type.
@@ -79,41 +75,41 @@ export class FormStepBlockType extends BaseIContent<FormStepBlockData> implement
      *
      * No description available
      */
-    public label: StringProperty;
+    public get label() : FormStepBlockData["label"] { return this.getProperty("label"); }
 
     /**
      * Description
      *
      * No description available
      */
-    public description: StringProperty;
+    public get description() : FormStepBlockData["description"] { return this.getProperty("description"); }
 
     /**
      * AttachedContentLink
      *
      * No description available
      */
-    public attachedContentLink: StringProperty;
+    public get attachedContentLink() : FormStepBlockData["attachedContentLink"] { return this.getProperty("attachedContentLink"); }
 
     /**
      * DependField
      *
      * No description available
      */
-    public dependField: ContentReferenceProperty;
+    public get dependField() : FormStepBlockData["dependField"] { return this.getProperty("dependField"); }
 
     /**
      * DependCondition
      *
      * No description available
      */
-    public dependCondition: NumberProperty;
+    public get dependCondition() : FormStepBlockData["dependCondition"] { return this.getProperty("dependCondition"); }
 
     /**
      * DependValue
      *
      * No description available
      */
-    public dependValue: StringProperty;
+    public get dependValue() : FormStepBlockData["dependValue"] { return this.getProperty("dependValue"); }
 
 }

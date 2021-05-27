@@ -1,29 +1,93 @@
-import React, { ReactNode } from 'react';
-import CmsComponent from '@episerver/spa-core/Components/CmsComponent';
-import EpiComponent from '@episerver/spa-core/EpiComponent';
+import React, { CSSProperties, ReactNode } from 'react';
+import { Components, ComponentTypes } from '@episerver/spa-core';
 import HeroBlockData from 'app/Models/Content/HeroBlockData';
-import './HeroBlock.scss';
 
-export default class HeroBlock extends EpiComponent<HeroBlockData> {
+export default class HeroBlock extends ComponentTypes.AbstractComponent<HeroBlockData> {
 
     public render() : ReactNode
     {
-        let background = this.props.data.mainBackgroundVideo.value == null ? 
-                                this.props.data.backgroundImage : 
-                                this.props.data.mainBackgroundVideo;
+        let background = this.props.data.mainBackgroundVideo?.value ? 
+                                this.props.data.mainBackgroundVideo :
+                                this.props.data.backgroundImage;
 
-        let cssClasses : Array<string> = ['hero-block'];
+        let cssClasses : Array<string> = [];
         if (this.props.data.margin?.value) cssClasses.push(this.props.data.margin.value);
         if (this.props.data.padding?.value) cssClasses.push(this.props.data.padding.value);
-        if (this.props.data.blockRatio?.value) cssClasses.push(`r-${this.props.data.blockRatio.value}`);
+        //if (this.props.data.blockRatio?.value) cssClasses.push(`r-${this.props.data.blockRatio.value}`);
 
-        return <div className={cssClasses.join(' ')}>
-            <div className="hero-block__overlay"/>
-            <CmsComponent context={this.props.context} contentLink={ background.value } className="d-cover" expandedValue={ background.expandedValue } />
-            <div className="callout">
-                <div className="container h-100">
-                    <div className="row h-100">
-                        { this.renderCallOutColumn() }
+        let calloutClasses : Array<string> = ['callout'];
+        if(this.props.data.callout.margin?.value) calloutClasses.push(this.props.data.callout.margin.value);
+        if(this.props.data.callout.padding?.value) calloutClasses.push(this.props.data.callout.padding.value);
+
+        
+        let innerContainerStyles : CSSProperties = {};
+        switch(this.props.data.blockRatio?.value || ''){
+            case '5:1':
+                innerContainerStyles.paddingBottom = '20%';
+                break;
+            case '4:1':
+                innerContainerStyles.paddingBottom = '25%';
+                break;
+            case '3:1':
+                innerContainerStyles.paddingBottom = '33%';
+                break;
+            case '16:9':
+                innerContainerStyles.paddingBottom = '55%';
+                break;
+            case '3:2':
+                innerContainerStyles.paddingBottom = '65%';
+                break;
+            case '4:3':
+                innerContainerStyles.paddingBottom = '75%';
+                break;
+            case '1:1':
+                innerContainerStyles.paddingBottom = '100%';
+                break;
+            case '2:3':
+                innerContainerStyles.paddingBottom = '150%';
+                break;
+            case '9:16':
+                innerContainerStyles.paddingBottom = '175%';
+                break;
+            default:
+                innerContainerStyles.paddingBottom = '50%';
+                break;
+        }
+
+        let overlayStyles : any = {};
+        overlayStyles.backgroundColor = this.props.data.backgroundColor?.value;
+        overlayStyles.opacity = this.props.data.blockOpacity?.value;
+
+        let screenWidthStyles : any = {};
+        screenWidthStyles.justifyContent = this.props.data.callout.calloutPosition?.value;
+
+        const calloutStyles : any = {
+            color: this.props.data.callout.calloutTextColor?.value,
+            textAlign: this.props.data.callout.calloutContentAlignment?.value,
+            backgroundColor: this.props.data.callout.backgroundColor?.value
+        };
+
+        let blockId : string = 'hero-block-' + this.props.data.contentLink.id;
+
+        const bgComponent = background?.value ? 
+                <Components.EpiserverContent context={this.props.context} contentLink={ background.value } className="d-cover" expandedValue={ background.expandedValue } /> :
+                null;
+
+        return <div className={cssClasses.join(' ')} id={blockId} data-blockid={this.props.data.contentLink.id} data-name={this.props.data.name}>
+            <div className="hero-block" style={innerContainerStyles}>
+                <div className="hero-block__image">
+                    { bgComponent }       
+                </div>
+            
+                <div className="hero-block__overlay" style={overlayStyles}/>
+                <div className="screen-width-wrapper">
+                    <div className="hero-block__callout screen-width-container" style={screenWidthStyles}>
+                        {this.props.data.link?.value &&
+                            <div className="hero-block-link" onClick={this.goToLink.bind(this)}></div>
+                        }
+                        <div className={calloutClasses.join(' ')} style={calloutStyles}>
+                            <div className="hero-block__callout-content"  dangerouslySetInnerHTML={ this.htmlObject(this.props.data.callout.calloutContent?.value) }></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -90,5 +154,9 @@ export default class HeroBlock extends EpiComponent<HeroBlockData> {
                 break;
         }
         return <div className={ callOutClasses.join(' ') } style={ callOutStyles } dangerouslySetInnerHTML={ this.htmlObject(this.props.data.callout.calloutContent.value) } />;
+    }
+
+    goToLink = () => {
+        location.href = this.props.data.link.value;
     }
 }

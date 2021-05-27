@@ -1,0 +1,22 @@
+{
+    "name": "Frontline Services - A fictitious demo company by Optimizely",
+    "short_name": "Frontline Services",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#fff",
+    "description": "An Optimizely Content Cloud PWA / SPA Demo",
+    "icons": [
+        {
+            "src": "/spaview/app.html.spa/episerver_logo.png",
+            "type": "image/png",
+            "sizes": "450x450",
+            "purpose": "any"
+        },
+        {
+            "src": "/spaview/app.html.spa/episerver_logo.png",
+            "type": "image/png",
+            "sizes": "450x450",
+            "purpose": "maskable"
+        }
+    ]
+}

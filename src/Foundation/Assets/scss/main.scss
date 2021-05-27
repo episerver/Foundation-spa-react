@@ -1,0 +1,28 @@
+﻿@charset 'UTF-8';
+
+// 1. Configuration and helpers
+@import 'abstracts/**/*.scss';
+
+// 2. Vendors
+@import 
+    '~bootstrap/scss/bootstrap', 
+    '~@fortawesome/fontawesome-free/css/all.min.css';
+
+// 3. Base stuff
+@import 'base/**/*.scss';
+
+// 4. Layout-related sections
+@import 'layout/**/*.scss';
+
+// 5. Components
+@import 'components/**/*.scss';
+
+// 6. Page and block specific styles
+@import '../../Features/**/*.scss';
+
+// 7. Themes
+@import 'themes/**/*.scss';
+
+// 8. Features
+@import 'features/**/*.scss';
+

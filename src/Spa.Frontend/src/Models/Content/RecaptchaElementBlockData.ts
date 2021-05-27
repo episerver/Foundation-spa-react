@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * RecaptchaElementBlock
  *
@@ -10,49 +6,57 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 2d7e4a18-8f8b-4c98-9e81-d97524c62561
  */
-export default interface RecaptchaElementBlockData extends IContent {
+export default interface RecaptchaElementBlockData extends Taxonomy.IContent {
     /**
      * Validators
      *
      * No description available
      */
-    validators: StringProperty
+    validators: ContentDelivery.StringProperty
+
+    /**
+     * ScoreThreshold
+     *
+     * No description available
+     */
+    scoreThreshold: ContentDelivery.NumberProperty
 
     /**
      * SiteKey
      *
      * No description available
      */
-    siteKey: StringProperty
+    siteKey: ContentDelivery.StringProperty
 
     /**
      * SecretKey
      *
      * No description available
      */
-    secretKey: StringProperty
+    secretKey: ContentDelivery.StringProperty
 
     /**
      * ValidatorMessages
      *
      * No description available
      */
-    validatorMessages: Property<any> // Original type: Validator with message collection
+    validatorMessages: ContentDelivery.Property<any> // Original type: Validator with message collection
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface RecaptchaElementBlockProps extends ComponentProps<RecaptchaElementBlockData> {}
+export interface RecaptchaElementBlockProps extends ComponentTypes.AbstractComponentProps<RecaptchaElementBlockData> {}
 
-export class RecaptchaElementBlockType extends BaseIContent<RecaptchaElementBlockData> implements RecaptchaElementBlockData {
+export class RecaptchaElementBlockType extends Taxonomy.AbstractIContent<RecaptchaElementBlockData> implements RecaptchaElementBlockData {
     protected _typeName : string = "RecaptchaElementBlock";
     /**
      * Map of all property types within this content type.
      */
     protected _propertyMap : { [propName: string]: string } = {
         'validators': 'LongString',
+        'scoreThreshold': 'FloatNumber',
         'siteKey': 'LongString',
         'secretKey': 'LongString',
         'validatorMessages': 'Validator with message collection',
@@ -63,27 +67,34 @@ export class RecaptchaElementBlockType extends BaseIContent<RecaptchaElementBloc
      *
      * No description available
      */
-    public validators: StringProperty;
+    public get validators() : RecaptchaElementBlockData["validators"] { return this.getProperty("validators"); }
+
+    /**
+     * ScoreThreshold
+     *
+     * No description available
+     */
+    public get scoreThreshold() : RecaptchaElementBlockData["scoreThreshold"] { return this.getProperty("scoreThreshold"); }
 
     /**
      * SiteKey
      *
      * No description available
      */
-    public siteKey: StringProperty;
+    public get siteKey() : RecaptchaElementBlockData["siteKey"] { return this.getProperty("siteKey"); }
 
     /**
      * SecretKey
      *
      * No description available
      */
-    public secretKey: StringProperty;
+    public get secretKey() : RecaptchaElementBlockData["secretKey"] { return this.getProperty("secretKey"); }
 
     /**
      * ValidatorMessages
      *
      * No description available
      */
-    public validatorMessages: Property<any> // Original type: Validator with message collection;
+    public get validatorMessages() : RecaptchaElementBlockData["validatorMessages"] { return this.getProperty("validatorMessages"); }
 
 }

@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Standard Page
  *
@@ -10,260 +6,260 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID c0a25bb7-199c-457d-98c6-b0179c7acae8
  */
-export default interface StandardPageData extends IContent {
+export default interface StandardPageData extends Taxonomy.IContent {
     /**
      * Categories
      *
      * Categories associated with this content.
      */
-    categories: Property<Array<ContentLink>>
+    categories: ContentDelivery.ContentReferenceListProperty
 
     /**
      * Teaser ratio (width-height)
      *
      * No description available
      */
-    teaserRatio: StringProperty
+    teaserRatio: ContentDelivery.StringProperty
 
     /**
      * Main body
      *
      * No description available
      */
-    mainBody: StringProperty
+    mainBody: ContentDelivery.StringProperty
 
     /**
      * Title
      *
      * No description available
      */
-    metaTitle: StringProperty
+    metaTitle: ContentDelivery.StringProperty
 
     /**
      * Exclude from results
      *
      * This will determine whether or not to show on search
      */
-    excludeFromSearch: BooleanProperty
+    excludeFromSearch: ContentDelivery.BooleanProperty
 
     /**
      * Image
      *
      * No description available
      */
-    pageImage: ContentReferenceProperty
+    pageImage: ContentDelivery.ContentReferenceProperty
 
     /**
      * CSS files
      *
      * No description available
      */
-    cssFiles: LinkListProperty
-
-    /**
-     * Script files
-     *
-     * No description available
-     */
-    scriptFiles: LinkListProperty
+    cssFiles: ContentDelivery.LinkListProperty
 
     /**
      * Main content area
      *
      * No description available
      */
-    mainContentArea: ContentAreaProperty
+    mainContentArea: ContentDelivery.ContentAreaProperty
 
     /**
      * Keywords
      *
      * No description available
      */
-    keywords: StringProperty
+    keywords: ContentDelivery.StringProperty
 
     /**
      * Hide site header
      *
      * No description available
      */
-    hideSiteHeader: BooleanProperty
+    hideSiteHeader: ContentDelivery.BooleanProperty
 
     /**
      * Video
      *
      * No description available
      */
-    teaserVideo: ContentReferenceProperty
+    teaserVideo: ContentDelivery.ContentReferenceProperty
 
     /**
      * CSS
      *
      * No description available
      */
-    css: StringProperty
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    scripts: StringProperty
+    css: ContentDelivery.StringProperty
 
     /**
      * Title color
      *
      * No description available
      */
-    titleColor: StringProperty
+    titleColor: ContentDelivery.StringProperty
 
     /**
      * Background color
      *
      * No description available
      */
-    backgroundColor: StringProperty
+    backgroundColor: ContentDelivery.StringProperty
 
     /**
      * Title opacity (0 to 1)
      *
      * No description available
      */
-    backgroundOpacity: NumberProperty
+    backgroundOpacity: ContentDelivery.NumberProperty
 
     /**
      * Background image
      *
      * No description available
      */
-    backgroundImage: ContentReferenceProperty
+    backgroundImage: ContentDelivery.ContentReferenceProperty
 
     /**
      * Background video
      *
      * No description available
      */
-    backgroundVideo: ContentReferenceProperty
+    backgroundVideo: ContentDelivery.ContentReferenceProperty
 
     /**
      * Top padding mode
      *
      * Sets how much padding should be at the top of the standard content
      */
-    topPaddingMode: StringProperty
+    topPaddingMode: ContentDelivery.StringProperty
 
     /**
      * Page description
      *
      * No description available
      */
-    pageDescription: StringProperty
+    pageDescription: ContentDelivery.StringProperty
 
     /**
      * Hide site footer
      *
      * No description available
      */
-    hideSiteFooter: BooleanProperty
+    hideSiteFooter: ContentDelivery.BooleanProperty
 
     /**
      * Text
      *
      * No description available
      */
-    teaserText: StringProperty
+    teaserText: ContentDelivery.StringProperty
 
     /**
      * Content type
      *
      * No description available
      */
-    metaContentType: StringProperty
+    metaContentType: ContentDelivery.StringProperty
 
     /**
      * Industry
      *
      * No description available
      */
-    industry: StringProperty
+    industry: ContentDelivery.StringProperty
 
     /**
      * Author
      *
      * No description available
      */
-    authorMetaData: StringProperty
+    authorMetaData: ContentDelivery.StringProperty
 
     /**
      * Disable indexing
      *
      * No description available
      */
-    disableIndexing: BooleanProperty
+    disableIndexing: ContentDelivery.BooleanProperty
 
     /**
      * Highlight in page list
      *
      * No description available
      */
-    highlight: BooleanProperty
+    highlight: ContentDelivery.BooleanProperty
 
     /**
      * Text alignment
      *
      * No description available
      */
-    teaserTextAlignment: StringProperty
+    teaserTextAlignment: ContentDelivery.StringProperty
 
     /**
      * Color theme
      *
      * No description available
      */
-    teaserColorTheme: StringProperty
+    teaserColorTheme: ContentDelivery.StringProperty
 
     /**
      * Button label
      *
      * No description available
      */
-    teaserButtonText: StringProperty
+    teaserButtonText: ContentDelivery.StringProperty
 
     /**
      * Button theme
      *
      * No description available
      */
-    teaserButtonStyle: StringProperty
+    teaserButtonStyle: ContentDelivery.StringProperty
+
+    /**
+     * Button color
+     *
+     * No description available
+     */
+    teaserButtonColor: ContentDelivery.StringProperty
+
+    /**
+     * Button text color
+     *
+     * No description available
+     */
+    teaserButtonTextColor: ContentDelivery.StringProperty
 
     /**
      * Display hover effect
      *
      * No description available
      */
-    applyHoverEffect: BooleanProperty
+    applyHoverEffect: ContentDelivery.BooleanProperty
 
     /**
      * Padding
      *
      * No description available
      */
-    padding: StringProperty
+    padding: ContentDelivery.StringProperty
 
     /**
      * Margin
      *
      * No description available
      */
-    margin: StringProperty
+    margin: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface StandardPageProps extends ComponentProps<StandardPageData> {}
+export interface StandardPageProps extends ComponentTypes.AbstractComponentProps<StandardPageData> {}
 
-export class StandardPageType extends BaseIContent<StandardPageData> implements StandardPageData {
+export class StandardPageType extends Taxonomy.AbstractIContent<StandardPageData> implements StandardPageData {
     protected _typeName : string = "StandardPage";
     /**
      * Map of all property types within this content type.
@@ -276,13 +272,11 @@ export class StandardPageType extends BaseIContent<StandardPageData> implements 
         'excludeFromSearch': 'Boolean',
         'pageImage': 'ContentReference',
         'cssFiles': 'LinkCollection',
-        'scriptFiles': 'LinkCollection',
         'mainContentArea': 'ContentArea',
         'keywords': 'LongString',
         'hideSiteHeader': 'Boolean',
         'teaserVideo': 'ContentReference',
         'css': 'LongString',
-        'scripts': 'LongString',
         'titleColor': 'LongString',
         'backgroundColor': 'LongString',
         'backgroundOpacity': 'FloatNumber',
@@ -301,6 +295,8 @@ export class StandardPageType extends BaseIContent<StandardPageData> implements 
         'teaserColorTheme': 'LongString',
         'teaserButtonText': 'LongString',
         'teaserButtonStyle': 'LongString',
+        'teaserButtonColor': 'LongString',
+        'teaserButtonTextColor': 'LongString',
         'applyHoverEffect': 'Boolean',
         'padding': 'LongString',
         'margin': 'LongString',
@@ -311,244 +307,244 @@ export class StandardPageType extends BaseIContent<StandardPageData> implements 
      *
      * Categories associated with this content.
      */
-    public categories: Property<Array<ContentLink>>;
+    public get categories() : StandardPageData["categories"] { return this.getProperty("categories"); }
 
     /**
      * Teaser ratio (width-height)
      *
      * No description available
      */
-    public teaserRatio: StringProperty;
+    public get teaserRatio() : StandardPageData["teaserRatio"] { return this.getProperty("teaserRatio"); }
 
     /**
      * Main body
      *
      * No description available
      */
-    public mainBody: StringProperty;
+    public get mainBody() : StandardPageData["mainBody"] { return this.getProperty("mainBody"); }
 
     /**
      * Title
      *
      * No description available
      */
-    public metaTitle: StringProperty;
+    public get metaTitle() : StandardPageData["metaTitle"] { return this.getProperty("metaTitle"); }
 
     /**
      * Exclude from results
      *
      * This will determine whether or not to show on search
      */
-    public excludeFromSearch: BooleanProperty;
+    public get excludeFromSearch() : StandardPageData["excludeFromSearch"] { return this.getProperty("excludeFromSearch"); }
 
     /**
      * Image
      *
      * No description available
      */
-    public pageImage: ContentReferenceProperty;
+    public get pageImage() : StandardPageData["pageImage"] { return this.getProperty("pageImage"); }
 
     /**
      * CSS files
      *
      * No description available
      */
-    public cssFiles: LinkListProperty;
-
-    /**
-     * Script files
-     *
-     * No description available
-     */
-    public scriptFiles: LinkListProperty;
+    public get cssFiles() : StandardPageData["cssFiles"] { return this.getProperty("cssFiles"); }
 
     /**
      * Main content area
      *
      * No description available
      */
-    public mainContentArea: ContentAreaProperty;
+    public get mainContentArea() : StandardPageData["mainContentArea"] { return this.getProperty("mainContentArea"); }
 
     /**
      * Keywords
      *
      * No description available
      */
-    public keywords: StringProperty;
+    public get keywords() : StandardPageData["keywords"] { return this.getProperty("keywords"); }
 
     /**
      * Hide site header
      *
      * No description available
      */
-    public hideSiteHeader: BooleanProperty;
+    public get hideSiteHeader() : StandardPageData["hideSiteHeader"] { return this.getProperty("hideSiteHeader"); }
 
     /**
      * Video
      *
      * No description available
      */
-    public teaserVideo: ContentReferenceProperty;
+    public get teaserVideo() : StandardPageData["teaserVideo"] { return this.getProperty("teaserVideo"); }
 
     /**
      * CSS
      *
      * No description available
      */
-    public css: StringProperty;
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    public scripts: StringProperty;
+    public get css() : StandardPageData["css"] { return this.getProperty("css"); }
 
     /**
      * Title color
      *
      * No description available
      */
-    public titleColor: StringProperty;
+    public get titleColor() : StandardPageData["titleColor"] { return this.getProperty("titleColor"); }
 
     /**
      * Background color
      *
      * No description available
      */
-    public backgroundColor: StringProperty;
+    public get backgroundColor() : StandardPageData["backgroundColor"] { return this.getProperty("backgroundColor"); }
 
     /**
      * Title opacity (0 to 1)
      *
      * No description available
      */
-    public backgroundOpacity: NumberProperty;
+    public get backgroundOpacity() : StandardPageData["backgroundOpacity"] { return this.getProperty("backgroundOpacity"); }
 
     /**
      * Background image
      *
      * No description available
      */
-    public backgroundImage: ContentReferenceProperty;
+    public get backgroundImage() : StandardPageData["backgroundImage"] { return this.getProperty("backgroundImage"); }
 
     /**
      * Background video
      *
      * No description available
      */
-    public backgroundVideo: ContentReferenceProperty;
+    public get backgroundVideo() : StandardPageData["backgroundVideo"] { return this.getProperty("backgroundVideo"); }
 
     /**
      * Top padding mode
      *
      * Sets how much padding should be at the top of the standard content
      */
-    public topPaddingMode: StringProperty;
+    public get topPaddingMode() : StandardPageData["topPaddingMode"] { return this.getProperty("topPaddingMode"); }
 
     /**
      * Page description
      *
      * No description available
      */
-    public pageDescription: StringProperty;
+    public get pageDescription() : StandardPageData["pageDescription"] { return this.getProperty("pageDescription"); }
 
     /**
      * Hide site footer
      *
      * No description available
      */
-    public hideSiteFooter: BooleanProperty;
+    public get hideSiteFooter() : StandardPageData["hideSiteFooter"] { return this.getProperty("hideSiteFooter"); }
 
     /**
      * Text
      *
      * No description available
      */
-    public teaserText: StringProperty;
+    public get teaserText() : StandardPageData["teaserText"] { return this.getProperty("teaserText"); }
 
     /**
      * Content type
      *
      * No description available
      */
-    public metaContentType: StringProperty;
+    public get metaContentType() : StandardPageData["metaContentType"] { return this.getProperty("metaContentType"); }
 
     /**
      * Industry
      *
      * No description available
      */
-    public industry: StringProperty;
+    public get industry() : StandardPageData["industry"] { return this.getProperty("industry"); }
 
     /**
      * Author
      *
      * No description available
      */
-    public authorMetaData: StringProperty;
+    public get authorMetaData() : StandardPageData["authorMetaData"] { return this.getProperty("authorMetaData"); }
 
     /**
      * Disable indexing
      *
      * No description available
      */
-    public disableIndexing: BooleanProperty;
+    public get disableIndexing() : StandardPageData["disableIndexing"] { return this.getProperty("disableIndexing"); }
 
     /**
      * Highlight in page list
      *
      * No description available
      */
-    public highlight: BooleanProperty;
+    public get highlight() : StandardPageData["highlight"] { return this.getProperty("highlight"); }
 
     /**
      * Text alignment
      *
      * No description available
      */
-    public teaserTextAlignment: StringProperty;
+    public get teaserTextAlignment() : StandardPageData["teaserTextAlignment"] { return this.getProperty("teaserTextAlignment"); }
 
     /**
      * Color theme
      *
      * No description available
      */
-    public teaserColorTheme: StringProperty;
+    public get teaserColorTheme() : StandardPageData["teaserColorTheme"] { return this.getProperty("teaserColorTheme"); }
 
     /**
      * Button label
      *
      * No description available
      */
-    public teaserButtonText: StringProperty;
+    public get teaserButtonText() : StandardPageData["teaserButtonText"] { return this.getProperty("teaserButtonText"); }
 
     /**
      * Button theme
      *
      * No description available
      */
-    public teaserButtonStyle: StringProperty;
+    public get teaserButtonStyle() : StandardPageData["teaserButtonStyle"] { return this.getProperty("teaserButtonStyle"); }
+
+    /**
+     * Button color
+     *
+     * No description available
+     */
+    public get teaserButtonColor() : StandardPageData["teaserButtonColor"] { return this.getProperty("teaserButtonColor"); }
+
+    /**
+     * Button text color
+     *
+     * No description available
+     */
+    public get teaserButtonTextColor() : StandardPageData["teaserButtonTextColor"] { return this.getProperty("teaserButtonTextColor"); }
 
     /**
      * Display hover effect
      *
      * No description available
      */
-    public applyHoverEffect: BooleanProperty;
+    public get applyHoverEffect() : StandardPageData["applyHoverEffect"] { return this.getProperty("applyHoverEffect"); }
 
     /**
      * Padding
      *
      * No description available
      */
-    public padding: StringProperty;
+    public get padding() : StandardPageData["padding"] { return this.getProperty("padding"); }
 
     /**
      * Margin
      *
      * No description available
      */
-    public margin: StringProperty;
+    public get margin() : StandardPageData["margin"] { return this.getProperty("margin"); }
 
 }

@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Breadcrumb Block
  *
@@ -10,71 +6,71 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID de43eb04-0d26-442a-91fc-e36e14a352b6
  */
-export default interface BreadcrumbBlockData extends IContent {
+export default interface BreadcrumbBlockData extends Taxonomy.IContent {
     /**
      * Categories
      *
      * Categories associated with this content
      */
-    categories: Property<Array<ContentLink>>
+    categories: ContentDelivery.ContentReferenceListProperty
 
     /**
      * Padding
      *
      * No description available
      */
-    padding: StringProperty
+    padding: ContentDelivery.StringProperty
 
     /**
      * Margin
      *
      * No description available
      */
-    margin: StringProperty
+    margin: ContentDelivery.StringProperty
 
     /**
      * Background color
      *
      * No description available
      */
-    backgroundColor: StringProperty
+    backgroundColor: ContentDelivery.StringProperty
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    blockOpacity: NumberProperty
+    blockOpacity: ContentDelivery.NumberProperty
 
     /**
      * Destination page
      *
      * No description available
      */
-    destinationPage: ContentReferenceProperty
+    destinationPage: ContentDelivery.ContentReferenceProperty
 
     /**
      * Breadcrumb separator
      *
      * No description available
      */
-    separator: StringProperty
+    separator: ContentDelivery.StringProperty
 
     /**
      * Alignment option
      *
      * No description available
      */
-    alignment: StringProperty
+    alignment: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface BreadcrumbBlockProps extends ComponentProps<BreadcrumbBlockData> {}
+export interface BreadcrumbBlockProps extends ComponentTypes.AbstractComponentProps<BreadcrumbBlockData> {}
 
-export class BreadcrumbBlockType extends BaseIContent<BreadcrumbBlockData> implements BreadcrumbBlockData {
+export class BreadcrumbBlockType extends Taxonomy.AbstractIContent<BreadcrumbBlockData> implements BreadcrumbBlockData {
     protected _typeName : string = "BreadcrumbBlock";
     /**
      * Map of all property types within this content type.
@@ -95,55 +91,55 @@ export class BreadcrumbBlockType extends BaseIContent<BreadcrumbBlockData> imple
      *
      * Categories associated with this content
      */
-    public categories: Property<Array<ContentLink>>;
+    public get categories() : BreadcrumbBlockData["categories"] { return this.getProperty("categories"); }
 
     /**
      * Padding
      *
      * No description available
      */
-    public padding: StringProperty;
+    public get padding() : BreadcrumbBlockData["padding"] { return this.getProperty("padding"); }
 
     /**
      * Margin
      *
      * No description available
      */
-    public margin: StringProperty;
+    public get margin() : BreadcrumbBlockData["margin"] { return this.getProperty("margin"); }
 
     /**
      * Background color
      *
      * No description available
      */
-    public backgroundColor: StringProperty;
+    public get backgroundColor() : BreadcrumbBlockData["backgroundColor"] { return this.getProperty("backgroundColor"); }
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    public blockOpacity: NumberProperty;
+    public get blockOpacity() : BreadcrumbBlockData["blockOpacity"] { return this.getProperty("blockOpacity"); }
 
     /**
      * Destination page
      *
      * No description available
      */
-    public destinationPage: ContentReferenceProperty;
+    public get destinationPage() : BreadcrumbBlockData["destinationPage"] { return this.getProperty("destinationPage"); }
 
     /**
      * Breadcrumb separator
      *
      * No description available
      */
-    public separator: StringProperty;
+    public get separator() : BreadcrumbBlockData["separator"] { return this.getProperty("separator"); }
 
     /**
      * Alignment option
      *
      * No description available
      */
-    public alignment: StringProperty;
+    public get alignment() : BreadcrumbBlockData["alignment"] { return this.getProperty("alignment"); }
 
 }

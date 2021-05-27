@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Vimeo Video
  *
@@ -10,78 +6,78 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID a8172c33-e087-4e68-980e-a79b0e093675
  */
-export default interface VimeoBlockData extends IContent {
+export default interface VimeoBlockData extends Taxonomy.IContent {
     /**
      * Categories
      *
      * Categories associated with this content
      */
-    categories: Property<Array<ContentLink>>
+    categories: ContentDelivery.ContentReferenceListProperty
 
     /**
      * Padding
      *
      * No description available
      */
-    padding: StringProperty
+    padding: ContentDelivery.StringProperty
 
     /**
      * Margin
      *
      * No description available
      */
-    margin: StringProperty
+    margin: ContentDelivery.StringProperty
 
     /**
      * Background color
      *
      * No description available
      */
-    backgroundColor: StringProperty
+    backgroundColor: ContentDelivery.StringProperty
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    blockOpacity: NumberProperty
+    blockOpacity: ContentDelivery.NumberProperty
 
     /**
      * Vimeo link
      *
      * URL link to Vimeo video
      */
-    vimeoVideoLink: StringProperty
+    vimeoVideoLink: ContentDelivery.StringProperty
 
     /**
      * Cover image
      *
      * No description available
      */
-    coverImage: ContentReferenceProperty
+    coverImage: ContentDelivery.ContentReferenceProperty
 
     /**
      * Heading
      *
      * No description available
      */
-    heading: StringProperty
+    heading: ContentDelivery.StringProperty
 
     /**
      * MainBody
      *
      * Descriptive text for the video
      */
-    mainBody: StringProperty
+    mainBody: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface VimeoBlockProps extends ComponentProps<VimeoBlockData> {}
+export interface VimeoBlockProps extends ComponentTypes.AbstractComponentProps<VimeoBlockData> {}
 
-export class VimeoBlockType extends BaseIContent<VimeoBlockData> implements VimeoBlockData {
+export class VimeoBlockType extends Taxonomy.AbstractIContent<VimeoBlockData> implements VimeoBlockData {
     protected _typeName : string = "VimeoBlock";
     /**
      * Map of all property types within this content type.
@@ -103,62 +99,62 @@ export class VimeoBlockType extends BaseIContent<VimeoBlockData> implements Vime
      *
      * Categories associated with this content
      */
-    public categories: Property<Array<ContentLink>>;
+    public get categories() : VimeoBlockData["categories"] { return this.getProperty("categories"); }
 
     /**
      * Padding
      *
      * No description available
      */
-    public padding: StringProperty;
+    public get padding() : VimeoBlockData["padding"] { return this.getProperty("padding"); }
 
     /**
      * Margin
      *
      * No description available
      */
-    public margin: StringProperty;
+    public get margin() : VimeoBlockData["margin"] { return this.getProperty("margin"); }
 
     /**
      * Background color
      *
      * No description available
      */
-    public backgroundColor: StringProperty;
+    public get backgroundColor() : VimeoBlockData["backgroundColor"] { return this.getProperty("backgroundColor"); }
 
     /**
      * Block opacity (0 to 1)
      *
      * No description available
      */
-    public blockOpacity: NumberProperty;
+    public get blockOpacity() : VimeoBlockData["blockOpacity"] { return this.getProperty("blockOpacity"); }
 
     /**
      * Vimeo link
      *
      * URL link to Vimeo video
      */
-    public vimeoVideoLink: StringProperty;
+    public get vimeoVideoLink() : VimeoBlockData["vimeoVideoLink"] { return this.getProperty("vimeoVideoLink"); }
 
     /**
      * Cover image
      *
      * No description available
      */
-    public coverImage: ContentReferenceProperty;
+    public get coverImage() : VimeoBlockData["coverImage"] { return this.getProperty("coverImage"); }
 
     /**
      * Heading
      *
      * No description available
      */
-    public heading: StringProperty;
+    public get heading() : VimeoBlockData["heading"] { return this.getProperty("heading"); }
 
     /**
      * MainBody
      *
      * Descriptive text for the video
      */
-    public mainBody: StringProperty;
+    public get mainBody() : VimeoBlockData["mainBody"] { return this.getProperty("mainBody"); }
 
 }

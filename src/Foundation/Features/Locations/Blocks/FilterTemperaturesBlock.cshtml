@@ -1,0 +1,17 @@
+﻿@using Foundation.Features.Locations.LocationListPage
+
+@model LocationListViewModel
+
+<div>
+    <h4>
+        <i class="fa fa-thermometer-half "></i>
+        @(string.IsNullOrEmpty(ViewData["FilterTitle"].ToString()) ? Html.TranslateFallback("/Locations/Temperature", "Temperature") : ViewData["FilterTitle"].ToString())
+    </h4>
+    <ul class="portfolio-cats">
+        <li>
+            <span class="w-100 text-center">
+                <input id="slider-range" data-slider-id='slider-rangeData' type="text" style="width:95%;" />
+            </span>
+        </li>
+    </ul>
+</div>

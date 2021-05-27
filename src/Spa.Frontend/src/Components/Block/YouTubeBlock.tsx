@@ -1,22 +1,20 @@
-import React, { ReactNode } from 'react';
-import EpiComponent from '@episerver/spa-core/EpiComponent';
-import YouTubeBlockData from 'app/Models/Content/YouTubeBlockData';
+import React, { FunctionComponent, useState } from 'react';
+import ReactPlayer  from 'react-player';
+import { YouTubeBlockProps } from 'app/Models/Content/YouTubeBlockData';
 
-export default class YouTubeBlock extends EpiComponent<YouTubeBlockData> {
+export const YouTubeBlock : FunctionComponent<YouTubeBlockProps> = (props) => {
+    let itemStyles : any = {}; /*{
+        paddingTop: this.props.data.paddingLeft.value + 'px',
+        paddingRight: this.props.data.paddingRight.value + 'px',
+        paddingBottom: this.props.data.paddingBottom.value + 'px',
+        paddingLeft: this.props.data.paddingLeft.value + 'px'
+    }*/
 
-    public render() : ReactNode
-    {
-        let itemStyles : any = {}; /*{
-            paddingTop: this.props.data.paddingLeft.value + 'px',
-            paddingRight: this.props.data.paddingRight.value + 'px',
-            paddingBottom: this.props.data.paddingBottom.value + 'px',
-            paddingLeft: this.props.data.paddingLeft.value + 'px'
-        }*/
-
-        return <div className="col-12">
-            <div className="embed-responsive embed-responsive-16by9" style={ itemStyles }>
-                <iframe className="embed-responsive-item" src={ this.props.data.youTubeLink.value }></iframe>
-            </div>
-        </div>;
-    }
+    return <div className="col-12">
+        <div className="embed-responsive embed-responsive-16by9" style={ itemStyles }>
+            <ReactPlayer url={ props.data.youTubeLink.value } className='embed-responsive-item' width='inherit' height='inherit' />
+        </div>
+    </div>
 }
+
+export default YouTubeBlock;

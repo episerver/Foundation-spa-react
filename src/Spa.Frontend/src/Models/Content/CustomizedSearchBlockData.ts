@@ -1,10 +1,6 @@
 import CustomizedSearchAdvancedSettingsData from './CustomizedSearchAdvancedSettingsData'
 import CustomizedSearchSettingsData from './CustomizedSearchSettingsData'
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * CustomizedSearchBlock
  *
@@ -12,13 +8,13 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 3a263af2-79d9-4275-ad15-3c3187c89870
  */
-export default interface CustomizedSearchBlockData extends IContent {
+export default interface CustomizedSearchBlockData extends Taxonomy.IContent {
     /**
      * Heading
      *
      * No description available
      */
-    heading: StringProperty
+    heading: ContentDelivery.StringProperty
 
     /**
      * CustomizedSearchSettings
@@ -39,9 +35,9 @@ export default interface CustomizedSearchBlockData extends IContent {
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface CustomizedSearchBlockProps extends ComponentProps<CustomizedSearchBlockData> {}
+export interface CustomizedSearchBlockProps extends ComponentTypes.AbstractComponentProps<CustomizedSearchBlockData> {}
 
-export class CustomizedSearchBlockType extends BaseIContent<CustomizedSearchBlockData> implements CustomizedSearchBlockData {
+export class CustomizedSearchBlockType extends Taxonomy.AbstractIContent<CustomizedSearchBlockData> implements CustomizedSearchBlockData {
     protected _typeName : string = "CustomizedSearchBlock";
     /**
      * Map of all property types within this content type.
@@ -57,20 +53,20 @@ export class CustomizedSearchBlockType extends BaseIContent<CustomizedSearchBloc
      *
      * No description available
      */
-    public heading: StringProperty;
+    public get heading() : CustomizedSearchBlockData["heading"] { return this.getProperty("heading"); }
 
     /**
      * CustomizedSearchSettings
      *
      * No description available
      */
-    public customizedSearchSettings: CustomizedSearchSettingsData;
+    public get customizedSearchSettings() : CustomizedSearchBlockData["customizedSearchSettings"] { return this.getProperty("customizedSearchSettings"); }
 
     /**
      * CustomizedSearchAdvancedSettings
      *
      * No description available
      */
-    public customizedSearchAdvancedSettings: CustomizedSearchAdvancedSettingsData;
+    public get customizedSearchAdvancedSettings() : CustomizedSearchBlockData["customizedSearchAdvancedSettings"] { return this.getProperty("customizedSearchAdvancedSettings"); }
 
 }

@@ -1,120 +1,167 @@
-import React, { PureComponent, ReactNode } from "react";
-import IContentWithTeaser, { isIContentWithTeaser } from 'app/Models/IContentWithTeaser';
-import CmsComponent from "@episerver/spa-core/Components/CmsComponent";
-import ContentLink, { ContentLinkService } from "@episerver/spa-core/Models/ContentLink";
-import IEpiserverContext from "@episerver/spa-core/Core/IEpiserverContext";
-import IContent from "@episerver/spa-core/Models/IContent";
+import React, { FunctionComponent, useState, useEffect } from "react";
+import { Core, Components, Services, Taxonomy, useIContentRepository } from "@episerver/spa-core";
+import * as IContentWithTeaserNS from 'app/Models/IContentWithTeaser';
+import { ResponsiveContentImage } from './ResponsiveImage';
 
 import './Teaser.scss';
 
-interface TeaserProps {
-    content: IContentWithTeaser
-    context: IEpiserverContext
+export import isIContentWithTeaser = IContentWithTeaserNS.isIContentWithTeaser;
+
+export type TeaserProps = {
+    content: IContentWithTeaserNS.default
+    /**
+     * @deprecated
+     */
+    context?: Core.IEpiserverContext
     className?: string
 }
 
-export default class Teaser extends PureComponent<TeaserProps>
+type TeaserBackground = [ string, Taxonomy.ContentLink, Taxonomy.IContent ]
+function getTeaserBackground(teaser: IContentWithTeaserNS.default) : TeaserBackground
 {
-    public constructor(props: TeaserProps)
-    {
-        super(props);
-        if (!isIContentWithTeaser(props.content)) {
-            throw "Invalid content received";
-        }
-    }
-
-    public render() : ReactNode
-    {
-        //Determine classes
-        let myClassName = `teaser ${ this.props.className }`;
-        let ratioClass : string = this.props.content.teaserRatio?.value ? `r-${ this.props.content.teaserRatio.value }` : ''; 
-        let contentClasses : Array<string> = ['teaser-content','p-3','d-flex','flex-column'];
-        let contentTextClasses : Array<string> = [];
-
-        //Get teaser background
-        let teaserBackground : ContentLink;
-        let teaserBackgroundExpanded : IContent;
-        if (this.props.content.teaserVideo?.value) {
-            teaserBackground = this.props.content.teaserVideo.value;
-            teaserBackgroundExpanded = this.props.content.teaserVideo.expandedValue;
-        } else {
-            teaserBackground = this.props.content.pageImage.value;
-            teaserBackgroundExpanded = this.props.content.pageImage.expandedValue;
-        }
-
-        if (this.props.content.teaserColorTheme?.value) contentClasses.push(`tc-${ this.props.content.teaserColorTheme.value.toLowerCase() }`)
-
-        //Get teaser name
-        let title : string = typeof(this.props.content.name) == "string" ? this.props.content.name : this.props.content.name.value;
-
-        switch (this.props.content.teaserTextAlignment.value.toLowerCase()) {
-            case 'right':
-                contentClasses.push('align-items-end');
-                contentTextClasses.push('text-right');
-                break;
-            case 'center':
-                contentClasses.push('align-items-center');
-                contentTextClasses.push('text-center');
-                break;
-            case 'left':
-            default:
-                contentClasses.push('align-items-start');
-                contentTextClasses.push('text-left');
-                break;
-        }
-
-        //Build teaser
-        let button : ReactNode = this.renderButton(this.props.content);
-        let body : ReactNode = this.props.content.teaserText?.value ? <p className={ contentTextClasses.join(' ') }>{ this.props.content.teaserText.value }</p> : null;
-        let container = <div className={ ratioClass} >
-            <CmsComponent contentLink={ teaserBackground } context={ this.props.context } expandedValue={ teaserBackgroundExpanded } className="d-cover" />
-            <div className={ contentClasses.join(' ') }>
-                <div className={`teaser-header ${ contentTextClasses.join(' ') }`}>{ title }</div>
-                { body }
-                { button }
-            </div>
-        </div>;
-
-        if (button) {
-            return <div className={ myClassName } >
-                {container}
-            </div>
-        } else {
-            return <a className={ myClassName } href={ ContentLinkService.createHref(this.props.content.contentLink) }>
-                { container }
-            </a> 
-        }
-    }
-
-    protected renderButton(teaser: IContentWithTeaser) : ReactNode | null
-    {
-        if (!teaser.teaserButtonText?.value) {
-            return null;
-        }
-        let btnClasses : Array<string> = ['btn'];
-        switch (teaser.teaserButtonStyle?.value) {
-            case 'button-white':
-                btnClasses.push('btn-light');
-                break;
-            case 'button-black':
-                btnClasses.push('btn-dark');
-                break;
-            case 'button-transparent-black':
-                btnClasses.push('btn-outline-dark');
-                break;
-            case 'button-transparent-white':
-                btnClasses.push('btn-outline-light');
-                break;
-            case 'button-yellow-black':
-                btnClasses.push('btn-warning');
-                break;
-            case 'button-yellow-white':
-                btnClasses.push('btn-outline-warning');
-                break;
-            default:
-                btnClasses.push('btn-primary');
-                break;
-        }
-        return <a className={ btnClasses.join(' ') } href={ ContentLinkService.createHref(teaser.contentLink) }>{teaser.teaserButtonText.value}</a>
-    }
+    const teaserId : string = Services.ContentLink.createApiId(teaser, false, true);
+    if (teaser.teaserVideo?.value)
+        return [ teaserId, teaser.teaserVideo.value, teaser.teaserVideo.expandedValue ]
+    return [ teaserId, teaser.pageImage?.value, teaser.pageImage?.expandedValue ]
 }
+
+function getTeaserClasses(teaser: IContentWithTeaserNS.default, className?:string): [ string, string, string[], string[] ]
+{
+    const myClassName = `teaser ${ className }`.trim();
+    const ratioClass : string = teaser.teaserRatio?.value ? `r-${ teaser.teaserRatio.value.replace(":","-") }` : ''; 
+    const contentClasses : Array<string> = ['teaser-content','p-3','d-flex','flex-column'];
+    if (teaser.teaserColorTheme?.value) contentClasses.push(`tc-${ teaser.teaserColorTheme.value.toLowerCase() }`);
+    const contentTextClasses : Array<string> = [];
+
+    switch (teaser.teaserTextAlignment.value.toLowerCase()) {
+        case 'right':
+            contentClasses.push('align-items-end');
+            contentTextClasses.push('text-right');
+            break;
+        case 'center':
+            contentClasses.push('align-items-center');
+            contentTextClasses.push('text-center');
+            break;
+        case 'left':
+        default:
+            contentClasses.push('align-items-start');
+            contentTextClasses.push('text-left');
+            break;
+    }
+
+    return [ myClassName, ratioClass, contentClasses, contentTextClasses];
+}
+
+export const Teaser : FunctionComponent<TeaserProps> = (props) =>
+{
+    if (!isIContentWithTeaser(props.content))
+        throw "Invalid content received";
+
+    const repo = useIContentRepository();
+    const teaserId = Services.ContentLink.createApiId(props.content, false, true);
+    const [ background, setBackground ] = useState<TeaserBackground>(getTeaserBackground(props.content));
+    const [ backgroundContent, setBackgroundContent ] = useState<Taxonomy.IContent>(background[2]);
+    
+    useEffect(() => {
+        if (teaserId !== background[0]) setBackground(getTeaserBackground(props.content));
+        if (backgroundContent?.contentLink.guidValue !== background[1]?.guidValue) setBackgroundContent(background[2]);
+        let isCancelled : boolean = false;
+        if (background[1] && !background[2]) 
+            repo.load(background[1], false).then(x => {
+                if (!isCancelled) setBackgroundContent(x);
+            });
+        return () => { isCancelled = true; }
+    }, [ teaserId ]);
+
+    // Get teaser name
+    const title : string = typeof(props.content.name) == "string" ? props.content.name : props.content.name.value;
+    const [ myClassName, ratioClass, contentClasses, contentTextClasses ] = getTeaserClasses(props.content, props.className);
+
+    // Build teaser
+    const hasButton = props.content?.teaserButtonText?.value ? true : false;
+    const container = <div className={ ratioClass } >
+        <ResponsiveContentImage content={ backgroundContent } className="img-fluid d-cover" breakpoints={ [{
+            code: 'img',
+            imgWidth: 335,
+            format: 'webp',
+            order: 100
+        },{
+            code: 'xxs',
+            cssMedia: '(min-width: 1px)',
+            imgWidth: 335,
+            order: 101
+        },{
+            code: 'xl-webp',
+            cssMedia: '(min-width: 1440px)',
+            imgWidth: 950,
+            format: 'webp',
+            order: 1
+        },{
+            code: 'xl',
+            cssMedia: '(min-width: 1440px)',
+            imgWidth: 950,
+            order: 2
+        }] } aspectRatio={ props.content?.teaserRatio?.value?.replace(":","/") || '4/3'  } quality={ 75 } />
+        <div className={ contentClasses.join(' ') }>
+            <div className={`teaser-header ${ contentTextClasses.join(' ') }`}>{ title }</div>
+            <TeaserText teaser={props.content} cssClasses={ contentTextClasses }/>
+            <TeaserButton teaser={ props.content }/>
+        </div>
+    </div>;
+
+    if (hasButton)
+        return <div className={ myClassName } >{ container }</div>
+    
+    return <a className={ myClassName } href={ Services.ContentLink.createHref(props.content.contentLink) }>{ container }</a>
+}
+
+/**
+ * Small private component to render the text on a teaser
+ * 
+ * @param props The props
+ * @returns The teaser button
+ */
+const TeaserText : React.FunctionComponent<{ teaser: IContentWithTeaserNS.default, cssClasses: string[] }> = (props) => {
+    return props.teaser.teaserText?.value ? <p className={ props.cssClasses.join(' ') }>{ props.teaser.teaserText.value }</p> : null;
+}
+
+/**
+ * Small private component to render the button on a teaser
+ * 
+ * @param props The props
+ * @returns The teaser button
+ */
+const TeaserButton : React.FunctionComponent<{ teaser: IContentWithTeaserNS.default }> = (props) =>
+{
+    const teaser = props.teaser;
+    if (!teaser.teaserButtonText?.value) {
+        return null;
+    }
+    let btnClasses : Array<string> = ['btn'];
+    switch (teaser.teaserButtonStyle?.value) {
+        case 'button-white':
+            btnClasses.push('btn-light');
+            break;
+        case 'button-black':
+            btnClasses.push('btn-dark');
+            break;
+        case 'button-transparent-black':
+            btnClasses.push('btn-outline-dark');
+            break;
+        case 'button-transparent-white':
+            btnClasses.push('btn-outline-light');
+            break;
+        case 'button-yellow-black':
+            btnClasses.push('btn-warning');
+            break;
+        case 'button-yellow-white':
+            btnClasses.push('btn-outline-warning');
+            break;
+        default:
+            btnClasses.push('btn-primary');
+            break;
+    }
+    return <a className={ btnClasses.join(' ') } href={ Services.ContentLink.createHref(teaser.contentLink) }>{teaser.teaserButtonText.value}</a>
+}
+
+export default Teaser;

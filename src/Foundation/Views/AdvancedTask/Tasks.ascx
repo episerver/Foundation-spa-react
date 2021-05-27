@@ -1,5 +1,7 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<AdvancedTask.Models.AdvancedTaskIndexViewData>" %>
 <%@ Import Namespace="AdvancedTask.Business.AdvancedTask" %>
+<%@ Import Namespace="AdvancedTask.Models" %>
+<%@ Import Namespace="EPiServer.Core" %>
 <%@ Import Namespace="EPiServer.Editor" %>
 <%@ Import Namespace="EPiServer.Shell.Web.Mvc.Html" %>
 
@@ -45,6 +47,10 @@
     }
 </style>
 <%  bool enableContentApprovalDeadline = bool.Parse(ConfigurationManager.AppSettings["ATM:EnableContentApprovalDeadline"] ?? "false"); %>
+<% if (Model.ShowChangeApprovalTab)
+   { %>
+    <% Html.RenderPartial("Menu", "Index"); %>
+<% } %>
 <table class="epi-default">
     <thead>
         <tr>
@@ -128,36 +134,81 @@
             {
     %>
     <tr <%=m.NotificationUnread?"style=\"background-color: #FFF9C4;\"" :"" %>>
+         
         <td><%=Html.CheckBox(m.ApprovalId.ToString(), false, new { onchange = "selectionChanged(this)", @class="checkbox" })%></td>
+        
         <td>
-            <% if (!m.CanUserPublish)
-                { %>
-            <a href="<%= PageEditing.GetEditUrl(m.ContentReference) %>" id="id-<%= m.ApprovalId.ToString() %>" data-value="ID: <%= m.ContentReference.ID %> - <%= m.ContentName %>" target="_blank"><%= Html.Encode(m.ContentName) %> 
+            <% if (!ContentReference.IsNullOrEmpty(m.ContentReference))
+                {
+                    if (!m.CanUserPublish)
+                    { %>
+            <a href="<%= m.URL %>" id="id-<%= m.ApprovalId.ToString() %>" data-value="ID: <%= m.ContentReference.ID %> - <%= m.ContentName %>" target="_blank"><%= Html.Encode(m.ContentName) %>
                 <span style="color: red" class="error-span" id="span-<%= m.ApprovalId.ToString() %>"></span>
             </a>
             <% }
                 else
                 { %>
-            <a href="<%= PageEditing.GetEditUrl(m.ContentReference) %>" target="_blank"><%= Html.Encode(m.ContentName) %></a>
+            <a href="<%= m.URL %>" target="_blank"><%= Html.Encode(m.ContentName) %></a>
+            <% }
+            }
+            else
+            { %>
+            <%= m.ContentName%>
             <% } %>
         </td>
         <td>
+            <% if (ContentReference.IsNullOrEmpty(m.ContentReference))
+                { %>
             <%= m.ContentType%>
+            <% }
+                else
+                { %>
+            <a href="<%= m.URL %>" target="_blank"><%= Html.Encode(m.ContentType) %></a>
+            <% } %>
         </td>
         <td>
+            <% if (ContentReference.IsNullOrEmpty(m.ContentReference))
+                { %>
             <%= m.Type%>
+            <% }
+                else
+                { %>
+            <a href="<%= m.URL %>" target="_blank"><%= Html.Encode(m.Type) %></a>
+            <% } %>
         </td>
         <td>
+            <% if (ContentReference.IsNullOrEmpty(m.ContentReference))
+                { %>
             <%= m.DateTime%>
+            <% }
+                else
+                { %>
+            <a href="<%= m.URL %>" target="_blank"><%= Html.Encode(m.DateTime) %></a>
+            <% } %>
         </td>
         <td>
+            <% if (ContentReference.IsNullOrEmpty(m.ContentReference))
+                { %>
             <%= m.StartedBy%>
+            <% }
+                else
+                { %>
+            <a href="<%= m.URL %>" target="_blank"><%= Html.Encode(m.StartedBy) %></a>
+            <% } %>
         </td>
+
         <% if (enableContentApprovalDeadline)
            { %>
-        <td class="<%= m.WarningColor%>">
-            <%= m.Deadline%>
-        </td>
+            <td class="<%= m.WarningColor%>">
+                <% if (ContentReference.IsNullOrEmpty(m.ContentReference))
+                   { %>
+                    <%= m.Deadline%>
+                <% }
+                   else
+                   { %>
+                    <a href="<%= m.URL %>" target="_blank"><%= Html.Encode(m.Deadline) %></a>
+                <% } %>
+            </td>
         <% } %>
     </tr>
     <%} %>

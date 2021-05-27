@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * TextareaElementBlock
  *
@@ -10,78 +6,78 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID e7f31175-2f9c-4733-8180-8b6512a64a3a
  */
-export default interface TextareaElementBlockData extends IContent {
+export default interface TextareaElementBlockData extends Taxonomy.IContent {
     /**
      * Label
      *
      * No description available
      */
-    label: StringProperty
+    label: ContentDelivery.StringProperty
 
     /**
      * Description
      *
      * No description available
      */
-    description: StringProperty
+    description: ContentDelivery.StringProperty
 
     /**
      * Validators
      *
      * No description available
      */
-    validators: StringProperty
+    validators: ContentDelivery.StringProperty
 
     /**
      * PlaceHolder
      *
      * No description available
      */
-    placeHolder: StringProperty
+    placeHolder: ContentDelivery.StringProperty
 
     /**
      * SatisfiedAction
      *
      * No description available
      */
-    satisfiedAction: StringProperty
+    satisfiedAction: ContentDelivery.StringProperty
 
     /**
      * External system field mapping
      *
      * No description available
      */
-    forms_ExternalSystemsFieldMappings: Property<any> // Original type: Property Field Mapping Collection
+    forms_ExternalSystemsFieldMappings: ContentDelivery.Property<any> // Original type: Property Field Mapping Collection
 
     /**
      * ConditionCombination
      *
      * No description available
      */
-    conditionCombination: NumberProperty
+    conditionCombination: ContentDelivery.NumberProperty
 
     /**
      * Conditions
      *
      * No description available
      */
-    conditions: Property<any> // Original type: Dependency conditions collection
+    conditions: ContentDelivery.Property<any> // Original type: Dependency conditions collection
 
     /**
      * ValidatorMessages
      *
      * No description available
      */
-    validatorMessages: Property<any> // Original type: Validator with message collection
+    validatorMessages: ContentDelivery.Property<any> // Original type: Validator with message collection
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface TextareaElementBlockProps extends ComponentProps<TextareaElementBlockData> {}
+export interface TextareaElementBlockProps extends ComponentTypes.AbstractComponentProps<TextareaElementBlockData> {}
 
-export class TextareaElementBlockType extends BaseIContent<TextareaElementBlockData> implements TextareaElementBlockData {
+export class TextareaElementBlockType extends Taxonomy.AbstractIContent<TextareaElementBlockData> implements TextareaElementBlockData {
     protected _typeName : string = "TextareaElementBlock";
     /**
      * Map of all property types within this content type.
@@ -103,62 +99,62 @@ export class TextareaElementBlockType extends BaseIContent<TextareaElementBlockD
      *
      * No description available
      */
-    public label: StringProperty;
+    public get label() : TextareaElementBlockData["label"] { return this.getProperty("label"); }
 
     /**
      * Description
      *
      * No description available
      */
-    public description: StringProperty;
+    public get description() : TextareaElementBlockData["description"] { return this.getProperty("description"); }
 
     /**
      * Validators
      *
      * No description available
      */
-    public validators: StringProperty;
+    public get validators() : TextareaElementBlockData["validators"] { return this.getProperty("validators"); }
 
     /**
      * PlaceHolder
      *
      * No description available
      */
-    public placeHolder: StringProperty;
+    public get placeHolder() : TextareaElementBlockData["placeHolder"] { return this.getProperty("placeHolder"); }
 
     /**
      * SatisfiedAction
      *
      * No description available
      */
-    public satisfiedAction: StringProperty;
+    public get satisfiedAction() : TextareaElementBlockData["satisfiedAction"] { return this.getProperty("satisfiedAction"); }
 
     /**
      * External system field mapping
      *
      * No description available
      */
-    public forms_ExternalSystemsFieldMappings: Property<any> // Original type: Property Field Mapping Collection;
+    public get forms_ExternalSystemsFieldMappings() : TextareaElementBlockData["forms_ExternalSystemsFieldMappings"] { return this.getProperty("forms_ExternalSystemsFieldMappings"); }
 
     /**
      * ConditionCombination
      *
      * No description available
      */
-    public conditionCombination: NumberProperty;
+    public get conditionCombination() : TextareaElementBlockData["conditionCombination"] { return this.getProperty("conditionCombination"); }
 
     /**
      * Conditions
      *
      * No description available
      */
-    public conditions: Property<any> // Original type: Dependency conditions collection;
+    public get conditions() : TextareaElementBlockData["conditions"] { return this.getProperty("conditions"); }
 
     /**
      * ValidatorMessages
      *
      * No description available
      */
-    public validatorMessages: Property<any> // Original type: Validator with message collection;
+    public get validatorMessages() : TextareaElementBlockData["validatorMessages"] { return this.getProperty("validatorMessages"); }
 
 }

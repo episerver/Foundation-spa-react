@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Standard File
  *
@@ -10,22 +6,22 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 646ece50-3ce7-4f8b-ba33-9924c9adc9c6
  */
-export default interface StandardFileData extends IContent {
+export default interface StandardFileData extends Taxonomy.IContent {
     /**
      * FileSize
      *
      * No description available
      */
-    fileSize: StringProperty
+    fileSize: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface StandardFileProps extends ComponentProps<StandardFileData> {}
+export interface StandardFileProps extends ComponentTypes.AbstractComponentProps<StandardFileData> {}
 
-export class StandardFileType extends BaseIContent<StandardFileData> implements StandardFileData {
+export class StandardFileType extends Taxonomy.AbstractIContent<StandardFileData> implements StandardFileData {
     protected _typeName : string = "StandardFile";
     /**
      * Map of all property types within this content type.
@@ -39,6 +35,6 @@ export class StandardFileType extends BaseIContent<StandardFileData> implements 
      *
      * No description available
      */
-    public fileSize: StringProperty;
+    public get fileSize() : StandardFileData["fileSize"] { return this.getProperty("fileSize"); }
 
 }

@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * SysRoot
  *
@@ -10,15 +6,15 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 3fa7d9e7-877b-11d3-827c-00a024cacfcb
  */
-export default interface SysRootData extends IContent {
+export default interface SysRootData extends Taxonomy.IContent {
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface SysRootProps extends ComponentProps<SysRootData> {}
+export interface SysRootProps extends ComponentTypes.AbstractComponentProps<SysRootData> {}
 
-export class SysRootType extends BaseIContent<SysRootData> implements SysRootData {
+export class SysRootType extends Taxonomy.AbstractIContent<SysRootData> implements SysRootData {
     protected _typeName : string = "SysRoot";
     /**
      * Map of all property types within this content type.

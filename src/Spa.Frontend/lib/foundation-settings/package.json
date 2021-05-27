@@ -1,0 +1,19 @@
+{
+  "name": "@episerver/foundation-settings",
+  "version": "0.0.2",
+  "description": "Companion for the Foundation Settings C# project",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc --project tsconfig.json"
+  },
+  "author": "Remko Jantzen <remko.jantzen@optimizely.com>",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@episerver/spa-core": "github:episerver/foundation-lib-spa-core#semver:0.1.3",
+    "typescript": "^4.2.2"
+  },
+  "peerDependencies": {
+    "@episerver/spa-core": "github:episerver/foundation-lib-spa-core#semver:^0.1.3"
+  }
+}

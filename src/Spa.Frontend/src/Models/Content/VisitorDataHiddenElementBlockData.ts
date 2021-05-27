@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * VisitorDataHiddenElementBlock
  *
@@ -10,36 +6,36 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID d08021d2-f73e-4359-9603-3c66d7eb97c6
  */
-export default interface VisitorDataHiddenElementBlockData extends IContent {
+export default interface VisitorDataHiddenElementBlockData extends Taxonomy.IContent {
     /**
      * VisitorDataSources
      *
      * No description available
      */
-    visitorDataSources: StringProperty
+    visitorDataSources: ContentDelivery.StringProperty
 
     /**
      * External system field mapping
      *
      * No description available
      */
-    forms_ExternalSystemsFieldMappings: Property<any> // Original type: Property Field Mapping Collection
+    forms_ExternalSystemsFieldMappings: ContentDelivery.Property<any> // Original type: Property Field Mapping Collection
 
     /**
      * ValidatorMessages
      *
      * No description available
      */
-    validatorMessages: Property<any> // Original type: Validator with message collection
+    validatorMessages: ContentDelivery.Property<any> // Original type: Validator with message collection
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface VisitorDataHiddenElementBlockProps extends ComponentProps<VisitorDataHiddenElementBlockData> {}
+export interface VisitorDataHiddenElementBlockProps extends ComponentTypes.AbstractComponentProps<VisitorDataHiddenElementBlockData> {}
 
-export class VisitorDataHiddenElementBlockType extends BaseIContent<VisitorDataHiddenElementBlockData> implements VisitorDataHiddenElementBlockData {
+export class VisitorDataHiddenElementBlockType extends Taxonomy.AbstractIContent<VisitorDataHiddenElementBlockData> implements VisitorDataHiddenElementBlockData {
     protected _typeName : string = "VisitorDataHiddenElementBlock";
     /**
      * Map of all property types within this content type.
@@ -55,20 +51,20 @@ export class VisitorDataHiddenElementBlockType extends BaseIContent<VisitorDataH
      *
      * No description available
      */
-    public visitorDataSources: StringProperty;
+    public get visitorDataSources() : VisitorDataHiddenElementBlockData["visitorDataSources"] { return this.getProperty("visitorDataSources"); }
 
     /**
      * External system field mapping
      *
      * No description available
      */
-    public forms_ExternalSystemsFieldMappings: Property<any> // Original type: Property Field Mapping Collection;
+    public get forms_ExternalSystemsFieldMappings() : VisitorDataHiddenElementBlockData["forms_ExternalSystemsFieldMappings"] { return this.getProperty("forms_ExternalSystemsFieldMappings"); }
 
     /**
      * ValidatorMessages
      *
      * No description available
      */
-    public validatorMessages: Property<any> // Original type: Validator with message collection;
+    public get validatorMessages() : VisitorDataHiddenElementBlockData["validatorMessages"] { return this.getProperty("validatorMessages"); }
 
 }

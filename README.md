@@ -16,9 +16,11 @@ You can request a demo of the project by one of our Episerver experts on [Get a 
 - [System requirements](#system-requirements)
 - [Pre-installation set-up](#pre-installation-set-up)
   - [SQL server](#sql-server)
+  - [Licenses](#licenses)
   - [IIS settings](#iis-settings)
 - [Installation](#installation)
 - [Troubleshooting](#troubleshooting)
+  - [General Issues](#general-issues)
   - [The installation fails](#the-installation-fails)
   - [The site does not start](#the-site-does-not-start)
 - [Contributing](#contributing)
@@ -29,9 +31,10 @@ You can request a demo of the project by one of our Episerver experts on [Get a 
 
 * Visual Studio 2017 or higher - [Download](https://visualstudio.microsoft.com/downloads/)
   * With the Node.js development package installed
+* Microsoft Visual C++ Redistributable for Visual Studio 2019 - [Download](https://visualstudio.microsoft.com/downloads/)
 * SQL Server Express or Developer or SQL Azure Server - [Download](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) (If using SQL Azure [download sqlcmd](https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility?view=sql-server-2017))
 * Microsoft SQL Server Management Studio - [Download](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15)
-* Node.js LTS (12.16.3) - [Download](https://nodejs.org/en/download/)
+* Node.js LTS (> 12.16.3) - [Download](https://nodejs.org/en/download/)
 * Microsoft Internet Information Server (IIS) - [Download](https://www.iis.net/downloads)
 * IIS Url Rewrite module - [Download](https://www.iis.net/downloads/microsoft/url-rewrite)
 
@@ -48,6 +51,10 @@ See also the general [Episerver system requirements](https://world.episerver.com
 2. Right-click on your server and select Properties.
 3. Under **Security**, make sure that **SQL Server and Windows Authentication mode** is selected:
 ![SQL server authentication](https://i.ibb.co/2Sktyrb/SQLServer-Authentication.png")
+
+### Licenses
+1. Want to run the solution through IIS (not IIS Express)? You'll need an appropriate license obtainable from [license center](https://license.episerver.com/default.aspx)
+2. The solution comes with Episerver Search & Navigation configured, these can be requested from the [Episerver Partner portal](https://www.episerver.com/partner/client-delivery-support/request-a-demo-account)
 
 ### IIS settings
 
@@ -81,7 +88,7 @@ How to find the IIS settings depends on the system where you are running IIS.
 
 The installation files on GitHub contain a batch file that will install the Foundation project with all products and set up an empty demo site. After the installation, you can fetch demo content from a remote repository to create a Mosey demo site, a fictitious fashion retail company.
 
-1.	Download the ZIP file from the Foundation project's **master** branch on GitHub and extract the files, or clone the project from GitHub to a local folder using the command prompt and the git command ```git clone https://github.com/episerver/Foundation foundation  ``` (the _foundation_ part specifies the folder where to put the files):
+1.	Download the ZIP file from the Foundation project's **master** branch on GitHub and extract the files, or clone the project from GitHub to a local folder using the command prompt and the git command ```git clone https://github.com/episerver/Foundation-spa-react foundation-spa-react``` (the _foundation-spa-react_ part specifies the folder where to put the files):
 
 Download ZIP file
 
@@ -120,25 +127,31 @@ Or clone project using Git
 •	gulp Saas task
 •	Build solution
 •	Install Databases
-•	Create two application pools
-•	Create two websites
+•	Create an application pool
+•	Create a website
 •	Update host file
 •	Copy License file
-•	create connectionstrings files
+•	Create connectionstrings files
+•	Set the authentication to the default admin user, build and deploy the Spa.Frontend (Note:In production you will want to lock down the Foundation.SpaViewEngine.Controllers.DeployFiles API to only users you determine appropriate.)
 •	Start the site to finish setup in browser
 ```
 ![Build progress](https://i.ibb.co/GvZBcYY/Build-Progress.png)
 
-5.	When the installation is finished, a setup page is opened in your browser. If not, enter the URL http://_yourdomainname_/setup manually.
-6.	If the setup page throws an error, open your host file, found under **C:\Windows\System32\drivers\etc**, and add the two domain names you entered during the installation. Reload the page in your browser.
-![Example host file](https://i.ibb.co/Ss79b55/Host-File-Example.png)
-
-7.	Log in with user: **admin@example.com** and password: **store** to access the Episerver user interface.  
- **_Note:_** A **resetup.cmd** file has been created in your project which you can run to re-install the database.
-
-8. Developer licenses for evaluation purposes can be obtained from the [Episerver License Center](https://license.episerver.com/). Place the **License.config** file in your webroot. 
+5. Running the setup command will open the application url in the default browser
 
 ## Troubleshooting
+### General issues
+* Modify src/Foundation/find.config to have your Search & Navigation Index information present
+*	If the setup page throws an error, open your host file, found under **C:\Windows\System32\drivers\etc**, and add the domain name you entered during the installation. Reload the page in your browser.
+![Example host file](https://i.ibb.co/Ss79b55/Host-File-Example.png)
+* To confirm that the frontend is configured correctly:
+  Open a terminal/powershell and navigate to the src/Spa.Frontend folder, run the following commands to deploy the first frontend version
+    -  npm run-script login
+    -  npm run-script build
+    -  Restart the website
+* If you experience difficulty logging in using /episerver/cms try using the path util/login.aspx and then try /episerver/cms again.
+* Developer licenses for evaluation purposes can be obtained from the [Episerver License Center](https://license.episerver.com/). Place the **License.config** file in your webroot. 
+* If you are **Building a new site**: Adjust the git repository to your own and .gitignore to include some of the configuration in the repository.
 ### The installation fails
 * Check that you have full access rights to the project folder.
 * Check that you meet [the system requirements](#system-requirements).

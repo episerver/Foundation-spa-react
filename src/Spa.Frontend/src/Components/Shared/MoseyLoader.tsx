@@ -1,16 +1,32 @@
-import React, { ReactNode } from 'react';
-import Spinner from '@episerver/spa-core/Components/Spinner';
+import React, { useState, useEffect } from 'react';
+import { ComponentTypes, useEpiserver } from '@episerver/spa-core';
 
-export default class MoseyLoader extends Spinner {
-    render() : ReactNode
-    {
+export const MoseyLoader : ComponentTypes.Spinner = (props) => {
+    var ctx = useEpiserver();
+	var timeout = props.timeout || ctx.config().spinnerTimeout || 0;
+	var [isVisible, setIsVisible] = useState<boolean>(timeout === 0);
+	if (ctx.config().enableSpinner !== true) return null;
+
+	useEffect(() => {
+		if (timeout === 0) return;
+		setIsVisible(false);
+		const timeoutHandle = setTimeout(() => { setIsVisible(true); }, timeout);
+		return () => {
+			clearTimeout(timeoutHandle)
+		}
+	}, []);
+
+	if (isVisible) {
         return <div className="mosey-loader alert alert-primary text-center m-3" role="alert">
-            <img src="/globalassets/mosey-capital/moseycapitallogo.png" alt="" className="img-fluid" />
+            <img src="/globalassets/_epihealth/logo_frontlineservices.png" alt="" className="img-fluid m-3" style={ { maxWidth: "25rem"} } />
             <hr/>
             <p className="align-middle">
                 <span className="spinner-border text-secondary" role="status"><span className="sr-only">Loading...</span></span>
-                Loading Mosey Capital, your patience please...
+                Loading Frontline Services, your patience please...
             </p>
         </div>
     }
+    return null;
 }
+
+export default MoseyLoader;

@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Calendar Event Page
  *
@@ -10,239 +6,239 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID f086fd08-4e54-4eb9-8367-c45630415226
  */
-export default interface CalendarEventPageData extends IContent {
+export default interface CalendarEventPageData extends Taxonomy.IContent {
     /**
      * Start date
      *
      * No description available
      */
-    eventStartDate: Property<any> // Original type: Date
+    eventStartDate: ContentDelivery.Property<any> // Original type: Date
 
     /**
      * Categories
      *
      * Categories associated with this content.
      */
-    categories: Property<Array<ContentLink>>
+    categories: ContentDelivery.ContentReferenceListProperty
 
     /**
      * End date
      *
      * No description available
      */
-    eventEndDate: Property<any> // Original type: Date
+    eventEndDate: ContentDelivery.Property<any> // Original type: Date
 
     /**
      * Location
      *
      * No description available
      */
-    location: StringProperty
+    location: ContentDelivery.StringProperty
 
     /**
      * Teaser ratio (width-height)
      *
      * No description available
      */
-    teaserRatio: StringProperty
+    teaserRatio: ContentDelivery.StringProperty
 
     /**
      * Main body
      *
      * No description available
      */
-    mainBody: StringProperty
+    mainBody: ContentDelivery.StringProperty
 
     /**
      * Title
      *
      * No description available
      */
-    metaTitle: StringProperty
+    metaTitle: ContentDelivery.StringProperty
 
     /**
      * Exclude from results
      *
      * This will determine whether or not to show on search
      */
-    excludeFromSearch: BooleanProperty
+    excludeFromSearch: ContentDelivery.BooleanProperty
 
     /**
      * Image
      *
      * No description available
      */
-    pageImage: ContentReferenceProperty
+    pageImage: ContentDelivery.ContentReferenceProperty
 
     /**
      * CSS files
      *
      * No description available
      */
-    cssFiles: LinkListProperty
-
-    /**
-     * Script files
-     *
-     * No description available
-     */
-    scriptFiles: LinkListProperty
+    cssFiles: ContentDelivery.LinkListProperty
 
     /**
      * Main content area
      *
      * No description available
      */
-    mainContentArea: ContentAreaProperty
+    mainContentArea: ContentDelivery.ContentAreaProperty
 
     /**
      * Keywords
      *
      * No description available
      */
-    keywords: StringProperty
+    keywords: ContentDelivery.StringProperty
 
     /**
      * Hide site header
      *
      * No description available
      */
-    hideSiteHeader: BooleanProperty
+    hideSiteHeader: ContentDelivery.BooleanProperty
 
     /**
      * Video
      *
      * No description available
      */
-    teaserVideo: ContentReferenceProperty
+    teaserVideo: ContentDelivery.ContentReferenceProperty
 
     /**
      * CSS
      *
      * No description available
      */
-    css: StringProperty
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    scripts: StringProperty
+    css: ContentDelivery.StringProperty
 
     /**
      * Page description
      *
      * No description available
      */
-    pageDescription: StringProperty
+    pageDescription: ContentDelivery.StringProperty
 
     /**
      * Hide site footer
      *
      * No description available
      */
-    hideSiteFooter: BooleanProperty
+    hideSiteFooter: ContentDelivery.BooleanProperty
 
     /**
      * Text
      *
      * No description available
      */
-    teaserText: StringProperty
+    teaserText: ContentDelivery.StringProperty
 
     /**
      * Content type
      *
      * No description available
      */
-    metaContentType: StringProperty
+    metaContentType: ContentDelivery.StringProperty
 
     /**
      * Industry
      *
      * No description available
      */
-    industry: StringProperty
+    industry: ContentDelivery.StringProperty
 
     /**
      * Author
      *
      * No description available
      */
-    authorMetaData: StringProperty
+    authorMetaData: ContentDelivery.StringProperty
 
     /**
      * Disable indexing
      *
      * No description available
      */
-    disableIndexing: BooleanProperty
+    disableIndexing: ContentDelivery.BooleanProperty
 
     /**
      * Highlight in page list
      *
      * No description available
      */
-    highlight: BooleanProperty
+    highlight: ContentDelivery.BooleanProperty
 
     /**
      * Text alignment
      *
      * No description available
      */
-    teaserTextAlignment: StringProperty
+    teaserTextAlignment: ContentDelivery.StringProperty
 
     /**
      * Color theme
      *
      * No description available
      */
-    teaserColorTheme: StringProperty
+    teaserColorTheme: ContentDelivery.StringProperty
 
     /**
      * Button label
      *
      * No description available
      */
-    teaserButtonText: StringProperty
+    teaserButtonText: ContentDelivery.StringProperty
 
     /**
      * Button theme
      *
      * No description available
      */
-    teaserButtonStyle: StringProperty
+    teaserButtonStyle: ContentDelivery.StringProperty
+
+    /**
+     * Button color
+     *
+     * No description available
+     */
+    teaserButtonColor: ContentDelivery.StringProperty
+
+    /**
+     * Button text color
+     *
+     * No description available
+     */
+    teaserButtonTextColor: ContentDelivery.StringProperty
 
     /**
      * Display hover effect
      *
      * No description available
      */
-    applyHoverEffect: BooleanProperty
+    applyHoverEffect: ContentDelivery.BooleanProperty
 
     /**
      * Padding
      *
      * No description available
      */
-    padding: StringProperty
+    padding: ContentDelivery.StringProperty
 
     /**
      * Margin
      *
      * No description available
      */
-    margin: StringProperty
+    margin: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface CalendarEventPageProps extends ComponentProps<CalendarEventPageData> {}
+export interface CalendarEventPageProps extends ComponentTypes.AbstractComponentProps<CalendarEventPageData> {}
 
-export class CalendarEventPageType extends BaseIContent<CalendarEventPageData> implements CalendarEventPageData {
+export class CalendarEventPageType extends Taxonomy.AbstractIContent<CalendarEventPageData> implements CalendarEventPageData {
     protected _typeName : string = "CalendarEventPage";
     /**
      * Map of all property types within this content type.
@@ -258,13 +254,11 @@ export class CalendarEventPageType extends BaseIContent<CalendarEventPageData> i
         'excludeFromSearch': 'Boolean',
         'pageImage': 'ContentReference',
         'cssFiles': 'LinkCollection',
-        'scriptFiles': 'LinkCollection',
         'mainContentArea': 'ContentArea',
         'keywords': 'LongString',
         'hideSiteHeader': 'Boolean',
         'teaserVideo': 'ContentReference',
         'css': 'LongString',
-        'scripts': 'LongString',
         'pageDescription': 'LongString',
         'hideSiteFooter': 'Boolean',
         'teaserText': 'LongString',
@@ -277,6 +271,8 @@ export class CalendarEventPageType extends BaseIContent<CalendarEventPageData> i
         'teaserColorTheme': 'LongString',
         'teaserButtonText': 'LongString',
         'teaserButtonStyle': 'LongString',
+        'teaserButtonColor': 'LongString',
+        'teaserButtonTextColor': 'LongString',
         'applyHoverEffect': 'Boolean',
         'padding': 'LongString',
         'margin': 'LongString',
@@ -287,223 +283,223 @@ export class CalendarEventPageType extends BaseIContent<CalendarEventPageData> i
      *
      * No description available
      */
-    public eventStartDate: Property<any> // Original type: Date;
+    public get eventStartDate() : CalendarEventPageData["eventStartDate"] { return this.getProperty("eventStartDate"); }
 
     /**
      * Categories
      *
      * Categories associated with this content.
      */
-    public categories: Property<Array<ContentLink>>;
+    public get categories() : CalendarEventPageData["categories"] { return this.getProperty("categories"); }
 
     /**
      * End date
      *
      * No description available
      */
-    public eventEndDate: Property<any> // Original type: Date;
+    public get eventEndDate() : CalendarEventPageData["eventEndDate"] { return this.getProperty("eventEndDate"); }
 
     /**
      * Location
      *
      * No description available
      */
-    public location: StringProperty;
+    public get location() : CalendarEventPageData["location"] { return this.getProperty("location"); }
 
     /**
      * Teaser ratio (width-height)
      *
      * No description available
      */
-    public teaserRatio: StringProperty;
+    public get teaserRatio() : CalendarEventPageData["teaserRatio"] { return this.getProperty("teaserRatio"); }
 
     /**
      * Main body
      *
      * No description available
      */
-    public mainBody: StringProperty;
+    public get mainBody() : CalendarEventPageData["mainBody"] { return this.getProperty("mainBody"); }
 
     /**
      * Title
      *
      * No description available
      */
-    public metaTitle: StringProperty;
+    public get metaTitle() : CalendarEventPageData["metaTitle"] { return this.getProperty("metaTitle"); }
 
     /**
      * Exclude from results
      *
      * This will determine whether or not to show on search
      */
-    public excludeFromSearch: BooleanProperty;
+    public get excludeFromSearch() : CalendarEventPageData["excludeFromSearch"] { return this.getProperty("excludeFromSearch"); }
 
     /**
      * Image
      *
      * No description available
      */
-    public pageImage: ContentReferenceProperty;
+    public get pageImage() : CalendarEventPageData["pageImage"] { return this.getProperty("pageImage"); }
 
     /**
      * CSS files
      *
      * No description available
      */
-    public cssFiles: LinkListProperty;
-
-    /**
-     * Script files
-     *
-     * No description available
-     */
-    public scriptFiles: LinkListProperty;
+    public get cssFiles() : CalendarEventPageData["cssFiles"] { return this.getProperty("cssFiles"); }
 
     /**
      * Main content area
      *
      * No description available
      */
-    public mainContentArea: ContentAreaProperty;
+    public get mainContentArea() : CalendarEventPageData["mainContentArea"] { return this.getProperty("mainContentArea"); }
 
     /**
      * Keywords
      *
      * No description available
      */
-    public keywords: StringProperty;
+    public get keywords() : CalendarEventPageData["keywords"] { return this.getProperty("keywords"); }
 
     /**
      * Hide site header
      *
      * No description available
      */
-    public hideSiteHeader: BooleanProperty;
+    public get hideSiteHeader() : CalendarEventPageData["hideSiteHeader"] { return this.getProperty("hideSiteHeader"); }
 
     /**
      * Video
      *
      * No description available
      */
-    public teaserVideo: ContentReferenceProperty;
+    public get teaserVideo() : CalendarEventPageData["teaserVideo"] { return this.getProperty("teaserVideo"); }
 
     /**
      * CSS
      *
      * No description available
      */
-    public css: StringProperty;
-
-    /**
-     * Scripts
-     *
-     * No description available
-     */
-    public scripts: StringProperty;
+    public get css() : CalendarEventPageData["css"] { return this.getProperty("css"); }
 
     /**
      * Page description
      *
      * No description available
      */
-    public pageDescription: StringProperty;
+    public get pageDescription() : CalendarEventPageData["pageDescription"] { return this.getProperty("pageDescription"); }
 
     /**
      * Hide site footer
      *
      * No description available
      */
-    public hideSiteFooter: BooleanProperty;
+    public get hideSiteFooter() : CalendarEventPageData["hideSiteFooter"] { return this.getProperty("hideSiteFooter"); }
 
     /**
      * Text
      *
      * No description available
      */
-    public teaserText: StringProperty;
+    public get teaserText() : CalendarEventPageData["teaserText"] { return this.getProperty("teaserText"); }
 
     /**
      * Content type
      *
      * No description available
      */
-    public metaContentType: StringProperty;
+    public get metaContentType() : CalendarEventPageData["metaContentType"] { return this.getProperty("metaContentType"); }
 
     /**
      * Industry
      *
      * No description available
      */
-    public industry: StringProperty;
+    public get industry() : CalendarEventPageData["industry"] { return this.getProperty("industry"); }
 
     /**
      * Author
      *
      * No description available
      */
-    public authorMetaData: StringProperty;
+    public get authorMetaData() : CalendarEventPageData["authorMetaData"] { return this.getProperty("authorMetaData"); }
 
     /**
      * Disable indexing
      *
      * No description available
      */
-    public disableIndexing: BooleanProperty;
+    public get disableIndexing() : CalendarEventPageData["disableIndexing"] { return this.getProperty("disableIndexing"); }
 
     /**
      * Highlight in page list
      *
      * No description available
      */
-    public highlight: BooleanProperty;
+    public get highlight() : CalendarEventPageData["highlight"] { return this.getProperty("highlight"); }
 
     /**
      * Text alignment
      *
      * No description available
      */
-    public teaserTextAlignment: StringProperty;
+    public get teaserTextAlignment() : CalendarEventPageData["teaserTextAlignment"] { return this.getProperty("teaserTextAlignment"); }
 
     /**
      * Color theme
      *
      * No description available
      */
-    public teaserColorTheme: StringProperty;
+    public get teaserColorTheme() : CalendarEventPageData["teaserColorTheme"] { return this.getProperty("teaserColorTheme"); }
 
     /**
      * Button label
      *
      * No description available
      */
-    public teaserButtonText: StringProperty;
+    public get teaserButtonText() : CalendarEventPageData["teaserButtonText"] { return this.getProperty("teaserButtonText"); }
 
     /**
      * Button theme
      *
      * No description available
      */
-    public teaserButtonStyle: StringProperty;
+    public get teaserButtonStyle() : CalendarEventPageData["teaserButtonStyle"] { return this.getProperty("teaserButtonStyle"); }
+
+    /**
+     * Button color
+     *
+     * No description available
+     */
+    public get teaserButtonColor() : CalendarEventPageData["teaserButtonColor"] { return this.getProperty("teaserButtonColor"); }
+
+    /**
+     * Button text color
+     *
+     * No description available
+     */
+    public get teaserButtonTextColor() : CalendarEventPageData["teaserButtonTextColor"] { return this.getProperty("teaserButtonTextColor"); }
 
     /**
      * Display hover effect
      *
      * No description available
      */
-    public applyHoverEffect: BooleanProperty;
+    public get applyHoverEffect() : CalendarEventPageData["applyHoverEffect"] { return this.getProperty("applyHoverEffect"); }
 
     /**
      * Padding
      *
      * No description available
      */
-    public padding: StringProperty;
+    public get padding() : CalendarEventPageData["padding"] { return this.getProperty("padding"); }
 
     /**
      * Margin
      *
      * No description available
      */
-    public margin: StringProperty;
+    public get margin() : CalendarEventPageData["margin"] { return this.getProperty("margin"); }
 
 }

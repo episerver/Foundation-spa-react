@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * Hero Block Callout
  *
@@ -10,71 +6,71 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 7a3c9e9e-8612-4722-b795-2a93cb54a476
  */
-export default interface HeroBlockCalloutData extends IContent {
+export default interface HeroBlockCalloutData extends Taxonomy.IContent {
     /**
      * Text
      *
      * No description available
      */
-    calloutContent: StringProperty
+    calloutContent: ContentDelivery.StringProperty
 
     /**
      * Text placement
      *
      * No description available
      */
-    calloutContentAlignment: StringProperty
+    calloutContentAlignment: ContentDelivery.StringProperty
 
     /**
      * Text color
      *
      * Sets text color of callout content
      */
-    calloutTextColor: StringProperty
+    calloutTextColor: ContentDelivery.StringProperty
 
     /**
      * Background color
      *
      * No description available
      */
-    backgroundColor: StringProperty
+    backgroundColor: ContentDelivery.StringProperty
 
     /**
      * Callout opacity (0 to 1)
      *
      * No description available
      */
-    calloutOpacity: NumberProperty
+    calloutOpacity: ContentDelivery.NumberProperty
 
     /**
      * Callout position
      *
      * No description available
      */
-    calloutPosition: StringProperty
+    calloutPosition: ContentDelivery.StringProperty
 
     /**
      * Padding
      *
      * No description available
      */
-    padding: StringProperty
+    padding: ContentDelivery.StringProperty
 
     /**
      * Margin
      *
      * No description available
      */
-    margin: StringProperty
+    margin: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface HeroBlockCalloutProps extends ComponentProps<HeroBlockCalloutData> {}
+export interface HeroBlockCalloutProps extends ComponentTypes.AbstractComponentProps<HeroBlockCalloutData> {}
 
-export class HeroBlockCalloutType extends BaseIContent<HeroBlockCalloutData> implements HeroBlockCalloutData {
+export class HeroBlockCalloutType extends Taxonomy.AbstractIContent<HeroBlockCalloutData> implements HeroBlockCalloutData {
     protected _typeName : string = "HeroBlockCallout";
     /**
      * Map of all property types within this content type.
@@ -95,55 +91,55 @@ export class HeroBlockCalloutType extends BaseIContent<HeroBlockCalloutData> imp
      *
      * No description available
      */
-    public calloutContent: StringProperty;
+    public get calloutContent() : HeroBlockCalloutData["calloutContent"] { return this.getProperty("calloutContent"); }
 
     /**
      * Text placement
      *
      * No description available
      */
-    public calloutContentAlignment: StringProperty;
+    public get calloutContentAlignment() : HeroBlockCalloutData["calloutContentAlignment"] { return this.getProperty("calloutContentAlignment"); }
 
     /**
      * Text color
      *
      * Sets text color of callout content
      */
-    public calloutTextColor: StringProperty;
+    public get calloutTextColor() : HeroBlockCalloutData["calloutTextColor"] { return this.getProperty("calloutTextColor"); }
 
     /**
      * Background color
      *
      * No description available
      */
-    public backgroundColor: StringProperty;
+    public get backgroundColor() : HeroBlockCalloutData["backgroundColor"] { return this.getProperty("backgroundColor"); }
 
     /**
      * Callout opacity (0 to 1)
      *
      * No description available
      */
-    public calloutOpacity: NumberProperty;
+    public get calloutOpacity() : HeroBlockCalloutData["calloutOpacity"] { return this.getProperty("calloutOpacity"); }
 
     /**
      * Callout position
      *
      * No description available
      */
-    public calloutPosition: StringProperty;
+    public get calloutPosition() : HeroBlockCalloutData["calloutPosition"] { return this.getProperty("calloutPosition"); }
 
     /**
      * Padding
      *
      * No description available
      */
-    public padding: StringProperty;
+    public get padding() : HeroBlockCalloutData["padding"] { return this.getProperty("padding"); }
 
     /**
      * Margin
      *
      * No description available
      */
-    public margin: StringProperty;
+    public get margin() : HeroBlockCalloutData["margin"] { return this.getProperty("margin"); }
 
 }

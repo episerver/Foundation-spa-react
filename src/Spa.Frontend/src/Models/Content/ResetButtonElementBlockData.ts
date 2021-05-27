@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * ResetButtonElementBlock
  *
@@ -10,29 +6,29 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 0bca37fd-ff33-4b6c-9fb3-2ab64b1d0bc2
  */
-export default interface ResetButtonElementBlockData extends IContent {
+export default interface ResetButtonElementBlockData extends Taxonomy.IContent {
     /**
      * Label
      *
      * No description available
      */
-    label: StringProperty
+    label: ContentDelivery.StringProperty
 
     /**
      * Description
      *
      * No description available
      */
-    description: StringProperty
+    description: ContentDelivery.StringProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface ResetButtonElementBlockProps extends ComponentProps<ResetButtonElementBlockData> {}
+export interface ResetButtonElementBlockProps extends ComponentTypes.AbstractComponentProps<ResetButtonElementBlockData> {}
 
-export class ResetButtonElementBlockType extends BaseIContent<ResetButtonElementBlockData> implements ResetButtonElementBlockData {
+export class ResetButtonElementBlockType extends Taxonomy.AbstractIContent<ResetButtonElementBlockData> implements ResetButtonElementBlockData {
     protected _typeName : string = "ResetButtonElementBlock";
     /**
      * Map of all property types within this content type.
@@ -47,13 +43,13 @@ export class ResetButtonElementBlockType extends BaseIContent<ResetButtonElement
      *
      * No description available
      */
-    public label: StringProperty;
+    public get label() : ResetButtonElementBlockData["label"] { return this.getProperty("label"); }
 
     /**
      * Description
      *
      * No description available
      */
-    public description: StringProperty;
+    public get description() : ResetButtonElementBlockData["description"] { return this.getProperty("description"); }
 
 }

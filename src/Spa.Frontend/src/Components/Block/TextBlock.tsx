@@ -1,16 +1,18 @@
-import React, {ReactNode, ReactNodeArray} from 'react';
-import EpiComponent from '@episerver/spa-core/EpiComponent';
-import Property from '@episerver/spa-core/Components/Property';
-import TextBlockData from 'app/Models/Content/TextBlockData';
+import React, { FunctionComponent } from 'react';
+import { Components, useEpiserver } from '@episerver/spa-core';
+import { TextBlockProps } from 'app/Models/Content/TextBlockData';
 
-export default class TextBlock extends EpiComponent<TextBlockData>
-{
-    public render() : ReactNode | ReactNodeArray | null
-    {
-        let cssClasses : Array<string> = ["TextBlock"];
-        if (this.props.data.padding?.value) cssClasses.push(this.props.data.padding?.value);
-        if (this.props.data.margin?.value) cssClasses.push(this.props.data.margin?.value);
+export const TextBlock : FunctionComponent<TextBlockProps> = (props) => {
+    const cssClasses : string[] = ["TextBlock"];
+    if (props.data.padding?.value) cssClasses.push(props.data.padding?.value);
+    if (props.data.margin?.value) cssClasses.push(props.data.margin?.value);
 
-        return  <Property className={ cssClasses.join(" ") } iContent={this.props.data} field="mainBody" context={ this.getContext() }/>
+    const styles : React.CSSProperties = {
+        backgroundColor: props.data.backgroundColor?.value,
+        opacity: props.data.blockOpacity?.value,   
     }
+
+    //Directly output the mainBody
+    return  <div style={ styles }  className={ cssClasses.join(" ") }><Components.Property iContent={props.data} field="mainBody" /></div>
 }
+export default TextBlock;

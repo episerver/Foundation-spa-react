@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * CategoryRoot
  *
@@ -10,29 +6,29 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID c29bf090-05bf-43eb-98d6-91575bce4441
  */
-export default interface CategoryRootData extends IContent {
+export default interface CategoryRootData extends Taxonomy.IContent {
     /**
      * Description
      *
      * No description available
      */
-    description: StringProperty
+    description: ContentDelivery.StringProperty
 
     /**
      * IsSelectable
      *
      * No description available
      */
-    isSelectable: BooleanProperty
+    isSelectable: ContentDelivery.BooleanProperty
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface CategoryRootProps extends ComponentProps<CategoryRootData> {}
+export interface CategoryRootProps extends ComponentTypes.AbstractComponentProps<CategoryRootData> {}
 
-export class CategoryRootType extends BaseIContent<CategoryRootData> implements CategoryRootData {
+export class CategoryRootType extends Taxonomy.AbstractIContent<CategoryRootData> implements CategoryRootData {
     protected _typeName : string = "CategoryRoot";
     /**
      * Map of all property types within this content type.
@@ -47,13 +43,13 @@ export class CategoryRootType extends BaseIContent<CategoryRootData> implements 
      *
      * No description available
      */
-    public description: StringProperty;
+    public get description() : CategoryRootData["description"] { return this.getProperty("description"); }
 
     /**
      * IsSelectable
      *
      * No description available
      */
-    public isSelectable: BooleanProperty;
+    public get isSelectable() : CategoryRootData["isSelectable"] { return this.getProperty("isSelectable"); }
 
 }

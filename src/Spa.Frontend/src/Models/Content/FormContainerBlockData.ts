@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * FormContainerBlock
  *
@@ -10,141 +6,141 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 02ec61ff-819f-4978-add6-a097f5bd944e
  */
-export default interface FormContainerBlockData extends IContent {
+export default interface FormContainerBlockData extends Taxonomy.IContent {
     /**
      * MetadataAttribute
      *
      * No description available
      */
-    metadataAttribute: StringProperty
+    metadataAttribute: ContentDelivery.StringProperty
 
     /**
      * Title
      *
      * No description available
      */
-    title: StringProperty
+    title: ContentDelivery.StringProperty
 
     /**
      * AllowToStoreSubmissionData
      *
      * No description available
      */
-    allowToStoreSubmissionData: BooleanProperty
+    allowToStoreSubmissionData: ContentDelivery.BooleanProperty
 
     /**
      * Description
      *
      * No description available
      */
-    description: StringProperty
+    description: ContentDelivery.StringProperty
 
     /**
      * ShowSummarizedData
      *
      * No description available
      */
-    showSummarizedData: BooleanProperty
+    showSummarizedData: ContentDelivery.BooleanProperty
 
     /**
      * ConfirmationMessage
      *
      * No description available
      */
-    confirmationMessage: StringProperty
+    confirmationMessage: ContentDelivery.StringProperty
 
     /**
      * RedirectToPage
      *
      * No description available
      */
-    redirectToPage: StringProperty
+    redirectToPage: ContentDelivery.StringProperty
 
     /**
      * SubmitSuccessMessage
      *
      * No description available
      */
-    submitSuccessMessage: StringProperty
+    submitSuccessMessage: ContentDelivery.StringProperty
 
     /**
      * AllowAnonymousSubmission
      *
      * No description available
      */
-    allowAnonymousSubmission: BooleanProperty
+    allowAnonymousSubmission: ContentDelivery.BooleanProperty
 
     /**
      * AllowMultipleSubmission
      *
      * No description available
      */
-    allowMultipleSubmission: BooleanProperty
+    allowMultipleSubmission: ContentDelivery.BooleanProperty
 
     /**
      * ShowNavigationBar
      *
      * No description available
      */
-    showNavigationBar: BooleanProperty
+    showNavigationBar: ContentDelivery.BooleanProperty
 
     /**
      * AllowExposingDataFeeds
      *
      * No description available
      */
-    allowExposingDataFeeds: BooleanProperty
+    allowExposingDataFeeds: ContentDelivery.BooleanProperty
 
     /**
      * Send email after form submission
      *
      * No description available
      */
-    sendEmailAfterSubmissionActor: Property<any> // Original type: Message Template
+    sendEmailAfterSubmissionActor: ContentDelivery.Property<any> // Original type: Message Template
 
     /**
      * Trigger webhook after form submission
      *
      * No description available
      */
-    callWebhookAfterSubmissionActor: Property<any> // Original type: Web Hook
+    callWebhookAfterSubmissionActor: ContentDelivery.Property<any> // Original type: Web Hook
 
     /**
      * PartialSubmissionRetentionPeriod
      *
      * No description available
      */
-    partialSubmissionRetentionPeriod: StringProperty
+    partialSubmissionRetentionPeriod: ContentDelivery.StringProperty
 
     /**
      * FinalizedSubmissionRetentionPeriod
      *
      * No description available
      */
-    finalizedSubmissionRetentionPeriod: StringProperty
+    finalizedSubmissionRetentionPeriod: ContentDelivery.StringProperty
 
     /**
      * ElementsArea
      *
      * No description available
      */
-    elementsArea: ContentAreaProperty
+    elementsArea: ContentDelivery.ContentAreaProperty
 
     /**
      * Connect to Datasource
      *
      * No description available
      */
-    forms_ConnectedDataSource: Property<any> // Original type: Property Connected Data Source Collection
+    forms_ConnectedDataSource: ContentDelivery.Property<any> // Original type: Property Connected Data Source Collection
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface FormContainerBlockProps extends ComponentProps<FormContainerBlockData> {}
+export interface FormContainerBlockProps extends ComponentTypes.AbstractComponentProps<FormContainerBlockData> {}
 
-export class FormContainerBlockType extends BaseIContent<FormContainerBlockData> implements FormContainerBlockData {
+export class FormContainerBlockType extends Taxonomy.AbstractIContent<FormContainerBlockData> implements FormContainerBlockData {
     protected _typeName : string = "FormContainerBlock";
     /**
      * Map of all property types within this content type.
@@ -175,125 +171,125 @@ export class FormContainerBlockType extends BaseIContent<FormContainerBlockData>
      *
      * No description available
      */
-    public metadataAttribute: StringProperty;
+    public get metadataAttribute() : FormContainerBlockData["metadataAttribute"] { return this.getProperty("metadataAttribute"); }
 
     /**
      * Title
      *
      * No description available
      */
-    public title: StringProperty;
+    public get title() : FormContainerBlockData["title"] { return this.getProperty("title"); }
 
     /**
      * AllowToStoreSubmissionData
      *
      * No description available
      */
-    public allowToStoreSubmissionData: BooleanProperty;
+    public get allowToStoreSubmissionData() : FormContainerBlockData["allowToStoreSubmissionData"] { return this.getProperty("allowToStoreSubmissionData"); }
 
     /**
      * Description
      *
      * No description available
      */
-    public description: StringProperty;
+    public get description() : FormContainerBlockData["description"] { return this.getProperty("description"); }
 
     /**
      * ShowSummarizedData
      *
      * No description available
      */
-    public showSummarizedData: BooleanProperty;
+    public get showSummarizedData() : FormContainerBlockData["showSummarizedData"] { return this.getProperty("showSummarizedData"); }
 
     /**
      * ConfirmationMessage
      *
      * No description available
      */
-    public confirmationMessage: StringProperty;
+    public get confirmationMessage() : FormContainerBlockData["confirmationMessage"] { return this.getProperty("confirmationMessage"); }
 
     /**
      * RedirectToPage
      *
      * No description available
      */
-    public redirectToPage: StringProperty;
+    public get redirectToPage() : FormContainerBlockData["redirectToPage"] { return this.getProperty("redirectToPage"); }
 
     /**
      * SubmitSuccessMessage
      *
      * No description available
      */
-    public submitSuccessMessage: StringProperty;
+    public get submitSuccessMessage() : FormContainerBlockData["submitSuccessMessage"] { return this.getProperty("submitSuccessMessage"); }
 
     /**
      * AllowAnonymousSubmission
      *
      * No description available
      */
-    public allowAnonymousSubmission: BooleanProperty;
+    public get allowAnonymousSubmission() : FormContainerBlockData["allowAnonymousSubmission"] { return this.getProperty("allowAnonymousSubmission"); }
 
     /**
      * AllowMultipleSubmission
      *
      * No description available
      */
-    public allowMultipleSubmission: BooleanProperty;
+    public get allowMultipleSubmission() : FormContainerBlockData["allowMultipleSubmission"] { return this.getProperty("allowMultipleSubmission"); }
 
     /**
      * ShowNavigationBar
      *
      * No description available
      */
-    public showNavigationBar: BooleanProperty;
+    public get showNavigationBar() : FormContainerBlockData["showNavigationBar"] { return this.getProperty("showNavigationBar"); }
 
     /**
      * AllowExposingDataFeeds
      *
      * No description available
      */
-    public allowExposingDataFeeds: BooleanProperty;
+    public get allowExposingDataFeeds() : FormContainerBlockData["allowExposingDataFeeds"] { return this.getProperty("allowExposingDataFeeds"); }
 
     /**
      * Send email after form submission
      *
      * No description available
      */
-    public sendEmailAfterSubmissionActor: Property<any> // Original type: Message Template;
+    public get sendEmailAfterSubmissionActor() : FormContainerBlockData["sendEmailAfterSubmissionActor"] { return this.getProperty("sendEmailAfterSubmissionActor"); }
 
     /**
      * Trigger webhook after form submission
      *
      * No description available
      */
-    public callWebhookAfterSubmissionActor: Property<any> // Original type: Web Hook;
+    public get callWebhookAfterSubmissionActor() : FormContainerBlockData["callWebhookAfterSubmissionActor"] { return this.getProperty("callWebhookAfterSubmissionActor"); }
 
     /**
      * PartialSubmissionRetentionPeriod
      *
      * No description available
      */
-    public partialSubmissionRetentionPeriod: StringProperty;
+    public get partialSubmissionRetentionPeriod() : FormContainerBlockData["partialSubmissionRetentionPeriod"] { return this.getProperty("partialSubmissionRetentionPeriod"); }
 
     /**
      * FinalizedSubmissionRetentionPeriod
      *
      * No description available
      */
-    public finalizedSubmissionRetentionPeriod: StringProperty;
+    public get finalizedSubmissionRetentionPeriod() : FormContainerBlockData["finalizedSubmissionRetentionPeriod"] { return this.getProperty("finalizedSubmissionRetentionPeriod"); }
 
     /**
      * ElementsArea
      *
      * No description available
      */
-    public elementsArea: ContentAreaProperty;
+    public get elementsArea() : FormContainerBlockData["elementsArea"] { return this.getProperty("elementsArea"); }
 
     /**
      * Connect to Datasource
      *
      * No description available
      */
-    public forms_ConnectedDataSource: Property<any> // Original type: Property Connected Data Source Collection;
+    public get forms_ConnectedDataSource() : FormContainerBlockData["forms_ConnectedDataSource"] { return this.getProperty("forms_ConnectedDataSource"); }
 
 }

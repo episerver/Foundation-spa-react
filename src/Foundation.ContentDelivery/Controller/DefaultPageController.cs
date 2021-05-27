@@ -5,7 +5,7 @@ using System.Web.Mvc;
 
 namespace Foundation.ContentDelivery.Controller
 {
-    [TemplateDescriptor(Inherited = true, Default = true)]
+    [TemplateDescriptor(Inherited = true)]
     public class DefaultPageController : ContentController<PageData>
     {
         public ActionResult Index(PageData currentContent)

@@ -1,8 +1,4 @@
-import Property, {StringProperty, NumberProperty, BooleanProperty, ContentReferenceProperty, ContentAreaProperty, LinkListProperty, LinkProperty} from '@episerver/spa-core/Property'
-import IContent, { BaseIContent } from '@episerver/spa-core/Models/IContent'
-import ContentLink from '@episerver/spa-core/Models/ContentLink'
-import { ComponentProps } from '@episerver/spa-core/EpiComponent'
-
+import { ContentDelivery, Taxonomy, ComponentTypes } from '@episerver/spa-core'
 /**
  * RangeElementBlock
  *
@@ -10,92 +6,92 @@ import { ComponentProps } from '@episerver/spa-core/EpiComponent'
  *
  * @GUID 86bf688b-e61b-4e0a-94ca-715587125494
  */
-export default interface RangeElementBlockData extends IContent {
+export default interface RangeElementBlockData extends Taxonomy.IContent {
     /**
      * Label
      *
      * No description available
      */
-    label: StringProperty
+    label: ContentDelivery.StringProperty
 
     /**
      * Description
      *
      * No description available
      */
-    description: StringProperty
+    description: ContentDelivery.StringProperty
 
     /**
      * Min
      *
      * No description available
      */
-    min: NumberProperty
+    min: ContentDelivery.NumberProperty
 
     /**
      * Max
      *
      * No description available
      */
-    max: NumberProperty
+    max: ContentDelivery.NumberProperty
 
     /**
      * Step
      *
      * No description available
      */
-    step: NumberProperty
+    step: ContentDelivery.NumberProperty
 
     /**
      * PredefinedValue
      *
      * No description available
      */
-    predefinedValue: StringProperty
+    predefinedValue: ContentDelivery.StringProperty
 
     /**
      * SatisfiedAction
      *
      * No description available
      */
-    satisfiedAction: StringProperty
+    satisfiedAction: ContentDelivery.StringProperty
 
     /**
      * External system field mapping
      *
      * No description available
      */
-    forms_ExternalSystemsFieldMappings: Property<any> // Original type: Property Field Mapping Collection
+    forms_ExternalSystemsFieldMappings: ContentDelivery.Property<any> // Original type: Property Field Mapping Collection
 
     /**
      * ConditionCombination
      *
      * No description available
      */
-    conditionCombination: NumberProperty
+    conditionCombination: ContentDelivery.NumberProperty
 
     /**
      * Conditions
      *
      * No description available
      */
-    conditions: Property<any> // Original type: Dependency conditions collection
+    conditions: ContentDelivery.Property<any> // Original type: Dependency conditions collection
 
     /**
      * ValidatorMessages
      *
      * No description available
      */
-    validatorMessages: Property<any> // Original type: Validator with message collection
+    validatorMessages: ContentDelivery.Property<any> // Original type: Validator with message collection
 
 }
 
 /**
  * Convenience interface for componentDidUpdate & componentDidMount methods.
  */
-export interface RangeElementBlockProps extends ComponentProps<RangeElementBlockData> {}
+export interface RangeElementBlockProps extends ComponentTypes.AbstractComponentProps<RangeElementBlockData> {}
 
-export class RangeElementBlockType extends BaseIContent<RangeElementBlockData> implements RangeElementBlockData {
+export class RangeElementBlockType extends Taxonomy.AbstractIContent<RangeElementBlockData> implements RangeElementBlockData {
     protected _typeName : string = "RangeElementBlock";
     /**
      * Map of all property types within this content type.
@@ -119,76 +115,76 @@ export class RangeElementBlockType extends BaseIContent<RangeElementBlockData> i
      *
      * No description available
      */
-    public label: StringProperty;
+    public get label() : RangeElementBlockData["label"] { return this.getProperty("label"); }
 
     /**
      * Description
      *
      * No description available
      */
-    public description: StringProperty;
+    public get description() : RangeElementBlockData["description"] { return this.getProperty("description"); }
 
     /**
      * Min
      *
      * No description available
      */
-    public min: NumberProperty;
+    public get min() : RangeElementBlockData["min"] { return this.getProperty("min"); }
 
     /**
      * Max
      *
      * No description available
      */
-    public max: NumberProperty;
+    public get max() : RangeElementBlockData["max"] { return this.getProperty("max"); }
 
     /**
      * Step
      *
      * No description available
      */
-    public step: NumberProperty;
+    public get step() : RangeElementBlockData["step"] { return this.getProperty("step"); }
 
     /**
      * PredefinedValue
      *
      * No description available
      */
-    public predefinedValue: StringProperty;
+    public get predefinedValue() : RangeElementBlockData["predefinedValue"] { return this.getProperty("predefinedValue"); }
 
     /**
      * SatisfiedAction
      *
      * No description available
      */
-    public satisfiedAction: StringProperty;
+    public get satisfiedAction() : RangeElementBlockData["satisfiedAction"] { return this.getProperty("satisfiedAction"); }
 
     /**
      * External system field mapping
      *
      * No description available
      */
-    public forms_ExternalSystemsFieldMappings: Property<any> // Original type: Property Field Mapping Collection;
+    public get forms_ExternalSystemsFieldMappings() : RangeElementBlockData["forms_ExternalSystemsFieldMappings"] { return this.getProperty("forms_ExternalSystemsFieldMappings"); }
 
     /**
      * ConditionCombination
      *
      * No description available
      */
-    public conditionCombination: NumberProperty;
+    public get conditionCombination() : RangeElementBlockData["conditionCombination"] { return this.getProperty("conditionCombination"); }
 
     /**
      * Conditions
      *
      * No description available
      */
-    public conditions: Property<any> // Original type: Dependency conditions collection;
+    public get conditions() : RangeElementBlockData["conditions"] { return this.getProperty("conditions"); }
 
     /**
      * ValidatorMessages
      *
      * No description available
      */
-    public validatorMessages: Property<any> // Original type: Validator with message collection;
+    public get validatorMessages() : RangeElementBlockData["validatorMessages"] { return this.getProperty("validatorMessages"); }
 
 }
