@@ -14,7 +14,7 @@ import MoseyComponentLoader from "app/Infrastructure/ComponentLoader";
 // Enable caching of action calls
 // ContentDelivery.FetchAdapter.isCachable.push(url => url.pathname.indexOf('/api/episerver/v3/action/') >= 0 && !url.searchParams.has('epieditmode') && !url.searchParams.has('EpiEditMode'));
 
-const appDebug = process.env.NODE_ENV === 'development';
+const appDebug = false; //process.env.NODE_ENV === 'development';
 
 // Website configuration
 export const Config : Core.IConfig = {
@@ -83,7 +83,7 @@ export const Config : Core.IConfig = {
 
     // Configuration of the V2 Content Repository
     iContentRepository: {
-        debug: true,
+        debug: appDebug,
         policy: ContentDelivery.IRepositoryPolicy.LocalStorageFirst
     },
 

@@ -37,6 +37,7 @@ module.exports = (env) => {
             contentBasePublicPath: [config.getWebPath(), config.getWebPath() + 'spaview/'],
             compress: true,
             port: 9000,
+            public: config.getEnvVariable('EPI_SPA_DOMAIN', 'localhost'),
             bonjour: true,
             historyApiFallback:  {
                 rewrites: [
