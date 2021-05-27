@@ -15,6 +15,7 @@ using EPiServer.Web.Routing;
 using Foundation.Cms;
 using Foundation.Cms.Extensions;
 using Foundation.Cms.Settings;
+using Foundation.ContentDelivery;
 using Foundation.Features.Blog.BlogItemPage;
 using Foundation.Features.Header;
 using Foundation.Features.Home;
@@ -35,10 +36,13 @@ using System.Web.Mvc;
 
 namespace Foundation.Infrastructure
 {
-    [ModuleDependency(typeof(Cms.Initialize))]
-    [ModuleDependency(typeof(EPiServer.ServiceApi.IntegrationInitialization))]
-    [ModuleDependency(typeof(EPiServer.ContentApi.Core.Internal.ContentApiCoreInitialization))]
-    [ModuleDependency(typeof(ServiceContainerInitialization))]
+    [ModuleDependency(new Type[] {
+        typeof(ServiceContainerInitialization),
+        typeof(EPiServer.ServiceApi.IntegrationInitialization),
+        typeof(EPiServer.ContentApi.Core.Internal.ContentApiCoreInitialization),
+        typeof(Cms.Initialize),
+        typeof(FoundationContentDeliveryInitialization)
+    })]
     public class InitializeSite : IConfigurableModule
     {
         private IServiceConfigurationProvider _services;
@@ -48,27 +52,13 @@ namespace Foundation.Infrastructure
             _services = context.Services;
             context.ConfigureFoundationCms();
 
-            _services.ConfigureForContentDeliveryClient();
-            _services.ConfigureForExternalTemplates();
-            _services.Configure<ContentApiConfiguration>(c =>
-            {
-
-                c.EnablePreviewFeatures = true;
-                c.Default()
-                    .SetEnablePreviewMode(true)
-                    .SetSiteDefinitionApiEnabled(true)
-                    .SetIncludeSiteHosts(true)
-                    .SetFlattenPropertyModel(false)
-                    .SetMinimumRoles(string.Empty)
-                    .SetRequiredRole(string.Empty);
-            });
-
-            _services.Configure<ContentApiSearchConfiguration>(config =>
-            {
-                config.Default()
-                .SetMaximumSearchResults(200)
-                .SetSearchCacheDuration(TimeSpan.FromMinutes(60));
-            });
+            _services
+                .Configure<ContentApiSearchConfiguration>(config =>
+                {
+                    config.Default()
+                        .SetMaximumSearchResults(200)
+                        .SetSearchCacheDuration(TimeSpan.FromMinutes(60));
+                });
 
             _services.AddSingleton<IDisplayModeFallbackProvider, FoundationDisplayModeProvider>();
             _services.AddTransient<IQuickNavigatorItemProvider, FoundationQuickNavigatorItemProvider>();
