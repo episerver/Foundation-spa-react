@@ -53,9 +53,8 @@ namespace Foundation.ContentDelivery.Models
             var httpContext = _httpContextAccessor();
             var visitorGroupId = httpContext?.Request.QueryString[VisitorGroupHelpers.VisitorGroupKeyByID];
             if (!string.IsNullOrEmpty(visitorGroupId))
-            {
                 httpContext.SetupVisitorGroupImpersonation(content, AccessLevel.Read);
-            }
+
             return base.TransformContent(content, excludePersonalizedContent, expand);
         }
 

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
-using System.Web.UI.WebControls;
-using EPiServer;
-using EPiServer.Core;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
-using EPiServer.Logging;
 
 namespace Foundation.SpaViewEngine.SpaContainer
 {
@@ -17,14 +11,16 @@ namespace Foundation.SpaViewEngine.SpaContainer
     {
         public void Initialize(InitializationEngine context)
         {
-            // get container under root
+            // Get or create container under root
             SpaFolderHelper.GetOrCreateDeploymentFolder();
+
+            // Add asset route to the web application
             RouteTable.Routes.MapRoute(
-                "SpaViewAssetRoute", 
+                "SpaMediaAssetRoute", 
                 "spaview/{container}/{*path}", 
-                new { controller = "SpaViewAsset", action = "Index", container = "", path="" }, 
-                new { controller = "SpaViewAsset", action = "Index"}, 
-                new string[] { "Foundation.SpaViewEngine.SpaContainer" }
+                new { controller = "SpaMediaAsset", action = "Index", container = "", path="" }, 
+                new { controller = "SpaMediaAsset", action = "Index"}, 
+                new string[] { "Foundation.SpaViewEngine.Controllers" }
             );
         }
 

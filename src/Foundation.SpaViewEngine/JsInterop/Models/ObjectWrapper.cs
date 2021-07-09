@@ -140,7 +140,8 @@ namespace Foundation.SpaViewEngine.JsInterop.Models
                 var model = mapper.TransformContent(iContent, true);
                 return new ObjectWrapper(model);
             }
-            if (inValue is IDictionary<string, ContentModelReference> dict) return new DictionaryWrapper<string, ContentModelReference>(dict);
+            if (inValue is IDictionary<string, ContentModelReference> modelDict) return new DictionaryWrapper<string, ContentModelReference>(modelDict);
+            if (inValue is IDictionary<string, object> objDict) return new DictionaryWrapper<string, object>(objDict);
             return new ObjectWrapper(inValue);
         }
     }

@@ -17,12 +17,12 @@ namespace Foundation.SpaViewEngine.Controllers
     [ContentApiAuthorization]
     [ContentApiCors]
     [CorsOptionsActionFilter]
-    public class SpaDeploymentApiController : ApiController
+    public class SpaMediaDeploymentApiController : ApiController
     {
         private readonly IContentRepository _contentRepository;
         private readonly IBlobFactory _blobFactory;
 
-        public SpaDeploymentApiController(IContentRepository contentRepository, IBlobFactory blobFactory)
+        public SpaMediaDeploymentApiController(IContentRepository contentRepository, IBlobFactory blobFactory)
         {
             _blobFactory = blobFactory;
             _contentRepository = contentRepository;
@@ -41,14 +41,13 @@ namespace Foundation.SpaViewEngine.Controllers
         public async Task<IHttpActionResult> DeployFiles()
         {
             if (!(PrincipalInfo.Current.IsPermitted(SpaViewEnginePermissions.DeploySpa) || PrincipalInfo.HasAdminAccess)) return NotFound();
-            HttpRequestMessage request = this.Request;
-            if (!request.Content.IsMimeMultipartContent())
+            if (!Request.Content.IsMimeMultipartContent())
             {
                 return BadRequest("No file attached.");
             }
 
             var provider = new MultipartMemoryStreamProvider();
-            var uploadContent = await request.Content.ReadAsMultipartAsync(provider);
+            var uploadContent = await Request.Content.ReadAsMultipartAsync(provider);
 
             if (provider.Contents.Any(x => !(x.Headers.ContentDisposition.FileName.Trim('"').EndsWith(".spa", StringComparison.OrdinalIgnoreCase))))
             {
@@ -87,7 +86,7 @@ namespace Foundation.SpaViewEngine.Controllers
             var container = spaFileContent.BinaryDataContainer;
             spaFileContent.BinaryData = _blobFactory.CreateBlob(container, ".spa");
             spaFileContent.BinaryData.WriteAllBytes(data);
-            return _contentRepository.Save(spaFileContent, EPiServer.DataAccess.SaveAction.Publish, AccessLevel.Create | AccessLevel.Edit | AccessLevel.Publish);
+            return _contentRepository.Save(spaFileContent, EPiServer.DataAccess.SaveAction.Publish, AccessLevel.Edit & AccessLevel.Publish);
         }
     }
 }

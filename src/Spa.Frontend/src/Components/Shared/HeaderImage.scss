@@ -1,0 +1,45 @@
+@use "sass:math";
+@use "sass:map";
+@import "../../styles/variables";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+$header-image-min-height: 8rem !default;
+$header-image-height: 20% !default;
+$header-image-text-position: 0.75 !default;
+
+.header-image {
+    padding-top: 0;
+    padding-bottom: $header-image-height;
+    min-height: $header-image-min-height;
+    overflow: hidden;
+
+    .header-image-container {
+        position: relative;
+
+        img {
+            position: absolute;
+            top: 50%;
+            left: 0px;
+            right: 0px;
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            transform: translate(0, -50%);
+        }
+
+        h1 {
+            position: absolute;
+            padding-left: $grid-gutter-width;
+            margin-top: $header-image-height * $header-image-text-position;
+            margin-bottom: 0px;
+            left: 0px;
+            right: 0px;
+            color: map.get($theme-colors, 'light');
+            text-shadow: 0px 0px 0.25rem map.get($theme-colors, 'dark');
+            width: 100%;
+            max-width: 100%;
+            transform: translate(0, -50%);
+        }
+    }
+}

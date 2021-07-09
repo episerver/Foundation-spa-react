@@ -1,31 +1,32 @@
+@use "sass:map";
 @import "../../styles/variables";
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 
 footer {
-    background-color: theme-color("secondary");
-    color: $white;
+    background-color: map.get($theme-colors, "secondary");
+    color: map.get($theme-colors, "light");
     font-size: $font-size-sm;
 
     h1,  h2,  h3,  h4,  h5,
     .h1, .h2, .h3, .h4, .h5
     {
-        color: $white;
+        color: map.get($theme-colors, "light");;
     }
 
     a {
-        color: $white;
+        color: map.get($theme-colors, "light");;
         line-height: 3rem;     // Ensure proper tap-area
         margin-bottom: 0.5rem; // Ensure proper tap-area spacing
 
         &:hover {
-            color: theme-color("primary");
+            color: map.get($theme-colors, "primary");;
         }
     }
 
     .footer__heading {
         text-transform: uppercase;
-        color: $white;
+        color: map.get($theme-colors, "light");;
         font-weight: $font-weight-bold;
         font-size: $font-size-sm;
     }

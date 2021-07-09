@@ -1,9 +1,12 @@
 @import '../../styles/custom';
-@import '~bootstrap/scss/_functions';
-@import '~bootstrap/scss/_variables';
-@import '~bootstrap/scss/mixins/_grid.scss';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
 
-.EPiServerForms {
+.episerver-form {
+
+    @import '~bootstrap/scss/forms';
+
     .hide {
         display: none !important;
     }

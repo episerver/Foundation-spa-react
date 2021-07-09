@@ -1,24 +1,20 @@
-import { ContentDelivery, ServerSideRendering, Taxonomy } from '@episerver/spa-core';
+import { ContentDelivery, ServerSideRendering, Taxonomy, Interfaces } from '@episerver/spa-core';
 
 type ISettingsService = {
     GetSiteSettings<T extends Taxonomy.IContent = Taxonomy.IContent>(container: string) : T | undefined;
 }
 
-type SettingApiContext = {
-    Settings : { [container: string ] : Taxonomy.IContent }
-}
-
-export default class SettingsApi
+export class SettingsApi
 {
     public serviceEndpoint : Readonly<string> = 'api/foundation/v1/settings';
-    protected _repo : Readonly<ContentDelivery.IIContentRepositoryV2>;
-    protected _api : Readonly<ContentDelivery.IContentDeliveryAPI_V2>;
-    protected _ctx : Readonly<ServerSideRendering.IAccessor>;
+    protected _repo : Readonly<Interfaces.IIContentRepository>;
+    protected _api : Readonly<Interfaces.IContentDeliveryAPI>;
+    protected _ctx : Readonly<Interfaces.IServerContextAccessor>;
 
     public constructor (
-        contentDeliveryApi: ContentDelivery.IContentDeliveryAPI_V2,
-        contentRepositoryApi: ContentDelivery.IIContentRepositoryV2,
-        serverContext: ServerSideRendering.IAccessor
+        contentDeliveryApi: Interfaces.IContentDeliveryAPI,
+        contentRepositoryApi: Interfaces.IIContentRepository,
+        serverContext: Interfaces.IServerContextAccessor
     ) {
         this._api = contentDeliveryApi;
         this._repo = contentRepositoryApi;
@@ -86,3 +82,4 @@ export default class SettingsApi
         return this._api.raw<T>(url).then(r => r[1].status === 200 ? r[0] : null).catch(() => null);
     }
 }
+export default SettingsApi;

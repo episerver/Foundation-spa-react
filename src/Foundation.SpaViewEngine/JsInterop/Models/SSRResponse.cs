@@ -15,5 +15,35 @@ namespace Foundation.SpaViewEngine.JsInterop.Models
         public string BodyAttributes { get; set; } = "";
         public int StatusCode { get; set; } = 200;
         public Dictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
+
+        public static SSRResponse Create(dynamic response)
+        {
+            var ssrresponse = new SSRResponse
+            {
+                Body = response.Body,
+                HtmlAttributes = response.HtmlAttributes,
+                Title = response.Title,
+                Meta = response.Meta,
+                Link = response.Link,
+                Script = response.Script,
+                Style = response.Style,
+                BodyAttributes = response.BodyAttributes,
+                StatusCode = int.TryParse(response.StatusCode.ToString(), out int statusCode) ? statusCode : 200
+            };
+            return ssrresponse;
+        }
+
+        public static bool TryCreate(dynamic response, out SSRResponse ssrresponse)
+        {
+            try
+            {
+                ssrresponse = Create(response);
+                return true;
+            }
+            catch {
+                ssrresponse = null;
+                return false;
+            }
+        }
     }
 }

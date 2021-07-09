@@ -3,8 +3,6 @@ using EPiServer.ContentApi.Core.Serialization;
 using EPiServer.Core;
 using EPiServer.ServiceLocation;
 using Newtonsoft.Json;
-using System;
-using System.Web;
 
 namespace Foundation.SpaViewEngine.Models.TypeConverters
 {
@@ -19,11 +17,6 @@ namespace Foundation.SpaViewEngine.Models.TypeConverters
         )
         {
             ContentModelMapper = contentModelMapper;
-        }
-
-        public override bool CanConvert(Type objectType)
-        {
-            return HttpContext.Current != null && base.CanConvert(objectType);
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

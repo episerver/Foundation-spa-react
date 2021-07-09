@@ -3,12 +3,24 @@ const path = require('path');
 
 // Webpack
 const webpack = require('webpack');
+const { merge } = require('webpack-merge');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const FileManagerPlugin = require('filemanager-webpack-plugin');
-const TerserPlugin = require("terser-webpack-plugin");
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
-// Episerver Webpack Utilities
+// Epi Webpack tools
 const EpiWebpack = require('@episerver/webpack');
+
+// Configuration
+const manifest = require('./manifest.json'); // Application Manifest
+const preload = require('./preload.json'); // Preloader configuration
+
+// Webpack config partials
+const stylesConfig = require('./config/webpack.module.rules.styles'); // Styles processing
+const optimizationConfig = require('./config/webpack.optimization'); // Build optimization
+const scriptsConfig = require('./config/webpack.module.rules.scripts') // Scripts processing
 
 module.exports = (env) => {
     const epiEnv        = env.EPI_ENV || process.env.EPI_ENV;
@@ -21,6 +33,9 @@ module.exports = (env) => {
     const epiBaseUrl    = config.getEpiserverURL();
     const epiDeployPath = config.getEnvVariable('EPI_DEPLOY_PATH', '/api/episerver/v3/deploy');
 
+    /**
+     * @type webpack.Configuration
+     */
     const webpackConfig = {
         entry: path.resolve(srcPath, 'server.tsx'),
         target: 'web',
@@ -35,27 +50,6 @@ module.exports = (env) => {
         resolve: config.getResolveConfig(),
         module: {
             rules: [
-                {
-                    test: /\.(ts|tsx)$/,
-                    use: [{
-                        loader: 'ts-loader',
-                        options: {
-                            allowTsInNodeModules: false,
-                            onlyCompileBundledFiles: true
-                        }
-                    }, {
-                        loader: EpiWebpack.PreLoadLoader,
-                        options: {
-                            pattern: '**/*.tsx',
-                            extension: '.tsx'
-                        }
-                    }]
-                },
-                {
-                    test: /\.js$/,
-                    enforce: "pre",
-                    loader: "source-map-loader"
-                },
                 {
                     test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
                     use: [{ loader: EpiWebpack.EmptyLoader }]
@@ -79,7 +73,14 @@ module.exports = (env) => {
             minimizer: forProduction ? [new TerserPlugin({
                 terserOptions: {
                     keep_fnames: true,
-                    keep_classnames: true
+                    keep_classnames: true,
+					ecma: '2020',
+					module: true,
+					toplevel: true,
+					compress: {
+						drop_console: true,
+						arguments: true,
+					}
                 }
             })] : [],
         },
@@ -125,5 +126,13 @@ module.exports = (env) => {
         ]
     }
 
-    return webpackConfig;
+    
+
+    const outputConfig = merge(
+        scriptsConfig(env, bundle), // Script processing
+        stylesConfig(env, bundle, true),  // Append SASS/SCSS/CSS processing
+        webpackConfig,              // Specific configuration
+    );
+
+    return outputConfig;
 }

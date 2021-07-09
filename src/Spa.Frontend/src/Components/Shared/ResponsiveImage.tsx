@@ -36,6 +36,7 @@ export const ResponsiveContentImage : React.FunctionComponent<ResponsiveImagePro
         const altText : string = (typeof (props.content?.name) == 'string' ? props.content.name : props.content?.name?.value) || "image";
         return <ResponsiveImage alt={ altText } { ...props } src={ imgUrl } />
     }
+    return null;
 }
 
 export const ResponsiveImage : React.FunctionComponent<ResponsiveImageProps> = (props) => {
@@ -70,7 +71,7 @@ const ResponsiveImageSource : React.FunctionComponent<{
     const ratio = props.ratio;
     const imgQuality = props.imgQuality;
     const ctx = useEpiserver();
-    const imgUrl = new URL(props.src, ctx.getEpiserverURL());
+    const imgUrl = ctx.getEpiserverUrl(props.src);
 
 
     const srcProps : React.SourceHTMLAttributes<HTMLSourceElement> & { key?: string } = {
@@ -120,7 +121,7 @@ const ResponsiveImageImg : React.FunctionComponent<{
     const ratio = props.ratio;
     const imgQuality = props.imgQuality;
     const ctx = useEpiserver();
-    const imgUrl = new URL(props.src, ctx.getEpiserverURL());
+    const imgUrl = ctx.getEpiserverUrl(props.src);
     imgUrl.searchParams.set('upscale','false');
 
     const srcProps : React.ImgHTMLAttributes<HTMLImageElement> & { key?: string } = {

@@ -1,31 +1,17 @@
+@use "sass:math";
+@use "sass:map";
 @import "../../styles/variables";
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 
 .blog-nav-list {
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 1.5rem;
-
-    a {
-        color: theme-color("secondary");
-
-        &:hover {
-            text-decoration: none;
-            border-bottom: 2px solid theme-color("primary");
-            color: theme-color("primary");
-        }
-
-        &.active {
-            border-bottom: 2px solid theme-color("primary");
-        }
-    }
+    list-style-type: none;
+    padding-left: 0;
 }
 .blog-list-page {
     .blog-list-page-item {
-        padding-top: $grid-gutter-width / 2;
-        padding-bottom: $grid-gutter-width / 2;
+        padding-top: math.div($grid-gutter-width ,2);
+        padding-bottom: math.div($grid-gutter-width, 2);
 
         .image-container {
             position: absolute;
@@ -57,16 +43,22 @@
             padding-right: 3rem !important;
             padding-bottom: 3rem !important;
 
-            color: theme-color("light");
-            text-shadow: 0px 0px 0.25rem theme-color("dark");
+            color: map.get($theme-colors, "light");
 
-            .date {
-                font-size: 0.85rem;
+            .title {
+                font-size: 2rem;
+                font-weight: bold;
+                text-shadow: 0px 0px 0.25rem map.get($theme-colors, "dark");
             }
 
-            :last-child {
-                padding-bottom: 0;
-                margin-bottom: 0;
+            .date {
+                font-size: 0.75rem;
+                margin-top: -1rem;
+                text-shadow: 0px 0px 0.25rem map.get($theme-colors, "dark");
+            }
+
+            .intro {
+                text-shadow: 0px 0px 0.25rem map.get($theme-colors, "dark");
             }
         }
     }
@@ -79,36 +71,6 @@
                 border-radius: 0;
                 border: none;
             }
-        }
-    }
-}
-
-.blog-item-page {
-    .header-image {
-        padding-top: 0;
-        padding-bottom: 20%;
-        overflow: hidden;
-
-        img {
-            position: absolute;
-            top: 50%;
-            left: $grid-gutter-width / 2;
-            right: $grid-gutter-width / 2;
-            width: calc(100% - #{$grid-gutter-width});
-            max-width: none;
-            transform: translate(0, -50%);
-        }
-
-        h1 {
-            position: absolute;
-            bottom: 0;
-            left: $grid-gutter-width / 2;
-            right: $grid-gutter-width / 2;
-            padding-left: $grid-gutter-width;
-            margin-bottom: $grid-gutter-width / 2;
-
-            color: theme-color('light');
-            text-shadow: 0px 0px 0.25rem theme-color('dark');
         }
     }
 }

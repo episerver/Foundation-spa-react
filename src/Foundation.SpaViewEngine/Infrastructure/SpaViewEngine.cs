@@ -35,8 +35,8 @@ namespace Foundation.SpaViewEngine.Infrastructure
             
             // The SpaViewEngine will only return for iContent (at the moment...)
             return new ViewEngineResult(new string[] {
-                $"{ SpaViewBlob.BlobUriScheme }://{ _spaSettings.BrowserContainerName }/{ _spaSettings.HtmlTemplateName }/{ viewName }",
-                $"{ SpaViewBlob.BlobUriScheme }://{ _spaSettings.ServerContainerName }/{ _spaSettings.ServerJsName }/{ viewName }"
+                SpaMediaAssetBlob.CreateUri(_spaSettings.BrowserContainerName, _spaSettings.HtmlTemplateName).ToString(),
+                SpaMediaAssetBlob.CreateUri(_spaSettings.BrowserContainerName, _spaSettings.HtmlTemplateName + "/" + viewName).ToString()
             });
         }
 
@@ -47,8 +47,8 @@ namespace Foundation.SpaViewEngine.Infrastructure
         {
             get {
                 if (!_hasDeployedSpa)
-                    _hasDeployedSpa = SpaFolderHelper.HasItemInDeployment(_spaSettings.BrowserContainerName, _spaSettings.HtmlTemplateName) &&
-                                            SpaFolderHelper.HasItemInDeployment(_spaSettings.ServerContainerName, _spaSettings.HtmlTemplateName);
+                    _hasDeployedSpa = (SpaFolderHelper.GetDeploymentItem(_spaSettings.BrowserContainerName)?.HasAsset(_spaSettings.HtmlTemplateName) ?? false) &&
+                                            (SpaFolderHelper.GetDeploymentItem(_spaSettings.ServerContainerName)?.HasAsset(_spaSettings.HtmlTemplateName) ?? false);
                 return _hasDeployedSpa;
             }
         }

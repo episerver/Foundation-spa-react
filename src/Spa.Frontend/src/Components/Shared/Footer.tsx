@@ -1,5 +1,5 @@
-import React from 'react';
-import { Components, ContentDelivery, useEpiserver } from '@episerver/spa-core';
+import React, { FunctionComponent as FC} from 'react';
+import { Components, ContentDelivery, Taxonomy, useEpiserver, usePropertyReader } from '@episerver/spa-core';
 import LayoutSettings from 'app/Models/Content/LayoutSettingsData';
 import "./Footers.scss";
 
@@ -7,7 +7,7 @@ export type FooterProps = {
     settings: LayoutSettings
 }
 
-export const Footer : React.FunctionComponent<FooterProps> = (props) =>
+export const Footer : FC<FooterProps> = (props) =>
 {
     const ctx = useEpiserver();
 
@@ -43,6 +43,7 @@ type LinksListBlockProps = FooterProps & {
 const LinksListBlock : React.FunctionComponent<LinksListBlockProps> = (props) => {
 
     const transformLink = (link: ContentDelivery.LinkProperty) => {
+        link = Taxonomy.Property.isVerboseProperty(link) ? link.value : link;
         const url = new URL(link.href);
         let offDomain : boolean = true;
         try {
@@ -65,7 +66,8 @@ const LinksListBlock : React.FunctionComponent<LinksListBlockProps> = (props) =>
     }
 
     const links : JSX.Element[] = [];
-    (props.settings[props.listProp] as ContentDelivery.LinkListProperty)?.value?.forEach(x => links.push(transformLink(x)));
+    const listProp : ContentDelivery.LinkListProperty = props.settings[props.listProp] as ContentDelivery.LinkListProperty;
+    (Taxonomy.Property.isVerboseProperty(listProp) ? listProp.value : listProp).forEach(x => links.push(transformLink(x)));
 
     return <div className={ props.className }>
         <p className="h5 footer__heading"><Components.Property iContent={ props.settings } field={ props.titleProp }/></p>

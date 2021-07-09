@@ -11,8 +11,7 @@ namespace Foundation.SpaViewEngine.Models.TypeConverters
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var val = value as IPAddress;
-            if (val == null)
+            if (!(value is IPAddress val))
                 throw new ArgumentException("The value must be an instance of System.Net.IPAddress", "value");
             serializer.Serialize(writer, val.ToString());
         }

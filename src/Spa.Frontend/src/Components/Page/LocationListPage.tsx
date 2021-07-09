@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Helmet from 'react-helmet';
-import { Button, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, Container, Row, Col } from 'reactstrap';
-import { Components, Services, useContentDeliveryAPI } from '@episerver/spa-core';
+import { Components, Services, Taxonomy, useContentDeliveryAPI } from '@episerver/spa-core';
 
 import ClientSideMap, { ClientSideMapProps } from '../Shared/ClientSideMap';
 import { LocationListPageProps } from '../../Models/Content/LocationListPageData';
@@ -59,75 +58,93 @@ export const LocationListPage : React.FunctionComponent<LocationListPageProps> =
         },
         markers: getProperty(viewModel, 'locations', []).map(loc => { return {
             id: Services.ContentLink.createLanguageId(loc),
-            lat: getProperty(loc, 'latitude')?.value || 0,
-            lng: getProperty(loc, 'longitude')?.value || 0,
+            lat: Taxonomy.Property.readPropertyValue(loc, 'latitude') || 0,
+            lng: Taxonomy.Property.readPropertyValue(loc, 'longitude') || 0,
             popupBody: <div>
-                <h6>{ getProperty(loc, "name") }</h6>
-                <p>{ getProperty(loc, "mainIntro")?.value }</p>
-                <Button color="link" tag="a" href={ Services.ContentLink.createHref(loc) } >Read more</Button>
+                <h6>{ Taxonomy.Property.readPropertyValue(loc, "name") }</h6>
+                <p>{ Taxonomy.Property.readPropertyValue(loc, "mainIntro") }</p>
+                <a className="btn btn-link" href={ Services.ContentLink.createHref(loc) } >Read more</a>
             </div>
         }})
     }
 
+    const metaTitle = Taxonomy.Property.readPropertyValue(props.data, "metaTitle") || Taxonomy.Property.readPropertyValue(props.data, "name");
+
     return <div className="location-list-page">
         <Helmet>
-            <title>{ props.data.metaTitle?.value || props.data.name }</title>
+            <title>{ metaTitle }</title>
         </Helmet>
-        <Container fluid className="px-0 mb-3">
-            <Row noGutters>
-                <Col>
+        <div className="container-fluid">
+            <div className="row">
+                <div className="col px-0 mb-3">
                     <ClientSideMap { ...mapProps } />
-                </Col>
-            </Row>
-        </Container>
-        <Container>
-            <Row>
-                <Col>
+                </div>
+            </div>
+        </div>
+        <div className="container">
+            <div className="row">
+                <div className="col">
                     <h1><Components.Property iContent={props.data} field="name" /></h1>
                     <div>
                         <Components.Property iContent={props.data} field="mainBody" />
                     </div>
                     <Components.Property iContent={props.data} field="mainContentArea" />
-                </Col>
-            </Row>
-            <Row>
-                <Col xs="12" md="3">
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-12 col-lg-3">
                     <Components.Property iContent={props.data} field="filterArea" />
-                </Col>
-                <Col xs="12" md="9">
+                </div>
+                <div className="col-12 col-lg-9">
                     <LocationList locations={ getProperty(viewModel, 'locations', []) } />
-                </Col>
-            </Row>
-        </Container>
+                </div>
+            </div>
+        </div>
     </div>
 }
 
 const LocationList : React.FunctionComponent<{
     locations: LocationItemPageData[]
 }> = (props) => {
-    return <ListGroup flush tag="div">
+    return <div className="location-list list-group list-group-flush">
         { props.locations.map(loc => <LocationListItem item={loc} key={ Services.ContentLink.createApiId(loc) } /> )}
-    </ListGroup>
+    </div>
 }
 
 const LocationListItem : React.FunctionComponent<{ item: LocationItemPageData }> = (props) => {
-    const cssClasses : string[] = [];
-    const img = props.item.promoted?.value === true ? <Components.Property iContent={ props.item } field="image" className="location-image" /> : null;
+    const cssClasses : string[] = [
+        "location-list-item",
+        "list-group-item",
+        "list-group-item-action",
+    ];
+    const isPromoted = Taxonomy.Property.readPropertyValue(props.item, "promoted");
+    const isHighlighted = Taxonomy.Property.readPropertyValue(props.item, "highlight");
+    const isNew = Taxonomy.Property.readPropertyValue(props.item, "new");
+    const name = Taxonomy.Property.readPropertyValue(props.item, "name");
+    const mainIntro = Taxonomy.Property.readPropertyValue(props.item, "mainIntro");
+    const img = isPromoted === true ? <div className="mt-2 me-md-3 col-md-4 col-xl-3"><Components.Property iContent={ props.item } field="image" className="location-image" /></div> : null;
+    let badge = isNew === true ? <span className="badge bg-primary rounded-pill">New</span> : null;
     const src = Services.ContentLink.createHref(props.item);
 
-    if (props.item.highlight?.value === true) {
-        cssClasses.push('bg-secondary');
-        cssClasses.push('text-white');
+    //console.log("LocationListItem", props.item, highlight);
+    if (isPromoted === true) {
+        cssClasses.push('list-group-item-secondary');
+        badge = <span className="badge bg-primary rounded-pill">Promoted</span>;
     }
 
-    return <ListGroupItem className={ cssClasses.join(' ') } action tag="div">
-        <ListGroupItemHeading>{ props.item.name }</ListGroupItemHeading>
-        <ListGroupItemText tag="div">
+    return <div className={ cssClasses.join(' ') }>
+        <div className="d-flex justify-content-between">
+            <div className="fw-bold">{ name }</div>
+            { badge }
+        </div>
+        <div className="d-flex flex-column flex-md-row align-items-md-center">
             { img }
-            <p>{ props.item.mainIntro?.value }</p>
-            <Button color="info" tag="a" href={ src } >Read more</Button>
-        </ListGroupItemText>
-    </ListGroupItem>
+            <div className="mt-2 flex-md-grow-1">
+                <p>{ mainIntro }</p>
+                <a className="btn btn-primary float-end" href={ src }>Discover { name }</a>
+            </div>
+        </div>
+    </div>
 }
 
 

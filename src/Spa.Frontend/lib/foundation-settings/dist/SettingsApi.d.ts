@@ -1,10 +1,10 @@
-import { ContentDelivery, ServerSideRendering, Taxonomy } from '@episerver/spa-core';
-export default class SettingsApi {
+import { Taxonomy, Interfaces } from '@episerver/spa-core';
+export declare class SettingsApi {
     serviceEndpoint: Readonly<string>;
-    protected _repo: Readonly<ContentDelivery.IIContentRepositoryV2>;
-    protected _api: Readonly<ContentDelivery.IContentDeliveryAPI_V2>;
-    protected _ctx: Readonly<ServerSideRendering.IAccessor>;
-    constructor(contentDeliveryApi: ContentDelivery.IContentDeliveryAPI_V2, contentRepositoryApi: ContentDelivery.IIContentRepositoryV2, serverContext: ServerSideRendering.IAccessor);
+    protected _repo: Readonly<Interfaces.IIContentRepository>;
+    protected _api: Readonly<Interfaces.IContentDeliveryAPI>;
+    protected _ctx: Readonly<Interfaces.IServerContextAccessor>;
+    constructor(contentDeliveryApi: Interfaces.IContentDeliveryAPI, contentRepositoryApi: Interfaces.IIContentRepository, serverContext: Interfaces.IServerContextAccessor);
     /**
      * Get a settings container, either during server side rendering or from the initial context delivered by the
      * server side rendering.
@@ -17,3 +17,4 @@ export default class SettingsApi {
     getContainer<T extends Taxonomy.IContent = Taxonomy.IContent>(container: string, site?: Taxonomy.Website): Promise<T | null>;
     protected getRemoteContainer<T extends Taxonomy.IContent = Taxonomy.IContent>(container: string, site: Taxonomy.Website): Promise<T | null>;
 }
+export default SettingsApi;

@@ -31,6 +31,8 @@ interface PageListBlockState {
 
 export default class PageListBlock extends ComponentTypes.AbstractComponent<PageListBlockData, PageListBlockState>
 {
+    protected read = Taxonomy.Property.readPropertyValue;
+
     protected getInitialState() : PageListBlockState
     {
         return {
@@ -62,36 +64,19 @@ export default class PageListBlock extends ComponentTypes.AbstractComponent<Page
                 pages: (i.data as PageListBlockViewModel).pages || []
             });
         });
-        /*this.invokeTyped<any, PageListBlockViewModel>("Index").then(i => {
-            if (i.data.pages) {
-                let me = this;
-                new Promise((resolve, reject) => {
-                    try {
-                        i.data.pages.forEach(p => {
-                            me.getContext().injectContent(p.page);
-                        });
-                        resolve(true);
-                    } catch (e) {
-                        reject(e);
-                    }
-                });
-            }
-            this.setState({
-                isLoading: false,
-                pages: i.data.pages
-            });
-        });*/
     }
 
     public render() : ReactNode | ReactNodeArray | null
     {
-        let classes : Array<string> = ["row","PageListBlock","w-100"];
-        if (this.props.className) classes.push(this.props.className);
-        if (this.props.data.margin?.value) classes.push(this.props.data.margin.value);
-        if (this.props.data.padding?.value) classes.push(this.props.data.padding.value);
+        const classes : Array<string> = ["row","PageListBlock","w-100"];
+        const margin = this.read(this.props.data,"margin");
+        const padding = this.read(this.props.data, "padding");
+        const template : string = this.read(this.props.data, "template") || "defaultComponents";
+        const previewOption : string = this.read(this.props.data, "previewOption") || "1/3";
 
-        let template : string = this.props.data.template?.value || "defaultComponents";
-        let previewOption : string = this.props.data.previewOption?.value || "1/3";
+        if (this.props.className) classes.push(this.props.className);
+        if (margin) classes.push(margin);
+        if (padding) classes.push(padding);
 
         let pages : ReactNode | ReactNodeArray = null;
         switch (template) {
@@ -107,7 +92,7 @@ export default class PageListBlock extends ComponentTypes.AbstractComponent<Page
         }
 
         let heading : ReactNode = null;
-        if (this.props.data.heading?.value || this.getContext().isEditable()) {
+        if (this.read(this.props.data, "heading") || this.getContext().isEditable()) {
             heading = <div className="d-flex justify-content-center p-3 w-100">
                 <h2><Components.Property iContent={this.props.data} field="heading" /></h2>
             </div>;
@@ -132,7 +117,7 @@ export default class PageListBlock extends ComponentTypes.AbstractComponent<Page
         }
         if (pages.length > 1) {
             let lastIndex = Math.min(pages.length-1, 5);
-            items.push(<div className="col-12 col-md-6 row no-gutters" key={ `pagelist-grid-group-${this.props.data.contentLink.id}` }>
+            items.push(<div className="col-12 col-md-6 row g-0" key={ `pagelist-grid-group-${this.props.data.contentLink.id}` }>
                 { pages.slice(1,lastIndex).map(iContent => this.renderGridTemplateTile(iContent as IContentWithTeaser, ['col-12', 'col-md-6'])) }
             </div>);
         }
@@ -144,7 +129,7 @@ export default class PageListBlock extends ComponentTypes.AbstractComponent<Page
             items.push(pages.slice(9).map(iContent => this.renderGridTemplateTile(iContent as IContentWithTeaser, ['col-12'])));
         }
 
-        return <div className="row no-gutters page-list-grid w-100">{items}</div>
+        return <div className="row g-0 page-list-grid w-100">{items}</div>
     }
 
     protected renderGridTemplateTile(teaser: IContentWithTeaser, cssClasses: Array<string> = []) : ReactNode {
@@ -167,8 +152,8 @@ export default class PageListBlock extends ComponentTypes.AbstractComponent<Page
                     <div className="card mb-4">
                         <Components.Property iContent={ teaser } field="pageImage" className="card-img-top w-100" />
                         <div className="card-body">
-                            <h5 className="card-title">{teaser.name}</h5>
-                            <p className="card-text">{teaser.teaserText.value}</p>
+                            <h5 className="card-title">{ this.read(teaser, "name")}</h5>
+                            <p className="card-text">{this.read(teaser, "teaserText") }</p>
                             <Components.Link href={teaser} className="btn btn-primary">Read more</Components.Link>
                         </div>
                     </div>
@@ -188,7 +173,7 @@ export default class PageListBlock extends ComponentTypes.AbstractComponent<Page
             </div>);
         }
        
-        return <div className="row no-gutters">{items}</div>
+        return <div className="row g-0">{items}</div>
     }
 
     protected previewOptionToCssClass(previewOption: string) : string

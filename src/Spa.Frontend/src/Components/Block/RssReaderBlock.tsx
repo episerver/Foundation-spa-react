@@ -21,18 +21,21 @@ export const RssReaderBlock : FunctionComponent<RssReaderBlockProps> = (props) =
     const api = useContentDeliveryAPI();
 
     const [viewModel, setViewModel] = useState<RssReaderBlockViewModel>(undefined);
+    const rssUrl = Taxonomy.Property.readPropertyValue(props.data, "rssUrl");
 
     useEffect(() => {
-        if(props.data.rssUrl.value){
-            api.invoke<RssReaderBlockViewModel>(props.data.contentLink, "Index").then(f => {
+        if(rssUrl){
+            api.invoke<RssReaderBlockViewModel>(props.contentLink, "Index").then(f => {
                 setViewModel(f.data as RssReaderBlockViewModel || undefined);
             });
         }
-    }, [props.data]);
+    }, [rssUrl, props.contentLink]);
 
     const cssClasses : string[] = ["RssReaderBlock row"];
-    if (props.data.padding?.value) cssClasses.push(props.data.padding?.value);
-    if (props.data.margin?.value) cssClasses.push(props.data.margin?.value);
+    const padding = Taxonomy.Property.readPropertyValue(props.data, "padding");
+    const margin = Taxonomy.Property.readPropertyValue(props.data, "margin");
+    if (padding) cssClasses.push(padding);
+    if (margin) cssClasses.push(margin);
 
     function RenderPubDate (item: RssItem) : ReactNode {
         if(viewModel.currentBlock.includePublishDate){
@@ -48,7 +51,7 @@ export const RssReaderBlock : FunctionComponent<RssReaderBlockProps> = (props) =
     function RenderHeading (viewModel : RssReaderBlockViewModel) : ReactNode {
         if(viewModel && viewModel.hasHeadingText){
             return <div className="col-12">
-                <h2>{viewModel.currentBlock.heading.value}</h2>
+                <h2>{ Taxonomy.Property.readPropertyValue(viewModel.currentBlock, "heading") }</h2>
             </div>;
         }
     }

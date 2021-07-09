@@ -1,0 +1,23 @@
+{
+    "appId": "epi-page-container",
+    "components": [
+        "app/Components/Image/Media/ImageMediaData",
+        "app/Components/NavItem/Block/MenuItemBlock",
+        "app/Components/NavItem/Page/LandingPage",
+        "app/Components/NavItem/Page/LocationListPage",
+        "app/Components/Block/Image/Media/ImageMediaData",
+        "app/Components/Block/TextBlock",
+        "app/Components/Block/BreadcrumbBlock",
+        "app/Components/Block/HeroBlock",
+        "app/Components/Block/ContainerBlock",
+        "app/Components/Block/PageListBlock",
+        "app/Components/Block/TeaserBlock",
+        "app/Components/Block/FormContainerBlock",
+        "app/Components/Page/HomePage",
+        "app/Components/Page/LandingPage",
+        "app/Components/Page/StandardPage"
+    ],
+    "font": [
+        "fonts/fa-solid-900.woff2"
+    ]
+}

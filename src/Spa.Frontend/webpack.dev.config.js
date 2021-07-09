@@ -1,22 +1,20 @@
-const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const EpiWebpackAddOn = require('@episerver/webpack');
+const { merge } = require('webpack-merge');
+const Config = require('@episerver/webpack/cjs/util/Config').GlobalConfig;
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 
 // Configuration
 const manifest = require('./manifest.json');
+const scriptsConfig = require('./config/webpack.module.rules.scripts'); // Scripts processing
+const stylesConfig = require('./config/webpack.module.rules.styles'); // Styles processing
+const optimizationConfig = require('./config/webpack.optimization');
 
 module.exports = (env) => {
     // Bundle info
     const bundle        = 'app.html.spa';
 
     //Configs
-    /** @type {EpiWebpackAddOn.Config} */
-	const config        = new EpiWebpackAddOn.Config(__dirname, env, process.env.EPI_ENV);
-    const srcPath       = config.getSourceDir();
+	const config        = new Config(__dirname, env, process.env.EPI_ENV);
     const pubPath       = config.getAssetDir();
     const distPath      = config.getDistDir();
 
@@ -26,8 +24,14 @@ module.exports = (env) => {
     const forProduction = mode.toLowerCase() === 'production';
     const outPath       = webPath;
 
+    /**
+     * @type { webpack.Configuration } The specific bit of the webpack configuration
+     */
     const webpackConfig = {
-        entry: path.resolve(srcPath,'index.tsx'),
+        entry: {
+            main: './src/index.tsx',
+        },
+        context: config.getRootDir(),
         target: 'web',
         mode: mode,
         devtool: forProduction ? 'source-map' : 'inline-source-map',
@@ -58,28 +62,8 @@ module.exports = (env) => {
         module: {
             rules: [
                 {
-                    test: /\.(ts|tsx)$/,
-                    use: [{
-                        loader: 'ts-loader',
-                        options: {
-                            allowTsInNodeModules: false,
-                            onlyCompileBundledFiles: true
-                        }
-                    }, {
-                        loader: EpiWebpackAddOn.PreLoadLoader,
-                        options: {
-                            pattern: '**/*.tsx',
-                            extension: '.tsx'
-                        }
-                    }]
-                },
-                {
-                    test: /\.js$/,
-                    enforce: "pre",
-                    loader: "source-map-loader"
-                },
-                {
                     test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+                    sideEffects: false,
                     use: [
                         {
                             loader: 'file-loader',
@@ -93,6 +77,7 @@ module.exports = (env) => {
                 },
                 {
                     test: /\.(png|svg|jpg|jpeg)(\?v=\d+\.\d+\.\d+)?$/,
+                    sideEffects: false,
                     use: [
                         {
                             loader: 'file-loader',
@@ -103,133 +88,40 @@ module.exports = (env) => {
                             }
                         }
                     ]
-                },
-                {
-                    test: /\.(s[ca]ss)$/,
-                    use: [
-                        {
-                            loader: MiniCssExtractPlugin.loader,
-                            options: {
-                                publicPath: 'styles'
-                            }
-                        },
-                        {
-                            loader: 'css-loader',
-                            options: { 
-                                sourceMap: true 
-                            }
-                        }, {
-                            loader: 'postcss-loader', // Run post css actions
-                            options: {
-                                postcssOptions: {
-                                    plugins: function () { // post css plugins, can be exported to postcss.config.js
-                                        return [
-                                            require('precss'),
-                                            require('autoprefixer')
-                                        ];
-                                    }
-                                }
-                            }
-                        }, {
-                            loader: 'resolve-url-loader',
-                            options: { 
-                                sourceMap: true
-                            }
-                        }, {
-                            loader: 'sass-loader',
-                            options: {
-                                sourceMap: true
-                            }
-                        }
-                    ]
-                },
-                {
-                    test: /\.css$/,
-                    use: [ 
-                    {
-                        loader: 'style-loader',
-                    }, {
-                        loader: 'css-loader'
-                    } ]
                 }
             ]
         },
-
-        // Optimize frontend bundling
-		optimization: {
-			mergeDuplicateChunks: true,
-            runtimeChunk: 'single',
-            emitOnErrors: false,
-			splitChunks: {
-				chunks: 'all',
-				maxInitialRequests: 1000,
-				maxAsyncRequests: 1000,
-				minSize: 1,
-				automaticNameDelimiter: '.',
-				cacheGroups: {
-                    // Split Node Modules into separate files
-					lib: {
-						test: /[\\/]node_modules[\\/]/,
-						name(module, chunks, cacheGroupKey) {
-							// get the name. E.g. node_modules/packageName/not/this/part.js
-							// or node_modules/packageName
-							const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-
-							// npm package names are URL-safe, but some servers don't like @ symbols
-							return `${cacheGroupKey}.${packageName.replace('@', '')}`;
-						}
-                    },
-                    
-                    // Split Application components into separate files, might be needed if you don't provide a loader
-					components: {
-						test: /[\\/]src[\\/][Cc]omponents[\\/]/,
-						name(module, chunks, cacheGroupKey) {
-							// get the name. E.g. node_modules/packageName/not/this/part.js
-                            // or node_modules/packageName
-                            const componentId = module.identifier().match(/[\\/]src[\\/][Cc]omponents[\\/](.*)/)[1].split(path.sep).map(x => x.split(".")[0]).join('.');
-
-							//const packageName = module.context.match(/[\\/][Cc]omponents[\\/](.*?)([\\/]|$)/)[1];
-
-							// npm package names are URL-safe, but some servers don't like @ symbols
-							return `${cacheGroupKey}.${componentId.toLowerCase().replace('@', '')}`;
-                        }
-					}
-				},
-			},
-			minimize: forProduction,
-			minimizer: forProduction ? [new TerserPlugin({})] : []
-		},
         plugins: [
 
             // Neither frontend nor backend is running in NodeJS, so define some variables
             new webpack.DefinePlugin(config.getDefineConfig(env)),
 
-            new HtmlWebpackPlugin({
-                template: 'src/index.html',
-                title: manifest.name,
-                filename: 'index.html',
-                packagePath: outPath,
-                minify: {
-                    removeComments: false,
-                    preserveLineBreaks: true,
-                    collapseWhitespace: false,
-                    collapseBooleanAttributes: true
-                }
-            }),
-
             new WebpackManifestPlugin({
+                fileName: "manifest.json",
                 basePath: outPath,
                 writeToFileEmit: true,
                 seed: manifest
-            }),
-
-            new MiniCssExtractPlugin({
-                filename: 'styles/[name].[contenthash:8].css',
-                chunkFilename: 'styles/[name].[contenthash:8].css',
-                ignoreOrder: true
             })
         ]
     }
 
-    return webpackConfig;
+    /**
+     * @type { webpack.Configuration } The final webpack configuration
+     */
+    const outputConfig = merge(
+        scriptsConfig(env, bundle),         // Scripts processing
+        optimizationConfig(env, bundle),    // Bundling optimizations
+        stylesConfig(env, bundle),          // Append SASS/SCSS/CSS processing
+        webpackConfig,                      // Specific configuration
+    );
+
+    //console.log(outputConfig.module.rules.map(x => x.test));
+    //console.log(outputConfig.plugins);
+    //console.log(srcPath);
+    //console.log(outputConfig.context);
+    //console.log(outputConfig.entry);
+    //console.log(outputConfig.optimization);
+    //process.exit(0);
+
+    return outputConfig;
 }

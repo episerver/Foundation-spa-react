@@ -4,15 +4,13 @@ using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
 using Foundation.SpaViewEngine.Infrastructure;
 using Foundation.SpaViewEngine.JsInterop;
-using Foundation.SpaViewEngine.SpaContainer;
 using JavaScriptEngineSwitcher.Core;
 using JavaScriptEngineSwitcher.V8;
 using System;
 using System.Linq;
-using System.Web.Routing;
 using System.Web.Mvc;
 using Foundation.SpaViewEngine.Models.TypeConverters;
-using System.Web;
+using EPiServer.Personalization;
 
 namespace Foundation.SpaViewEngine
 {
@@ -30,6 +28,7 @@ namespace Foundation.SpaViewEngine
         {
             context.RegisterJavaScriptEngine();
             context.RegisterViewEngine();
+            context.RegisterPersonalizationRules();
 
             context.Services.Intercept<IJsonSerializerConfiguration>((locator, config) => {
                 var converters = locator.GetAllInstances<SpaViewJsonConverter>();
@@ -51,6 +50,11 @@ namespace Foundation.SpaViewEngine
 
     public static class InitializationExtensions
     {
+        public static void RegisterPersonalizationRules(this ServiceConfigurationContext context)
+        {
+            context.Services.AddSingleton<IPersonalizationEvaluator, SpaViewPersonalizationEvaluator>();
+        }
+
         public static void InjectViewEngine(this InitializationEngine context)
         {
             var engine = context.Locate.Advanced.GetInstance<Infrastructure.SpaViewEngine>();
@@ -89,7 +93,7 @@ namespace Foundation.SpaViewEngine
         {
             context.Services.AddSingleton<SpaViewCache>();
             context.Services.AddSingleton<SpaSettings>();
-            context.Services.AddTransient<SpaView>();
+            context.Services.AddTransient<Infrastructure.SpaView>();
         }
     }
 }

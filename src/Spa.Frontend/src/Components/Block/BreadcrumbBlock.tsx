@@ -1,7 +1,6 @@
 import React, { FunctionComponent, CSSProperties, useState, useEffect } from 'react';
 import { useLocation } from 'react-router';
-import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
-import { Components, Taxonomy, Services, useIContentRepository, useContentDeliveryAPI } from '@episerver/spa-core';
+import { Components, Taxonomy, Services, useIContentRepository, useContentDeliveryAPI, usePropertyReader } from '@episerver/spa-core';
 import { BreadcrumbBlockProps } from 'app/Models/Content/BreadcrumbBlockData';
 
 export const BreadcrumbBlock : FunctionComponent<BreadcrumbBlockProps> = (props) =>
@@ -10,6 +9,7 @@ export const BreadcrumbBlock : FunctionComponent<BreadcrumbBlockProps> = (props)
     const repo = useIContentRepository();
     const api = useContentDeliveryAPI(); // Needed as the Repository doesn't support children & parents calls yet
     const location = useLocation();
+    const read = usePropertyReader();
 
     // Build state
     const [destination, setDestination] = useState<Taxonomy.IContent | undefined>();
@@ -23,7 +23,7 @@ export const BreadcrumbBlock : FunctionComponent<BreadcrumbBlockProps> = (props)
         //Ignore
     }
 
-    const destinationLink = props.data.destinationPage.value;
+    const destinationLink = read(props.data, "destinationPage");
     const pathname = location.pathname;
 
     // Apply effects
@@ -47,101 +47,27 @@ export const BreadcrumbBlock : FunctionComponent<BreadcrumbBlockProps> = (props)
     const crumbs : Taxonomy.IContent[] = ([].concat([ destination ], path)).filter(x => x ? true : false).reverse().slice(1);
 
     // Render
-    return <Breadcrumb className={ cssClasses.join(' ') } style={ styles }>
-        { crumbs.map(crumb => <BreadcrumbItem key={`breadcrumb-${ Services.ContentLink.createApiId(crumb) }`}>
+    return <nav className={ cssClasses.join(' ') } style={ styles } aria-role="breadcrumb" aria-label="breadcrumb">
+        <ol className="breadcrumb">
+        { crumbs.map(crumb => <li className="breadcrumb-item" key={`breadcrumb-${ Services.ContentLink.createApiId(crumb) }`}>
             <Components.Link href={ crumb }>{ crumb.name }</Components.Link>
-        </BreadcrumbItem>)}
-    </Breadcrumb>
+        </li>)}
+        </ol>
+    </nav>
 }
 
 const buildBlockStyles : (props : BreadcrumbBlockProps, isLoading: boolean) => [ string[], CSSProperties ] = (props, isLoading) => {
-    const cssClasses : string[] = [];
-    if (props.data.padding.value) cssClasses.push(props.data.padding.value);
-    if (props.data.margin.value) cssClasses.push(props.data.margin.value);
-    if (props.data.alignment.value) cssClasses.push(props.data.alignment.value);
+    const cssClasses : string[] = ["breadcrumb-block"];
+    const read = Taxonomy.Property.readPropertyValue;
+    cssClasses.push(read(props.data, "padding"));
+    cssClasses.push(read(props.data, "margin"));
+    cssClasses.push(read(props.data, "alignment"));
     if (isLoading) cssClasses.push("loading-data");
 
-    const styles : React.CSSProperties = {};
-    if (props.data.blockOpacity.value != null) styles.opacity = props.data.blockOpacity.value;
-    return [ cssClasses, styles ];
+    const styles : React.CSSProperties = {
+        opacity: read(props.data, "blockOpacity") || 1
+    }
+    return [ cssClasses.filter(x => x), styles ];
 }
 
 export default BreadcrumbBlock;
-/*
-interface BreadcrumbBlockState {
-    isLoading: boolean
-    destination: Taxonomy.ContentLink
-    ancestors: Taxonomy.IContent[]
-}
-
-
-export default class BreadcrumbBlock extends ComponentTypes.AbstractComponent<BreadcrumbBlockData, BreadcrumbBlockState>
-{
-    private _unmounted : boolean = false;
-
-    protected getInitialState() : BreadcrumbBlockState
-    {
-        return {
-            isLoading: false,
-            destination: this.getDestinationLink(),
-            ancestors: []
-        }
-    }
-
-    public componentDidMount()
-    {
-        this.refreshData();
-    }
-
-    public componentWillUnmount()
-    {
-        this._unmounted = true;
-    }
-
-    public render() : null | ReactNode | ReactNodeArray
-    {
-        let cssClasses : Array<string> = [];
-        if (this.props.data.padding.value) cssClasses.push(this.props.data.padding.value);
-        if (this.props.data.margin.value) cssClasses.push(this.props.data.margin.value);
-        if (this.props.data.alignment.value) cssClasses.push(this.props.data.alignment.value);
-        if (this.state.isLoading) cssClasses.push("loading-data");
-        let styles : React.CSSProperties = {};
-        if (this.props.data.blockOpacity.value != null) styles.opacity = this.props.data.blockOpacity.value;
-        let items : ReactNodeArray = [];
-        this.state.ancestors.forEach((i) => {
-            items.push(
-                <BreadcrumbItem key={ `breadcrumb-${Services.ContentLink.createApiId(i)}` }><Components.Link href={i}>{i.name}</Components.Link></BreadcrumbItem>
-            );
-        });
-        let currentPage : Taxonomy.IContent = this.state.destination ? this.getContext().getContentByContentRef(this.state.destination) : this.getContext().getRoutedContent();
-        return <Breadcrumb className={cssClasses.join(" ")} style={styles}>
-            {items}
-            <BreadcrumbItem key={ `breadcrumb-${Services.ContentLink.createApiId(this.state.destination)}` } active>{ currentPage?.name || "" }</BreadcrumbItem>
-        </Breadcrumb>;
-    }
-
-    protected refreshData()
-    {
-        let destinationLink = this.getDestinationLink();
-        this.setState({isLoading: true, destination: destinationLink, ancestors: []});
-
-        //@ToDo - get this to go through store so it can be done off-line as well
-        let startPage : Taxonomy.ContentLink = this.getContext().getContentByRef("startPage")?.contentLink;
-        let startPageId : string = startPage ? Services.ContentLink.createApiId(startPage) : '';
-        this.getContext().contentDeliveryApi().getContentAncestors(destinationLink).then((list) => {
-            list = list.reverse();
-            let startPageIdx = list.findIndex(i => Services.ContentLink.createApiId(i.contentLink) == startPageId);
-            if (startPageIdx > 0) list = list.slice(startPageIdx);
-            if (!this._unmounted) this.setState({
-                isLoading: false,
-                ancestors: list
-            })
-        });
-    }
-
-    protected getDestinationLink() : Taxonomy.ContentLink
-    {
-        return this.props.data.destinationPage.value || this.getContext().getRoutedContent()?.contentLink;
-    }
-}
-*/

@@ -14,6 +14,7 @@ namespace Foundation.SpaViewEngine.Models.TypeConverters
 
         public override bool CanConvert(Type objectType)
         {
+            if (System.Web.HttpContext.Current == null) return false; // We can only convert in HttpContext
             return typeof(T).IsAssignableFrom(objectType);
         }
     }

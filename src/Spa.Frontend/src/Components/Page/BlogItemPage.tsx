@@ -2,13 +2,19 @@ import React, { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import { Components, Taxonomy, useContentDeliveryAPI, Services } from '@episerver/spa-core';
 
-import { BlogItemPageProps } from '../../Models/Content/BlogItemPageData';
-import Breadcrumbs from '../Shared/Breadcrumbs';
+import { BlogItemPageProps } from 'app/Models/Content/BlogItemPageData';
+import Breadcrumbs from 'app/Components/Shared/Breadcrumbs';
+import HeaderImage from 'app/Components/Shared/HeaderImage';
 
 import './Blog.scss';
 
 export type BlogItemPageViewModel = {
     tags: BlogListItemTag[]
+    /**
+     * This is an anti-pattern in the Spa, use the props.data instead.
+     * 
+     * @deprecated
+     */
     currentContent: Taxonomy.IContent
     previewText: string
 }
@@ -41,20 +47,20 @@ export const BlogItemPage : React.FunctionComponent<BlogItemPageProps> = (props)
         return () => { isCancelled = true }
     }, [ blogId ]);
 
-
+    const metaTitle = Taxonomy.Property.readPropertyValue(props.data, "metaTitle") ||
+                                Taxonomy.Property.readPropertyValue(props.data, "name") ||
+                                "Blog item";
+    const cssStyles = Taxonomy.Property.readPropertyValue(props.data, "css");
 
     return <div className="blog-item-page container">
         <Helmet>
-            <title>{ props.data.metaTitle?.value || props.data.name || "Blog item" }</title>
-            <style>{ props.data.css?.value }</style>
+            <title>{ metaTitle }</title>
+            <style id={ "blog-item-"+blogId }>{ cssStyles }</style>
         </Helmet>
         <div className="row">
-            <div className="header-image col-12">
-                <Components.Property iContent={props.data} field="pageImage" />
-                <h1><Components.Property iContent={ props.data } field="name" /></h1>
-            </div>
+            <HeaderImage content={ props.data } background="pageImage" title="name" className="col-12" />
             <div className="col-12">
-                <p className="pubDate">{ pubDate.toLocaleString() }</p>
+                <p className="pubDate text-muted">{ pubDate.toLocaleString() }</p>
                 <Breadcrumbs currentContent={ props.data } />
             </div>
         </div>

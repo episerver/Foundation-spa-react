@@ -14,7 +14,7 @@ namespace Foundation.ContentDelivery.Models
     [ServiceConfiguration(typeof(EPiServer.ContentApi.Core.IContextModeResolver), Lifecycle = ServiceInstanceScope.Hybrid)]
     [ServiceConfiguration(typeof(IContextModeResolver), Lifecycle = ServiceInstanceScope.Hybrid)]
     [ServiceConfiguration(typeof(ContextModeResolver), Lifecycle = ServiceInstanceScope.Hybrid)] // Well, ehm, this one is registered explicitly in the container, so replacing it as well
-    class ContentApiContextModeResolver : ContextModeResolver, EPiServer.ContentApi.Core.IContextModeResolver, IContextModeResolver
+    public class ContentApiContextModeResolver : ContextModeResolver, EPiServer.ContentApi.Core.IContextModeResolver, IContextModeResolver
     {
         protected readonly ServiceAccessor<HttpContextBase> _httpContextAccessor;
         protected readonly ServiceAccessor<IModuleResourceResolver> _moduleResourceResolverAccessor;

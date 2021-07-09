@@ -31,14 +31,16 @@ export const Breadcrumbs : React.FunctionComponent<BreadcrumbsProps> = (props) =
                 const key : string = `BreadCrumb-Link-${ contentId }-${ Services.ContentLink.createApiId(i) }`;
                 return <BreadcrumbItem currentContent={i} key={key} />
             })}
-            <BreadcrumbItem currentContent={ props.currentContent } key={ itemKey } />
+            <BreadcrumbItem currentContent={ props.currentContent } active key={ itemKey } />
         </ol>
     </nav>
 }
 
-export const BreadcrumbItem : React.FunctionComponent<BreadcrumbsProps> = (props) => {
-    const name : string = ContentDelivery.namePropertyIsString(props.currentContent.name) ? props.currentContent.name : (props.currentContent.name as ContentDelivery.StringProperty).value;
-    return <li className="breadcrumb-item"><Components.Link href={ props.currentContent } >{ name }</Components.Link></li>;
+export const BreadcrumbItem : React.FunctionComponent<BreadcrumbsProps & { active ?: boolean }> = (props) => {
+    const name : string = Taxonomy.Property.readPropertyValue(props.currentContent, "name");
+    return props.active ?
+        <li className="breadcrumb-item active" aria-current="page">{ name }</li> :
+        <li className="breadcrumb-item"><Components.Link href={ props.currentContent } >{ name }</Components.Link></li>;
 }
 
 export default Breadcrumbs;

@@ -1,5 +1,6 @@
 ﻿using EPiServer.ContentApi.Core;
 using EPiServer.ContentApi.Core.Configuration;
+using EPiServer.ContentApi.Core.Security.Internal;
 using EPiServer.ContentApi.Routing;
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
@@ -21,13 +22,15 @@ namespace Foundation.ContentDelivery
 
         public static IAppBuilder UseContentApiCors(this IAppBuilder app)
         {
-            app.UseCors(new CorsOptions() { });
+            app.UseCors(new CorsOptions() {
+            });
             return app;
         }
 
         public static ServiceConfigurationContext ConfigureForPublicHeadless(this ServiceConfigurationContext context)
         {
             context.Services.Configure<ContentApiConfiguration>(config => config.Default().SetMinimumRoles(string.Empty).SetRequiredRole(string.Empty));
+            context.Services.AddSingleton<CorsPolicyService, EtagCorsPolicyService>();
             return context;
         }
 
@@ -43,7 +46,6 @@ namespace Foundation.ContentDelivery
 
         public static ServiceConfigurationContext ConfigureForCors(this ServiceConfigurationContext context)
         {
-
             context.Services.Configure<ContentApiConfiguration>(config => config.Default().SetClients(GetContentApiClients()));
             return context;
         }
@@ -53,10 +55,11 @@ namespace Foundation.ContentDelivery
             context.InitializeInstance<ContentApiConfiguration>(config => {
                 config
                     .Default()
-                        .SetFlattenPropertyModel(false)
+                        .SetFlattenPropertyModel(true)
                         .SetSiteDefinitionApiEnabled(true)
                         .SetIncludeSiteHosts(true)
-                        .SetIncludeNumericContentIdentifier(true);
+                        .SetIncludeNumericContentIdentifier(true)
+                        .SetEnablePreviewMode(true);
             });
             return context;
         }

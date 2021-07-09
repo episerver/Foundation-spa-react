@@ -39,6 +39,15 @@ namespace Foundation.SpaViewEngine.JsInterop
         {
             foreach (var message in messages) _logger.Error(message == null ? "null" : message.ToString());
         }
+
+        public void time(string id)
+        {
+            // Ignore
+        }
+        public void timeEnd(string id)
+        {
+            // Ignore
+        }
 #pragma warning restore IDE1006
     }
 }

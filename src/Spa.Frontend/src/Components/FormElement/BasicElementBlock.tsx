@@ -1,6 +1,5 @@
 import React from 'react';
 import { ContentDelivery, Taxonomy, Services } from '@episerver/spa-core';
-import { Label } from 'reactstrap';
 
 /**
  * 
@@ -38,10 +37,11 @@ export type BasicElementBlockProps = {
 }
 
 export const BasicElementBlock : React.FunctionComponent<BasicElementBlockProps> = (props) => {
-    let fieldId : string = `__field_${Services.ContentLink.createApiId(props.contentLink)}`;
-    let fieldName : string = fieldId;
-    let fieldInfoId : string = `${ fieldId }_Description`;
-    const labelComponent = props.label?.value ? <label htmlFor={ fieldName }>{ props.label?.value }</label> : null;
+    const fieldId : string = `__field_${Services.ContentLink.createApiId(props.contentLink)}`;
+    const fieldName : string = fieldId;
+    const fieldInfoId : string = `${ fieldId }_Description`;
+    const labelText = Taxonomy.Property.isVerboseProperty(props.label) ? props.label.value : props.label;
+    const labelComponent = labelText ? <label htmlFor={ fieldName } className="form-label">{ labelText }</label> : null;
 
     return <div className="form-group">
         { labelComponent }

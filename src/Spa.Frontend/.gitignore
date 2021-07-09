@@ -1,8 +1,16 @@
+# Local modules & IDE settings
 node_modules/
 .vscode/
+
+# Local environment variable overrides
+.env*.local
+
+# Build artefacts
 build/
 dist/
 dist-html/
 obj/
 bin/
-.env*.local
+
+# SCSS Module Artefacts
+*.scss.*

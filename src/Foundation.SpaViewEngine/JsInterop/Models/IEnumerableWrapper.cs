@@ -55,6 +55,18 @@ namespace Foundation.SpaViewEngine.JsInterop.Models
             return string.Join(separator.ToString(), this.Select(x => x.ToString()));
         }
 
+        public IEnumerableWrapper<T> Slice(int start)
+        {
+            var skip = start >= 0 ? start : this.Count() + start;
+            return this.Skip(skip).ToJSArray();
+        }
+
+        public IEnumerableWrapper<T> Slice(int start, int length)
+        {
+            var skip = start >= 0 ? start : this.Count() + start;
+            return this.Skip(skip).Take(length).ToJSArray();
+        }
+
         public IEnumerator<T> GetEnumerator() => Wrapped.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)Wrapped).GetEnumerator();

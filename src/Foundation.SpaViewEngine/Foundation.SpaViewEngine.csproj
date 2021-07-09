@@ -19,6 +19,7 @@
   <ItemGroup>
     <None Remove="Lang\SpaViewEngine_EN.xml" />
     <None Remove="Resources\ApplyContext.js" />
+    <None Remove="Resources\ClearContext.js" />
     <None Remove="Resources\core.js.minified.js" />
     <None Remove="Resources\PrepareContext.js" />
     <None Remove="Resources\Shims.js" />
@@ -28,6 +29,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Lang\SpaViewEngine_EN.xml" />
     <EmbeddedResource Include="Resources\ApplyContext.js" />
+    <EmbeddedResource Include="Resources\ClearContext.js" />
     <EmbeddedResource Include="Resources\PrepareContext.js" />
     <EmbeddedResource Include="Resources\Shims.js" />
     <EmbeddedResource Include="Resources\window.js" />
@@ -39,9 +41,9 @@
     <PackageReference Include="EPiServer.ContentDeliveryApi.Core" Version="2.20.0" />
     <PackageReference Include="EPiServer.Framework" Version="11.20.6" />
     <PackageReference Include="EPiServer.ServiceLocation.StructureMap" Version="2.0.3" />
-    <PackageReference Include="JavaScriptEngineSwitcher.V8" Version="3.12.1" />
-    <PackageReference Include="JavaScriptEngineSwitcher.V8.Native.win-x64" Version="3.12.1" />
-    <PackageReference Include="JavaScriptEngineSwitcher.V8.Native.win-x86" Version="3.12.1" />
+    <PackageReference Include="JavaScriptEngineSwitcher.V8" Version="3.12.3" />
+    <PackageReference Include="JavaScriptEngineSwitcher.V8.Native.win-x64" Version="3.12.3" />
+    <PackageReference Include="JavaScriptEngineSwitcher.V8.Native.win-x86" Version="3.12.3" />
     <PackageReference Include="JSPool" Version="4.0.0" />
     <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

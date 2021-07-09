@@ -103,7 +103,10 @@ namespace Foundation.SpaViewEngine.JsInterop.Models
 
         private string ContentApiSerialize (object value) 
         {
-            var contentApiSerializer = ContentApiSerializerResolver.Resolve(ContentApiOptions);
+            var options = (ContentApiOptions)ContentApiOptions.Clone();
+            options.SetFlattenPropertyModel(true);
+            options.SetForceAbsolute(false);
+            var contentApiSerializer = ContentApiSerializerResolver.Resolve(options);
             return contentApiSerializer.Serialize(value);
         }
     }

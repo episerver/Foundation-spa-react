@@ -1,34 +1,93 @@
 ﻿<!DOCTYPE html>
-<html lang="en" data-attrs="html">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link rel="preconnect" href="https://a.idio.co" /> <!-- Improve connection speed to IDIO -->
-        <link rel="preconnect" href="https://s.idio.co" /> <!-- Improve connection speed to IDIO -->
-        <link rel="manifest" href="<%= htmlWebpackPlugin.options.packagePath %>manifest.json" crossorigin="use-credentials">
-        <link rel="icon" href="<%= htmlWebpackPlugin.options.packagePath %>favicon.ico" type="image/x-icon"/>
-        <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.packagePath %>favicon.ico" type="image/x-icon"/>
-        <!--SSR-META-->
-        <!--SSR-LINK-->
-        <!--SSR-TITLE-->
-        <!--SSR-CONTEXT-->
-        <!--SSR-SCRIPT-->
-        <!--SSR-STYLE-->
-        <!--HEADER-RESOURCES-->
-    </head>
-    <body data-attrs="body">
-        <noscript>
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <div class="alert alert-warning mt-3">This site offers basic functionality without JavaScript, but do expect a degraded user experience.</div>
-                    </div>
-                </div>
+<!--[if lt IE 7 ]> <html lang="en" class="ie6" <% if(htmlWebpackPlugin.files.manifest) { %> manifest="<%= htmlWebpackPlugin.files.manifest %>"<% } %> data-attrs="html"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="ie7" <% if(htmlWebpackPlugin.files.manifest) { %> manifest="<%= htmlWebpackPlugin.files.manifest %>"<% } %> data-attrs="html"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="ie8" <% if(htmlWebpackPlugin.files.manifest) { %> manifest="<%= htmlWebpackPlugin.files.manifest %>"<% } %> data-attrs="html"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="ie9" <% if(htmlWebpackPlugin.files.manifest) { %> manifest="<%= htmlWebpackPlugin.files.manifest %>"<% } %> data-attrs="html"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="" <% if(htmlWebpackPlugin.files.manifest) { %> manifest="<%= htmlWebpackPlugin.files.manifest %>"<% } %> data-attrs="html"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title><%= htmlWebpackPlugin.options.title || 'Webpack App'%></title>
+
+  <% if (htmlWebpackPlugin.files.favicon) { %>
+  <link rel="shortcut icon" href="<%= htmlWebpackPlugin.files.favicon%>">
+  <% } %>
+  <% if (htmlWebpackPlugin.options.mobile) { %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <% } %>
+  <% if (htmlWebpackPlugin.options.meta && htmlWebpackPlugin.options.meta.length > 0) { %>
+  <% for (var meta in htmlWebpackPlugin.options.meta) { %>
+  <meta name="<%= htmlWebpackPlugin.options.meta[meta].name %>" content="<%= htmlWebpackPlugin.options.meta[meta].content %>">
+  <% } %>
+  <% } %>
+  <% for (var css in htmlWebpackPlugin.files.css) { %>
+  <link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet" media="print" onload="this.media='all'; this.onload=null;">
+  <% } %>
+  <% if (htmlWebpackPlugin.options.preconnect && htmlWebpackPlugin.options.preconnect.length > 0) { %>
+  <% for (var id in htmlWebpackPlugin.options.preconnect) { %>
+  <link rel="preconnect" href="<%= htmlWebpackPlugin.options.preconnect[id] %>">
+  <% } %>
+  <% } %>
+  <% if (htmlWebpackPlugin.options.preload && htmlWebpackPlugin.options.preload.length > 0) { %>
+  <% for (var id in htmlWebpackPlugin.options.preload) { %>
+  <link rel="preload" href="<%= htmlWebpackPlugin.options.preload[id] %>">
+  <% } %>
+  <% } %>
+  <%= compilation.getAssets().filter(x => x.name.match(/fonts\/(.*?)-900\.woff2$/)).map(x => '<link rel="preload" href="'+webpackConfig.output.publicPath+x.name+'" as="font">').join("\n") %>
+  <%= compilation.getAssets().filter(x => x.name.match(/styles\/components\.block\.(.*?)\.css$/) && !htmlWebpackPlugin.files.css.indexOf(webpackConfig.output.publicPath+x.name)).map(x => '<link rel="preload" href="'+webpackConfig.output.publicPath+x.name+'" as="style">').join("\n") %>
+  <%= compilation.getAssets().filter(x => x.name.match(/scripts\/components\.block\.(.*?)\.js$/)).map(x => '<link rel="preload" href="'+webpackConfig.output.publicPath+x.name+'" as="script">').join("\n") %>
+</head>
+<body data-attrs="body">
+<% if (htmlWebpackPlugin.options.unsupportedBrowser) { %>
+<style>.unsupported-browser { display: none; }</style>
+<div class="unsupported-browser">
+  Sorry, your browser is not supported.  Please upgrade to
+  the latest version or switch your browser to use this site.
+  See <a href="http://outdatedbrowser.com/">outdatedbrowser.com</a>
+  for options.
+</div>
+<% } %>
+<% if (htmlWebpackPlugin.options.noScript) { %>
+<noscript>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-warning mt-3">This site offers basic functionality without JavaScript, but do expect a degraded user experience.</div>
             </div>
-        </noscript>
-        <div id="epi-page-container"><!--SSR-BODY--></div>
-        <%= htmlWebpackPlugin.tags.bodyTags %>
-        <!--FOOTER-RESOURCES-->
-    </body>
+        </div>
+    </div>
+</noscript>
+<% } %>
+
+<% if (htmlWebpackPlugin.options.appMountId) { %>
+<div id="<%= htmlWebpackPlugin.options.appMountId%>"></div>
+<% } %>
+
+<% if (htmlWebpackPlugin.options.appMountIds && htmlWebpackPlugin.options.appMountIds.length > 0) { %>
+<% for (var index in htmlWebpackPlugin.options.appMountIds) { %>
+<div id="<%= htmlWebpackPlugin.options.appMountIds[index]%>"></div>
+<% } %>
+<% } %>
+<% if (htmlWebpackPlugin.options.window) { %>
+<script>
+  <% for (var varName in htmlWebpackPlugin.options.window) { %>
+    window['<%=varName%>'] = <%= JSON.stringify(htmlWebpackPlugin.options.window[varName]) %>;
+  <% } %>
+</script>
+<% } %>
+
+<% for (var chunk in htmlWebpackPlugin.files.js) { %>
+<% if (htmlWebpackPlugin.files.js[chunk].indexOf('inline') === -1) { %>
+<script defer async src="<%= htmlWebpackPlugin.files.js[chunk] %>"></script>
+<% } %>
+<% } %>
+<% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+<script defer async src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+<% } %>
+
+<% if (htmlWebpackPlugin.options.devServer) { %>
+<script defer src="<%= htmlWebpackPlugin.options.devServer%>/webpack-dev-server.js"></script>
+<% } %>
+
+<%= htmlWebpackPlugin.tags.bodyTags %>
+</body>
 </html>

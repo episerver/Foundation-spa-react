@@ -3,11 +3,6 @@ import { useEpiserver } from '@episerver/spa-core';
 
 // Leaflet CSS File & Assets
 import "leaflet/dist/leaflet.css"
-import "leaflet/dist/images/layers.png"
-import "leaflet/dist/images/layers-2x.png"
-import "leaflet/dist/images/marker-icon.png"
-import "leaflet/dist/images/marker-icon-2x.png"
-import "leaflet/dist/images/marker-shadow.png"
 
 export type GeoLocation = [ number, number ];
 
@@ -54,6 +49,7 @@ export const ClientSideMap : React.FunctionComponent<ClientSideMapProps> = (prop
         if (ctx.isServerSideRendering()) return;
         let isCancelled : boolean = false;
         import(
+            /* webpackPreload: true */
             /* webpackMode: "lazy" */
             'react-leaflet'
         ).then((x) => { if (!isCancelled) setReactLeaflet(x)});
@@ -65,6 +61,7 @@ export const ClientSideMap : React.FunctionComponent<ClientSideMapProps> = (prop
         if (ctx.isServerSideRendering()) return;
         let isCancelled : boolean = false;
         import(
+            /* webpackPreload: true */
             /* webpackMode: "lazy" */
             '../../AsyncComponents/ClientSideMap/InteractionWrapper'
         ).then((x) => { if (!isCancelled) setInteractionWrapperModule(x)});

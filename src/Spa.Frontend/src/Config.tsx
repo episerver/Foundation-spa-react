@@ -1,20 +1,17 @@
 // Episerver library
 import { Core, ContentDelivery } from "@episerver/spa-core";
 
-// Modules
-import { SettingsInitialization as SettingsModule } from '@episerver/foundation-settings';
-
 // Referenced components for configuration
 import Loader from "app/Components/Shared/MoseyLoader";
 import Layout from "app/Components/Shared/MoseyLayout";
 
 // Referenced implementation
-import MoseyComponentLoader from "app/Infrastructure/ComponentLoader";
+//import preload from '../preload.json';
 
 // Enable caching of action calls
 // ContentDelivery.FetchAdapter.isCachable.push(url => url.pathname.indexOf('/api/episerver/v3/action/') >= 0 && !url.searchParams.has('epieditmode') && !url.searchParams.has('EpiEditMode'));
 
-const appDebug = false; //process.env.NODE_ENV === 'development';
+const appDebug = process.env.NODE_ENV === 'development';
 
 // Website configuration
 export const Config : Core.IConfig = {
@@ -25,6 +22,7 @@ export const Config : Core.IConfig = {
     basePath: process.env.WEB_PATH, //There's no prefix, set to /spa if the spa is located at https://your.domain/spa/ - this should match your webpack configuration
     epiBaseUrl: process.env.EPI_URL, //The main URL where Episerver is running
     defaultLanguage: "en", //The language to send to Episerver
+    autoExpandRequests: true,
     
     // Site layout
     layout: Layout,
@@ -45,53 +43,33 @@ export const Config : Core.IConfig = {
             'displaymode-one-quarter': 'col-12 col-md-6 col-lg-3',
             'displaymode-one-sixth' : 'col-12 col-md-4 col-lg-2'
         },
-        defaultRowClass: 'row no-gutters',
+        defaultRowClass: 'row gap-0 g-0',
         defaultBlockClass: 'col-12',
         defaultContainerClass: 'container',
         containerBreakBlockClass: 'displaymode-screen'
     },
 
     // (Pre)Loading of components, pre-load those components that make up your key landing pages
-    preLoadComponents: [
-        "app/Components/Image/Media/ImageMediaData",
-        "app/Components/NavItem/Block/MenuItemBlock",
-        "app/Components/NavItem/Page/LandingPage",
-        "app/Components/NavItem/Page/LocationListPage",
-        "app/Components/Block/Image/Media/ImageMediaData",
-        "app/Components/Block/TextBlock",
-        "app/Components/Block/BreadcrumbBlock",
-        "app/Components/Block/HeroBlock",
-        "app/Components/Block/ContainerBlock",
-        "app/Components/Block/PageListBlock",
-        "app/Components/Block/TeaserBlock",
-        "app/Components/Block/FormContainerBlock",
-        "app/Components/Page/HomePage",
-        "app/Components/Page/LandingPage",
-        "app/Components/Page/StandardPage"
-    ],
+    preLoadComponents: [], //preload.components,
 
     // List SPA Modules that inject into the bootstrapping process
-    modules: [
-        new SettingsModule()
-    ],
+    modules: [],
 
     // List of custom component loaders, app/Components is handled by the core library,
     // so the MoseyComponentLoader is here as example.
-    componentLoaders: [
-        /*MoseyComponentLoader*/
-    ],
+    componentLoaders: [],
 
     // Configuration of the V2 Content Repository
     iContentRepository: {
         debug: appDebug,
-        policy: ContentDelivery.IRepositoryPolicy.LocalStorageFirst
+        policy: ContentDelivery.IRepositoryPolicy.PreferOffline
     },
 
     // Configuration of the V2 Content Delivery API, this overrides the old configuration
     iContentDelivery: {
-        Debug: false,
-        AutoExpandAll: false,
+        Debug: appDebug,
+        AutoExpandAll: true,
     }
 };
-Config.componentLoaders.debug = false; // Override global debug to disable debug within the component loaders
+Config.componentLoaders.debug = appDebug; // Override global debug to disable debug within the component loaders
 export default Config;

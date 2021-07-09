@@ -1,7 +1,6 @@
-import { Taxonomy as T, ContentDelivery as CD } from '@episerver/spa-core';
+import { Taxonomy, ContentDelivery as CD } from '@episerver/spa-core';
 
-export default interface IContentWithTeaser extends T.IContent
-{
+export type IContentWithTeaser<T extends Taxonomy.IContent = Taxonomy.IContent> = T & {
     /**
      * Image
      *
@@ -59,10 +58,12 @@ export default interface IContentWithTeaser extends T.IContent
     teaserButtonStyle: CD.StringProperty
 }
 
-export function isIContentWithTeaser(contentItem : T.IContent|IContentWithTeaser) : contentItem is IContentWithTeaser
+export function isIContentWithTeaser(contentItem : Taxonomy.IContent|IContentWithTeaser) : contentItem is IContentWithTeaser
 {
     if ((contentItem as IContentWithTeaser)?.pageImage) {
         return true;
     }
     return false;
 }
+
+export default IContentWithTeaser;

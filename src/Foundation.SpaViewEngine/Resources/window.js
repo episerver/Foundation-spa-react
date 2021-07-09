@@ -27,3 +27,9 @@ var window = window || {
         return;
     }
 };
+
+/**
+ * Make the window.self && self global variable available
+ */
+window.self = window.self || window;
+var self = self || window.self;

@@ -9,9 +9,9 @@ export default class SubmitButtonElementBlock extends AbstractElementBlock<Submi
 {
     public render() : null | ReactNode | ReactNodeArray
     {
-        let fieldId : string = `__field_${Services.ContentLink.createApiId(this.props.data.contentLink)}`;
-        let fieldName : string = fieldId;
-        let fieldInfoId : string = `${ fieldId }_Description`;
+        const fieldId : string = `__field_${Services.ContentLink.createApiId(this.props.data.contentLink)}`;
+        const fieldName : string = fieldId;
+        const fieldInfoId : string = `${ fieldId }_Description`;
 
         return <div className="form-group">
             <input type={ this.getFieldType() } id={ fieldId } name={ fieldName } className="btn btn-primary" aria-describedby={ fieldInfoId } />

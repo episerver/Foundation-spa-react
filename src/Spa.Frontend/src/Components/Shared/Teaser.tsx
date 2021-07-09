@@ -20,20 +20,30 @@ type TeaserBackground = [ string, Taxonomy.ContentLink, Taxonomy.IContent ]
 function getTeaserBackground(teaser: IContentWithTeaserNS.default) : TeaserBackground
 {
     const teaserId : string = Services.ContentLink.createApiId(teaser, false, true);
-    if (teaser.teaserVideo?.value)
-        return [ teaserId, teaser.teaserVideo.value, teaser.teaserVideo.expandedValue ]
-    return [ teaserId, teaser.pageImage?.value, teaser.pageImage?.expandedValue ]
+    const teaserVideoLink = Taxonomy.Property.readPropertyValue(teaser, "teaserVideo");
+
+    if (teaserVideoLink) {
+        const teaserVideoValue = Taxonomy.Property.readPropertyExpandedValue(teaser, "teaserVideo");
+        return [ teaserId, teaserVideoLink, teaserVideoValue ]
+    }
+    return [ teaserId, Taxonomy.Property.readPropertyValue(teaser, "pageImage"), Taxonomy.Property.readPropertyExpandedValue(teaser, "pageImage") ]
 }
 
 function getTeaserClasses(teaser: IContentWithTeaserNS.default, className?:string): [ string, string, string[], string[] ]
 {
+    // Read settings
+    const teaserRatio = Taxonomy.Property.readPropertyValue(teaser, "teaserRatio");
+    const teaserColorTheme = Taxonomy.Property.readPropertyValue(teaser, "teaserColorTheme");
+    const teaserTextAlignment = Taxonomy.Property.readPropertyValue(teaser, "teaserTextAlignment") || '';
+
+    // Build classes
     const myClassName = `teaser ${ className }`.trim();
-    const ratioClass : string = teaser.teaserRatio?.value ? `r-${ teaser.teaserRatio.value.replace(":","-") }` : ''; 
+    const ratioClass : string = teaserRatio ? `r-${ teaserRatio.replace(":","-") }` : ''; 
     const contentClasses : Array<string> = ['teaser-content','p-3','d-flex','flex-column'];
-    if (teaser.teaserColorTheme?.value) contentClasses.push(`tc-${ teaser.teaserColorTheme.value.toLowerCase() }`);
+    if (teaserColorTheme) contentClasses.push(`tc-${ teaserColorTheme.toLowerCase() }`);
     const contentTextClasses : Array<string> = [];
 
-    switch (teaser.teaserTextAlignment.value.toLowerCase()) {
+    switch (teaserTextAlignment.toLowerCase()) {
         case 'right':
             contentClasses.push('align-items-end');
             contentTextClasses.push('text-right');
@@ -74,11 +84,13 @@ export const Teaser : FunctionComponent<TeaserProps> = (props) =>
     }, [ teaserId ]);
 
     // Get teaser name
-    const title : string = typeof(props.content.name) == "string" ? props.content.name : props.content.name.value;
+    const title : string = Taxonomy.Property.readPropertyValue(props.content, "name");
     const [ myClassName, ratioClass, contentClasses, contentTextClasses ] = getTeaserClasses(props.content, props.className);
 
     // Build teaser
-    const hasButton = props.content?.teaserButtonText?.value ? true : false;
+    const teaserButtonText = Taxonomy.Property.readPropertyValue(props.content, "teaserButtonText");
+    const teaserRatio = Taxonomy.Property.readPropertyValue(props.content, "teaserRatio");
+    const hasButton = teaserButtonText ? true : false;
     const container = <div className={ ratioClass } >
         <ResponsiveContentImage content={ backgroundContent } className="img-fluid d-cover" breakpoints={ [{
             code: 'img',
@@ -101,7 +113,7 @@ export const Teaser : FunctionComponent<TeaserProps> = (props) =>
             cssMedia: '(min-width: 1440px)',
             imgWidth: 950,
             order: 2
-        }] } aspectRatio={ props.content?.teaserRatio?.value?.replace(":","/") || '4/3'  } quality={ 75 } />
+        }] } aspectRatio={ teaserRatio?.replace(":","/") || '4/3'  } quality={ 75 } />
         <div className={ contentClasses.join(' ') }>
             <div className={`teaser-header ${ contentTextClasses.join(' ') }`}>{ title }</div>
             <TeaserText teaser={props.content} cssClasses={ contentTextClasses }/>
@@ -122,7 +134,8 @@ export const Teaser : FunctionComponent<TeaserProps> = (props) =>
  * @returns The teaser button
  */
 const TeaserText : React.FunctionComponent<{ teaser: IContentWithTeaserNS.default, cssClasses: string[] }> = (props) => {
-    return props.teaser.teaserText?.value ? <p className={ props.cssClasses.join(' ') }>{ props.teaser.teaserText.value }</p> : null;
+    const teaserText = Taxonomy.Property.readPropertyValue(props.teaser, "teaserText");
+    return teaserText ? <p className={ props.cssClasses.join(' ') }>{ teaserText }</p> : null;
 }
 
 /**
@@ -134,11 +147,13 @@ const TeaserText : React.FunctionComponent<{ teaser: IContentWithTeaserNS.defaul
 const TeaserButton : React.FunctionComponent<{ teaser: IContentWithTeaserNS.default }> = (props) =>
 {
     const teaser = props.teaser;
-    if (!teaser.teaserButtonText?.value) {
+    const teaserButtonText = Taxonomy.Property.readPropertyValue(teaser, "teaserButtonText");
+    const teaserButtonStyle = Taxonomy.Property.readPropertyValue(teaser, "teaserButtonStyle");
+    if (!teaserButtonText) 
         return null;
-    }
+
     let btnClasses : Array<string> = ['btn'];
-    switch (teaser.teaserButtonStyle?.value) {
+    switch (teaserButtonStyle) {
         case 'button-white':
             btnClasses.push('btn-light');
             break;
@@ -161,7 +176,7 @@ const TeaserButton : React.FunctionComponent<{ teaser: IContentWithTeaserNS.defa
             btnClasses.push('btn-primary');
             break;
     }
-    return <a className={ btnClasses.join(' ') } href={ Services.ContentLink.createHref(teaser.contentLink) }>{teaser.teaserButtonText.value}</a>
+    return <a className={ btnClasses.join(' ') } href={ Services.ContentLink.createHref(teaser.contentLink) }>{ teaserButtonText }</a>
 }
 
 export default Teaser;

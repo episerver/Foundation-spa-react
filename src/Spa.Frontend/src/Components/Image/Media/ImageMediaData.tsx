@@ -1,5 +1,5 @@
 import React, { ReactNode, ReactNodeArray } from 'react';
-import { Core, ComponentTypes } from '@episerver/spa-core';
+import { Core, ComponentTypes, Taxonomy } from '@episerver/spa-core';
 import ImageMediaDataData from 'app/Models/Content/ImageMediaDataData';
 
 export default class ImageMediaData extends ComponentTypes.AbstractComponent<ImageMediaDataData>
@@ -29,17 +29,17 @@ export default class ImageMediaData extends ComponentTypes.AbstractComponent<Ima
 
     public render() : ReactNode {
         let cssClass : string = "img-fluid"
-        let altText : string = this.props.data?.altText?.value || (typeof (this.props.data?.name) == 'string' ? this.props.data.name : this.props.data?.name?.value) || "image";
+        let altText : string = Taxonomy.Property.readPropertyValue(this.props.data, "altText") || Taxonomy.Property.readPropertyValue(this.props.data, "name") || "image";
         if (this.props.className !== undefined)
             cssClass = cssClass + " " + this.props.className;
         
         if (!this.props.data.url)
             return <span className={ cssClass.trim() + " no-img" }/>;
 
-        let imgUrl: URL = new URL(Core.DefaultContext.getEpiserverUrl(this.props.data.url));
+        let imgUrl: URL = Core.DefaultContext.getEpiserverUrl(this.props.data.url);
         imgUrl.searchParams.set("upscale", "false"); //Never upscale an image, leave that to the browser
         imgUrl.searchParams.set("quality", "85"); //Lossy processing
-        let webpUrl : URL = new URL(Core.DefaultContext.getEpiserverUrl(this.props.data.url));
+        let webpUrl : URL = Core.DefaultContext.getEpiserverUrl(this.props.data.url);
         webpUrl.searchParams.set("upscale", "false"); //Never upscale an image, leave that to the browser
         webpUrl.searchParams.set("format", "webp"); //Format as WebP
         webpUrl.searchParams.set("quality", "85"); //Lossy processing
