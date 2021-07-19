@@ -59,11 +59,12 @@ namespace Foundation.ContentDelivery.Models
             if (base.ShouldContentBeExposed(content))
                 return true;
 
-            // At this stage we know we are most likely dealing with unpublished content, 
-            // so we ensure that (a) we're in edit/preview mode and (b) that the current
-            // user has at least edit access to the content item - and thus is allowed to
-            // see this version.
-            if (contextModeResolver.CurrentMode().EditOrPreview()) {
+            // At this stage we know we are most likely dealing with unpublished content,
+            // (i.e. part of the project or otherwise) so we ensure that (a) we're in
+            // edit/preview mode and (b) that the current user has at least edit access
+            // to the content item - and thus is allowed to see this version.
+            if (contextModeResolver.CurrentMode().EditOrPreview())
+            {
                 if (content is ISecurable securedContent)
                 {
                     var descriptor = securedContent.GetSecurityDescriptor();

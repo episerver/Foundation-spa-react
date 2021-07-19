@@ -39,4 +39,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Foundation.SpaViewEngine\Foundation.SpaViewEngine.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Web.ApplicationServices" />
+  </ItemGroup>
 </Project>
