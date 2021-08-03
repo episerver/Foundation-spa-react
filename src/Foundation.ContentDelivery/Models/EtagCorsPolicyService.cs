@@ -1,22 +1,17 @@
 ﻿using EPiServer.ContentApi.Core.Configuration;
 using EPiServer.ContentApi.Core.Security.Internal;
 using EPiServer.DataAbstraction;
-using EPiServer.ServiceLocation;
 using EPiServer.Web;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Cors;
 
 namespace Foundation.ContentDelivery.Models
 {
+    /// <summary>
+    /// Slightly updated Cors Policy, allowing clients access to read the etag header when requested
+    /// </summary>
     public class EtagCorsPolicyService : CorsPolicyService
     {
-        protected CorsPolicyService corsPolicyService;
-
         public EtagCorsPolicyService(ContentApiConfiguration apiConfiguration, ISiteDefinitionResolver siteDefinitionResolver, ILanguageBranchRepository languageBranchRepository)
             : base(apiConfiguration, siteDefinitionResolver, languageBranchRepository)
         {

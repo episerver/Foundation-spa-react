@@ -30,10 +30,11 @@ namespace Foundation.SpaViewEngine.Infrastructure
 
         private ViewEngineResult CreateSpaView(ControllerContext controllerContext, string viewName, bool useCache)
         {
-            if (controllerContext.RequestContext.TryGetRoutedContent(out _))
-                return new ViewEngineResult(useCache ? SharedView : CreateSpaView(), this);
-            
             // The SpaViewEngine will only return for iContent (at the moment...)
+            if (IsSpaDeployed() && controllerContext.RequestContext.TryGetRoutedContent(out _))
+                return new ViewEngineResult(useCache ? SharedView : CreateSpaView(), this);
+
+            // Return no match response
             return new ViewEngineResult(new string[] {
                 SpaMediaAssetBlob.CreateUri(_spaSettings.BrowserContainerName, _spaSettings.HtmlTemplateName).ToString(),
                 SpaMediaAssetBlob.CreateUri(_spaSettings.BrowserContainerName, _spaSettings.HtmlTemplateName + "/" + viewName).ToString()
@@ -42,16 +43,8 @@ namespace Foundation.SpaViewEngine.Infrastructure
 
         protected virtual SpaView CreateSpaView() => ServiceLocator.Current.GetInstance<SpaView>(); // SpaView is a transient service, so we'll get a new one every time we invoke this method
 
-        private bool _hasDeployedSpa = false;
-        protected virtual bool HasDeployedSpa
-        {
-            get {
-                if (!_hasDeployedSpa)
-                    _hasDeployedSpa = (SpaFolderHelper.GetDeploymentItem(_spaSettings.BrowserContainerName)?.HasAsset(_spaSettings.HtmlTemplateName) ?? false) &&
-                                            (SpaFolderHelper.GetDeploymentItem(_spaSettings.ServerContainerName)?.HasAsset(_spaSettings.HtmlTemplateName) ?? false);
-                return _hasDeployedSpa;
-            }
-        }
+        protected virtual bool IsSpaDeployed() => (SpaFolderHelper.GetDeploymentItem(_spaSettings.BrowserContainerName)?.HasAsset(_spaSettings.HtmlTemplateName) ?? false) &&
+                                            (SpaFolderHelper.GetDeploymentItem(_spaSettings.ServerContainerName)?.HasAsset(_spaSettings.ServerJsName) ?? false);
 
         public void ReleaseView(ControllerContext controllerContext, IView view)
         {

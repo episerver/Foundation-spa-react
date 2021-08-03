@@ -1,7 +1,10 @@
-﻿using EPiServer.ContentApi.Core;
+﻿using EPiServer;
+using EPiServer.ContentApi.Core;
 using EPiServer.ContentApi.Core.Configuration;
 using EPiServer.ContentApi.Core.Security.Internal;
+using EPiServer.ContentApi.Core.Serialization;
 using EPiServer.ContentApi.Routing;
+using EPiServer.DataAbstraction;
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
 using EPiServer.Web;
@@ -31,6 +34,7 @@ namespace Foundation.ContentDelivery
         {
             context.Services.Configure<ContentApiConfiguration>(config => config.Default().SetMinimumRoles(string.Empty).SetRequiredRole(string.Empty));
             context.Services.AddSingleton<CorsPolicyService, EtagCorsPolicyService>();
+            context.Services.Intercept<IContentModelReferenceConverter>((locator, defaultConverter) => new TypedContentModelReferenceConverter(defaultConverter, locator.GetInstance<IContentTypeRepository>(), locator.GetInstance<IContentLoader>()));
             return context;
         }
 

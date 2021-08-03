@@ -29,14 +29,7 @@ namespace Foundation.ContentDelivery.Models
         /// <returns>The Context aware internal link</returns>
         public override string ResolveUrl(string internalLink)
         {
-            var contentApiOptions = _contentApiConfiguration.Default();
-            return _urlResolver.GetUrl(new UrlBuilder(internalLink), new VirtualPathArguments
-            {
-                ContextMode = _contextModeResolver.CurrentMode,
-                ForceCanonical = true,
-                ForceAbsolute = contentApiOptions.ForceAbsolute,
-                ValidateTemplate = contentApiOptions.ValidateTemplateForContentUrl
-            });
+            return _urlResolver.GetUrl(new UrlBuilder(internalLink), VirtualPathArguments);
         }
 
         /// <summary>
@@ -47,14 +40,28 @@ namespace Foundation.ContentDelivery.Models
         /// <returns>The context aware URL</returns>
         public override string ResolveUrl(ContentReference contentLink, string language)
         {
-            var contentApiOptions = _contentApiConfiguration.Default();
-            return _urlResolver.GetUrl(contentLink, language, new VirtualPathArguments
+            return _urlResolver.GetUrl(contentLink, language, VirtualPathArguments);
+        }
+
+        private VirtualPathArguments _arguments = null;
+
+        protected virtual VirtualPathArguments VirtualPathArguments
+        {
+            get
             {
-                ContextMode = _contextModeResolver.CurrentMode,
-                ForceCanonical = true,
-                ForceAbsolute = contentApiOptions.ForceAbsolute,
-                ValidateTemplate = contentApiOptions.ValidateTemplateForContentUrl
-            });
+                if (_arguments == null)
+                {
+                    var contentApiOptions = _contentApiConfiguration.GetOptions();
+                    _arguments = new VirtualPathArguments
+                    {
+                        ContextMode = _contextModeResolver.CurrentMode,
+                        ForceCanonical = true,
+                        ForceAbsolute = contentApiOptions.ForceAbsolute,
+                        ValidateTemplate = contentApiOptions.ValidateTemplateForContentUrl,
+                    };
+                }
+                return _arguments;
+            }
         }
     }
 }

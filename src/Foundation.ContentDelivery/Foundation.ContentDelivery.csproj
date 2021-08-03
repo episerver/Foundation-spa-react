@@ -24,8 +24,8 @@
     <PackageReference Include="dotenv.net" Version="3.0.0" />
     <PackageReference Include="EPiServer.CMS.AspNet" Version="11.20.6" />
     <PackageReference Include="EPiServer.CMS.Core" Version="11.20.6" />
-    <PackageReference Include="EPiServer.CMS.UI.Core" Version="11.35.1" />
-    <PackageReference Include="EPiServer.CMS.UI" Version="11.35.1" />
+    <PackageReference Include="EPiServer.CMS.UI.Core" Version="11.35.2" />
+    <PackageReference Include="EPiServer.CMS.UI" Version="11.35.2" />
     <PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="2.19.0" />
     <PackageReference Include="EPiServer.ContentDeliveryApi.Search" Version="2.19.0" />
     <PackageReference Include="EPiServer.Framework" Version="11.20.6" />

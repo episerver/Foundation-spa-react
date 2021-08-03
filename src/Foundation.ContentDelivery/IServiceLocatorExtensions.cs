@@ -61,6 +61,15 @@ namespace Foundation.ContentDelivery
         /// <summary>
         /// Simple check to see if a service has been registered in an IServiceLocator
         /// </summary>
+        /// <typeparam name="T">The service type to search for</param>
+        /// <param name="locator">The IServiceLocator to check within</param>
+        /// <returns>true if the IServiceLocator has a service definition for this type, false otherwise</returns>
+        public static bool HasService<T>(this IServiceLocator locator) => locator.HasService(typeof(T));
+        
+
+        /// <summary>
+        /// Simple check to see if a service has been registered in an IServiceLocator
+        /// </summary>
         /// <param name="locator">The IServiceLocator to check within</param>
         /// <param name="serviceType">The service type to search for</param>
         /// <returns>true if the IServiceLocator has a service definition for this type, false otherwise</returns>
