@@ -32,7 +32,9 @@ export class SettingsApi {
     }
     async getContainer(container, site) {
         site = site || await this._repo.getCurrentWebsite();
-        const containerKey = `settings.${this._api.Language}.${site.id}.${container}`;
+        let containerKey = `settings.${this._api.Language}.${site.id}.${container}`;
+        if (this._api.InEditMode && this._api.InEpiserverShell)
+            containerKey += ".EpiEditMode";
         let cached = null;
         try {
             cached = localStorage.getItem(containerKey);

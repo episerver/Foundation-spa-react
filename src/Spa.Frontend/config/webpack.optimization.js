@@ -62,13 +62,17 @@ const Config = require('@episerver/webpack/cjs/util/Config').GlobalConfig;
 						name(module, chunks, cacheGroupKey) {
 							// get the name. E.g. node_modules/packageName/not/this/part.js
 							// or node_modules/packageName
-							const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+							try {
+								const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
 
-							// npm package names are URL-safe, but some servers don't like @ symbols
-							let cacheGroupSuffix = packageName.replace('@', '').split('-',2)[0];
-							if (cacheGroupSuffix == 'react') 
-								cacheGroupSuffix = packageName.replace('@', '').split('-').join('.');
-							return cacheGroupKey + "." + cacheGroupSuffix;
+								// npm package names are URL-safe, but some servers don't like @ symbols
+								let cacheGroupSuffix = packageName.replace('@', '').split('-',2)[0];
+								if (cacheGroupSuffix == 'react') 
+									cacheGroupSuffix = packageName.replace('@', '').split('-').join('.');
+								return cacheGroupKey + "." + cacheGroupSuffix;
+							} catch {
+								return cacheGroupKey + ".generic"
+							}
 						},
                         
                     },

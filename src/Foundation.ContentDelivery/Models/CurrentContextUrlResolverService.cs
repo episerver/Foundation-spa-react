@@ -3,6 +3,7 @@ using EPiServer.ContentApi.Core;
 using EPiServer.ContentApi.Core.Configuration;
 using EPiServer.Core;
 using EPiServer.Web.Routing;
+using System;
 using IContextModeResolver = EPiServer.Web.IContextModeResolver;
 
 namespace Foundation.ContentDelivery.Models
@@ -40,7 +41,15 @@ namespace Foundation.ContentDelivery.Models
         /// <returns>The context aware URL</returns>
         public override string ResolveUrl(ContentReference contentLink, string language)
         {
-            return _urlResolver.GetUrl(contentLink, language, VirtualPathArguments);
+            var resolvedUrl = "";
+            try
+            {
+                resolvedUrl = _urlResolver.GetUrl(contentLink, language, VirtualPathArguments);
+            } catch (Exception)
+            {
+                resolvedUrl = "#";
+            }
+            return resolvedUrl;
         }
 
         private VirtualPathArguments _arguments = null;

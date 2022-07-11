@@ -52,8 +52,9 @@ export class SettingsApi
     public async getContainer<T extends Taxonomy.IContent = Taxonomy.IContent>(container: string, site ?: Taxonomy.Website) : Promise<T | null>
     {
         site = site || await this._repo.getCurrentWebsite();
+        let containerKey = `settings.${ this._api.Language }.${ site.id }.${ container }`;
+        if (this._api.InEditMode && this._api.InEpiserverShell) containerKey += ".EpiEditMode"
 
-        const containerKey = `settings.${ this._api.Language }.${ site.id }.${ container }`;
         let cached : string | null = null;
         try {
             cached = localStorage.getItem(containerKey);

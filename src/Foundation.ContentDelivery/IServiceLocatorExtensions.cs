@@ -37,18 +37,25 @@ namespace Foundation.ContentDelivery
         public static object CreateInstance(this IServiceLocator locator, Type type, object[] args)
         {
             if (type.IsGenericType)
-                throw new NotSupportedException("The CreateInstance<T> method does not support generic types");
+                throw new NotSupportedException("The CreateInstance method does not support generic types");
 
             var constructor = type.GetConstructors()
                 .OrderByDescending(c => c.GetParameters().Length)
-                .FirstOrDefault(c => c.GetParameters().All(p => args.Any(a => a.GetType() == p.ParameterType) || locator.HasService(p.ParameterType)));
+                .FirstOrDefault(c => c.GetParameters().All((p) =>
+                {
+                    if (args.Any(a => p.ParameterType.IsAssignableFrom(a.GetType())))
+                        return true;
+                    if (locator.HasService(p.ParameterType))
+                        return true;
+                    return false;
+                }));
 
             if (constructor == null)
-                throw new NotSupportedException("The CreateInstnace<T> method cannot find a suitable constructor");
+                throw new NotSupportedException("The CreateInstance method cannot find a suitable constructor for: "+type.FullName);
 
             var constructorArgs = constructor.GetParameters().Select(p =>
             {
-                var val = args.FirstOrDefault(a => a.GetType() == p.ParameterType);
+                var val = args.FirstOrDefault(a => p.ParameterType.IsAssignableFrom(a.GetType()));
                 if (val != null)
                     return val;
                 return locator.GetInstance(p.ParameterType);
@@ -77,7 +84,9 @@ namespace Foundation.ContentDelivery
         {
             try
             {
-                var service = locator.GetService(serviceType);
+                object service = null;
+                if (!serviceType.IsValueType)
+                    service = locator.GetService(serviceType);
                 return service != null;
             }
             catch

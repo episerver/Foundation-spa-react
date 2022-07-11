@@ -11,6 +11,20 @@ namespace Foundation.ContentDelivery.Models.Api
     {
         public List<string> ContentType { get; set; }
 
+        public ContentModelReference ToBase()
+        {
+            return new ContentModelReference()
+            {
+                Expanded = Expanded,
+                GuidValue = GuidValue,
+                Id = Id,
+                Language = Language,
+                ProviderName = ProviderName,
+                Url = Url,
+                WorkId = WorkId
+            };
+        }
+
         public static TypedContentModelReference CreateFromBase(ContentModelReference contentModelReference)
         {
             var converted = new TypedContentModelReference()

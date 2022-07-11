@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Foundation.ContentDelivery": {
+      "commandName": "Project",
+      "jsWebView2Debugging": false
+    }
+  }
+}

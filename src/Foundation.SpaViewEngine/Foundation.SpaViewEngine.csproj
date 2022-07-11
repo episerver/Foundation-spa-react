@@ -36,14 +36,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EPiServer.CMS.AspNet" Version="11.20.6" />
-    <PackageReference Include="EPiServer.CMS.Core" Version="11.20.6" />
+    <PackageReference Include="EPiServer.CMS.AspNet" Version="11.20.7" />
+    <PackageReference Include="EPiServer.CMS.Core" Version="11.20.7" />
     <PackageReference Include="EPiServer.ContentDeliveryApi.Core" Version="2.20.0" />
-    <PackageReference Include="EPiServer.Framework" Version="11.20.6" />
+    <PackageReference Include="EPiServer.Framework" Version="11.20.7" />
     <PackageReference Include="EPiServer.ServiceLocation.StructureMap" Version="2.0.3" />
-    <PackageReference Include="JavaScriptEngineSwitcher.V8" Version="3.12.3" />
-    <PackageReference Include="JavaScriptEngineSwitcher.V8.Native.win-x64" Version="3.12.3" />
-    <PackageReference Include="JavaScriptEngineSwitcher.V8.Native.win-x86" Version="3.12.3" />
+    <PackageReference Include="JavaScriptEngineSwitcher.V8" Version="3.12.5" />
+    <PackageReference Include="JavaScriptEngineSwitcher.V8.Native.win-x64" Version="3.12.5" />
+    <PackageReference Include="JavaScriptEngineSwitcher.V8.Native.win-x86" Version="3.12.5" />
     <PackageReference Include="JSPool" Version="4.0.0" />
     <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

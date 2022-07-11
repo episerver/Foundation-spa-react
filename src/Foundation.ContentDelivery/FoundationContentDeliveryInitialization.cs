@@ -1,6 +1,7 @@
 ﻿using EPiServer.ContentApi.Cms;
 using EPiServer.ContentApi.Core.Internal;
 using EPiServer.ContentApi.Routing;
+using EPiServer.Find.Cms.Module;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
@@ -8,13 +9,16 @@ using System;
 
 namespace Foundation.ContentDelivery
 {
+    // When running ContentDelivery.Commerce, consider adding a dependency to that as well to reduce potential issues
+    // due to it changing configuration after this module has loaded.
     [InitializableModule]
     [ModuleDependency(new Type[] { 
         typeof(EPiServer.Web.InitializationModule),
         typeof(ServiceContainerInitialization),
         typeof(ContentApiCoreInitialization),
         typeof(ContentApiCmsInitialization), 
-        typeof(RoutingInitialization)
+        typeof(RoutingInitialization),
+        typeof(IndexingModule)
     })]
     public class FoundationContentDeliveryInitialization : IConfigurableModule
     {

@@ -21,14 +21,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="dotenv.net" Version="3.0.0" />
-    <PackageReference Include="EPiServer.CMS.AspNet" Version="11.20.6" />
-    <PackageReference Include="EPiServer.CMS.Core" Version="11.20.6" />
-    <PackageReference Include="EPiServer.CMS.UI.Core" Version="11.35.2" />
-    <PackageReference Include="EPiServer.CMS.UI" Version="11.35.2" />
+    <PackageReference Include="dotenv.net" Version="3.1.0" />
+    <PackageReference Include="EPiServer.CMS.AspNet" Version="11.20.7" />
+    <PackageReference Include="EPiServer.CMS.Core" Version="11.20.7" />
+    <PackageReference Include="EPiServer.CMS.UI.Core" Version="11.35.3" />
+    <PackageReference Include="EPiServer.CMS.UI" Version="11.35.3" />
     <PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="2.19.0" />
     <PackageReference Include="EPiServer.ContentDeliveryApi.Search" Version="2.19.0" />
-    <PackageReference Include="EPiServer.Framework" Version="11.20.6" />
+    <PackageReference Include="EPiServer.Framework" Version="11.20.7" />
     <PackageReference Include="EPiServer.Labs.BlockEnhancements" Version="0.10.0" />
     <PackageReference Include="EPiServer.ServiceLocation.StructureMap" Version="2.0.3" />
     <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />

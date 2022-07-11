@@ -17,13 +17,13 @@ namespace Foundation.ContentDelivery.Models
         protected readonly IProjectResolver projectResolver;
         protected readonly ProjectRepository projectRepository;
         protected readonly ContentApiContextModeResolver contextModeResolver;
-        protected readonly UrlResolver urlResolver;
+        protected readonly IUrlResolver urlResolver;
         protected readonly ISecurityPrincipal principalAccessor;
 
         public ProjectAwareContentLoaderService(
             IContentLoader contentLoader,
             IPermanentLinkMapper permanentLinkMapper,
-            UrlResolver urlResolver,
+            IUrlResolver urlResolver,
             ContentApiContextModeResolver contextModeResolver,
             IContentProviderManager providerManager,
             IProjectResolver projectResolver,
