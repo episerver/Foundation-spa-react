@@ -1,0 +1,1 @@
+export { withOptiCms, withOptiCms as default } from './dist/middleware'

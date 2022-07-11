@@ -1,0 +1,27 @@
+{
+  "name": "@optimizely/foundation",
+  "version": "0.0.1",
+  "description": "Library to utilize Foundation enhancements to Optimizely CMS",
+  "main": "dist/index.js",
+  "sideEffects": false,
+  "scripts": {
+    "test": "test/index.js",
+    "build": "tsc --build .\\tsconfig.cjs.json .\\tsconfig.json",
+    "watch": "tsc --build .\\tsconfig.cjs.json .\\tsconfig.json --watch"
+  },
+  "keywords": [
+    "Optimizely",
+    "CMS"
+  ],
+  "author": "Remko Jantzen",
+  "license": "Apache-2.0",
+  "private": "true",
+  "devDependencies": {
+    "@optimizely/cms": "file:../cms",
+    "@optimizely/commerce": "file:../commerce"
+  },
+  "peerDependencies": {
+    "@optimizely/cms": "file:../cms",
+    "@optimizely/commerce": "file:../commerce"
+  }
+}

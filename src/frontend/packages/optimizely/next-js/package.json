@@ -1,0 +1,37 @@
+{
+  "name": "@optimizely/next-js",
+  "version": "0.1.2",
+  "description": "Next.JS Specific logic & components for Optimizely Content Cloud",
+  "main": "index.js",
+  "sideEffects": false,
+  "scripts": {
+    "test": "test/index.js",
+    "prebuild": "npx shx rm -rf ./dist ./cjs",
+    "build": "npx tsc --build .\\tsconfig.cjs.json .\\tsconfig.json",
+    "postbuild": "npx renamer --find .js --replace .cjs --path-element ext ./cjs/**/*.js && npx opti-cjsUpdate ./cjs/**/*.cjs",
+    "watch": "tsc --build .\\tsconfig.json --watch"
+  },
+  "keywords": [
+    "Optimizely",
+    "CMS"
+  ],
+  "author": "Remko Jantzen",
+  "license": "Apache-2.0",
+  "private": "true",
+  "devDependencies": {
+    "@optimizely/build-tools": "file:../tools",
+    "@optimizely/cms": "file:../cms",
+    "cross-fetch": "^3.0.6",
+    "next": "^12.0",
+    "next-auth": "^4.1.0",
+    "renamer": "^4.0.0",
+    "shx": "^0.3.4",
+    "typescript": "^4.6.2"
+  },
+  "peerDependencies": {
+    "@optimizely/cms": "file:../cms",
+    "cross-fetch": "^3.0.6",
+    "next": "^12.0",
+    "next-auth": "^4.1.0"
+  }
+}

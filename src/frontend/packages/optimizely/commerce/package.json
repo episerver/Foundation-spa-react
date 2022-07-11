@@ -1,0 +1,21 @@
+{
+  "name": "@optimizely/commerce",
+  "version": "0.0.1",
+  "description": "React Library for Optimizely Commerce",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "test/index.js",
+    "build": "tsc --build .\\tsconfig.cjs.json .\\tsconfig.json",
+    "watch": "tsc --build .\\tsconfig.cjs.json .\\tsconfig.json --watch"
+  },
+  "keywords": [
+    "Optimizely",
+    "CMS"
+  ],
+  "author": "Remko Jantzen",
+  "license": "Apache-2.0",
+  "private": "true",
+  "dependencies": {
+    "@optimizely/cms": "file:../cms"
+  }
+}

@@ -1,0 +1,7 @@
+App_Data/blobs/
+log.txt
+obj/
+bin/
+.vs/
+License.config
+appsettings.*.json

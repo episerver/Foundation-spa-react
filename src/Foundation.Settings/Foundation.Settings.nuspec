@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Foundation.Settings</id>
+    <version>1.0.0</version>
+    <title>Foundation Settings</title>
+    <authors>Optimizely SA Team</authors>
+    <owners>Optimizely SA Team</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <iconUrl></iconUrl>
+    <projectUrl>https://optimizely.com</projectUrl>
+    <releaseNotes>
+    </releaseNotes>
+    <description>Adds the ability to provide editor controlled site settings</description>
+    <tags>EPiServerModulePackage</tags>
+    <dependencies>
+      <dependency id="EPiServer.CMS.Core" version="[12.3.0,13.0.0)" />
+      <dependency id="EPiServer.CMS.UI.Core" version="[12.3.0,13.0.0)" />
+      <dependency id="EPiServer.ContentDeliveryApi.Core" version="[3.0.0,4.0.0)" />
+    </dependencies>
+  </metadata>
+  <!--<files>
+    <file src="Web.Config.Transform" target="content\" />
+    <file src="modules\_protected\KinAndCarta.Connect.Webhooks\**\*" target="content\modules\_protected\KinAndCarta.Connect.Webhooks\" />
+    <file src="bin\KinAndCarta.Connect.Webhooks.dll" target="lib\net472\" />
+  </files>-->
+</package>

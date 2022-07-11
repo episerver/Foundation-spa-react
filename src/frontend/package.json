@@ -1,0 +1,41 @@
+{
+  "name": "frontend",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "dev": "next dev",
+    "prebuild": "npx opti-cms website export",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "preexport": "npm run build",
+    "export": "next export",
+    "start-static": "serve out",
+    "schema-generate": "npx opti-cms types --wt"
+  },
+  "workspaces": [
+    "packages/optimizely/*",
+    "packages/foundation/*"
+  ],
+  "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@mui/icons-material": "^5.3.1",
+    "@mui/material": "^5.4.0",
+    "@optimizely/optimizely-sdk": "^4.9.1",
+    "dotenv": "^16",
+    "dotenv-expand": "^8",
+    "next": "^12",
+    "next-auth": "^4.2.1",
+    "react": "^18",
+    "react-dom": "^18",
+    "sharp": "^0.30.2"
+  },
+  "devDependencies": {
+    "@types/node": "^17",
+    "@types/react": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "^12",
+    "typescript": "^4.5"
+  }
+}

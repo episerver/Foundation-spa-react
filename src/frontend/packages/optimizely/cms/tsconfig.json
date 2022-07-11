@@ -1,0 +1,37 @@
+{
+  "include": ["src"],
+  "compilerOptions": {
+    // Set build target
+    "target": "ES2020",
+    "module": "ES2020",
+    "lib": ["ES2020", "ES2020.Promise", "ES2020.String", "ES2020.BigInt", "DOM", "DOM.Iterable"],
+
+    // Set Output & Module resolution
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "declaration": true,
+    "sourceMap": true,
+    "incremental": false,
+
+    // Language checking
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "importHelpers": true,
+    "removeComments": false, // Some Modules have Webpack specific comments to allow lazy loading
+    "skipLibCheck": true,
+    "paths": {
+      "@components": ["./src/components"],
+      "@components/*": ["./src/components/*"]
+    },
+
+    // React component support
+    "jsx": "preserve",
+    "allowSyntheticDefaultImports": true, // Needed to import the main React variable
+    "esModuleInterop": true, // Needed for React components
+  },
+  
+  "exclude": ["node_modules", "tests", "dist", "cjs"]
+}

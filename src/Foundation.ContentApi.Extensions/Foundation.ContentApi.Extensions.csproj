@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<Authors>Remko Jantzen</Authors>
+		<Description>Extension to the ContentDelivery API to allow for Edit Mode access to the content</Description>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="3.4.0" />
+		<PackageReference Include="EPiServer.ContentDeliveryApi.Search" Version="3.4.0" />
+	</ItemGroup>
+</Project>

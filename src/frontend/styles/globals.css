@@ -1,0 +1,30 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: #fff;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.debug-info {
+  margin: 2rem auto;
+  width: 1200px;
+  max-width: 85%;
+  font-size: 0.8rem;
+}
+.debug-info dt {
+  font-weight: bold;
+}
+.debug-info dt::after {
+  content: ":"
+}

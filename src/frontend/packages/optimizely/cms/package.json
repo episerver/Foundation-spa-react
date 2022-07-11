@@ -1,0 +1,41 @@
+{
+  "name": "@optimizely/cms",
+  "version": "0.1.2",
+  "description": "React Library for Optimizely CMS",
+  "main": "dist/index.js",
+  "sideEffects": false,
+  "scripts": {
+    "prebuild": "npx shx rm -rf ./dist ./cjs",
+    "build": "npx tsc --build .\\tsconfig.cjs.json .\\tsconfig.json",
+    "postbuild": "npx renamer --find .js --replace .cjs --path-element ext ./cjs/**/*.js && npx opti-cjsUpdate ./cjs/**/*.cjs",
+    "compile": "npx tsc --build .\\tsconfig.json",
+    "watch": "npx tsc --build .\\tsconfig.json --watch",
+    "compile-cjs": "npx tsc --build .\\tsconfig.cjs.json",
+    "watch-cjs": "npx tsc --build .\\tsconfig.cjs.json --watch"
+  },
+  "keywords": [
+    "Optimizely",
+    "CMS"
+  ],
+  "author": "Remko Jantzen",
+  "license": "Apache-2.0",
+  "private": "true",
+  "peerDependencies": {
+    "cross-fetch": "^3.0.6",
+    "encoding": "^0.1.13",
+    "node-fetch": "^3",
+    "react": "^18.0.0",
+    "swr": "^1.2.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18",
+    "cross-fetch": "^3.0.6",
+    "encoding": "^0.1.13",
+    "node-fetch": "^3",
+    "react": "^18.0.0",
+    "renamer": "^4.0.0",
+    "shx": "^0.3.4",
+    "swr": "^1.2.2",
+    "typescript": "^4.5"
+  }
+}

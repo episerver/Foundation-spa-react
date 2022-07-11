@@ -1,0 +1,7 @@
+{
+    "$schema": "https://schema.episerver.net/paasportal/2022-03-24/platformschema.json", 
+    "entrypoint": "Headless.Cms.dll", 
+    "platformPackages": [ 
+        { "name": "NodeJs", "version": 16 } 
+    ]
+}
