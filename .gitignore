@@ -4,3 +4,4 @@ pub/*/
 .vs
 tools/*.local.config*
 *.old
+FolderProfile.*.pubxml*
