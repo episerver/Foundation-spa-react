@@ -10,9 +10,6 @@ const nextConfig = withOptimizelyConfig({
         formats: ['image/avif', 'image/webp'],
         domains: ['localhost']
     },
-    experimental: {
-        concurrentFeatures: true,
-    },
     swcMinify: true
 }, optiWebsite)
 

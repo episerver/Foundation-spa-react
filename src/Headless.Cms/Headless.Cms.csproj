@@ -6,7 +6,7 @@
 		<RootNamespace>HeadlessCms</RootNamespace>
 		<!-- Prepare for a nullable codebase -->
 		<Nullable>warnings</Nullable>
-		<Version>1.0.0.3</Version>
+		<Version>1.0.0.4</Version>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Authors>Remko Jantzen / Optimizely SA Team</Authors>
@@ -45,7 +45,7 @@
 		<PackageReference Include="EPiServer.ContentManagementApi" Version="3.4.0" />
 		<PackageReference Include="EPiServer.Find.Cms" Version="14.0.4" />
 		<PackageReference Include="EPiServer.Labs.BlockEnhancements" Version="1.1.1" />
-		<PackageReference Include="EPiServer.Labs.LanguageManager" Version="5.1.0" />
+		<PackageReference Include="EPiServer.Labs.LanguageManager" Version="5.1.1" />
 		<PackageReference Include="EPiServer.Labs.LinkItemProperty" Version="1.0.2" />
 		<PackageReference Include="EPiServer.Labs.ProjectEnhancements" Version="1.0.0" />
 		<PackageReference Include="EPiServer.OpenIDConnect" Version="3.4.0" />
@@ -61,8 +61,8 @@
 	  
 		<!-- EPiServer.Forms is not yet supported within Headless CMS Builds, so the API Package has been disabled. -->
 		<PackageReference Include="EPiServer.Forms" Version="5.2.0" />
-		<PackageReference Include="EPiServer.ConnectForMarketingAutomation" Version="6.0.0" />
-		<PackageReference Include="EPiServer.Marketing.Automation.Forms" Version="3.0.0" />
+		<PackageReference Include="EPiServer.ConnectForMarketingAutomation" Version="6.1.0" />
+		<PackageReference Include="EPiServer.Marketing.Automation.Forms" Version="3.1.0" />
 		<!--<PackageReference Include="EPiServer.ContentDeliveryApi.Forms" Version="3.0.0-pre-000226" />-->
 
 		<!-- Conflict resolution -->

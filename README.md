@@ -1,4 +1,7 @@
 # Foundation Spa React <!-- omit in toc -->
+
+:warning: There is no backwards code compatibility between the "old" CMS 11 version and the new CMS 12 version.
+
 This is an example project showing a decoupled backend (Optimizely Content Cloud) and frontend (Next.JS), which retains the editor experience and capability of a "traditional" Optimizely Content Cloud implementation.
 
 - [1. Running locally](#1-running-locally)
@@ -34,3 +37,5 @@ Details: [Frontend docs](src/frontend/README.md)
 
 ## 2. Deploying
 Both applications do not have special components and can be deployed to hosting environments for their respective tech-stack.
+
+The "tools" folder contains an example script allowing you to build the Headless.Cms project and deploy it into DXP. [Example script](tools/dxp-deploy.ps1)

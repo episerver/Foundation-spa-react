@@ -25,7 +25,9 @@ namespace Foundation.Settings.Models
             {
                 if (ContentLink.CompareToIgnoreWorkID(SettingsRoot))
                 {
-                    return _localizationService.Service.GetString("/contentrepositories/globalsettings/Name");
+                    var localizedName = _localizationService.Service.GetString("/contentrepositories/globalsettings/Name");
+                    if (!string.IsNullOrWhiteSpace(localizedName))
+                        return localizedName;
                 }
                 return base.Name;
             }

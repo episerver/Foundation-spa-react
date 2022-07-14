@@ -19,7 +19,7 @@ namespace Foundation.Settings.Infrastructure
 {
     public class SettingsService : ISettingsService
     {
-        public const string GlobalSettingsRootName = "Global Settings Root";
+        //public const string GlobalSettingsRootName = "Global Settings Root";
         private readonly IContentRepository _contentRepository;
         private readonly IContentVersionRepository _contentVersionRepository;
         private readonly ContentRootService _contentRootService;

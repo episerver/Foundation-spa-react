@@ -57,10 +57,10 @@ namespace Foundation.ContentActionsApi.Infrastructure
             var language = httpContext.Request.GetLanguage();
             values["language"] = language;
             IContent contentItem;
-            if (Guid.TryParse(contentId, out Guid contentGuid))
-                contentItem = ContentLoader.Get<IContent>(contentGuid, language);
-            else if (ContentReference.TryParse(contentId, out ContentReference contentRef) && ContentLoader.TryGet(contentRef, language, out IContent loadedContent))
-                contentItem = loadedContent;
+            if (Guid.TryParse(contentId, out Guid contentGuid) && ContentLoader.TryGet(contentGuid, language, out IContent contentByGuid))
+                contentItem = contentByGuid;
+            else if (ContentReference.TryParse(contentId, out ContentReference contentRef) && ContentLoader.TryGet(contentRef, language, out IContent contentByReference))
+                contentItem = contentByReference;
             else
             {
                 values["controller"] = "ContentActionApiError";

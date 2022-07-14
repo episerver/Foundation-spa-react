@@ -41,7 +41,7 @@ namespace Foundation.Settings.Infrastructure
 
         public override string Name => LocalizationService.Current.GetString("/contentrepositories/globalsettings/name");
 
-        public override IEnumerable<ContentReference> Roots => Settings.Service.GlobalSettingsRoot == null ? new ContentReference[0] : new[] { Settings.Service.GlobalSettingsRoot };
+        public override IEnumerable<ContentReference> Roots => Settings.Service.GlobalSettingsRoot is null ? Array.Empty<ContentReference>() : new[] { Settings.Service.GlobalSettingsRoot };
 
         // public override string SearchArea => GlobalSettingsSearchProvider.SearchArea;
 
