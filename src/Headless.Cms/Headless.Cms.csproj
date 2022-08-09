@@ -23,9 +23,13 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <None Remove="App_Data\certificates\my.pfx" />
+	  <None Remove="App_Data\foundation.episerverdata" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Content Include="App_Data\certificates\my.pfx">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="App_Data\foundation.episerverdata">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
 	</ItemGroup>
@@ -37,19 +41,20 @@
 		  <PackagePath>\</PackagePath>
 		</None>
 		<PackageReference Include="EPiServer.CloudPlatform.Cms" Version="1.0.5" />
-		<PackageReference Include="EPiServer.CMS" Version="12.9.0" />
-		<PackageReference Include="EPiServer.CMS.UI.VisitorGroups" Version="12.9.0" />
-		<PackageReference Include="EPiServer.ContentDefinitionsApi" Version="3.4.0" />
-		<PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="3.4.0" />
-		<PackageReference Include="EPiServer.ContentDeliveryApi.Search" Version="3.4.0" />
-		<PackageReference Include="EPiServer.ContentManagementApi" Version="3.4.0" />
+		<PackageReference Include="EPiServer.CMS" Version="12.10.0" />
+		<PackageReference Include="EPiServer.CMS.UI.VisitorGroups" Version="12.10.0" />
+		<PackageReference Include="EPiServer.ContentDefinitionsApi" Version="3.5.0" />
+		<PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="3.5.0" />
+		<PackageReference Include="EPiServer.ContentDeliveryApi.Forms" Version="3.5.0" />
+		<PackageReference Include="EPiServer.ContentDeliveryApi.Search" Version="3.5.0" />
+		<PackageReference Include="EPiServer.ContentManagementApi" Version="3.5.0" />
 		<PackageReference Include="EPiServer.Find.Cms" Version="14.0.4" />
 		<PackageReference Include="EPiServer.Labs.BlockEnhancements" Version="1.1.1" />
 		<PackageReference Include="EPiServer.Labs.LanguageManager" Version="5.1.1" />
 		<PackageReference Include="EPiServer.Labs.LinkItemProperty" Version="1.0.2" />
 		<PackageReference Include="EPiServer.Labs.ProjectEnhancements" Version="1.0.0" />
-		<PackageReference Include="EPiServer.OpenIDConnect" Version="3.4.0" />
-		<PackageReference Include="EPiServer.OpenIDConnect.UI" Version="3.4.0" />
+		<PackageReference Include="EPiServer.OpenIDConnect" Version="3.5.0" />
+		<PackageReference Include="EPiServer.OpenIDConnect.UI" Version="3.5.0" />
 		<PackageReference Include="UNRVLD.ODP.VisitorGroups" Version="1.2.0.23" />
 
 		<!-- Lab projects broken by CMS 12.8 -->
@@ -66,7 +71,7 @@
 		<!--<PackageReference Include="EPiServer.ContentDeliveryApi.Forms" Version="3.0.0-pre-000226" />-->
 
 		<!-- Conflict resolution -->
-		<PackageReference Include="EPiServer.CMS.UI" Version="12.9.0" /><!-- Resolve dependency warning by EPiServer.CMS.TinyMce -->
+		<PackageReference Include="EPiServer.CMS.UI" Version="12.10.0" /><!-- Resolve dependency warning by EPiServer.CMS.TinyMce -->
 		<PackageReference Include="EPiServer.Hosting" Version="12.8.0" /><!-- EPiServer.CMS 12.7.0 has an explicit dependency on EPiServer.Hosting 12.4.2, causing errors -->
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" /><!-- EPiServer.CMS.AspNetCore.Mvc declares a dependency on 5.x, however EPiServer.CloudPlatform.Cms declares a dependency on 6.x -->
 	</ItemGroup>

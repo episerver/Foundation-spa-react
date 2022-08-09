@@ -24,10 +24,10 @@
 	</ItemGroup>
 
     <ItemGroup>
-		<PackageReference Include="EPiServer.CMS.UI.Core" Version="12.9.0" />
+		<PackageReference Include="EPiServer.CMS.UI.Core" Version="12.10.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.7" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.2" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.3.2" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.4.0" />
     </ItemGroup>
 
     <ItemGroup>

@@ -15,14 +15,17 @@ namespace HeadlessCms.Infrastructure.Installers
     {
         private readonly ILogger<SchemaInstaller> _logger;
         private readonly IEnumerable<IManifestSectionHandler> _manifestSectionHandlers;
+        private readonly IEnumerable<JsonConverter> _converters;
         public string InitialSchemaFile => "foundation.contentmanifest.json";
         public override int Order => 10;
 
         public SchemaInstaller(
             IEnumerable<IManifestSectionHandler> manifestSectionHandlers,
-            ILogger<SchemaInstaller> logger
+            ILogger<SchemaInstaller> logger,
+            IEnumerable<JsonConverter> converters
         ) {
             _manifestSectionHandlers = manifestSectionHandlers;
+            _converters = converters;
             _logger = logger;
         }
 
@@ -32,7 +35,9 @@ namespace HeadlessCms.Infrastructure.Installers
             {
                 using var schemaData = new StreamReader(schema.CreateReadStream());
                 var jsonData = schemaData.ReadToEnd();
-                var manifest = JsonConvert.DeserializeObject<ManifestModel>(jsonData, new JsonSerializerSettings { });
+                var manifest = JsonConvert.DeserializeObject<ManifestModel>(jsonData, new JsonSerializerSettings { 
+                    Converters = _converters.ToList()
+                });
                 if (manifest is null)
                     throw new Exception("Invalid schema file");
                 var sections = string.Join(", ", manifest.Sections.Select(x => x.Key));

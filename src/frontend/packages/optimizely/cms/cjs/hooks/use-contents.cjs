@@ -45,7 +45,9 @@ const contentsFetcher = (contentUri, api) => tslib_1.__awaiter(void 0, void 0, v
     });
     if (scope)
         console.log("TODO: Add content filtering & recursion");
-    if (!data || data.length != loadableContentIds.length)
+    if (!data)
+        return [];
+    if (data.length != loadableContentIds.length)
         console.warn(`Not all content found: ${contentUri.toString()}, found ${data.length} of ${contentIds.length} items`);
     return data;
 });

@@ -40,7 +40,9 @@ export const contentsFetcher = async (contentUri, api) => {
     });
     if (scope)
         console.log("TODO: Add content filtering & recursion");
-    if (!data || data.length != loadableContentIds.length)
+    if (!data)
+        return [];
+    if (data.length != loadableContentIds.length)
         console.warn(`Not all content found: ${contentUri.toString()}, found ${data.length} of ${contentIds.length} items`);
     return data;
 };

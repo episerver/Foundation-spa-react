@@ -32,20 +32,35 @@ function getPagesForLocale(api, locale, options) {
         const first = 0;
         const take = (_a = options === null || options === void 0 ? void 0 : options.batchSize) !== null && _a !== void 0 ? _a : 100;
         const filter = 'ContentType/any(t:t eq \'Page\')';
-        const resultSet = yield api.search(undefined, filter, undefined, first, take, false, {
-            branch: locale
-        });
+        let resultSet;
+        try {
+            resultSet = yield api.search(undefined, filter, undefined, first, take, false, {
+                branch: locale
+            });
+        }
+        catch (e) {
+            if ((options === null || options === void 0 ? void 0 : options.debug) === true)
+                console.error(`Error while fetching page data (Start: ${first}, Items: ${take})`, e);
+            return [];
+        }
         if (!resultSet)
             return [];
         const totalPages = Math.ceil(resultSet.totalMatching / take);
         for (var i = 1; i < totalPages; i++) {
             const start = first + (i * take);
-            const nextResult = yield api.search(undefined, filter, undefined, start, take, false, {
-                branch: locale
-            });
-            if (!nextResult)
+            try {
+                const nextResult = yield api.search(undefined, filter, undefined, start, take, false, {
+                    branch: locale
+                });
+                if (!nextResult)
+                    continue;
+                nextResult.results.forEach(x => resultSet === null || resultSet === void 0 ? void 0 : resultSet.results.push(x));
+            }
+            catch (e) {
+                if ((options === null || options === void 0 ? void 0 : options.debug) === true)
+                    console.error(`Error while fetching page data (Start: ${start}, Items: ${take})`, e);
                 continue;
-            nextResult.results.forEach(x => resultSet.results.push(x));
+            }
         }
         const respData = resultSet.results.filter(x => isNonEmptyString(x === null || x === void 0 ? void 0 : x.url));
         return respData;

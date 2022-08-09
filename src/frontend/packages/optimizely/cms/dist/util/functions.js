@@ -25,20 +25,35 @@ export async function getPagesForLocale(api, locale, options) {
     const first = 0;
     const take = options?.batchSize ?? 100;
     const filter = 'ContentType/any(t:t eq \'Page\')';
-    const resultSet = await api.search(undefined, filter, undefined, first, take, false, {
-        branch: locale
-    });
+    let resultSet;
+    try {
+        resultSet = await api.search(undefined, filter, undefined, first, take, false, {
+            branch: locale
+        });
+    }
+    catch (e) {
+        if (options?.debug === true)
+            console.error(`Error while fetching page data (Start: ${first}, Items: ${take})`, e);
+        return [];
+    }
     if (!resultSet)
         return [];
     const totalPages = Math.ceil(resultSet.totalMatching / take);
     for (var i = 1; i < totalPages; i++) {
         const start = first + (i * take);
-        const nextResult = await api.search(undefined, filter, undefined, start, take, false, {
-            branch: locale
-        });
-        if (!nextResult)
+        try {
+            const nextResult = await api.search(undefined, filter, undefined, start, take, false, {
+                branch: locale
+            });
+            if (!nextResult)
+                continue;
+            nextResult.results.forEach(x => resultSet?.results.push(x));
+        }
+        catch (e) {
+            if (options?.debug === true)
+                console.error(`Error while fetching page data (Start: ${start}, Items: ${take})`, e);
             continue;
-        nextResult.results.forEach(x => resultSet.results.push(x));
+        }
     }
     const respData = resultSet.results.filter(x => isNonEmptyString(x?.url));
     return respData;

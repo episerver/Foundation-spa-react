@@ -30,37 +30,50 @@ export function normalizeUrl(input: string): string
  * @param       locale      The language branch to load the pages for
  * @returns     A promise resolving in the loaded content items
  */
- export async function getPagesForLocale(api: ContentDelivery.IContentDeliveryAPI, locale: string, options ?: getPagesForLocaleOptions): Promise<Models.IContentData[]>
- {
-     if(options?.debug === true)
-        console.info(`Retrieving all pages for locale: ${ locale }`)
+export async function getPagesForLocale(api: ContentDelivery.IContentDeliveryAPI, locale: string, options ?: getPagesForLocaleOptions): Promise<Models.IContentData[]>
+{
+    if(options?.debug === true)
+       console.info(`Retrieving all pages for locale: ${ locale }`)
 
-     const first = 0
-     const take = options?.batchSize ?? 100
+    const first = 0
+    const take = options?.batchSize ?? 100
  
-     const filter = 'ContentType/any(t:t eq \'Page\')'
+    const filter = 'ContentType/any(t:t eq \'Page\')'
  
-     const resultSet = await api.search(undefined, filter, undefined, first, take, false, {
-         branch: locale
-     })
-     if (!resultSet)
-         return []
-     const totalPages = Math.ceil(resultSet.totalMatching / take)
-     for (var i = 1; i < totalPages; i++)
-     {
-         const start = first + (i * take)
-         const nextResult = await api.search(undefined, filter, undefined, start, take, false, {
-             branch: locale
-         })
-         if (!nextResult) 
-             continue
-         nextResult.results.forEach(x => resultSet.results.push(x))
-     }
- 
-     const respData : Models.IContentData[] = resultSet.results.filter(x => isNonEmptyString(x?.url))
- 
-     return respData
- }
+    let resultSet : ContentDelivery.ContentSearchResult<IContentData> | undefined
+    try {
+        resultSet = await api.search(undefined, filter, undefined, first, take, false, {
+            branch: locale
+        })
+    } catch (e) {
+        if (options?.debug === true)
+            console.error(`Error while fetching page data (Start: ${ first }, Items: ${ take })`, e)
+        return []
+    }
+    if (!resultSet)
+        return []
+    const totalPages = Math.ceil(resultSet.totalMatching / take)
+    for (var i = 1; i < totalPages; i++)
+    {
+        const start = first + (i * take)
+        try {
+            const nextResult = await api.search(undefined, filter, undefined, start, take, false, {
+                branch: locale
+            })
+            if (!nextResult) 
+                continue
+            nextResult.results.forEach(x => resultSet?.results.push(x))
+        } catch (e) {
+            if (options?.debug === true)
+                console.error(`Error while fetching page data (Start: ${ start }, Items: ${ take })`, e)
+            continue
+        }
+    }
+
+    const respData : Models.IContentData[] = resultSet.results.filter(x => isNonEmptyString(x?.url))
+
+    return respData
+}
 
  /**
   * Test if the given variable is both of type string and contains

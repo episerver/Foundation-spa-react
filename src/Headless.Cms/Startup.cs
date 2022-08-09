@@ -123,7 +123,7 @@ namespace HeadlessCms
             services.AddContentSearchApi(OpenIDConnectOptionsDefaults.AuthenticationScheme, options => {
                 options.MaximumSearchResults = maxSearchResults;
             });
-            //services.AddFormsApi();
+            services.AddFormsApi();
             services.AddContentManagementApi(OpenIDConnectOptionsDefaults.AuthenticationScheme, options => {});
             services.AddContentDefinitionsApi(OpenIDConnectOptionsDefaults.AuthenticationScheme, options => {});
 
@@ -236,16 +236,13 @@ namespace HeadlessCms
             }
 
             #region Standard .Net Web Application
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseResponseCompression();
             //app.UseResponseCaching();
             app.UseStaticFiles();
-            app.UseRouting();
             app.UseCors();
-            #endregion
-
-            #region Authentication / Authorization
-            app.UseAuthentication();
-            app.UseAuthorization();
             #endregion
 
             #region Headless.CMS Extensions & Services

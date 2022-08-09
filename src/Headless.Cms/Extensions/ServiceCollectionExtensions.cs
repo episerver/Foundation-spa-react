@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.Extensions.DependencyInjection.Extensions
 {
@@ -19,6 +20,20 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 
             // Add installer
             services.TryAddEnumerable(ServiceDescriptor.Singleton(typeof(IFirstRequestInitializer), typeof(ContentInstaller)));
+
+            // Add JSON Data Converters for Content Definitions
+            // So the converters needed to make the system understand the definition structure are internal, but
+            // registered within the container. So we'll be using reflection to find them and make them available
+            // as instance of JsonConverter.
+            var jsonconverters = services
+                .Where(x => x.ImplementationType?.IsAssignableTo(typeof(JsonConverter)) ?? false)
+                .Where(x => x.ImplementationType?.FullName?.Contains("ContentDefinitionsApi") ?? false)
+                .Select(x => {
+                    if (x.ImplementationType is not null)
+                        return ServiceDescriptor.Singleton(typeof(JsonConverter), x.ImplementationType);
+                    return null;
+                }).Cast<ServiceDescriptor>().ToList();
+            jsonconverters.ForEach(x => services.TryAddEnumerable(x));
             return services;
         }
 
