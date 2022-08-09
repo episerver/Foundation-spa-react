@@ -22,9 +22,9 @@ In order to run a local development installation, your environment needs to meet
 After checkout, open a terminal, navigate to the headless-cms folder and run the following commands to create the database and admin user:
 
 ```
-dotnet-episerver create-cms-database .\HeadlessCms.csproj -S localhost -dn FoundationHeadlessCms -E
+dotnet-episerver create-cms-database .\Headless.Cms.csproj -S localhost -dn FoundationHeadlessCms -E
 
-dotnet-episerver add-admin-user .\HeadlessCms.csproj -u [username] -e [email] -p [password] -c EPiServerDB
+dotnet-episerver add-admin-user .\Headless.Cms.csproj -u [username] -e [email] -p [password] -c EPiServerDB
 ```
 
 *Notice:* By default the created connection string assumes an un-encryped connection to the database. However, by default MsSQL uses encrypted connections. If the last command failed due to connection errors, change the connection string within the appsettings.json. Add `Encrypt=True;TrustServerCertificate=True;` after the generated connection string. (If the generated connection string doesn't end in a `;` add that before `Encrypt=`).
