@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Primitives;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO.Compression;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
+using Yarp.ReverseProxy.Forwarder;
 
 namespace HeadlessCms.Infrastructure.NodeJsMiddleware
 {
@@ -17,18 +12,21 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
         private readonly ILogger<NodeJsMiddleware> _logger;
         private readonly NodeJsProcess _process;
         private readonly NodeJsMiddlewareOptions _options;
+        private readonly NodeJsForwarder _forwarder;
 
         public NodeJsMiddleware(
             RequestDelegate next,
             ILogger<NodeJsMiddleware> logger,
             NodeJsProcess process,
-            NodeJsMiddlewareOptions options
+            NodeJsMiddlewareOptions options,
+            NodeJsForwarder forwarder
         )
         {
             _next = next;
             _logger = logger;
             _options = options;
             _process = process;
+            _forwarder = forwarder;
         }
 
         public async ValueTask DisposeAsync()
@@ -37,11 +35,9 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
             await _process.DisposeAsync();
         }
 
-        public readonly IEnumerable<string> ReservedResponseHeaders = new String[] { "Connection", "Transfer-Encoding", "Keep-Alive", "Upgrade", "Proxy-Connection" };
-
         public async Task InvokeAsync(HttpContext context)
         {
-            if (_options.Disabled)
+            if (_options.Disabled || !ShouldHandleRequest(context.Request))
             {
                 await _next(context);
                 return;
@@ -49,33 +45,19 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
 
             var proc = await _process.WhenReady();
             if (proc is not null) {
-                var response = await proc.ForwardHttpRequest(context.Request);
-                if (response is not null)
-                {
-                    if (response.IsSuccessStatusCode)
-                    {
-                        context.Response.StatusCode = (int)response.StatusCode;
-                        foreach (var header in response.Headers.Where(hp => !ReservedResponseHeaders.Contains(hp.Key)))
-                        {
-                            context.Response.Headers.Add(new KeyValuePair<string, StringValues>(header.Key, header.Value.ToArray()));
-                        }
-                        await response.Content.CopyToAsync(context.Response.Body);
-                        //await new GZipStream(response.Content.ReadAsStream(), CompressionMode.Decompress, true).CopyToAsync(context.Response.Body);
-                        return;
-                    }
-                    if (response.StatusCode == HttpStatusCode.NotModified)
-                    {
-                        context.Response.StatusCode = StatusCodes.Status304NotModified;
-                        foreach (var header in response.Headers.Where(hp => !ReservedResponseHeaders.Contains(hp.Key)))
-                        {
-                            context.Response.Headers.Add(new KeyValuePair<string, StringValues>(header.Key, header.Value.ToArray()));
-                        }
-                        return;
-                    }
+                var result = await _forwarder.ProxyRequest(context);
+                if (result == ForwarderError.None) {
+                    return; // This is final middleware, so we won't continue if we have a result
                 }
-                
             }
             await _next(context);
+        }
+
+        protected bool ShouldHandleRequest(HttpRequest req)
+        {
+            if (req.Path.StartsWithSegments("/globalassets"))
+                return false;
+            return true;
         }
     }
 }

@@ -1,7 +1,13 @@
 ﻿using HeadlessCms.Infrastructure.NodeJsMiddleware;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Configuration;
+using System.Diagnostics;
+using System.Net;
+using System.Net.Http;
+using Yarp.ReverseProxy.Forwarder;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -16,9 +22,12 @@ namespace Microsoft.AspNetCore.Builder
         /// <returns>The application scope to continue configuration</returns>
         public static IApplicationBuilder UseNodeJs(this IApplicationBuilder app)
         {
+            
             var service = app.ApplicationServices.GetService<NodeJsMiddlewareOptions>();
-            if (service is null || (service is not null && !service.Disabled))
+            if (service is not null && !service.Disabled)
+            {
                 app.UseMiddleware<NodeJsMiddleware>();
+            }
             return app;
         }
     }
@@ -32,6 +41,9 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
         {
             
             services
+                .AddHttpForwarder()
+                .AddSingleton<NodeJsForwarder>()
+                .AddServiceAccessor<NodeJsForwarder>()
                 .AddSingleton<NodeJsProcess>()
                 .PostConfigure<NodeJsMiddlewareOptions>(options => {
                     config.GetSection(NodeJsMiddlewareOptions.Section).Bind(options);

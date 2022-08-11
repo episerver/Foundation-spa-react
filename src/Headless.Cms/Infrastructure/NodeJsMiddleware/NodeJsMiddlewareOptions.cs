@@ -9,7 +9,9 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
 
         public bool UseHttps { get; set; } = false;
 
-        public int Port { get; set; } = 3000;
+        public int Port { get; set; } = 3080;
+
+        public int ProxyTimeout { get; set; } = 10;
 
         public string Host { get; set; } = "localhost";
 

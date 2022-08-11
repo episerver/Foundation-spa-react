@@ -6,6 +6,7 @@ using EPiServer.Globalization;
 using EPiServer.Web;
 using Foundation.Settings.Infrastructure;
 using Foundation.Settings.Models;
+using Foundation.Settings.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,6 +15,7 @@ using System.Globalization;
 using System.Linq;
 
 using ApiIContextModeResolver = EPiServer.ContentApi.Core.Internal.IContextModeResolver;
+using EPiServer.ContentApi.Core.Serialization.Models;
 
 namespace Foundation.Settings.Controllers
 {
@@ -122,14 +124,18 @@ namespace Foundation.Settings.Controllers
 
             var group = dict.First(kvp => string.Equals(kvp.Key.Name, settingsGroup, StringComparison.OrdinalIgnoreCase)).Value;
             var context = new ConverterContext(group.ContentLink, language ?? ContentLanguage.PreferredCulture, ContentApiOptions, ContextMode.Default, string.Empty, string.Empty, true);
-            
-            var contentModel = ContentConvertingService.Convert(group, context);
-            if (contentModel == null)
-                return BadRequest();
-            var responseData = new SettingsGroupResponse(site, settingsGroup, contentModel);
-            var response = new SettingsApiResponse<SettingsGroupResponse>{ Data = responseData };
-            var headers = new Dictionary<string,string>();
-            return new SettingsApiResult<SettingsApiResponse<SettingsGroupResponse>>(response, 200, headers);
+            if (ContentConvertingService.TryConvert(group, context, out var contentModel))
+            {
+                if (contentModel == null)
+                    return BadRequest("Empty Content Model");
+                var responseData = new SettingsGroupResponse(site, settingsGroup, contentModel);
+                var response = new SettingsApiResponse<SettingsGroupResponse> { Data = responseData };
+                var headers = new Dictionary<string, string>();
+                return new SettingsApiResult<SettingsApiResponse<SettingsGroupResponse>>(response, 200, headers);
+            } else
+            {
+                return BadRequest("Content Model could not be converted");
+            }
         }
 
         [NonAction]

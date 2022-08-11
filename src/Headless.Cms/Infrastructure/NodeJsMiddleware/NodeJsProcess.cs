@@ -1,23 +1,23 @@
-﻿using EPiServer.ServiceLocation;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 #nullable enable
 namespace HeadlessCms.Infrastructure.NodeJsMiddleware
 {
+    /// <summary>
+    /// Basic sub-process governor to start the Node.JS frontend and 
+    /// keep it running during the lifecycle of the .Net backend instance
+    /// </summary>
     public class NodeJsProcess : IAsyncDisposable, IDisposable
     {
         public readonly string READY_MARKER = "===READY===";
 
         private bool _isReady = false;
+
+        private bool _mayRestart = true;
 
         protected readonly NodeJsMiddlewareOptions Options;
 
@@ -41,13 +41,17 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
 
         public NodeJsProcess(
             NodeJsMiddlewareOptions options,
-            ILogger<NodeJsProcess> logger
+            ILogger<NodeJsProcess> logger,
+            IHostApplicationLifetime lifecycle
         ) {
             Options = options;
             Logger = logger;
-            ValidateNodeJsVersion();
+            
             if (!Options.Disabled)
+            {
+                ValidateNodeJsVersion();
                 StartProcess();
+            }
         }
 
         public Task<NodeJsProcess> WhenReady()
@@ -100,7 +104,7 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
                 nodeProcess.OutputDataReceived -= NodeJsProcess_OutputDataReceived;
             }
             Logger.LogWarning("Node.JS Process exited");
-            if (Options.AutoRestart) {
+            if (_mayRestart && Options.AutoRestart) {
                 Logger.LogInformation("Trying to restart process");
                 StartProcess();
             }  else
@@ -119,39 +123,15 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
             if (string.Equals(line, READY_MARKER))
                 IsReady = true;
             if (line is not null)
-                Logger.LogTrace("Node.JS Standard Output: { line }", line);
+                Logger.LogInformation("Node.JS Standard Output: { line }", line);
         }
 
-        public readonly IEnumerable<string> ReservedHeaders = new string[] { "host", "content-type", "content-length" };
-
-        public async ValueTask<HttpResponseMessage> ForwardHttpRequest(HttpRequest request)
-        {
-            if (!IsReady)
-                throw new ApplicationException("HTTP Requests can only be forwared when the process is ready");
-            if (Options.Disabled)
-                throw new ApplicationException("NodeJS is Disabled");
-
-            var handler = new HttpClientHandler()
-            {
-                AutomaticDecompression = DecompressionMethods.All
-            };
-            var nodeClient = new HttpClient();
-            var requestPath = CreateLocalUrl(request);
-            var nodeRequest = new HttpRequestMessage(new HttpMethod(request.Method), requestPath);
-            foreach (var header in request.Headers.Where(hv => !ReservedHeaders.Contains(hv.Key.ToLower()) && hv.Key[..1] != ":"))
-                nodeRequest.Headers.Add(header.Key, (IEnumerable<string>)header.Value);
-            if (request.ContentLength > 0)
-            {
-                nodeRequest.Content = new StreamContent(request.BodyReader.AsStream(true));
-                nodeRequest.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(request.Headers.ContentType);
-                nodeRequest.Content.Headers.ContentLength = request.ContentLength;
-            }
-            return await nodeClient.SendAsync(nodeRequest);
-        }
         public async ValueTask DisposeAsync()
         {
+            _mayRestart = false;
             if (JsProcess is not null)
             {
+                JsProcess.Exited -= JsProcess_Exited;
                 JsProcess.Kill();
                 await JsProcess.WaitForExitAsync();
                 JsProcess.CancelErrorRead();
@@ -162,10 +142,13 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
             }
             GC.SuppressFinalize(this);
         }
+
         public void Dispose()
         {
+            _mayRestart = false;
             if (JsProcess is not null)
             {
+                JsProcess.Exited -= JsProcess_Exited;
                 JsProcess.Kill();
                 JsProcess.WaitForExit();
                 JsProcess.CancelErrorRead();
@@ -176,12 +159,7 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
             }
             GC.SuppressFinalize(this);
         }
-        protected string CreateLocalUrl(HttpRequest request)
-        {
-            var protocol = Options.UseHttps ? "https:" : "http:";
-            var requestPath = $"{ protocol }//{ Options.Host }:{ Options.Port }{ request.Path }{ request.QueryString }";
-            return requestPath;
-        }
+
         protected ProcessStartInfo CreateProcessDescriptor() => new()
         {
             UseShellExecute = false,
@@ -189,7 +167,7 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
             RedirectStandardError = true,
             RedirectStandardInput = true,
             FileName = "node",
-            Arguments = Options.FrontendPath + Options.ScriptName,
+            Arguments = $"{ Options.FrontendPath}{ Options.ScriptName} { Options.Port }",
             WorkingDirectory = Options.FrontendPath
         };
 

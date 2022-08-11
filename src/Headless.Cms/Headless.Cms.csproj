@@ -48,7 +48,11 @@
 		<PackageReference Include="EPiServer.ContentDeliveryApi.Forms" Version="3.5.0" />
 		<PackageReference Include="EPiServer.ContentDeliveryApi.Search" Version="3.5.0" />
 		<PackageReference Include="EPiServer.ContentManagementApi" Version="3.5.0" />
+		<PackageReference Include="EPiServer.Find" Version="14.0.4" />
 		<PackageReference Include="EPiServer.Find.Cms" Version="14.0.4" />
+		<PackageReference Include="EPiServer.Find.Cms.AttachmentFilter" Version="14.0.4" />
+		<PackageReference Include="EPiServer.Find.Framework" Version="14.0.4" />
+		<PackageReference Include="EPiServer.Find.Personalization" Version="14.0.4" />
 		<PackageReference Include="EPiServer.Labs.BlockEnhancements" Version="1.1.1" />
 		<PackageReference Include="EPiServer.Labs.LanguageManager" Version="5.1.1" />
 		<PackageReference Include="EPiServer.Labs.LinkItemProperty" Version="1.0.2" />
@@ -73,7 +77,8 @@
 		<!-- Conflict resolution -->
 		<PackageReference Include="EPiServer.CMS.UI" Version="12.10.0" /><!-- Resolve dependency warning by EPiServer.CMS.TinyMce -->
 		<PackageReference Include="EPiServer.Hosting" Version="12.8.0" /><!-- EPiServer.CMS 12.7.0 has an explicit dependency on EPiServer.Hosting 12.4.2, causing errors -->
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" /><!-- EPiServer.CMS.AspNetCore.Mvc declares a dependency on 5.x, however EPiServer.CloudPlatform.Cms declares a dependency on 6.x -->
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+		<PackageReference Include="Yarp.ReverseProxy" Version="1.1.1" /><!-- EPiServer.CMS.AspNetCore.Mvc declares a dependency on 5.x, however EPiServer.CloudPlatform.Cms declares a dependency on 6.x -->
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Foundation.ContentApi.Extensions\Foundation.ContentApi.Extensions.csproj" />
