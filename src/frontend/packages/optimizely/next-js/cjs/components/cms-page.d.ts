@@ -70,6 +70,12 @@ export declare function getStaticPaths(context: GetStaticPathsContext): Promise<
  * @returns     The Page properties
  */
 export declare function getStaticProps(context: GetStaticPropsContext<OptimizelyCmsPageUrlParams>): Promise<GetStaticPropsResult<OptimizelyCmsPageProps>>;
+/**
+ * Logic for Server Side Rendering of Optimizely CMS Pages, supporting both published and edit mode URLs
+ *
+ * @param param0
+ * @returns
+ */
 export declare const getServerSideProps: GetServerSideProps<OptimizelyCmsPageProps, OptimizelyCmsPageUrlParams, {}>;
 export declare const OptimizelyCmsPage: NextPage<OptimizelyCmsPageProps, OptimizelyCmsPageInitialProps>;
 export default OptimizelyCmsPage;

@@ -25,6 +25,10 @@ export declare type EditModeContentInfo = ContentLink & {
      * selected
      */
     projectId?: number;
+    /**
+     * The content reference, which includes the version number as well if specified
+     */
+    contentReference?: string;
 };
 export declare function isEditModeUrl(currentUrl?: URL | string | null): boolean;
 export declare function getEditModeInfo(currentUrl?: URL | string | null): EditModeContentInfo | undefined;

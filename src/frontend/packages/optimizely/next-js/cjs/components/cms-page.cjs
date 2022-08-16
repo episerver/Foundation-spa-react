@@ -8,6 +8,7 @@ const router_1 = require("next/router");
 const utils_1 = require("@optimizely/cms/utils");
 const cms_1 = require("@optimizely/cms");
 const hooks_1 = require("../hooks");
+const Auth = require("../auth/cms12oidc");
 const inDebugMode = false;
 function isStringArray(toTest) {
     return Array.isArray(toTest) && toTest.every(x => typeof (x) === 'string');
@@ -72,7 +73,7 @@ function getStaticPaths(context) {
         });
         return {
             paths,
-            fallback: true
+            fallback: 'blocking' // Fallback to SSR when there's no SSG version of the page
         };
     });
 }
@@ -105,43 +106,47 @@ function getStaticProps(context) {
     });
 }
 exports.getStaticProps = getStaticProps;
-const getServerSideProps = (_a) => { var _b, _c, _d, _e, _f; return tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    var { req } = _a, context = tslib_1.__rest(_a, ["req"]);
+/**
+ * Logic for Server Side Rendering of Optimizely CMS Pages, supporting both published and edit mode URLs
+ *
+ * @param param0
+ * @returns
+ */
+const getServerSideProps = (_a) => { var _b, _c, _d, _e, _f, _g, _h; return tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    var { req, res } = _a, context = tslib_1.__rest(_a, ["req", "res"]);
     // Firstly, get the current token and return not-found if not present - due to our middleware this shouldn't happen
-    const token = yield (0, jwt_1.getToken)({ req: req });
-    if (!(((_b = token === null || token === void 0 ? void 0 : token.scope) !== null && _b !== void 0 ? _b : '').indexOf("epi_content_management") >= 0 &&
-        (token === null || token === void 0 ? void 0 : token.accessToken))) {
-        console.error("Invalid session");
+    const token = yield (0, jwt_1.getToken)({ req: req, cookieName: (_c = (_b = Auth.Cms12NextAuthOptions.cookies) === null || _b === void 0 ? void 0 : _b.sessionToken) === null || _c === void 0 ? void 0 : _c.name });
+    const hasManagementScope = ((_d = token === null || token === void 0 ? void 0 : token.scope) !== null && _d !== void 0 ? _d : '').indexOf("epi_content_management") >= 0 && (token === null || token === void 0 ? void 0 : token.accessToken) ? true : false;
+    const pageUrl = new URL(decodeURIComponent(context.resolvedUrl), `http://${(_e = req.headers.host) !== null && _e !== void 0 ? _e : 'localhost'}`);
+    const editInfo = utils_1.EditMode.getEditModeInfo(pageUrl);
+    if (!hasManagementScope && editInfo) {
         return {
-            notFound: true
+            redirect: {
+                destination: "/api/auth/signin",
+                permanent: false
+            }
         };
     }
-    // Now, let's prepare the content to load
-    const pageSegments = context.query.page;
+    // Get the locale
+    const pageSegments = pageUrl.pathname.split("/").filter(x => x);
     if (!isStringArray(pageSegments))
         return { notFound: true };
     const urlLocale = pageSegments[0];
-    const locale = ((_c = context.locales) === null || _c === void 0 ? void 0 : _c.includes(urlLocale)) ? urlLocale : (_e = (_d = context.locale) !== null && _d !== void 0 ? _d : context.defaultLocale) !== null && _e !== void 0 ? _e : 'en';
-    if (locale && pageSegments[0] !== locale)
-        pageSegments.unshift(locale);
+    const locale = ((_f = context.locales) === null || _f === void 0 ? void 0 : _f.includes(urlLocale)) ? urlLocale : (_h = (_g = context.locale) !== null && _g !== void 0 ? _g : context.defaultLocale) !== null && _h !== void 0 ? _h : 'en';
     // Create api & fetch content
     const api = cms_1.ContentDelivery.createInstance({
         defaultBranch: locale,
         getAccessToken: () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-            var _g;
-            return (_g = token === null || token === void 0 ? void 0 : token.accessToken) !== null && _g !== void 0 ? _g : '';
+            var _j;
+            return (_j = token === null || token === void 0 ? void 0 : token.accessToken) !== null && _j !== void 0 ? _j : '';
         })
     });
-    if (!req.url)
-        return { notFound: true };
-    const reqUrl = new URL(req.url, `http://${(_f = req.headers.host) !== null && _f !== void 0 ? _f : 'localhost'}`);
-    const editInfo = utils_1.EditMode.getEditModeInfo(reqUrl);
-    if (!editInfo)
-        return { notFound: true };
-    const contentId = utils_1.ContentReference.createApiId(editInfo, false, true);
-    const props = yield (0, hooks_1.loadPageContent)(contentId, api, locale, true);
+    const props = (editInfo === null || editInfo === void 0 ? void 0 : editInfo.contentReference) ?
+        yield (0, hooks_1.loadPageContent)(editInfo.contentReference, api, locale, true) :
+        yield (0, hooks_1.loadPageContentByURL)(pageUrl.href, api, locale, false);
     if (!props)
         return { notFound: true };
+    // Build page rendering data
     const pageProps = {
         props: Object.assign(Object.assign({}, props), { locale })
     };

@@ -81,6 +81,22 @@ async function fetchPageContent(ref: ContentReference, api: ContentDelivery.ICon
     return filterProps(content, api, locale, inEditMode)
 }
 
+export async function loadPageContentByUrl(url: URL, api: ContentDelivery.IContentDeliveryAPI, locale?: string, inEditMode: boolean = false) : Promise<PageRenderingProps | undefined>
+{
+    const content = await api.resolveRoute(url.href, {
+        branch: locale,
+        editMode: inEditMode,
+        urlParams: {}
+    }).catch(() => undefined)
+
+    if (!content)
+        return undefined
+
+    const contentId = createApiId(content, true, inEditMode)
+    
+    return await iContentDataToProps(content, contentId, api, locale, inEditMode)
+}
+
 /**
  * Helper function to load the content needed to render a page, based on a contentId
  * 
@@ -102,6 +118,11 @@ export async function loadPageContent(ref: ContentReference, api: ContentDeliver
     if (!content)
         return undefined
 
+    return await iContentDataToProps(content, contentId, api, locale, inEditMode)
+}
+
+async function iContentDataToProps(content: IContentData, contentId: string, api: ContentDelivery.IContentDeliveryAPI, locale?: string, inEditMode: boolean = false) : Promise<PageRenderingProps>
+{
     const props = await loadAdditionalPropsAndFilter(content, api, locale, inEditMode)
     if(!props.fallback) props.fallback = {}
     props.fallback[contentId] = content

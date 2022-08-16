@@ -1,1 +1,1 @@
-export { withOptiCms, withOptiCms as default } from './dist/middleware'
+export { withOptiCms, withOptiCms as default, config } from './dist/middleware'

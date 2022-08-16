@@ -45,7 +45,11 @@ exports.tryGetWindowUrl = tryGetWindowUrl;
 function isEditModeUrl(currentUrl) {
     try {
         const url = getUrl(currentUrl);
-        return url.pathname.startsWith(`/${AdminPrefix}/CMS/Content`) && url.pathname.includes(",,") && (url.searchParams.get('epieditmode') === 'true' || url.searchParams.get('epieditmode') === 'false');
+        const path = url.pathname;
+        if (path.startsWith(`/${AdminPrefix}/CMS/Content`) || path.startsWith(`/${AdminPrefix}/CMS/Content`.toLowerCase())) {
+            return path.includes(",,") && (url.searchParams.get('epieditmode') === 'true' || url.searchParams.get('epieditmode') === 'false');
+        }
+        return false;
     }
     catch (_a) {
         return false;
@@ -59,12 +63,14 @@ function getEditModeInfo(currentUrl) {
         if (!isEditModeUrl(url))
             return undefined;
         const isPreviewActive = url.searchParams.get('epieditmode') === 'false';
-        const contentPath = url.pathname.replace(`/${AdminPrefix}/CMS/Content`, '').split(',,', 2)[0];
+        var pattern = new RegExp(`/${AdminPrefix}/CMS/Content`, 'i');
+        const contentPath = url.pathname.replace(pattern, '').split(',,', 2)[0];
         const contentFullId = ((_a = url.pathname.split(',,', 2)[1]) !== null && _a !== void 0 ? _a : '0').split('_');
         const siteUrl = new URL(contentPath, url);
         const id = parseInt((_b = contentFullId[0]) !== null && _b !== void 0 ? _b : '0');
         const workId = parseInt((_c = contentFullId[1]) !== null && _c !== void 0 ? _c : '0') || undefined;
         const projectId = parseInt((_d = url.searchParams.get('epiprojects')) !== null && _d !== void 0 ? _d : '0') || undefined;
+        const contentReference = `${id}${workId ? "_" + workId : ""}`;
         return {
             guidValue: guid_1.default.Empty,
             id,
@@ -72,7 +78,8 @@ function getEditModeInfo(currentUrl) {
             url: siteUrl.href,
             isPreviewActive,
             contentPath,
-            projectId
+            projectId,
+            contentReference
         };
     }
     catch (_e) {

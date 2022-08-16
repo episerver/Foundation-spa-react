@@ -1,4 +1,5 @@
-import type { NextRequest, NextMiddleware, NextFetchEvent } from 'next/server';
-export declare type OptiCmsMiddleware = (req: NextRequest, event: NextFetchEvent, nextMiddleware?: NextMiddleware) => ReturnType<NextMiddleware>;
-export declare const withOptiCms: OptiCmsMiddleware;
+export declare const withOptiCms: Promise<void | Response | null> | ((request: import("next-auth/middleware").NextRequestWithAuth, event: import("next/server").NextFetchEvent) => Promise<void | Response | null>);
 export default withOptiCms;
+export declare const config: {
+    matcher: string[];
+};

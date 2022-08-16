@@ -1,19 +1,33 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.withOptiCms = void 0;
-const tslib_1 = require("tslib");
+exports.config = exports.withOptiCms = void 0;
 const server_1 = require("next/server");
 const middleware_1 = require("next-auth/middleware");
-const withOptiCms = (req, event, nextMiddleware) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+exports.withOptiCms = (0, middleware_1.withAuth)((req) => {
     if (req.nextUrl.pathname.toLowerCase().startsWith("/episerver/cms/content")) {
         const newPath = `/episerver/cms/content${req.nextUrl.pathname.substring(22)}`;
         const url = req.nextUrl.clone();
         url.pathname = newPath;
-        const resp = yield (0, middleware_1.withAuth)(req);
-        return resp !== null && resp !== void 0 ? resp : server_1.NextResponse.rewrite(url);
+        return server_1.NextResponse.rewrite(url);
     }
-    return nextMiddleware ? nextMiddleware(req, event) : undefined;
 });
-exports.withOptiCms = withOptiCms;
 exports.default = exports.withOptiCms;
+exports.config = { matcher: ["/admin"] };
+/*type NextMiddlewareResult = ReturnType<NextMiddleware> | void;
+export type OptiCmsMiddleware = (req: NextRequest, event: NextFetchEvent, nextMiddleware ?: NextMiddleware) => NextMiddlewareResult
+
+export const withOptiCms : OptiCmsMiddleware = async (req, event, nextMiddleware) => {
+    if (req.nextUrl.pathname.toLowerCase().startsWith("/episerver/cms/content")) {
+        const newPath = `/episerver/cms/content${req.nextUrl.pathname.substring(22)}`
+        const url = req.nextUrl.clone()
+        url.pathname = newPath
+
+        const resp = await withAuth(req)
+        return resp ?? NextResponse.rewrite(url)
+    }
+
+    return nextMiddleware ? nextMiddleware(req, event) : undefined
+}
+
+export default withOptiCms*/ 
 //# sourceMappingURL=middleware.js.map

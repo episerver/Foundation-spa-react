@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loadPageContentByURL = exports.loadPageContent = exports.usePageContent = void 0;
+exports.loadPageContentByURL = exports.loadPageContent = exports.loadPageContentByUrl = exports.usePageContent = void 0;
 const tslib_1 = require("tslib");
 const cms_1 = require("@optimizely/cms");
 const swr_1 = require("swr");
@@ -41,6 +41,20 @@ function fetchPageContent(ref, api, locale, inEditMode = false) {
         return (0, utils_1.filterProps)(content, api, locale, inEditMode);
     });
 }
+function loadPageContentByUrl(url, api, locale, inEditMode = false) {
+    return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        const content = yield api.resolveRoute(url.href, {
+            branch: locale,
+            editMode: inEditMode,
+            urlParams: {}
+        }).catch(() => undefined);
+        if (!content)
+            return undefined;
+        const contentId = (0, utils_1.createApiId)(content, true, inEditMode);
+        return yield iContentDataToProps(content, contentId, api, locale, inEditMode);
+    });
+}
+exports.loadPageContentByUrl = loadPageContentByUrl;
 /**
  * Helper function to load the content needed to render a page, based on a contentId
  *
@@ -51,7 +65,6 @@ function fetchPageContent(ref, api, locale, inEditMode = false) {
  * @returns             The data for the apge
  */
 function loadPageContent(ref, api, locale, inEditMode = false) {
-    var _a, _b, _c;
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const contentId = (0, utils_1.createApiId)(ref, true, inEditMode);
         const content = yield api.getContent(contentId, {
@@ -61,6 +74,13 @@ function loadPageContent(ref, api, locale, inEditMode = false) {
         }).catch(() => undefined);
         if (!content)
             return undefined;
+        return yield iContentDataToProps(content, contentId, api, locale, inEditMode);
+    });
+}
+exports.loadPageContent = loadPageContent;
+function iContentDataToProps(content, contentId, api, locale, inEditMode = false) {
+    var _a, _b, _c;
+    return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const props = yield (0, utils_1.loadAdditionalPropsAndFilter)(content, api, locale, inEditMode);
         if (!props.fallback)
             props.fallback = {};
@@ -74,7 +94,6 @@ function loadPageContent(ref, api, locale, inEditMode = false) {
         return pageProps;
     });
 }
-exports.loadPageContent = loadPageContent;
 /**
  * Helper function to load the content needed to render a page, based on a contentId
  *

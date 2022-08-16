@@ -28,6 +28,7 @@ export declare type PageRenderingProps = {
     components: ContentTypePath[];
 } & Record<string, any>;
 export declare function usePageContent(ref: ContentReference, inEditMode?: boolean, locale?: string): import("swr").SWRResponse<IContentData | undefined, {}>;
+export declare function loadPageContentByUrl(url: URL, api: ContentDelivery.IContentDeliveryAPI, locale?: string, inEditMode?: boolean): Promise<PageRenderingProps | undefined>;
 /**
  * Helper function to load the content needed to render a page, based on a contentId
  *

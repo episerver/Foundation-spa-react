@@ -39,7 +39,11 @@ export function tryGetWindowUrl(current) {
 export function isEditModeUrl(currentUrl) {
     try {
         const url = getUrl(currentUrl);
-        return url.pathname.startsWith(`/${AdminPrefix}/CMS/Content`) && url.pathname.includes(",,") && (url.searchParams.get('epieditmode') === 'true' || url.searchParams.get('epieditmode') === 'false');
+        const path = url.pathname;
+        if (path.startsWith(`/${AdminPrefix}/CMS/Content`) || path.startsWith(`/${AdminPrefix}/CMS/Content`.toLowerCase())) {
+            return path.includes(",,") && (url.searchParams.get('epieditmode') === 'true' || url.searchParams.get('epieditmode') === 'false');
+        }
+        return false;
     }
     catch {
         return false;
@@ -51,12 +55,14 @@ export function getEditModeInfo(currentUrl) {
         if (!isEditModeUrl(url))
             return undefined;
         const isPreviewActive = url.searchParams.get('epieditmode') === 'false';
-        const contentPath = url.pathname.replace(`/${AdminPrefix}/CMS/Content`, '').split(',,', 2)[0];
+        var pattern = new RegExp(`/${AdminPrefix}/CMS/Content`, 'i');
+        const contentPath = url.pathname.replace(pattern, '').split(',,', 2)[0];
         const contentFullId = (url.pathname.split(',,', 2)[1] ?? '0').split('_');
         const siteUrl = new URL(contentPath, url);
         const id = parseInt(contentFullId[0] ?? '0');
         const workId = parseInt(contentFullId[1] ?? '0') || undefined;
         const projectId = parseInt(url.searchParams.get('epiprojects') ?? '0') || undefined;
+        const contentReference = `${id}${workId ? "_" + workId : ""}`;
         return {
             guidValue: Guid.Empty,
             id,
@@ -64,7 +70,8 @@ export function getEditModeInfo(currentUrl) {
             url: siteUrl.href,
             isPreviewActive,
             contentPath,
-            projectId
+            projectId,
+            contentReference
         };
     }
     catch {

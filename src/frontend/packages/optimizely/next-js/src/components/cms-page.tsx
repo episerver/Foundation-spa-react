@@ -2,10 +2,10 @@ import type { NextPage, GetStaticPathsContext, GetStaticPathsResult, GetStaticPr
 import { getToken } from 'next-auth/jwt'
 import React from 'react'
 import { useRouter } from 'next/router'
-import { getPagesForLocale, readValue as pv, EditMode, ContentReference } from '@optimizely/cms/utils'
+import { getPagesForLocale, EditMode } from '@optimizely/cms/utils'
 import { ContentDelivery, ContentComponent, useAndInitOptimizely as useOptimizely } from '@optimizely/cms'
-
 import { usePageContent, loadPageContentByURL, loadPageContent } from '../hooks'
+import * as Auth from '../auth/cms12oidc'
 
 const inDebugMode = false;
 
@@ -111,7 +111,7 @@ export async function getStaticPaths(context : GetStaticPathsContext) : Promise<
         })
     return {
         paths,
-        fallback: true
+        fallback: 'blocking' // Fallback to SSR when there's no SSG version of the page
     }
 }
 
@@ -144,26 +144,34 @@ export async function getStaticProps(context: GetStaticPropsContext<OptimizelyCm
     }
 }
 
-export const getServerSideProps : GetServerSideProps<OptimizelyCmsPageProps, OptimizelyCmsPageUrlParams, {}> = async ({ req, ...context}) => 
+/**
+ * Logic for Server Side Rendering of Optimizely CMS Pages, supporting both published and edit mode URLs
+ * 
+ * @param param0 
+ * @returns 
+ */
+export const getServerSideProps : GetServerSideProps<OptimizelyCmsPageProps, OptimizelyCmsPageUrlParams, {}> = async ({ req, res, ...context}) => 
 {
     // Firstly, get the current token and return not-found if not present - due to our middleware this shouldn't happen
-    const token = await getToken({ req: req as unknown as NextApiRequest })
-    if (!(
-        ((token?.scope as string | undefined) ?? '').indexOf("epi_content_management") >= 0 &&
-        token?.accessToken as string | undefined))
-    {
-        console.error("Invalid session")
+    const token = await getToken({ req: req as unknown as NextApiRequest, cookieName: Auth.Cms12NextAuthOptions.cookies?.sessionToken?.name })
+    const hasManagementScope = (token?.scope as string | undefined ?? '').indexOf("epi_content_management") >= 0 && token?.accessToken ? true : false
+    const pageUrl = new URL(decodeURIComponent(context.resolvedUrl), `http://${ req.headers.host ?? 'localhost' }`)
+    const editInfo = EditMode.getEditModeInfo(pageUrl)
+
+    if (!hasManagementScope && editInfo) {
         return {
-            notFound: true
+            redirect: {
+                destination: "/api/auth/signin",
+                permanent: false
+            }
         }
     }
 
-    // Now, let's prepare the content to load
-    const pageSegments = context.query.page
+    // Get the locale
+    const pageSegments = pageUrl.pathname.split("/").filter(x => x)
     if (!isStringArray(pageSegments)) return { notFound: true }
     const urlLocale = pageSegments[0]
     const locale = context.locales?.includes(urlLocale) ? urlLocale : context.locale ?? context.defaultLocale ?? 'en'
-    if (locale && pageSegments[0] !== locale) pageSegments.unshift(locale)
 
     // Create api & fetch content
     const api = ContentDelivery.createInstance({
@@ -172,20 +180,13 @@ export const getServerSideProps : GetServerSideProps<OptimizelyCmsPageProps, Opt
             return (token?.accessToken as string|undefined) ?? ''
         }
     })
-
-    if (!req.url)
-        return { notFound: true }
-    const reqUrl = new URL(req.url, `http://${ req.headers.host ?? 'localhost' }`)
-    const editInfo = EditMode.getEditModeInfo(reqUrl)
-    if (!editInfo)
-        return { notFound: true }
-    const contentId = ContentReference.createApiId(editInfo, false, true)
-    
-
-    const props = await loadPageContent(contentId, api, locale, true)
+    const props = editInfo?.contentReference ?
+        await loadPageContent(editInfo.contentReference, api, locale, true) :
+        await loadPageContentByURL(pageUrl.href, api, locale, false)
     if (!props)
         return { notFound: true }
 
+    // Build page rendering data
     const pageProps = {
         props: {
             ...props,
