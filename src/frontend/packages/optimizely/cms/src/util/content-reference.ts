@@ -74,7 +74,7 @@ export function createApiId(id: ContentReference, preferGuid : boolean = true, i
             console.warn("Empty Optimizely Content Delivery ID")
             return id
         }
-        console.error("Unable to generate an Optimizely Content Delivery API ID [01]", typeof(id))
+        //console.error("Unable to generate an Optimizely Content Delivery API ID [01]", typeof(id))
         return "-"
     }
 

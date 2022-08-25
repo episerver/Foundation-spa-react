@@ -1,4 +1,5 @@
 import { createContext } from 'react'
+import type { ComponentType } from 'react'
 import type { ComponentLoader } from '../loader'
 import type { IContentDeliveryAPI } from '../content-delivery'
 import type { EditModeContentInfo } from '../util/edit-mode'
@@ -12,6 +13,7 @@ export type ContextType = {
     defaultBranch: string
     editableContent?: EditModeContentInfo
     currentContentId?: any
+    components?: Record<string, ComponentType>
 }
 
 export const Context = createContext<ContextType>({

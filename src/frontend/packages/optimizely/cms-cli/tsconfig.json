@@ -13,6 +13,7 @@
     "declaration": false,
     "sourceMap": false,
     "incremental": true,
+    "skipLibCheck": true, // PRevent errors from .d.ts files
 
     // Language checking
     "strict": true,
@@ -23,5 +24,5 @@
     "removeComments": true,
   },
   
-  "exclude": ["node_modules", "tests", "dist", "cjs","bin"]
+  "exclude": ["node_modules", "tests", "dist", "cjs","bin","../../../node_modules"]
 }

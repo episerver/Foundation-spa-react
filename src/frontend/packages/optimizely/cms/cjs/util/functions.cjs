@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.prefetchContentAreaRecursive = exports.filterProps = exports.loadAdditionalPropsAndFilter = exports.resolve = exports.isNonEmptyString = exports.getPagesForLocale = exports.normalizeUrl = void 0;
+exports.isDxpDebugActive = exports.prefetchContentAreaRecursive = exports.filterProps = exports.loadAdditionalPropsAndFilter = exports.resolve = exports.isNonEmptyString = exports.getPagesForLocale = exports.normalizeUrl = void 0;
 const tslib_1 = require("tslib");
 const __1 = require("..");
 const hooks_1 = require("../hooks");
@@ -185,4 +185,14 @@ function prefetchContentAreaRecursive(content, areas, locale, inEditMode = false
     });
 }
 exports.prefetchContentAreaRecursive = prefetchContentAreaRecursive;
+function isDxpDebugActive() {
+    var _a, _b, _c, _d;
+    try {
+        return ((_a = process === null || process === void 0 ? void 0 : process.env) === null || _a === void 0 ? void 0 : _a.OPTIMIZELY_DXP_DEBUG) == '1' || ((_b = process === null || process === void 0 ? void 0 : process.env) === null || _b === void 0 ? void 0 : _b.OPTIMIZELY_DXP_DEBUG) == 'true' || (typeof ((_c = process === null || process === void 0 ? void 0 : process.env) === null || _c === void 0 ? void 0 : _c.OPTIMIZELY_DXP_DEBUG) == 'string' && ((_d = process === null || process === void 0 ? void 0 : process.env) === null || _d === void 0 ? void 0 : _d.OPTIMIZELY_DXP_DEBUG).toLowerCase() == 'true');
+    }
+    catch (_e) {
+        return false;
+    }
+}
+exports.isDxpDebugActive = isDxpDebugActive;
 //# sourceMappingURL=functions.js.map

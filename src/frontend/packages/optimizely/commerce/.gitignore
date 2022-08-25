@@ -1,7 +1,0 @@
-# Package management artifacts
-package-lock.json
-yarn.lock
-yarn-error.log
-
-# Typescript build artifacts
-*.tsbuildinfo

@@ -5,6 +5,7 @@
     "target": "ES6",
     "module": "CommonJS",
     "lib": ["ES6", "DOM", "DOM.Iterable"],
+    "importHelpers": true,
 
     // Set Output & Module resolution
     "outDir": "./cjs",

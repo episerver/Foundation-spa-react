@@ -64,4 +64,5 @@ declare type AreaConfig<T extends IContent = IContentData> = {
 };
 declare type PrefetchResponse = Record<string, IContentData>;
 export declare function prefetchContentAreaRecursive<T extends IContent = IContentData>(content: T, areas: AreaConfig<T>[], locale?: string, inEditMode?: boolean, scope?: string, cdApi?: IContentDeliveryAPI): Promise<PrefetchResponse>;
+export declare function isDxpDebugActive(): boolean;
 export {};

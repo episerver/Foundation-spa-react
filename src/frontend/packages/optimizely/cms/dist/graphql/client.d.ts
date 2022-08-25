@@ -1,6 +1,6 @@
 import type { ClientConfiguration, QueryResponse } from './types';
-import localFetch from '../fetch';
-declare type Fetch = typeof localFetch extends Promise<infer R> ? R : typeof localFetch;
+import fetch from 'cross-fetch';
+declare type Fetch = typeof fetch extends Promise<infer R> ? R : typeof fetch;
 declare type FetchConfig = Parameters<Fetch>[1];
 export declare type Response<T = any> = QueryResponse<T, Fetch>;
 export declare function validateConfig(config: any): config is ClientConfiguration;

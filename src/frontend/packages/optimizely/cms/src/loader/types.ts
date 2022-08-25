@@ -3,7 +3,7 @@ import { ComponentType } from 'react'
 export type DynamicProps = Record<string, any>
 
 export type ComponentLoaderStatic = {
-    new() : ComponentLoader
+    new(...args: any[]) : ComponentLoader
     name ?: string
 }
 

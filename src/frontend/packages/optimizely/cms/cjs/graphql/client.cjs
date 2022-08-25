@@ -2,8 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Client = exports.validateConfig = void 0;
 const tslib_1 = require("tslib");
-const fetch_1 = tslib_1.__importDefault(require("../fetch"));
-// type FetchResponse = ReturnType<Fetch>
+const cross_fetch_1 = tslib_1.__importDefault(require("cross-fetch"));
 const GRAPHQL_SERVICE_PATH = '/content/v2';
 const defaultConfiguration = {
     debug: false,
@@ -35,7 +34,7 @@ class Client {
             const gqlQuery = { query, variables };
             if (this.debug)
                 this.log(`Optimizely GQL: ${gqlEndpoint}`, gqlQuery.query, gqlQuery.variables);
-            const response = yield fetch_1.default.then(x => x(gqlEndpoint.href, Object.assign(Object.assign({}, requestInit), { method: 'POST', headers: Object.assign({ "Content-Type": 'application/json', "Accept": 'application/json' }, requestInit === null || requestInit === void 0 ? void 0 : requestInit.headers), body: JSON.stringify(gqlQuery) })));
+            const response = yield (0, cross_fetch_1.default)(gqlEndpoint.href, Object.assign(Object.assign({}, requestInit), { method: 'POST', headers: Object.assign({ "Content-Type": 'application/json', "Accept": 'application/json' }, requestInit === null || requestInit === void 0 ? void 0 : requestInit.headers), body: JSON.stringify(gqlQuery) }));
             const responseData = yield response.json();
             if (this.throwOnError && responseData.errors) {
                 const errorMessage = "GraphQL Service Error: " + responseData.errors.map(x => x.message).join('; ');

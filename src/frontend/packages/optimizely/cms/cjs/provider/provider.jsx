@@ -9,11 +9,14 @@ const index_2 = require("../content-delivery/index");
 const hooks_1 = require("../hooks");
 const COMMUNICATOR_CMS_PATH = 'episerver/cms';
 const COMMUNICATOR_FILE = 'clientresources/epi-cms/communicationInjector.js';
-const ContextProvider = ({ defaultBranch, cmsDomain, children, cmsPath, cmsVersion, communicatorFile, ComponentLoaderClass, currentContentId }) => {
-    // Prepare default values
+const ContextProvider = ({ defaultBranch, cmsDomain, children, cmsPath, cmsVersion, communicatorFile, ComponentLoaderClass, currentContentId, components }) => {
+    var _a;
+    const loaderClassName = (_a = ComponentLoaderClass === null || ComponentLoaderClass === void 0 ? void 0 : ComponentLoaderClass.name) !== null && _a !== void 0 ? _a : "-default-";
+    const componentskeys = components ? Object.getOwnPropertyNames(components).join(":") : 'empty';
     const contentEditing = (0, hooks_1.useContentEditing)({ cmsDomain, cmsPath, cmsVersion: cmsVersion, communicatorFile });
-    const api = (0, react_1.useMemo)(() => (0, index_2.createInstance)({ defaultBranch: defaultBranch }), [defaultBranch]);
-    const loader = (0, react_1.useMemo)(() => (0, index_1.setup)({ loaderType: ComponentLoaderClass }), [ComponentLoaderClass]);
+    const api = (0, react_1.useMemo)(() => (0, index_2.createInstance)({ defaultBranch: defaultBranch, apiUrl: cmsDomain }), [defaultBranch, cmsDomain]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const loader = (0, react_1.useMemo)(() => (0, index_1.setup)({ loaderType: ComponentLoaderClass, args: components ? [components] : [] }), [loaderClassName, componentskeys]);
     const withActionsAndEvents = (0, react_1.useMemo)(() => {
         return {
             api,

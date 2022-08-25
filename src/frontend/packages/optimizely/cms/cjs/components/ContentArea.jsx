@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContentArea = void 0;
 const tslib_1 = require("tslib");
-const react_1 = tslib_1.__importDefault(require("react"));
+const react_1 = tslib_1.__importStar(require("react"));
 const property_1 = require("../util/property");
 const ContentAreaItem_1 = tslib_1.__importDefault(require("./ContentAreaItem"));
 const index_1 = require("../index");
@@ -10,7 +10,7 @@ function ContentArea(props) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
     const opti = (0, index_1.useOptimizely)();
     var isEditable = opti.inEditMode || opti.isEditable;
-    const myId = react_1.default.useId();
+    const myId = (0, react_1.useId)();
     if (props.value === undefined && props.content === undefined)
         return <>{props.children}</>;
     if (!props.container)

@@ -1,7 +1,7 @@
 import { ComponentType } from 'react';
 export declare type DynamicProps = Record<string, any>;
 export declare type ComponentLoaderStatic = {
-    new (): ComponentLoader;
+    new (...args: any[]): ComponentLoader;
     name?: string;
 };
 export interface ComponentLoader {

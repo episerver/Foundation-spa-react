@@ -34,11 +34,14 @@ async function fetchPageContent(ref, api, locale, inEditMode = false) {
     return filterProps(content, api, locale, inEditMode);
 }
 export async function loadPageContentByUrl(url, api, locale, inEditMode = false) {
-    const content = await api.resolveRoute(url.href, {
+    var path = typeof (url) === 'object' && url !== null ? url.href : url;
+    const content = await api.resolveRoute(path, {
         branch: locale,
         editMode: inEditMode,
         urlParams: {}
-    }).catch(() => undefined);
+    }).catch((e) => {
+        console.error(e);
+    });
     if (!content)
         return undefined;
     const contentId = createApiId(content, true, inEditMode);
@@ -58,7 +61,8 @@ export async function loadPageContent(ref, api, locale, inEditMode = false) {
     const content = await api.getContent(contentId, {
         branch: locale,
         editMode: inEditMode,
-        urlParams: {}
+        urlParams: {},
+        select: ["*"]
     }).catch(() => undefined);
     if (!content)
         return undefined;
@@ -68,43 +72,6 @@ async function iContentDataToProps(content, contentId, api, locale, inEditMode =
     const props = await loadAdditionalPropsAndFilter(content, api, locale, inEditMode);
     if (!props.fallback)
         props.fallback = {};
-    props.fallback[contentId] = content;
-    const ct = content.contentType ?? [];
-    const baseType = ct[0] ?? 'page';
-    const pageProps = {
-        ...props,
-        fallback: props.fallback ?? {},
-        contentId,
-        locale: content.language.name,
-        inEditMode,
-        baseType,
-        components: [content.contentType]
-    };
-    if (pageProps.content)
-        delete pageProps.content;
-    return pageProps;
-}
-/**
- * Helper function to load the content needed to render a page, based on a contentId
- *
- * @param url           The path to load the content for
- * @param api           The Content Delivery API client to use
- * @param locale        The current language
- * @param inEditMode    Whether or not to load from the draft versions
- * @returns             The data for the apge
- */
-export async function loadPageContentByURL(url, api, locale, inEditMode = false) {
-    // Resolve by URL
-    const content = await api.resolveRoute(url, { branch: locale, editMode: false }).catch(e => {
-        console.error("ERROR Resolving by route", e);
-        return undefined;
-    });
-    if (!content)
-        return undefined;
-    const props = await loadAdditionalPropsAndFilter(content, api, locale, inEditMode);
-    if (!props.fallback)
-        props.fallback = {};
-    const contentId = createApiId(content, true, inEditMode);
     props.fallback[contentId] = content;
     const ct = content.contentType ?? [];
     const baseType = ct[0] ?? 'page';

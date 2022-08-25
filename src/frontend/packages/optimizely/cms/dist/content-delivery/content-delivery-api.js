@@ -1,17 +1,8 @@
 import { buildUrl, inEditMode } from './util';
 import { DefaultConfig, validateConfig } from './config';
 import { Website as WebsiteUtils, ContentReference as ContentLinkService } from '../util';
-import localFetch from '../fetch';
-import { /*isNetworkAuthError, isNetworkError,*/ NetworkError } from './NetworkError';
-//type Fetch = typeof localFetch extends Promise<infer R> ? R : typeof localFetch
-//type FetchResponse = ReturnType<Fetch> extends Promise<infer R> ? R : never
-//type FetchInfo = Parameters<Fetch>[0]
-//type FetchRequest = Required<Parameters<Fetch>>[1]
-/*export type RequestConfig<T extends IContent = IContent> = ContentRequest<T> & {
-    method?: FetchRequest['method']
-    body?: FetchRequest['body']
-    addDefaultParams?: boolean
-}*/
+import fetch from 'cross-fetch';
+import { NetworkError } from './NetworkError';
 export const OptiEditQueryParams = [
     "commondrafts" /* OptiQueryParams.CommonDrafts */,
     "epieditmode" /* OptiQueryParams.EditMode */,
@@ -21,6 +12,7 @@ export const OptiEditQueryParams = [
 ];
 export const DefaultRequestConfig = {
     addDefaultParams: true,
+    timeOut: 5
 };
 export class ContentDeliveryAPI {
     constructor(config) {
@@ -28,6 +20,7 @@ export class ContentDeliveryAPI {
         if (!validateConfig(this._config))
             throw new Error("Invalid Content Delivery API Configuration");
         this._baseUrl = new URL(this._config.apiUrl);
+        //this._config.debug = true;
     }
     async login(username, password, client_id = "Default") {
         const request_data = { client_id, grant_type: "password", username, password };
@@ -275,9 +268,16 @@ export class ContentDeliveryAPI {
         const reqInit = await this.getRequestConfig(url.pathname, options);
         if (this._config.debug)
             console.debug("Request configuration", url.href, reqInit);
-        const response = await localFetch.then(x => x(url.href, reqInit)).then(response => {
+        const timeOut = (typeof (options?.timeOut) == 'number' && options?.timeOut > 0 ? options.timeOut : DefaultRequestConfig.timeOut) * 1000;
+        const abortController = new AbortController();
+        const timeoutId = setTimeout(() => {
+            console.warn(`Request to ${url.href} timed out`);
+            abortController.abort();
+        }, timeOut);
+        const response = await fetch(url.href, { ...reqInit, signal: abortController.signal }).then(response => {
             if (this._config.debug)
                 console.log(`Response received: HTTP Status ${response.status}: ${response.statusText}`);
+            clearTimeout(timeoutId);
             if (!response.ok)
                 throw new NetworkError(`HTTP Error ${response.status}: ${response.statusText} for ${url.href}`, response);
             return response.json();
@@ -285,17 +285,7 @@ export class ContentDeliveryAPI {
             if (this._config.debug)
                 console.debug('Response received: Data', data);
             return data;
-        }); /*.catch(e => {
-            if (this._config.debug || true) {
-                if (isNetworkAuthError(e))
-                    console.error("Network request failed, due to lack of authorization", e)
-                else if (isNetworkError(e))
-                    console.error("Network request failed", e)
-                else
-                    console.error("Unknown error whilest processig the request", e)
-            }
-            throw e
-        })*/
+        });
         return response;
     }
     /**

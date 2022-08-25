@@ -27,6 +27,7 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
             _options = options;
             _process = process;
             _forwarder = forwarder;
+            _logger.LogInformation("Node.JS Middleware instantiated");
         }
 
         public async ValueTask DisposeAsync()

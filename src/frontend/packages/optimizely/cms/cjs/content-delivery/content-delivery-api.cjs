@@ -5,17 +5,8 @@ const tslib_1 = require("tslib");
 const util_1 = require("./util");
 const config_1 = require("./config");
 const util_2 = require("../util");
-const fetch_1 = tslib_1.__importDefault(require("../fetch"));
+const cross_fetch_1 = tslib_1.__importDefault(require("cross-fetch"));
 const NetworkError_1 = require("./NetworkError");
-//type Fetch = typeof localFetch extends Promise<infer R> ? R : typeof localFetch
-//type FetchResponse = ReturnType<Fetch> extends Promise<infer R> ? R : never
-//type FetchInfo = Parameters<Fetch>[0]
-//type FetchRequest = Required<Parameters<Fetch>>[1]
-/*export type RequestConfig<T extends IContent = IContent> = ContentRequest<T> & {
-    method?: FetchRequest['method']
-    body?: FetchRequest['body']
-    addDefaultParams?: boolean
-}*/
 exports.OptiEditQueryParams = [
     "commondrafts" /* OptiQueryParams.CommonDrafts */,
     "epieditmode" /* OptiQueryParams.EditMode */,
@@ -25,6 +16,7 @@ exports.OptiEditQueryParams = [
 ];
 exports.DefaultRequestConfig = {
     addDefaultParams: true,
+    timeOut: 5
 };
 class ContentDeliveryAPI {
     constructor(config) {
@@ -32,6 +24,7 @@ class ContentDeliveryAPI {
         if (!(0, config_1.validateConfig)(this._config))
             throw new Error("Invalid Content Delivery API Configuration");
         this._baseUrl = new URL(this._config.apiUrl);
+        //this._config.debug = true;
     }
     login(username, password, client_id = "Default") {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -301,9 +294,16 @@ class ContentDeliveryAPI {
             const reqInit = yield this.getRequestConfig(url.pathname, options);
             if (this._config.debug)
                 console.debug("Request configuration", url.href, reqInit);
-            const response = yield fetch_1.default.then(x => x(url.href, reqInit)).then(response => {
+            const timeOut = (typeof (options === null || options === void 0 ? void 0 : options.timeOut) == 'number' && (options === null || options === void 0 ? void 0 : options.timeOut) > 0 ? options.timeOut : exports.DefaultRequestConfig.timeOut) * 1000;
+            const abortController = new AbortController();
+            const timeoutId = setTimeout(() => {
+                console.warn(`Request to ${url.href} timed out`);
+                abortController.abort();
+            }, timeOut);
+            const response = yield (0, cross_fetch_1.default)(url.href, Object.assign(Object.assign({}, reqInit), { signal: abortController.signal })).then(response => {
                 if (this._config.debug)
                     console.log(`Response received: HTTP Status ${response.status}: ${response.statusText}`);
+                clearTimeout(timeoutId);
                 if (!response.ok)
                     throw new NetworkError_1.NetworkError(`HTTP Error ${response.status}: ${response.statusText} for ${url.href}`, response);
                 return response.json();
@@ -311,17 +311,7 @@ class ContentDeliveryAPI {
                 if (this._config.debug)
                     console.debug('Response received: Data', data);
                 return data;
-            }); /*.catch(e => {
-                if (this._config.debug || true) {
-                    if (isNetworkAuthError(e))
-                        console.error("Network request failed, due to lack of authorization", e)
-                    else if (isNetworkError(e))
-                        console.error("Network request failed", e)
-                    else
-                        console.error("Unknown error whilest processig the request", e)
-                }
-                throw e
-            })*/
+            });
             return response;
         });
     }

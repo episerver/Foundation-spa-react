@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import type { ComponentType } from 'react';
 import type { ComponentLoader } from '../loader';
 import type { IContentDeliveryAPI } from '../content-delivery';
 import type { EditModeContentInfo } from '../util/edit-mode';
@@ -11,6 +11,7 @@ export declare type ContextType = {
     defaultBranch: string;
     editableContent?: EditModeContentInfo;
     currentContentId?: any;
+    components?: Record<string, ComponentType>;
 };
 export declare const Context: import("react").Context<ContextType>;
 export default Context;

@@ -17,7 +17,9 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
             // Add installer steps
             services.TryAddEnumerable(ServiceDescriptor.Singleton(typeof(IInstaller), typeof(SchemaInstaller)));
             services.TryAddEnumerable(ServiceDescriptor.Singleton(typeof(IInstaller), typeof(DataInstaller)));
-
+            services.TryAddSingleton<SchemaInstaller, SchemaInstaller>();
+            services.TryAddSingleton<DataInstaller, DataInstaller>();
+            
             // Add installer
             services.TryAddEnumerable(ServiceDescriptor.Singleton(typeof(IFirstRequestInitializer), typeof(ContentInstaller)));
 

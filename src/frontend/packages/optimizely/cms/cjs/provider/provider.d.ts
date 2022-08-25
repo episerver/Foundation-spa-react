@@ -1,4 +1,5 @@
 import type { FunctionComponent, PropsWithChildren } from 'react';
+import type { ContextType as OptimizelyContextType } from './context';
 import type { ComponentLoaderStatic } from '../loader/types';
 import type { OptiEvents } from '../opti-on-page-editing';
 export declare type ContextProviderProps = {
@@ -9,6 +10,7 @@ export declare type ContextProviderProps = {
     ComponentLoaderClass?: ComponentLoaderStatic;
     defaultBranch?: string;
     currentContentId?: any;
+    components?: OptimizelyContextType['components'];
 };
 export declare const ContextProvider: FunctionComponent<PropsWithChildren<ContextProviderProps>>;
 export default ContextProvider;

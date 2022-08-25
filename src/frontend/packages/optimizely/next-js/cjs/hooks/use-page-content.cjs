@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loadPageContentByURL = exports.loadPageContent = exports.loadPageContentByUrl = exports.usePageContent = void 0;
+exports.loadPageContent = exports.loadPageContentByUrl = exports.usePageContent = void 0;
 const tslib_1 = require("tslib");
 const cms_1 = require("@optimizely/cms");
 const swr_1 = require("swr");
@@ -43,11 +43,14 @@ function fetchPageContent(ref, api, locale, inEditMode = false) {
 }
 function loadPageContentByUrl(url, api, locale, inEditMode = false) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
-        const content = yield api.resolveRoute(url.href, {
+        var path = typeof (url) === 'object' && url !== null ? url.href : url;
+        const content = yield api.resolveRoute(path, {
             branch: locale,
             editMode: inEditMode,
             urlParams: {}
-        }).catch(() => undefined);
+        }).catch((e) => {
+            console.error(e);
+        });
         if (!content)
             return undefined;
         const contentId = (0, utils_1.createApiId)(content, true, inEditMode);
@@ -70,7 +73,8 @@ function loadPageContent(ref, api, locale, inEditMode = false) {
         const content = yield api.getContent(contentId, {
             branch: locale,
             editMode: inEditMode,
-            urlParams: {}
+            urlParams: {},
+            select: ["*"]
         }).catch(() => undefined);
         if (!content)
             return undefined;
@@ -94,39 +98,5 @@ function iContentDataToProps(content, contentId, api, locale, inEditMode = false
         return pageProps;
     });
 }
-/**
- * Helper function to load the content needed to render a page, based on a contentId
- *
- * @param url           The path to load the content for
- * @param api           The Content Delivery API client to use
- * @param locale        The current language
- * @param inEditMode    Whether or not to load from the draft versions
- * @returns             The data for the apge
- */
-function loadPageContentByURL(url, api, locale, inEditMode = false) {
-    var _a, _b, _c;
-    return tslib_1.__awaiter(this, void 0, void 0, function* () {
-        // Resolve by URL
-        const content = yield api.resolveRoute(url, { branch: locale, editMode: false }).catch(e => {
-            console.error("ERROR Resolving by route", e);
-            return undefined;
-        });
-        if (!content)
-            return undefined;
-        const props = yield (0, utils_1.loadAdditionalPropsAndFilter)(content, api, locale, inEditMode);
-        if (!props.fallback)
-            props.fallback = {};
-        const contentId = (0, utils_1.createApiId)(content, true, inEditMode);
-        props.fallback[contentId] = content;
-        const ct = (_a = content.contentType) !== null && _a !== void 0 ? _a : [];
-        const baseType = (_b = ct[0]) !== null && _b !== void 0 ? _b : 'page';
-        const pageProps = Object.assign(Object.assign({}, props), { fallback: (_c = props.fallback) !== null && _c !== void 0 ? _c : {}, contentId, locale: content.language.name, inEditMode,
-            baseType, components: [content.contentType] });
-        if (pageProps.content)
-            delete pageProps.content;
-        return pageProps;
-    });
-}
-exports.loadPageContentByURL = loadPageContentByURL;
 exports.default = usePageContent;
 //# sourceMappingURL=use-page-content.js.map

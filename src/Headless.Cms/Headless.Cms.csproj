@@ -6,7 +6,7 @@
 		<RootNamespace>HeadlessCms</RootNamespace>
 		<!-- Prepare for a nullable codebase -->
 		<Nullable>warnings</Nullable>
-		<Version>1.0.0.4</Version>
+		<Version>1.0.0.6</Version>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Authors>Remko Jantzen / Optimizely SA Team</Authors>
@@ -48,11 +48,11 @@
 		<PackageReference Include="EPiServer.ContentDeliveryApi.Forms" Version="3.5.0" />
 		<PackageReference Include="EPiServer.ContentDeliveryApi.Search" Version="3.5.0" />
 		<PackageReference Include="EPiServer.ContentManagementApi" Version="3.5.0" />
-		<PackageReference Include="EPiServer.Find" Version="14.0.4" />
-		<PackageReference Include="EPiServer.Find.Cms" Version="14.0.4" />
-		<PackageReference Include="EPiServer.Find.Cms.AttachmentFilter" Version="14.0.4" />
-		<PackageReference Include="EPiServer.Find.Framework" Version="14.0.4" />
-		<PackageReference Include="EPiServer.Find.Personalization" Version="14.0.4" />
+		<PackageReference Include="EPiServer.Find" Version="14.1.0" />
+		<PackageReference Include="EPiServer.Find.Cms" Version="14.1.0" />
+		<PackageReference Include="EPiServer.Find.Cms.AttachmentFilter" Version="14.1.0" />
+		<PackageReference Include="EPiServer.Find.Framework" Version="14.1.0" />
+		<PackageReference Include="EPiServer.Find.Personalization" Version="14.1.0" />
 		<PackageReference Include="EPiServer.Labs.BlockEnhancements" Version="1.1.1" />
 		<PackageReference Include="EPiServer.Labs.LanguageManager" Version="5.1.1" />
 		<PackageReference Include="EPiServer.Labs.LinkItemProperty" Version="1.0.2" />
@@ -69,14 +69,14 @@
 		<!--<PackageReference Include="Optimizely.ContentGraph.Cms" Version="2.0.0-pre-42270" />-->
 	  
 		<!-- EPiServer.Forms is not yet supported within Headless CMS Builds, so the API Package has been disabled. -->
-		<PackageReference Include="EPiServer.Forms" Version="5.2.0" />
+		<PackageReference Include="EPiServer.Forms" Version="5.2.1" />
 		<PackageReference Include="EPiServer.ConnectForMarketingAutomation" Version="6.1.0" />
 		<PackageReference Include="EPiServer.Marketing.Automation.Forms" Version="3.1.0" />
 		<!--<PackageReference Include="EPiServer.ContentDeliveryApi.Forms" Version="3.0.0-pre-000226" />-->
 
 		<!-- Conflict resolution -->
 		<PackageReference Include="EPiServer.CMS.UI" Version="12.10.0" /><!-- Resolve dependency warning by EPiServer.CMS.TinyMce -->
-		<PackageReference Include="EPiServer.Hosting" Version="12.8.0" /><!-- EPiServer.CMS 12.7.0 has an explicit dependency on EPiServer.Hosting 12.4.2, causing errors -->
+		<PackageReference Include="EPiServer.Hosting" Version="12.9.0" /><!-- EPiServer.CMS 12.7.0 has an explicit dependency on EPiServer.Hosting 12.4.2, causing errors -->
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
 		<PackageReference Include="Yarp.ReverseProxy" Version="1.1.1" /><!-- EPiServer.CMS.AspNetCore.Mvc declares a dependency on 5.x, however EPiServer.CloudPlatform.Cms declares a dependency on 6.x -->
 	</ItemGroup>

@@ -81,13 +81,16 @@ async function fetchPageContent(ref: ContentReference, api: ContentDelivery.ICon
     return filterProps(content, api, locale, inEditMode)
 }
 
-export async function loadPageContentByUrl(url: URL, api: ContentDelivery.IContentDeliveryAPI, locale?: string, inEditMode: boolean = false) : Promise<PageRenderingProps | undefined>
+export async function loadPageContentByUrl(url: URL|string, api: ContentDelivery.IContentDeliveryAPI, locale?: string, inEditMode: boolean = false) : Promise<PageRenderingProps | undefined>
 {
-    const content = await api.resolveRoute(url.href, {
+    var path = typeof(url) === 'object' && url !== null ? url.href : url
+    const content = await api.resolveRoute(path, {
         branch: locale,
         editMode: inEditMode,
         urlParams: {}
-    }).catch(() => undefined)
+    }).catch((e) => {
+        console.error(e)
+    })
 
     if (!content)
         return undefined
@@ -112,7 +115,8 @@ export async function loadPageContent(ref: ContentReference, api: ContentDeliver
     const content = await api.getContent(contentId, {
         branch: locale,
         editMode: inEditMode,
-        urlParams: {}
+        urlParams: {},
+        select: ["*"]
     }).catch(() => undefined)
 
     if (!content)
@@ -125,46 +129,6 @@ async function iContentDataToProps(content: IContentData, contentId: string, api
 {
     const props = await loadAdditionalPropsAndFilter(content, api, locale, inEditMode)
     if(!props.fallback) props.fallback = {}
-    props.fallback[contentId] = content
-
-    const ct : string[] = content.contentType ?? []
-    const baseType = ct[0] ?? 'page'
-
-    const pageProps : PageRenderingProps = {
-        ...props,
-        fallback: props.fallback ?? {},
-        contentId,
-        locale: content.language.name,
-        inEditMode,
-        baseType,
-        components: [ content.contentType ]
-    }
-    if (pageProps.content)
-        delete pageProps.content
-    return pageProps
-}
-
-/**
- * Helper function to load the content needed to render a page, based on a contentId
- * 
- * @param url           The path to load the content for
- * @param api           The Content Delivery API client to use
- * @param locale        The current language
- * @param inEditMode    Whether or not to load from the draft versions
- * @returns             The data for the apge
- */
-export async function loadPageContentByURL(url: string, api: ContentDelivery.IContentDeliveryAPI, locale?: string, inEditMode: boolean = false) : Promise<PageRenderingProps | undefined>
-{
-    // Resolve by URL
-    const content = await api.resolveRoute(url, { branch: locale, editMode: false }).catch(e => {
-        console.error("ERROR Resolving by route", e)
-        return undefined
-    })
-    if (!content) return undefined
-
-    const props = await loadAdditionalPropsAndFilter(content, api, locale, inEditMode)
-    if(!props.fallback) props.fallback = {}
-    const contentId = createApiId(content, true, inEditMode)
     props.fallback[contentId] = content
 
     const ct : string[] = content.contentType ?? []

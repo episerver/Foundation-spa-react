@@ -44,8 +44,8 @@ export async function refreshToken(host: string, refresh_token: string, client_i
     })
 
     if (!refreshResponse.ok) {
-        const errorBody = await refreshResponse.text()
-        console.error("Service error body", errorBody)
+        //const errorBody = await refreshResponse.text()
+        //console.error("Service error body", errorBody)
         return {error: `Failed to refresh token. (HTTP ${refreshResponse.status}: ${refreshResponse.statusText})`, error_type: "failed"}
     }
     

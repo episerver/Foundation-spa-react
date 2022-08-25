@@ -56,6 +56,7 @@ exports.resolveAwaitableProps = resolveAwaitableProps;
  */
 function getStaticPaths(context) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        console.time("@optimizely/next-js/components/cms-page/getStaticPaths");
         const { defaultLocale, locales } = context;
         const api = cms_1.ContentDelivery.createInstance({ debug: inDebugMode, defaultBranch: defaultLocale });
         const pages = (yield Promise.all((locales !== null && locales !== void 0 ? locales : []).map((loc) => (0, utils_1.getPagesForLocale)(api, loc)))).flat(1);
@@ -71,6 +72,8 @@ function getStaticPaths(context) {
                 return false;
             return true;
         });
+        //const paths = locales?.map(locale => `/${locale}/`) ?? []
+        console.timeEnd("@optimizely/next-js/components/cms-page/getStaticPaths");
         return {
             paths,
             fallback: 'blocking' // Fallback to SSR when there's no SSG version of the page
@@ -86,18 +89,19 @@ exports.getStaticPaths = getStaticPaths;
  * @returns     The Page properties
  */
 function getStaticProps(context) {
-    var _a, _b;
+    var _a, _b, _c;
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         // Read the context
         const { params, locale, defaultLocale } = context;
         const currentLocale = (_a = locale !== null && locale !== void 0 ? locale : defaultLocale) !== null && _a !== void 0 ? _a : 'en';
         // Create the content-api client and resolve the actual content item
+        const page = (_b = params === null || params === void 0 ? void 0 : params.page) !== null && _b !== void 0 ? _b : [];
         const api = cms_1.ContentDelivery.createInstance({ debug: inDebugMode, defaultBranch: defaultLocale });
-        const path = `/${currentLocale}/${(_b = params === null || params === void 0 ? void 0 : params.page.join("/")) !== null && _b !== void 0 ? _b : ''}`;
+        const path = page.length > 0 && page[0] != currentLocale ? `/${currentLocale}/${(_c = page.join("/")) !== null && _c !== void 0 ? _c : ''}` : "/";
         // This is for a published page URL, not a preview/edit URL, so always loading the published code
-        const props = yield (0, hooks_1.loadPageContentByURL)(path, api, currentLocale, false);
+        const props = yield (0, hooks_1.loadPageContentByUrl)(path, api, currentLocale, false);
         if (!props)
-            return { notFound: true, revalidate: 60 };
+            return { notFound: true, revalidate: 1 };
         // Return the page props
         return {
             props: Object.assign(Object.assign({}, props), { locale: currentLocale, inEditMode: false }),
@@ -143,7 +147,7 @@ const getServerSideProps = (_a) => { var _b, _c, _d, _e, _f, _g, _h; return tsli
     });
     const props = (editInfo === null || editInfo === void 0 ? void 0 : editInfo.contentReference) ?
         yield (0, hooks_1.loadPageContent)(editInfo.contentReference, api, locale, true) :
-        yield (0, hooks_1.loadPageContentByURL)(pageUrl.href, api, locale, false);
+        yield (0, hooks_1.loadPageContentByUrl)(pageUrl, api, locale, false);
     if (!props)
         return { notFound: true };
     // Build page rendering data
@@ -153,7 +157,7 @@ const getServerSideProps = (_a) => { var _b, _c, _d, _e, _f, _g, _h; return tsli
     return pageProps;
 }); };
 exports.getServerSideProps = getServerSideProps;
-const OptimizelyCmsPage = props => {
+const OptimizelyCmsPage = (props) => {
     var _a, _b;
     const opti = (0, cms_1.useAndInitOptimizely)(props.inEditMode);
     const router = (0, router_1.useRouter)();

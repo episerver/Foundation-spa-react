@@ -1,5 +1,10 @@
+using EPiServer.ServiceLocation;
 using EPiServer.Shell.Security;
+using HeadlessCms.Infrastructure.Installers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,6 +19,8 @@ namespace HeadlessCms.Features.InitializeInstance
     {
         private readonly UIUserProvider _uIUserProvider;
         private readonly UIRoleProvider _uIRoleProvider;
+        private readonly Injected<SchemaInstaller> _schemaInstaller;
+        private readonly Injected<DataInstaller> _dataInstaller;
 
         public InitializeInstanceController(UIUserProvider uIUserProvider, UIRoleProvider uIRoleProvider)
         {
@@ -29,22 +36,67 @@ namespace HeadlessCms.Features.InitializeInstance
         /// <returns>Result</returns>
         [HttpPost]
         [Route("")]
-        [ProducesResponseType(200, Type = typeof(object))]
-        [ProducesResponseType(401)]
-        public async Task<ActionResult<object>> Index()
+        [ProducesResponseType(200, Type = typeof(InitializeInstanceResponse))]
+        [ProducesResponseType(500, Type = typeof(InitializeInstanceResponse))]
+        public async Task<ActionResult<InitializeInstanceResponse>> Index([FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] InitializeInstanceRequest options)
+        {
+            if (options is null) options = new();
+            InitializeInstanceResponse response = new();
+            response.Success = true;
+            if (options.CreateFirstUser)
+            {
+                response.FirstUserRequested = true;
+                try
+                {
+                    response.FirstUserCreated = await CreateInitialUser(options.FirstUser);
+                } catch (Exception ex)
+                {
+                    response.Success = false;
+                    response.Messages.Add(ex.Message);
+                }
+            }
+
+            if (options.ImportSchema)
+            {
+                response.SchemaImportRequested = true;
+                try
+                {
+                    response.SchemaImported = _schemaInstaller.Service.Install(HttpContext);
+                } catch (Exception ex)
+                {
+                    response.Success = false;
+                    response.Messages.Add(ex.Message);
+                }
+            }
+
+            if (options.ImportData)
+            {
+                response.DataImportRequested = true;
+                try
+                {
+                    response.DataImported = _dataInstaller.Service.Install(HttpContext);
+                }
+                catch (Exception ex)
+                {
+                    response.Success = false;
+                    response.Messages.Add(ex.Message);
+                }
+            }
+
+            return response.Success ? 
+                Ok(response) : 
+                StatusCode(500, response);
+        }
+
+        protected async Task<bool> CreateInitialUser(InitializeInstanceRequestUserData data)
         {
             var hasUsers = await _uIUserProvider.GetAllUsersAsync(0, 1).AnyAsync();
             if (!hasUsers)
             {
-                var username = "admin";
-                var email = "admin@example.com";
-                var pass = "Episerver123!";
-                var roles = new string[] { "Administrators", "WebAdmins", "WebEditors" };
-
-                var result = await _uIUserProvider.CreateUserAsync(username, pass, email, null, null, true);
+                var result = await _uIUserProvider.CreateUserAsync(data.Username, data.Password, data.Email, null, null, true);
                 if (result.Status == UIUserCreateStatus.Success)
                 {
-                    foreach (var role in roles)
+                    foreach (var role in data.Roles)
                     {
                         var exists = await _uIRoleProvider.RoleExistsAsync(role);
                         if (!exists)
@@ -53,13 +105,41 @@ namespace HeadlessCms.Features.InitializeInstance
                         }
                     }
 
-                    await _uIRoleProvider.AddUserToRolesAsync(result.User.Username, roles);
+                    await _uIRoleProvider.AddUserToRolesAsync(result.User.Username, data.Roles);
+                    return true;
                 }
-                return Ok(new { Success = true });
-            } else
-            {
-                return Unauthorized();
+                throw new Exception("Security incident: Initial user creation failed (" + String.Join("; ", result.Errors) + ")");
             }
+            throw new Exception("Security incident: Initial user creation blocked");
         }
+    }
+
+    public class InitializeInstanceResponse
+    {
+        public bool Success { get; set; } = false;
+        public bool FirstUserRequested { get; set; } = false;
+        public bool FirstUserCreated { get; set; } = false;
+        public bool SchemaImportRequested { get; set; } = false;
+        public bool SchemaImported { get; set; } = false;
+        public bool DataImportRequested { get; set; } = false;
+        public bool DataImported { get; set; } = false;
+        public IList<string> Messages { get; set; } = new List<string>();
+    }
+
+    public class InitializeInstanceRequest
+    {
+        public bool CreateFirstUser { get; set; } = false;
+        public InitializeInstanceRequestUserData FirstUser { get; set; } = new();
+        public bool ImportSchema { get; set; } = false;
+        public bool ImportData { get; set; } = false;
+    }
+
+    public class InitializeInstanceRequestUserData
+    {
+        public string Username { get; set; } = "admin";
+        public string Email { get; set; } = "admin@example.com";
+        public string Password  { get; set; } = "Episerver123!";
+        public string[] Roles { get; set; } = new string[] { "Administrators", "WebAdmins", "WebEditors" };
+
     }
 }

@@ -1,16 +1,17 @@
 import type { ComponentType } from 'react';
 import type { ComponentLoader, DynamicProps } from "./types";
+import type { ContextType } from '../provider/context';
+export declare type ComponentsCache = Required<ContextType>['components'];
 /**
  * Default implementation of the component loader, assuming all
- * components are accessible within: @components/.... to allow
+ * components are accessible within: @components/cms.... to allow
  * for dynamic import building
  */
 export declare class DefaultComponentLoader implements ComponentLoader {
     readonly prefix: string;
+    protected readonly cache: ComponentsCache;
     get AsyncComponents(): Record<string, Promise<any>>;
-    get R(): any;
-    get M(): any;
-    constructor();
+    constructor(cache?: ComponentsCache);
     buildComponentImport(path: string[], prefix?: string, tag?: string): string;
     dynamicSync<P = DynamicProps>(path: string[], prefix?: string, tag?: string): ComponentType<P>;
     dynamicAsync<P = DynamicProps>(path: string[], prefix?: string, tag?: string): Promise<ComponentType<P>>;

@@ -1,11 +1,18 @@
 import { createApiId } from '../util/content-reference';
 export const CMS_CONTENT_PROTOCOL = 'opti-cms:';
-export function buildContentURI(contentReference, select, expand, branch, inEditMode = false, scope) {
+export function buildContentURI(contentReference, select, expand, branch, inEditMode = false, scope, visitorGroup) {
     //console.log("Building contentURI with branch", branch)
     const path = Array.isArray(contentReference) ?
         contentReference.map(r => createApiId(r, true, inEditMode)).join('/') :
         createApiId(contentReference, true, inEditMode);
     const contentRef = new URL(CMS_CONTENT_PROTOCOL + "/" + path);
+    if (!visitorGroup)
+        try {
+            visitorGroup = (new URL(window.location.href)).searchParams.get("visitorgroupsByID") ?? undefined;
+        }
+        catch (e) {
+            //Ignored on purpose
+        }
     if (select)
         contentRef.searchParams.set("select" /* CONTENT_PARAMS.Select */, select.map(x => encodeURIComponent(x)).join(','));
     if (expand)
@@ -16,6 +23,8 @@ export function buildContentURI(contentReference, select, expand, branch, inEdit
         contentRef.searchParams.set("branch" /* CONTENT_PARAMS.Language */, branch);
     if (scope)
         contentRef.searchParams.set("scope" /* CONTENT_PARAMS.Scope */, scope);
+    if (visitorGroup)
+        contentRef.searchParams.set("vg" /* CONTENT_PARAMS.VisitorGroup */, visitorGroup);
     //console.log("Generated content id", contentRef.href, "for language", branch)
     return contentRef;
 }
@@ -29,6 +38,7 @@ export function parseContentURI(contentURI) {
     const editMode = uri.searchParams.get("epieditmode" /* CONTENT_PARAMS.InEditMode */) === 'true';
     const branch = (uri.searchParams.get("branch" /* CONTENT_PARAMS.Language */) ? uri.searchParams.get("branch" /* CONTENT_PARAMS.Language */) : undefined);
     const scope = (uri.searchParams.get("scope" /* CONTENT_PARAMS.Scope */) ? uri.searchParams.get("scope" /* CONTENT_PARAMS.Scope */) : undefined);
-    return { contentIds, select, expand, editMode, branch, scope };
+    const visitorGroup = uri.searchParams.get("vg" /* CONTENT_PARAMS.VisitorGroup */) ?? undefined;
+    return { contentIds, select, expand, editMode, branch, scope, visitorGroup };
 }
 //# sourceMappingURL=content-uri.js.map

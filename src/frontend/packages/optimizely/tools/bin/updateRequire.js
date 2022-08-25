@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-const fs = require('fs')
+const fs = require('node:fs')
 const glob = require('glob')
-const path = require('path')
+const path = require('node:path')
 
 const requireReplacer = {
     /**

@@ -1,63 +1,24 @@
-function isServer() {
-    try {
-        return (window && window.location && window.addEventListener) ? false : true;
-    }
-    catch {
-        return true;
-    }
-}
-function isWebpack() {
-    try {
-        return typeof (__webpack_modules__) != 'undefined';
-    }
-    catch {
-        return true;
-    }
-}
 const debug = false; //process.env['NODE_ENV'] == 'development'
 const componentPromises = {};
 /**
  * Default implementation of the component loader, assuming all
- * components are accessible within: @components/.... to allow
+ * components are accessible within: @components/cms.... to allow
  * for dynamic import building
  */
 export class DefaultComponentLoader {
-    constructor() {
+    constructor(cache) {
         this.prefix = "@components/cms";
         if (debug)
             console.log("Default-Loader.newInstance");
-        if (!isWebpack())
-            throw new Error('The DefaultComponentLoader requires Webpack 5+');
-        // Pre-fetch & validate the components
-        if (isServer()) {
-            Object.keys(__webpack_modules__).forEach(k => {
-                if (k.indexOf(" ") > 0) { // Dynamic imports have a space, but get resolved, so we don't know where @components/cms points to
-                    let dynamicModule = {};
-                    __webpack_modules__[k](dynamicModule, null, __webpack_require__);
-                    if (!dynamicModule.exports)
-                        return;
-                    const exports = dynamicModule.exports;
-                    const keys = exports.keys();
-                    if (debug)
-                        console.log(`Default-Loader.newInstance: PreFetched ${keys.length} modules for dynamic import ${k}`);
-                }
-            });
+        this.cache = cache ?? {};
+        // try making the component loader available in the browser
+        try {
+            window.__dcl__ = this;
         }
-        else {
-            try {
-                window.__dcl__ = this;
-            }
-            catch (e) { }
-        }
+        catch (e) { }
     }
     get AsyncComponents() {
         return componentPromises;
-    }
-    get R() {
-        return __webpack_require__;
-    }
-    get M() {
-        return __webpack_modules__;
     }
     buildComponentImport(path, prefix, tag = "") {
         // Process the path
@@ -72,12 +33,10 @@ export class DefaultComponentLoader {
         return path.join('/') + tag;
     }
     dynamicSync(path, prefix, tag = "") {
-        const dynamicModule = this.dynamicModuleSync(path, prefix, tag);
-        if (!dynamicModule)
-            throw new Error(`Module ${this.buildComponentImport(path, prefix, tag)} cannot be resolved synchronously`);
-        if (!dynamicModule?.default)
-            throw new Error(`Module ${this.buildComponentImport(path, prefix, tag)} does not have a default export`);
-        return dynamicModule.default;
+        const dynamicPath = this.buildComponentImport(path, prefix, tag);
+        if (!this.cache[dynamicPath])
+            throw new Error(`Component ${dynamicPath} cannot be resolved synchronously`);
+        return this.cache[dynamicPath];
     }
     async dynamicAsync(path, prefix, tag = "") {
         const dynamicModule = await this.dynamicModuleAsync(path, prefix, tag);
@@ -91,26 +50,8 @@ export class DefaultComponentLoader {
         return returnValue.default;
     }
     dynamicModuleSync(path, prefix, tag = "") {
-        //if (!isServer()) return undefined
         const dynamicPath = this.buildComponentImport(path, prefix, tag);
-        if (typeof (dynamicPath) !== 'string' || dynamicPath.length < 1)
-            return undefined;
-        if (debug)
-            console.log("Default-Loader.dynamicModuleSync", `@components/cms/${dynamicPath}`);
-        //@ts-expect-error resolveWeak is a non-standard function introduced by WebPack
-        const moduleId = require.resolveWeak(`@components/cms/${dynamicPath}`);
-        if (isServer() && __webpack_require__.m[moduleId]) {
-            const exports = {};
-            __webpack_require__.m[moduleId].call(exports, {}, exports, __webpack_require__);
-            return exports;
-        }
-        else {
-            const mod = __webpack_require__(moduleId);
-            if (debug)
-                console.log("Default-Loader.dynamicModuleSync (Browser)", `@components/cms/${dynamicPath}`, mod);
-            return mod;
-        }
-        //throw new Error(`Module "@components/cms/${dynamicPath}" cannot be loaded synchronously`)
+        throw new Error(`Module "@components/cms/${dynamicPath}" cannot be loaded synchronously`);
     }
     async dynamicModuleAsync(path, prefix, tag = "") {
         const dynamicPath = this.buildComponentImport(path, prefix, tag);

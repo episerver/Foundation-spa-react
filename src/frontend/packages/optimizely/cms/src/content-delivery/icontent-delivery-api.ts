@@ -1,6 +1,6 @@
 import type { IContent, Website, WebsiteList, ContentReference, AuthResponse, IContentData } from '../models'
 import type { Config } from './config'
-import localFetch from '../fetch'
+import fetch from 'cross-fetch'
 
 
 /**
@@ -44,15 +44,27 @@ export type ContentRequest<ContentType extends IContent = IContentData> = {
     editMode?: boolean
 }
 
-export type Fetch = typeof localFetch extends Promise<infer R> ? R : typeof localFetch
-//type FetchResponse = ReturnType<Fetch> extends Promise<infer R> ? R : never
-//type FetchInfo = Parameters<Fetch>[0]
+export type Fetch = typeof fetch extends Promise<infer R> ? R : typeof fetch
 export type FetchRequest = Required<Parameters<Fetch>>[1]
 
 export type RequestConfig<T extends IContent = IContent> = ContentRequest<T> & {
+    /**
+     * The Request Method
+     */
     method?: FetchRequest['method']
+    /**
+     * The Request Body
+     */
     body?: FetchRequest['body']
-    addDefaultParams?: boolean
+    /**
+     * Set to true to have the default parameters to be added to the request,
+     * false to ensure only explicitly defined parameters will be added.
+     */
+    addDefaultParams?: boolean,
+    /**
+     * Override the default timeout (in seconds) for the request
+     */
+    timeOut?: number
 }
 
 export type ContentSearchResult<T extends IContent = IContentData> = { 

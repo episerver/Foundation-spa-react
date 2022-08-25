@@ -25,7 +25,10 @@
 	"settings": {
 		"search.showLineNumbers": true,
 		"search.smartCase": true,
-		"search.useGlobalIgnoreFiles": true
+		"search.useGlobalIgnoreFiles": true,
+		"powershell.cwd": "c:\\Episerver\\FoundationSpaReact\\src\\frontend",
+		"typescript.enablePromptUseWorkspaceTsdk": true,
+		"typescript.tsdk": "frontend\\.yarn\\sdks\\typescript\\lib"
 	},
 	"tasks": {
 		"version": "2.0.0",

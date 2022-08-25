@@ -74,7 +74,10 @@ namespace HeadlessCms.Infrastructure.Installers
         protected virtual SiteDefinition CreateSiteDefinition(HttpContext context, string name)
         {
             var request = context.Request;
-            var siteDefinition = new SiteDefinition {
+            var siteDefinition = _siteDefinitionRepository.List().FirstOrDefault(site => site.Name.Equals(DefaultWebsiteName, StringComparison.OrdinalIgnoreCase));
+            if (siteDefinition is not null)
+                return siteDefinition;
+            siteDefinition = new SiteDefinition {
                 Name = name,
                 SiteUrl = new Uri(request.GetDisplayUrl()),
             };

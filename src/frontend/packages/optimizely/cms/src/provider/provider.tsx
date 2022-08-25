@@ -16,17 +16,21 @@ export type ContextProviderProps = {
     ComponentLoaderClass ?: ComponentLoaderStatic
     defaultBranch ?: string
     currentContentId ?: any
+    components ?: OptimizelyContextType['components']
 }
 
 const COMMUNICATOR_CMS_PATH = 'episerver/cms'
 const COMMUNICATOR_FILE = 'clientresources/epi-cms/communicationInjector.js'
 
-export const ContextProvider : FunctionComponent<PropsWithChildren<ContextProviderProps>> = ( { defaultBranch, cmsDomain, children, cmsPath, cmsVersion, communicatorFile, ComponentLoaderClass, currentContentId } ) =>
+export const ContextProvider : FunctionComponent<PropsWithChildren<ContextProviderProps>> = ( { defaultBranch, cmsDomain, children, cmsPath, cmsVersion, communicatorFile, ComponentLoaderClass, currentContentId, components } ) =>
 {
-    // Prepare default values
+    const loaderClassName = ComponentLoaderClass?.name ?? "-default-";
+    const componentskeys = components ? Object.getOwnPropertyNames(components).join(":") : 'empty'
     const contentEditing = useContentEditing({ cmsDomain, cmsPath, cmsVersion: cmsVersion as string, communicatorFile })
-    const api = useMemo(() => createCdApi({ defaultBranch: defaultBranch }), [ defaultBranch ])
-    const loader = useMemo(() => createComponentLoader({loaderType : ComponentLoaderClass}), [ ComponentLoaderClass ])
+    const api = useMemo(() => createCdApi({ defaultBranch: defaultBranch, apiUrl: cmsDomain }), [ defaultBranch, cmsDomain ])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const loader = useMemo(() => createComponentLoader({loaderType : ComponentLoaderClass, args: components ? [components] : []}), [ loaderClassName, componentskeys ])
+    
     const withActionsAndEvents = useMemo<OptimizelyContextType>(() => {
         return {
             api,

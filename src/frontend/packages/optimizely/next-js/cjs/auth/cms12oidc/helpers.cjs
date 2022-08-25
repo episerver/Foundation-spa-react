@@ -39,8 +39,8 @@ function refreshToken(host, refresh_token, client_id, client_secret) {
             }
         });
         if (!refreshResponse.ok) {
-            const errorBody = yield refreshResponse.text();
-            console.error("Service error body", errorBody);
+            //const errorBody = await refreshResponse.text()
+            //console.error("Service error body", errorBody)
             return { error: `Failed to refresh token. (HTTP ${refreshResponse.status}: ${refreshResponse.statusText})`, error_type: "failed" };
         }
         const tokenSet = (yield refreshResponse.json());

@@ -1,6 +1,6 @@
 import type { IContent, Website, WebsiteList, ContentReference, AuthResponse, IContentData } from '../models';
 import type { Config } from './config';
-import localFetch from '../fetch';
+import fetch from 'cross-fetch';
 /**
  * Interface describing additional request parameters
  * for requesting content.
@@ -40,12 +40,26 @@ export declare type ContentRequest<ContentType extends IContent = IContentData> 
      */
     editMode?: boolean;
 };
-export declare type Fetch = typeof localFetch extends Promise<infer R> ? R : typeof localFetch;
+export declare type Fetch = typeof fetch extends Promise<infer R> ? R : typeof fetch;
 export declare type FetchRequest = Required<Parameters<Fetch>>[1];
 export declare type RequestConfig<T extends IContent = IContent> = ContentRequest<T> & {
+    /**
+     * The Request Method
+     */
     method?: FetchRequest['method'];
+    /**
+     * The Request Body
+     */
     body?: FetchRequest['body'];
+    /**
+     * Set to true to have the default parameters to be added to the request,
+     * false to ensure only explicitly defined parameters will be added.
+     */
     addDefaultParams?: boolean;
+    /**
+     * Override the default timeout (in seconds) for the request
+     */
+    timeOut?: number;
 };
 export declare type ContentSearchResult<T extends IContent = IContentData> = {
     totalMatching: number;

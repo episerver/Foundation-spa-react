@@ -3,12 +3,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseContentURI = exports.buildContentURI = exports.CMS_CONTENT_PROTOCOL = void 0;
 const content_reference_1 = require("../util/content-reference");
 exports.CMS_CONTENT_PROTOCOL = 'opti-cms:';
-function buildContentURI(contentReference, select, expand, branch, inEditMode = false, scope) {
+function buildContentURI(contentReference, select, expand, branch, inEditMode = false, scope, visitorGroup) {
+    var _a;
     //console.log("Building contentURI with branch", branch)
     const path = Array.isArray(contentReference) ?
         contentReference.map(r => (0, content_reference_1.createApiId)(r, true, inEditMode)).join('/') :
         (0, content_reference_1.createApiId)(contentReference, true, inEditMode);
     const contentRef = new URL(exports.CMS_CONTENT_PROTOCOL + "/" + path);
+    if (!visitorGroup)
+        try {
+            visitorGroup = (_a = (new URL(window.location.href)).searchParams.get("visitorgroupsByID")) !== null && _a !== void 0 ? _a : undefined;
+        }
+        catch (e) {
+            //Ignored on purpose
+        }
     if (select)
         contentRef.searchParams.set("select" /* CONTENT_PARAMS.Select */, select.map(x => encodeURIComponent(x)).join(','));
     if (expand)
@@ -19,12 +27,14 @@ function buildContentURI(contentReference, select, expand, branch, inEditMode = 
         contentRef.searchParams.set("branch" /* CONTENT_PARAMS.Language */, branch);
     if (scope)
         contentRef.searchParams.set("scope" /* CONTENT_PARAMS.Scope */, scope);
+    if (visitorGroup)
+        contentRef.searchParams.set("vg" /* CONTENT_PARAMS.VisitorGroup */, visitorGroup);
     //console.log("Generated content id", contentRef.href, "for language", branch)
     return contentRef;
 }
 exports.buildContentURI = buildContentURI;
 function parseContentURI(contentURI) {
-    var _a, _b;
+    var _a, _b, _c;
     const uri = typeof (contentURI) === 'string' ? new URL(contentURI) : contentURI;
     if (uri.protocol !== exports.CMS_CONTENT_PROTOCOL)
         throw new Error("Invalid content protocol");
@@ -34,7 +44,8 @@ function parseContentURI(contentURI) {
     const editMode = uri.searchParams.get("epieditmode" /* CONTENT_PARAMS.InEditMode */) === 'true';
     const branch = (uri.searchParams.get("branch" /* CONTENT_PARAMS.Language */) ? uri.searchParams.get("branch" /* CONTENT_PARAMS.Language */) : undefined);
     const scope = (uri.searchParams.get("scope" /* CONTENT_PARAMS.Scope */) ? uri.searchParams.get("scope" /* CONTENT_PARAMS.Scope */) : undefined);
-    return { contentIds, select, expand, editMode, branch, scope };
+    const visitorGroup = (_c = uri.searchParams.get("vg" /* CONTENT_PARAMS.VisitorGroup */)) !== null && _c !== void 0 ? _c : undefined;
+    return { contentIds, select, expand, editMode, branch, scope, visitorGroup };
 }
 exports.parseContentURI = parseContentURI;
 //# sourceMappingURL=content-uri.js.map

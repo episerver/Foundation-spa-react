@@ -1,17 +1,28 @@
 const optiWebsite = require('./website.cjs')
 const { withOptimizelyConfig } = require('@optimizely/next-js/config.cjs')
+const withBundleAnalyzer = require('@next/bundle-analyzer')(
+    {
+        enabled: process.env.ANALYZE === 'true'
+    }
+)
 
 /** @type { import('next').NextConfig } */
-const nextConfig = withOptimizelyConfig({
+const nextConfig = withBundleAnalyzer(withOptimizelyConfig({
     reactStrictMode: true,
     generateEtags: true,
     poweredByHeader: false,
+    cleanDistDir: true,
     images: {
         formats: ['image/avif', 'image/webp'],
         domains: ['localhost']
     },
-    swcMinify: true
-}, optiWebsite)
+    compiler: {
+      removeConsole: {
+        exclude: ['error'],
+      },
+    },
+    swcMinify: true,
+}, optiWebsite))
 
 if (optiWebsite.localeDomains?.length > 0) {
 // @ToDo: Add domain based locale detection

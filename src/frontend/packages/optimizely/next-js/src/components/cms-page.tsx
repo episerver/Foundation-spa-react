@@ -4,7 +4,7 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import { getPagesForLocale, EditMode } from '@optimizely/cms/utils'
 import { ContentDelivery, ContentComponent, useAndInitOptimizely as useOptimizely } from '@optimizely/cms'
-import { usePageContent, loadPageContentByURL, loadPageContent } from '../hooks'
+import { usePageContent, loadPageContentByUrl, loadPageContent } from '../hooks'
 import * as Auth from '../auth/cms12oidc'
 
 const inDebugMode = false;
@@ -94,6 +94,7 @@ export async function resolveAwaitableProps(toResolve: { props: OptimizelyCmsPag
  */
 export async function getStaticPaths(context : GetStaticPathsContext) : Promise<GetStaticPathsResult>
 {
+    console.time("@optimizely/next-js/components/cms-page/getStaticPaths")
     const { defaultLocale, locales } = context
     const api = ContentDelivery.createInstance({ debug: inDebugMode, defaultBranch: defaultLocale })
     const pages = (await Promise.all((locales ?? []).map((loc: string) => getPagesForLocale(api, loc)))).flat(1)
@@ -109,6 +110,8 @@ export async function getStaticPaths(context : GetStaticPathsContext) : Promise<
                 return false
             return true
         })
+    //const paths = locales?.map(locale => `/${locale}/`) ?? []
+    console.timeEnd("@optimizely/next-js/components/cms-page/getStaticPaths")
     return {
         paths,
         fallback: 'blocking' // Fallback to SSR when there's no SSG version of the page
@@ -129,13 +132,14 @@ export async function getStaticProps(context: GetStaticPropsContext<OptimizelyCm
     const currentLocale = locale ?? defaultLocale ?? 'en'
 
     // Create the content-api client and resolve the actual content item
+    const page = params?.page ?? []
     const api = ContentDelivery.createInstance({ debug: inDebugMode, defaultBranch: defaultLocale })
-    const path = `/${ currentLocale }/${ params?.page.join("/") ?? '' }`
+    const path = page.length > 0 && page[0] != currentLocale ? `/${ currentLocale }/${ page.join("/") ?? '' }` : "/"
     
     // This is for a published page URL, not a preview/edit URL, so always loading the published code
-    const props = await loadPageContentByURL(path, api, currentLocale, false)
+    const props = await loadPageContentByUrl(path, api, currentLocale, false)
     if (!props)
-        return { notFound: true, revalidate: 60 }
+        return { notFound: true, revalidate: 1 }
 
     // Return the page props
     return { 
@@ -182,7 +186,7 @@ export const getServerSideProps : GetServerSideProps<OptimizelyCmsPageProps, Opt
     })
     const props = editInfo?.contentReference ?
         await loadPageContent(editInfo.contentReference, api, locale, true) :
-        await loadPageContentByURL(pageUrl.href, api, locale, false)
+        await loadPageContentByUrl(pageUrl, api, locale, false)
     if (!props)
         return { notFound: true }
 
@@ -197,7 +201,7 @@ export const getServerSideProps : GetServerSideProps<OptimizelyCmsPageProps, Opt
     return pageProps
 }
 
-export const OptimizelyCmsPage : NextPage<OptimizelyCmsPageProps, OptimizelyCmsPageInitialProps> = props => {
+export const OptimizelyCmsPage : NextPage<OptimizelyCmsPageProps, OptimizelyCmsPageInitialProps> = (props: OptimizelyCmsPageProps) => {
     const opti = useOptimizely(props.inEditMode)
     const router = useRouter()
     const locale = router.locale ?? router.defaultLocale

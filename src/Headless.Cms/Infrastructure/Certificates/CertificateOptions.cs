@@ -30,9 +30,8 @@ namespace HeadlessCms.Infrastructure.Certificates
                     var rawData = certFileInfo.AsByteArray();
                     return new X509Certificate2(rawData, passPhrase, X509KeyStorageFlags.EphemeralKeySet);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    Console.Error.WriteLine(e.Message);
                     return default;
                 }
             }

@@ -1,5 +1,4 @@
-import localFetch from '../fetch';
-// type FetchResponse = ReturnType<Fetch>
+import fetch from 'cross-fetch';
 const GRAPHQL_SERVICE_PATH = '/content/v2';
 const defaultConfiguration = {
     debug: false,
@@ -29,7 +28,7 @@ export class Client {
         const gqlQuery = { query, variables };
         if (this.debug)
             this.log(`Optimizely GQL: ${gqlEndpoint}`, gqlQuery.query, gqlQuery.variables);
-        const response = await localFetch.then(x => x(gqlEndpoint.href, {
+        const response = await fetch(gqlEndpoint.href, {
             ...requestInit,
             method: 'POST',
             headers: {
@@ -38,7 +37,7 @@ export class Client {
                 ...requestInit?.headers,
             },
             body: JSON.stringify(gqlQuery)
-        }));
+        });
         const responseData = await response.json();
         if (this.throwOnError && responseData.errors) {
             const errorMessage = "GraphQL Service Error: " + responseData.errors.map(x => x.message).join('; ');

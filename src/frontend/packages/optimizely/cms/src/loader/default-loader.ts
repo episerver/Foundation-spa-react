@@ -1,85 +1,37 @@
 import type { ComponentType } from 'react'
 import type { ComponentLoader, DynamicProps } from "./types"
+import type { ContextType } from '../provider/context'
 
-declare const __webpack_modules__ : Record<string, any>
-declare const __webpack_require__ : {
-    (id:string): any
-    m: Record<string, any>
-}
-
-function isServer() : boolean 
-{
-    try {
-        return (window && window.location && window.addEventListener) ? false : true
-    } catch {
-        return true
-    }
-}
-function isWebpack() : boolean 
-{
-    try {
-        return typeof(__webpack_modules__) != 'undefined'
-    } catch {
-        return true
-    }
-}
 const debug = false; //process.env['NODE_ENV'] == 'development'
 const componentPromises : Record<string, Promise<any>> = {}
 
-/**
- *  Not sure what the intention of this code is.... 
- */
-type AsyncLoader = (req: string) => Promise<any>
-type WebpackModule = { exports ?: AsyncLoader & { keys: () => string[] } }
+export type ComponentsCache = Required<ContextType>['components']
 
 /**
  * Default implementation of the component loader, assuming all
- * components are accessible within: @components/.... to allow
+ * components are accessible within: @components/cms.... to allow
  * for dynamic import building
  */
 export class DefaultComponentLoader implements ComponentLoader
 {
     public readonly prefix : string = "@components/cms"
+    protected readonly cache : ComponentsCache
 
     public get AsyncComponents() : Record<string, Promise<any>> 
     {
         return componentPromises;
     }
 
-    public get R() : any 
-    {
-        return __webpack_require__
-    }
-
-    public get M() : any 
-    {
-        return __webpack_modules__
-    }
-
-    public constructor()
+    public constructor(cache ?: ComponentsCache)
     {
         if (debug) console.log("Default-Loader.newInstance")
 
-        if (!isWebpack())
-            throw new Error('The DefaultComponentLoader requires Webpack 5+');
+        this.cache = cache ?? {}
 
-        // Pre-fetch & validate the components
-        if(isServer()) {
-            Object.keys(__webpack_modules__).forEach(k => {
-                if (k.indexOf(" ") > 0) { // Dynamic imports have a space, but get resolved, so we don't know where @components/cms points to
-                    let dynamicModule : WebpackModule = {}
-                    __webpack_modules__[k](dynamicModule, null, __webpack_require__)
-                    if (!dynamicModule.exports) return
-                    const exports = dynamicModule.exports
-                    const keys = exports.keys()
-                    if (debug) console.log(`Default-Loader.newInstance: PreFetched ${ keys.length } modules for dynamic import ${ k }`)
-                }
-            })
-        } else {
-            try {
-                (window as any).__dcl__ = this;
-            } catch (e) {}
-        }
+        // try making the component loader available in the browser
+        try {
+            (window as any).__dcl__ = this;
+        } catch (e) {}
     }
 
     public buildComponentImport(path: string[], prefix ?: string, tag : string = "") 
@@ -101,12 +53,10 @@ export class DefaultComponentLoader implements ComponentLoader
 
     public dynamicSync<P = DynamicProps>(path: string[], prefix?: string, tag: string = ""): ComponentType<P>
     {
-        const dynamicModule = this.dynamicModuleSync<{default ?: ComponentType<P>}>(path, prefix, tag)
-        if (!dynamicModule)
-            throw new Error(`Module ${ this.buildComponentImport(path, prefix, tag) } cannot be resolved synchronously`)
-        if (!dynamicModule?.default)
-            throw new Error(`Module ${ this.buildComponentImport(path, prefix, tag) } does not have a default export`)
-        return dynamicModule.default
+        const dynamicPath = this.buildComponentImport(path, prefix, tag) 
+        if (!this.cache[dynamicPath])
+            throw new Error(`Component ${ dynamicPath } cannot be resolved synchronously`)
+        return this.cache[dynamicPath] as ComponentType<P>
     }
 
     public async dynamicAsync<P = DynamicProps>(path: string[], prefix?: string, tag: string = "") : Promise<ComponentType<P>>
@@ -126,25 +76,9 @@ export class DefaultComponentLoader implements ComponentLoader
     }
 
     public dynamicModuleSync<MT>(path: string[], prefix?: string, tag: string = "") : MT | undefined
-    {
-        //if (!isServer()) return undefined
-        const dynamicPath = this.buildComponentImport(path, prefix, tag)
-        if (typeof(dynamicPath) !== 'string' || dynamicPath.length < 1) return undefined
-
-        if (debug) console.log("Default-Loader.dynamicModuleSync", `@components/cms/${dynamicPath}`)
-        //@ts-expect-error resolveWeak is a non-standard function introduced by WebPack
-        const moduleId = require.resolveWeak(`@components/cms/${dynamicPath}`)
-        if (isServer() && __webpack_require__.m[moduleId]) {
-            const exports : MT = {} as MT
-            __webpack_require__.m[moduleId].call(exports, {}, exports, __webpack_require__)
-            return exports
-        } else {
-            const mod = __webpack_require__(moduleId)
-            if (debug) console.log("Default-Loader.dynamicModuleSync (Browser)", `@components/cms/${dynamicPath}`, mod)
-            return mod;
-        }
-        
-        //throw new Error(`Module "@components/cms/${dynamicPath}" cannot be loaded synchronously`)
+    {  
+        const dynamicPath = this.buildComponentImport(path, prefix, tag) 
+        throw new Error(`Module "@components/cms/${dynamicPath}" cannot be loaded synchronously`)
     }
 
     public async dynamicModuleAsync<MT = any>(path: string[], prefix?: string, tag: string = "")

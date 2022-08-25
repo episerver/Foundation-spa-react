@@ -6,7 +6,8 @@ export declare const enum CONTENT_PARAMS {
     Expand = "expand",
     InEditMode = "epieditmode",
     Language = "branch",
-    Scope = "scope"
+    Scope = "scope",
+    VisitorGroup = "vg"
 }
 export declare type ContentUriData<T extends IContent = IContentData> = {
     contentIds: string[];
@@ -15,6 +16,7 @@ export declare type ContentUriData<T extends IContent = IContentData> = {
     editMode: boolean;
     branch?: string;
     scope?: string;
+    visitorGroup?: string;
 };
-export declare function buildContentURI(contentReference: ContentReference | ContentReference[], select?: string[], expand?: string[], branch?: string, inEditMode?: boolean, scope?: string): URL;
+export declare function buildContentURI(contentReference: ContentReference | ContentReference[], select?: string[], expand?: string[], branch?: string, inEditMode?: boolean, scope?: string, visitorGroup?: string): URL;
 export declare function parseContentURI<T extends IContent = IContentData>(contentURI: string | URL): ContentUriData<T>;

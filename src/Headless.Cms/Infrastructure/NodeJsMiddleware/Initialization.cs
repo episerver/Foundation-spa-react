@@ -1,13 +1,6 @@
 ﻿using HeadlessCms.Infrastructure.NodeJsMiddleware;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Configuration;
-using System.Diagnostics;
-using System.Net;
-using System.Net.Http;
-using Yarp.ReverseProxy.Forwarder;
 
 namespace Microsoft.AspNetCore.Builder
 {

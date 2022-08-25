@@ -1,11 +1,8 @@
 import type { ClientConfiguration, QueryResponse } from './types'
-import localFetch from '../fetch'
+import fetch from 'cross-fetch'
 
-/*const localFetch = fetch*/
-type Fetch = typeof localFetch extends Promise<infer R> ? R : typeof localFetch
-// type FetchInfo = Parameters<Fetch>[0]
+type Fetch = typeof fetch extends Promise<infer R> ? R : typeof fetch
 type FetchConfig = Parameters<Fetch>[1]
-// type FetchResponse = ReturnType<Fetch>
 
 const GRAPHQL_SERVICE_PATH = '/content/v2'
 const defaultConfiguration : Required<Pick<ClientConfiguration, 'debug' | 'throwOnError'>> = {
@@ -52,7 +49,7 @@ export class Client
 
         if (this.debug) this.log(`Optimizely GQL: ${ gqlEndpoint }`, gqlQuery.query, gqlQuery.variables);
 
-        const response = await localFetch.then(x => x(gqlEndpoint.href, {
+        const response = await fetch(gqlEndpoint.href, {
             ...requestInit,
             method: 'POST',
             headers: {
@@ -61,7 +58,7 @@ export class Client
                 ...requestInit?.headers,
             },
             body: JSON.stringify(gqlQuery)
-        }));
+        });
         const responseData = await response.json() as Omit<QueryResponse<T>, 'res'>;
 
         if (this.throwOnError && responseData.errors) {

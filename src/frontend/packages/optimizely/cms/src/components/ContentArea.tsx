@@ -1,10 +1,10 @@
 import type { PropsWithChildren, ReactElement, ComponentType } from 'react'
 import type { ContentAreaPropertyValue, PropertyContentArea } from '../models/property'
 import type { IContent, IContentData } from '../models/icontent'
-import React from 'react'
+import React, { useId } from 'react'
 import { readValue, processValue } from '../util/property'
 import ContentAreaItem, { ContentAreaItemContainer, ContentAreaItemContainerProps } from './ContentAreaItem'
-import { useOptimizely, ReactV18 } from '../index'
+import { useOptimizely } from '../index'
 
 export type KeyOfType<T, V> = keyof {
     [P in keyof T as T[P] extends V ? P : never ]: any
@@ -85,7 +85,7 @@ export function ContentArea<T extends IContent = IContentData>(props: PropsWithC
 {
     const opti = useOptimizely()
     var isEditable = opti.inEditMode || opti.isEditable
-    const myId = (React as ReactV18).useId()
+    const myId = useId()
 
     if (props.value === undefined && props.content === undefined)
         return <>{ props.children }</>

@@ -1,7 +1,13 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 #nullable enable
@@ -13,39 +19,44 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
     /// </summary>
     public class NodeJsProcess : IAsyncDisposable, IDisposable
     {
+        public const string ClientName = "NodeJsProcessClient";
+
         public readonly string READY_MARKER = "===READY===";
 
-        private bool _isReady = false;
-
         private bool _mayRestart = true;
+
+        private bool _processResponding = false;
 
         protected readonly NodeJsMiddlewareOptions Options;
 
         protected readonly ILogger<NodeJsProcess> Logger;
 
+        protected readonly IHttpClientFactory ClientFactory;
+
+        protected readonly IWebHostEnvironment Environment;
+
         protected Process? JsProcess { get; set; }
 
         public bool IsReady
         {
-            get => _isReady;
-            private set
+            get
             {
-                var hasChanged = _isReady != value;
-                _isReady = value;
-                if (hasChanged && ReadyStateChanged is not null)
-                    ReadyStateChanged.Invoke(this, new EventArgs());
+                if (Options.AutoStart && (JsProcess is null || JsProcess.HasExited))
+                    return false;
+                return _processResponding;
             }
         }
-
-        public event EventHandler? ReadyStateChanged;
 
         public NodeJsProcess(
             NodeJsMiddlewareOptions options,
             ILogger<NodeJsProcess> logger,
-            IHostApplicationLifetime lifecycle
+            IHttpClientFactory httpClientFactory,
+            IWebHostEnvironment environment
         ) {
             Options = options;
             Logger = logger;
+            ClientFactory = httpClientFactory;
+            Environment = environment;
             
             if (!Options.Disabled)
             {
@@ -54,34 +65,46 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
             }
         }
 
-        public Task<NodeJsProcess> WhenReady()
+        public async Task<NodeJsProcess> WhenReady(CancellationToken cancellationToken = default)
         {
             if (IsReady)
-                return Task.FromResult(this);
+                return this;
             if (Options.Disabled)
-                return Task.FromException<NodeJsProcess>(new ApplicationException("NodeJS is Disabled"));
+                throw new ApplicationException("Node.JS Middleware has been disabled");
 
-            var result = new TaskCompletionSource<NodeJsProcess>();
+            var sw = Stopwatch.StartNew();
+            var timeout = TimeSpan.FromMinutes(Options.StartupTimeout);
 
-            void handler(object? sender, EventArgs args)
+            while (!IsReady && sw.Elapsed < timeout)
             {
-                if (sender is NodeJsProcess proc && proc.IsReady == true)
+                if (cancellationToken.IsCancellationRequested)
                 {
-                    result.SetResult(proc);
-                    this.ReadyStateChanged -= handler;
-                } else
-                {
-                    result.SetException(new ApplicationException("Lost process while awaiting start"));
-                    this.ReadyStateChanged -= handler;
+                    break;
                 }
+
+                _processResponding = await ProcessIsResponding(cancellationToken);
+
+                if (_processResponding)
+                {
+                    return this;
+                }
+
+                await Task.Delay(5000, cancellationToken);
             }
 
-            this.ReadyStateChanged += handler;
-            return result.Task;
+            if (cancellationToken.IsCancellationRequested)
+                return this;
+
+            throw new ApplicationException("The Node.JS application failed to respond within the given startup time");
         }
 
-        private void StartProcess()
+        protected virtual void StartProcess()
         {
+            if (!Options.AutoStart)
+            {
+                Logger.LogInformation("Node.JS Process start requested, but disabled by configuration");
+                return;
+            }
             JsProcess = Process.Start(CreateProcessDescriptor());
             if (JsProcess is null)
                 throw new ApplicationException("Unable to start Node.JS Process");
@@ -93,9 +116,8 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
             JsProcess.BeginOutputReadLine();
         }
 
-        private void JsProcess_Exited(object? sender, EventArgs e)
+        protected void JsProcess_Exited(object? sender, EventArgs e)
         {
-            IsReady = false;
             if (sender is Process nodeProcess)
             {
                 nodeProcess.CancelErrorRead();
@@ -111,20 +133,8 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
                 Logger.LogCritical("Not restarting Node.JS - disabled frontend");
         }
 
-        private void NodeJsProcess_ErrorDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            var errorData = e.Data;
-            if (errorData is not null)
-                Logger.LogError("Node.JS Error Output: { errorData }", errorData);
-        }
-        private void NodeJsProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            var line = e.Data;
-            if (string.Equals(line, READY_MARKER))
-                IsReady = true;
-            if (line is not null)
-                Logger.LogInformation("Node.JS Standard Output: { line }", line);
-        }
+        protected void NodeJsProcess_ErrorDataReceived(object sender, DataReceivedEventArgs e) => Logger.LogError(e.Data);
+        protected void NodeJsProcess_OutputDataReceived(object sender, DataReceivedEventArgs e) => Logger.LogInformation(e.Data);
 
         public async ValueTask DisposeAsync()
         {
@@ -160,16 +170,61 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
             GC.SuppressFinalize(this);
         }
 
-        protected ProcessStartInfo CreateProcessDescriptor() => new()
+        protected virtual ProcessStartInfo CreateProcessDescriptor()
         {
-            UseShellExecute = false,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            RedirectStandardInput = true,
-            FileName = "node",
-            Arguments = $"{ Options.FrontendPath}{ Options.ScriptName} { Options.Port }",
-            WorkingDirectory = Options.FrontendPath
-        };
+            var frontedPath = Path.GetFullPath(Path.Join(Environment.ContentRootPath, Options.FrontendPath));
+            if (!Directory.Exists(frontedPath))
+                throw new ApplicationException("The configured frontend path cannot be found on disk (relative to the content root path)");
+
+            IList<string> arguments = new List<string>();
+
+            // Add support for Yarn PNP
+            var pnpContextFile = Path.GetFullPath(Path.Join(frontedPath, ".pnp.cjs"));
+            if (File.Exists(pnpContextFile))
+                arguments.Add($"--require={pnpContextFile}");
+            var pnpLoaderFile = Path.GetFullPath(Path.Join(frontedPath, ".pnp.loader.mjs"));
+            if (File.Exists(pnpContextFile))
+                arguments.Add($"--loader=file:///{pnpLoaderFile}");
+
+            arguments.Add(Path.Join(frontedPath, Options.ScriptName));
+            arguments.Add(Options.Port.ToString());
+
+            var args = String.Join(" ", arguments);
+            return new()
+            {
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                RedirectStandardInput = true,
+                FileName = "node",
+                Arguments = args,
+                WorkingDirectory = frontedPath
+            };
+        }
+
+        protected virtual async Task<bool> ProcessIsResponding(CancellationToken cancellationToken, int requestTimeOut = 5)
+        {
+            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(requestTimeOut));
+            using var cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(timeout.Token, cancellationToken);
+
+            try
+            {
+                var client = ClientFactory.CreateClient(ClientName);
+                var response = await client.GetAsync(Options.DestinationServer, cancellationTokenSource.Token);
+                var responding = response.IsSuccessStatusCode;
+
+                return responding;
+            }
+            catch (Exception exception) when (
+                exception is HttpRequestException ||
+                exception is TaskCanceledException ||
+                exception is OperationCanceledException)
+            {
+                Logger.LogDebug(exception, "Failed to connect to the process.");
+
+                return false;
+            }
+        }
 
         protected void ValidateNodeJsVersion()
         {

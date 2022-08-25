@@ -170,4 +170,12 @@ export async function prefetchContentAreaRecursive(content, areas, locale, inEdi
         contentItems[cid] = item[cid]; });
     return contentItems;
 }
+export function isDxpDebugActive() {
+    try {
+        return process?.env?.OPTIMIZELY_DXP_DEBUG == '1' || process?.env?.OPTIMIZELY_DXP_DEBUG == 'true' || (typeof (process?.env?.OPTIMIZELY_DXP_DEBUG) == 'string' && process?.env?.OPTIMIZELY_DXP_DEBUG.toLowerCase() == 'true');
+    }
+    catch {
+        return false;
+    }
+}
 //# sourceMappingURL=functions.js.map

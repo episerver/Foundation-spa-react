@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { readValue, processValue } from '../util/property';
 import ContentAreaItem from './ContentAreaItem';
 import { useOptimizely } from '../index';
 export function ContentArea(props) {
     const opti = useOptimizely();
     var isEditable = opti.inEditMode || opti.isEditable;
-    const myId = React.useId();
+    const myId = useId();
     if (props.value === undefined && props.content === undefined)
         return <>{props.children}</>;
     if (!props.container)

@@ -66,7 +66,7 @@ function createApiId(id, preferGuid = true, inEditMode = false) {
             console.warn("Empty Optimizely Content Delivery ID");
             return id;
         }
-        console.error("Unable to generate an Optimizely Content Delivery API ID [01]", typeof (id));
+        //console.error("Unable to generate an Optimizely Content Delivery API ID [01]", typeof(id))
         return "-";
     }
     // Return the GUID if it's preferred or the identifier is not set

@@ -234,3 +234,13 @@ export async function prefetchContentAreaRecursive<T extends IContent = IContent
 
     return contentItems
 }
+
+export function isDxpDebugActive() : boolean 
+{
+    try {
+        return process?.env?.OPTIMIZELY_DXP_DEBUG == '1' || process?.env?.OPTIMIZELY_DXP_DEBUG == 'true' || (typeof(process?.env?.OPTIMIZELY_DXP_DEBUG) == 'string' && (process?.env?.OPTIMIZELY_DXP_DEBUG as string).toLowerCase() == 'true')
+    } catch 
+    {
+        return false;
+    }
+}
