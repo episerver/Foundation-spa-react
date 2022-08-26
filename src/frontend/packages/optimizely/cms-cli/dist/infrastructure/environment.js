@@ -7,9 +7,10 @@ function processEnvFile(suffix = "") {
     });
     dotenvExpand.expand(envVars);
 }
-const envName = process.env.NODE_ENV ?? 'development';
-processEnvFile('.local');
+const envName = process.env.OPTI_BUILD_ENV ?? process.env.NODE_ENV ?? 'development';
+processEnvFile(`.${envName}.local`);
 processEnvFile(`.${envName}`);
+processEnvFile('.local');
 processEnvFile();
 export function buildEnvironment() {
 }

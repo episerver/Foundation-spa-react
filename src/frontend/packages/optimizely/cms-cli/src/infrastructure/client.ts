@@ -71,11 +71,18 @@ export class Client {
         } catch (e) {
             console.warn("Unable to read a configured Optimizely DXP Secret")
         }
+
+        if (this.config.debug)
+            console.log("Optimizely Content Cloud Config:", this.config);
     }
 
     public async connect() : Promise<boolean>
     {
-        const resp = await fetch(this.dxpUrl, {
+        const connectUrl = (new URL("/globalassets", this.dxpUrl)).href;
+        if (this.config.debug)
+            console.log("Checking connectivity", connectUrl);
+
+        const resp = await fetch(connectUrl, {
             method: 'get'
         }).catch(e => {
             return {
@@ -128,6 +135,8 @@ export class Client {
     {
         try {
             const serviceUrl = this.getUrl(EndPoints.Websites)
+            if (this.config.debug)
+                console.log("Invoking service", serviceUrl.href)
             const response = await fetch(serviceUrl.href, {})
             if (!response.ok) 
                 return { ok: false, error: response, message: `HTTP ${ response.status }: ${ response.statusText }`}

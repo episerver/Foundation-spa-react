@@ -3,6 +3,8 @@
 # deploy.template.config.xml into deploy.local.config.xml and enter the appropriate
 # configuration values.
 
+$stopwatch = [system.diagnostics.stopwatch]::StartNew()
+
 # Advanced configuration
 $pubDir = "pub"             # Relative to main directory
 $srcDir = "src"             # Relative to main directoty
@@ -16,6 +18,7 @@ $version = ""               # Provide a value here, if it's not/incorrect listed
 
 # Context
 Write-Progress -Activity "Preparing" -Status "Building Context"
+$cwd         = Get-Location
 $toolsPath   = Split-Path -Parent -Path $Script:MyInvocation.MyCommand.Path 
 $basePath    = Join-Path -Path $toolsPath -ChildPath ".." -Resolve
 $pubPath     = Join-Path -Path $basePath -ChildPath $pubDir -Resolve
@@ -74,8 +77,10 @@ if ($version.Length -eq 0) {
     $version = $xml.Project.PropertyGroup.Version
 }
 if ($version.Length -eq 0) {
-    throw "Version neither set nor inferred from .csproj"
+    Write-Output "Defaulting to version 0.0.0.1"
+    $version = '0.0.0.1'
 }
+
 $nuGetName = "$cmsDir.cms.app.$version.nupkg"
 $dxpAsset = "$artefactsPath\$nuGetName"
 Write-Output ""
@@ -84,6 +89,8 @@ Write-Output "Package file name: $nuGetName"
 Write-Output "Asset file: $dxpAsset"
 Write-Output "DXP Project: $projectId"
 Write-Output "DXP Environment: $environment"
+
+$env:OPTI_BUILD_ENV = "production"
 
 If(Test-Path dxpAsset) {
     throw "An asset for version $version has previously been generated, DXP requires unique assets names. Please increment your .Net project version"
@@ -205,10 +212,32 @@ Start-EpiDeployment -DeploymentPackage $nuGetName -TargetEnvironment $environmen
 Set-Location $artefactsPath
 
 Write-Progress -Activity "Cleaning" -Status "Removing frontend build dir"
+Write-Output "Removing frontend build dir"
 If(Test-Path $frontendPubPath) {
     Remove-Item -Path "$frontendPubPath" -Recurse -Force
 }
 Write-Progress -Activity "Cleaning" -Status "Removing CMS build dir"
+Write-Output "Removing CMS build dir"
 If(Test-Path $cmsPubPath) {
     Remove-Item -Path "$cmsPubPath" -Recurse -Force
 }
+
+Write-Progress -Activity "Cleaning" -Status "Restoring Current Working Directory"
+Write-Output "Restoring Current Working Directory"
+Set-Location $cwd
+
+Write-Progress -Activity "Cleaning" -Status "Incrementing CMS Project Version"
+Write-Output "Incrementing CMS Project Version"
+$v = [version]$version
+$nv = [version]::New($v.Major,$v.Minor,$v.Build,$v.Revision+1)
+Write-output "- Old Version: $v"
+Write-Output "- New Version: $nv"
+$xml.Project.PropertyGroup.Version = "$nv"
+$xml.Save($cmsProjectFile)
+
+Remove-Item Env\:OPTI_BUILD_ENV
+
+$stopwatch.Stop()
+$duration = $stopwatch.Elapsed.TotalMinutes
+Write-Output ""
+Write-Output "Building, packaging and deploying took $duration minutes to complete"

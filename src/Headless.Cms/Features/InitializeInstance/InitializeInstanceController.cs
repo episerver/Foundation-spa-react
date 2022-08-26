@@ -62,10 +62,11 @@ namespace HeadlessCms.Features.InitializeInstance
                 try
                 {
                     response.SchemaImported = _schemaInstaller.Service.Install(HttpContext);
-                } catch (Exception ex)
-                {
+                } catch (Exception ex) {
                     response.Success = false;
                     response.Messages.Add(ex.Message);
+                } finally {
+                    _schemaInstaller.Service.InstallMessages.ForEach(msg => response.Messages.Add(msg));
                 }
             }
 
@@ -80,6 +81,10 @@ namespace HeadlessCms.Features.InitializeInstance
                 {
                     response.Success = false;
                     response.Messages.Add(ex.Message);
+                }
+                finally
+                {
+                    _dataInstaller.Service.InstallMessages.ForEach(msg => response.Messages.Add(msg));
                 }
             }
 

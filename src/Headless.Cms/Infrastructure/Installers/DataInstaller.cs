@@ -28,7 +28,7 @@ namespace HeadlessCms.Infrastructure.Installers
         private readonly ILogger<DataInstaller> _logger;
 
         public string DefaultWebsiteName => "foundation-mvc-cms";
-        public string InitialDataFile => "foundation.episerverdata";
+        public override string DefaultFileName => "foundation.episerverdata";
         public override int Order => 20;
 
         public DataInstaller(
@@ -51,15 +51,24 @@ namespace HeadlessCms.Infrastructure.Installers
 
         public override bool Install(HttpContext context)
         {
-            if (TryGetSourceFile(InitialDataFile, out var fileInfo))
+            InstallMessages.Clear();
+            var installSuccess = false;
+            if (TryGetSourceFile(DefaultFileName, out var fileInfo))
             {
                 using var siteDataStream = fileInfo.CreateReadStream();
                 var siteDefinition = CreateSiteDefinition(context, DefaultWebsiteName);
+                InstallMessages.Add($"Created/Selected site definition: { siteDefinition.Name } ({ siteDefinition.Id })");
                 var registeredRoots = _contentRepository.GetItems(_contentRootService.List(), new LoaderOptions());
+                InstallMessages.Add($"Identified content roots: { String.Join("; ", registeredRoots.Select(r => r.Name)) }");
                 InstallSettings(registeredRoots);
-                CreateSite(siteDataStream, siteDefinition, ContentReference.RootPage);
+                InstallMessages.Add($"Installed settings root");
+                installSuccess = CreateSite(siteDataStream, siteDefinition, ContentReference.RootPage);
+            } else
+            {
+                InstallMessages.Add($"Import file not found! ({ DefaultFileName })");
             }
-            return true;
+
+            return installSuccess;
         }
 
         protected virtual void InstallSettings(IEnumerable<IContent> registeredRoots)
@@ -96,13 +105,15 @@ namespace HeadlessCms.Infrastructure.Installers
             return siteDefinition;
         }
 
-        private void CreateSite(Stream stream, SiteDefinition siteDefinition, ContentReference startPage)
+        private bool CreateSite(Stream stream, SiteDefinition siteDefinition, ContentReference startPage)
         {
+            
             _eventedIndexingSettings.EventedIndexingEnabled = false;
             _eventedIndexingSettings.ScheduledPageQueueEnabled = false;
-            ImportEpiserverContent(stream, startPage, siteDefinition);
+            var success = ImportEpiserverContent(stream, startPage, siteDefinition);
             _eventedIndexingSettings.EventedIndexingEnabled = true;
             _eventedIndexingSettings.ScheduledPageQueueEnabled = true;
+            return success;
         }
 
         public bool ImportEpiserverContent(Stream stream,
@@ -110,33 +121,45 @@ namespace HeadlessCms.Infrastructure.Installers
             SiteDefinition siteDefinition = null)
         {
             var success = false;
+            ITransferLog log = null;
+            IImportStatus status = null;
             try
             {
-                var log = _dataImporter.Import(stream, destinationRoot, new ImportOptions
+                log = _dataImporter.Import(stream, destinationRoot, new ImportOptions
                 {
                     KeepIdentity = true,
                     EnsureContentNameUniqueness = false,
                 });
 
-                var status = _dataImporter.Status;
+                status = _dataImporter.Status;
 
-                if (status == null)
+                if (status != null)
                 {
-                    return false;
-                }
-
-                UpdateLanguageBranches(status);
-                if (siteDefinition != null && !ContentReference.IsNullOrEmpty(status.ImportedRoot))
-                {
-                    siteDefinition.StartPage = status.ImportedRoot;
-                    _siteDefinitionRepository.Save(siteDefinition);
-                    SiteDefinition.Current = siteDefinition;
-                    success = true;
+                    InstallMessages.Add($"Restored { status.NumberOfContentItems } content items");
+                    InstallMessages.Add("Updating language branches");
+                    UpdateLanguageBranches(status);
+                    if (siteDefinition != null && !ContentReference.IsNullOrEmpty(status.ImportedRoot))
+                    {
+                        InstallMessages.Add("Updating site definition");
+                        if (siteDefinition.IsReadOnly)
+                            siteDefinition = siteDefinition.CreateWritableClone();
+                        siteDefinition.StartPage = status.ImportedRoot;
+                        _siteDefinitionRepository.Save(siteDefinition);
+                        SiteDefinition.Current = siteDefinition;
+                        success = true;
+                    }
+                    
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogError(e, "An erorr occured while importing data");
+                InstallMessages.Add($"An error occured while importing data ({ e.GetType().Name }: { e.Message })");
                 success = false;
+            } finally
+            {
+                log?.Errors.ForEach(msg => InstallMessages.Add($"[ERROR] { msg }"));
+                log?.Warnings.ForEach(msg => InstallMessages.Add($"[WARNING] { msg }"));
             }
 
             return success;

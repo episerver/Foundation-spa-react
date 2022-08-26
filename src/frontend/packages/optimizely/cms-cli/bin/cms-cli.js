@@ -19,9 +19,10 @@ function processEnvFile(suffix = "") {
     });
     dotenvExpand.expand(envVars);
 }
-const envName = process.env.NODE_ENV ?? 'development';
-processEnvFile('.local');
+const envName = process.env.OPTI_BUILD_ENV ?? process.env.NODE_ENV ?? 'development';
+processEnvFile(`.${envName}.local`);
 processEnvFile(`.${envName}`);
+processEnvFile('.local');
 processEnvFile();
 function asApiVersion(input) {
     switch (input) {
@@ -163,6 +164,8 @@ class Client {
         catch (e) {
             console.warn("Unable to read a configured Optimizely DXP Secret");
         }
+        if (this.config.debug)
+            console.log("Optimizely Content Cloud Config:", this.config);
     }
     get dxpUrl() {
         if (typeof (this.config.dxp_url) === 'string' && this.config.dxp_url !== "")
@@ -177,7 +180,10 @@ class Client {
         return now < expires_at;
     }
     async connect() {
-        const resp = await fetch(this.dxpUrl, {
+        const connectUrl = (new URL("/globalassets", this.dxpUrl)).href;
+        if (this.config.debug)
+            console.log("Checking connectivity", connectUrl);
+        const resp = await fetch(connectUrl, {
             method: 'get'
         }).catch(e => {
             return {
@@ -211,6 +217,8 @@ class Client {
     async getAllWebsites() {
         try {
             const serviceUrl = this.getUrl("api/episerver/{version}/site");
+            if (this.config.debug)
+                console.log("Invoking service", serviceUrl.href);
             const response = await fetch(serviceUrl.href, {});
             if (!response.ok)
                 return { ok: false, error: response, message: `HTTP ${response.status}: ${response.statusText}` };

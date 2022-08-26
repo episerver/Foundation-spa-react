@@ -224,6 +224,11 @@ namespace HeadlessCms
                 .AddNodeJs(_configuration)          // Add Frontend proxy
                 .AddHeadlessCmsInitialContent();    // Add Initial content
             #endregion
+
+            #region Optimizely DXP
+            if (!_webHostingEnvironment.IsDevelopment()) 
+                services.AddCmsCloudPlatformSupport(_configuration);
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

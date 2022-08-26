@@ -16,7 +16,7 @@ namespace HeadlessCms.Infrastructure.Installers
         private readonly ILogger<SchemaInstaller> _logger;
         private readonly IEnumerable<IManifestSectionHandler> _manifestSectionHandlers;
         private readonly IEnumerable<JsonConverter> _converters;
-        public string InitialSchemaFile => "foundation.contentmanifest.json";
+        public override string DefaultFileName => "foundation.contentmanifest.json";
         public override int Order => 10;
 
         public SchemaInstaller(
@@ -31,8 +31,11 @@ namespace HeadlessCms.Infrastructure.Installers
 
         public override bool Install(HttpContext context)
         {
-            if (TryGetSourceFile(InitialSchemaFile, out var schema))
+            InstallMessages.Clear();
+            var installSuccess = false;
+            if (TryGetSourceFile(DefaultFileName, out var schema))
             {
+                InstallMessages.Add($"Importing: {schema.Name}");
                 using var schemaData = new StreamReader(schema.CreateReadStream());
                 var jsonData = schemaData.ReadToEnd();
                 var manifest = JsonConvert.DeserializeObject<ManifestModel>(jsonData, new JsonSerializerSettings { 
@@ -41,14 +44,17 @@ namespace HeadlessCms.Infrastructure.Installers
                 if (manifest is null)
                     throw new Exception("Invalid schema file");
                 var sections = string.Join(", ", manifest.Sections.Select(x => x.Key));
-                _logger.LogDebug("Sections in schema: {sections}", sections);
+                _logger.LogDebug("Sections in manifest: {sections}", sections);
+                InstallMessages.Add($"Sections in manifest: {sections}");
 
+                installSuccess = true;
                 foreach (var section in _manifestSectionHandlers.OrderBy(x => x.Order))
                 {
                     var sectionData = manifest.Sections.Where(x => string.Equals(x.Key, section.SectionName, StringComparison.OrdinalIgnoreCase)).Select(data => data.Value).SingleOrDefault();
                     if (sectionData != null)
                     {
                         _logger.LogDebug($"Processing section: ${ section.SectionName }");
+                        InstallMessages.Add($"Processing section: { section.SectionName }");
                         var ctx = new ImportContext
                         {
                             AllowedUpgrades = VersionComponent.Major,
@@ -62,17 +68,24 @@ namespace HeadlessCms.Infrastructure.Installers
                         catch (Exception e)
                         {
                             _logger.LogError(e, "An erorr occured while importing the manifest");
+                            InstallMessages.Add($"An error occured while processing section ${ section.SectionName } ({ e.GetType().Name }: { e.Message })");
+                            ctx.Log.Select(msg => $"[{ msg.Severity }] { msg.Message }").ForEach(line => InstallMessages.Add(line));
+                            installSuccess = false;
                         }
                         finally
                         {
+                            ctx.Log.Select(msg => $"[{ msg.Severity }] { msg.Message }").ForEach(line => InstallMessages.Add(line));
                             ctx.Log.SendToILogger(_logger);
                         }
 
                     }
                 }
+            } else
+            {
+                InstallMessages.Add($"Import file not found! ({ DefaultFileName })");
             }
             
-            return true;
+            return installSuccess;
         }
     }
 
