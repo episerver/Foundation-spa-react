@@ -4,7 +4,7 @@ import type { FunctionComponent, MouseEvent } from 'react'
 import React, { useState } from 'react'
 import { useRouter} from 'next/router'
 import { Tooltip, IconButton, Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material'
-import { Language as LanguageIcon, Bookmark as BookmarkIcon, BookmarkBorder as BookmarkBorderIcon } from '@mui/icons-material'
+import { Language as LanguageIcon, FlagOutlined as BookmarkBorderIcon } from '@mui/icons-material'
 
 // Optimizely
 import { useOptimizely, useContent } from '@optimizely/cms';
@@ -37,17 +37,18 @@ export const LanguageMenu : FunctionComponent<LanguageMenuProps> = props =>
 {
     const router = useRouter()
     const cms = useOptimizely()
-    const [anchorElLang, setAnchorElLang] = useState<null | HTMLElement>(null)
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const contentData = useContent(cms.currentContentId)
     const locale = router.locale
+    const open = Boolean(anchorEl);
     
-    const handleOpenLangMenu = (event: MouseEvent<HTMLElement>) => {
-        setAnchorElLang(event.currentTarget);
+    const handleOpen = (event: MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
     }
-    const handleCloseLangMenu = () => {
-        setAnchorElLang(null);
+    const handleClose = () => {
+        setAnchorEl(null);
     }
-    const handleLangClick = (event: MouseEvent<HTMLElement>, locale: string) => {
+    const handleClick = (event: MouseEvent<HTMLElement>, locale: string) => {
         var languageUrl = new URL(getLocaleHomepage(locale))
 
         const contentLinks = contentData?.data?.existingLanguages?.filter(x => x.name == locale) ?? []
@@ -61,13 +62,48 @@ export const LanguageMenu : FunctionComponent<LanguageMenuProps> = props =>
 
     return <>
         <Tooltip title="Select language">
-            <IconButton onClick={handleOpenLangMenu} sx={{ p: 0 }} color="inherit">
-                <LanguageIcon />
+            <IconButton onClick={handleOpen} size="small" color='inherit' aria-controls={open ? 'language-menu' : undefined} aria-haspopup="true" aria-expanded={open ? 'true' : undefined}>
+                <LanguageIcon sx={{ fontSize: '40px' }} />
             </IconButton>
         </Tooltip>
-        <Menu sx={{ mt: '45px' }} id="menu-language" anchorEl={anchorElLang} anchorOrigin={{ vertical: 'top', horizontal: 'right', }} keepMounted transformOrigin={{ vertical: 'top', horizontal: 'right', }} open={Boolean(anchorElLang)} onClose={handleCloseLangMenu} >
+        <Menu 
+            anchorEl={anchorEl}
+            id="language-menu"
+            open={open}
+            onClose={handleClose}
+            onClick={handleClose}
+            PaperProps={{
+              elevation: 0,
+              sx: {
+                overflow: 'visible',
+                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                mt: 1.5,
+                '& .MuiAvatar-root': {
+                  width: 32,
+                  height: 32,
+                  ml: -0.5,
+                  mr: 1,
+                },
+                '&:before': {
+                  content: '""',
+                  display: 'block',
+                  position: 'absolute',
+                  top: 0,
+                  right: 20,
+                  width: 10,
+                  height: 10,
+                  bgcolor: 'background.paper',
+                  transform: 'translateY(-50%) rotate(45deg)',
+                  zIndex: 0,
+                },
+              },
+            }}
+            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            >
+            <MenuItem selected={ false } divider={ true } disabled={ true }>Language:</MenuItem>
             { SiteInfo.labels.map(label => 
-            <MenuItem key={ label.code } onClick={ (e) => handleLangClick(e, label.code) } selected={ locale == label.code }>
+            <MenuItem key={ label.code } onClick={ (e) => handleClick(e, label.code) } selected={ locale == label.code }>
                 <ListItemIcon><BookmarkBorderIcon /></ListItemIcon>
                 <ListItemText>{ label.label }</ListItemText>
             </MenuItem>)}

@@ -2,13 +2,14 @@ import type { FunctionComponent, ReactNode, PropsWithChildren } from 'react'
 import type { SxProps, Theme } from '@mui/material'
 import React from 'react'
 import Box from '@mui/material/Box'
+import { ResponsiveStyleValue } from '@mui/system'
 
 export type AspectRatioBoxProps = {
     /**
      * The aspect ratio of the box defined as the fractional outcome of
      * the calculation height / width
      */
-    ratio : number
+    ratio : ResponsiveStyleValue<number>
 
     width ?: string
 
@@ -19,16 +20,22 @@ export type AspectRatioBoxProps = {
 
 export const AspectRatioBox : FunctionComponent<PropsWithChildren<AspectRatioBoxProps>> = props =>
 {
+    const paddingBottom : ResponsiveStyleValue<string> | undefined =
+        typeof(props.ratio) == 'number' ? `${ props.ratio * 100 }%` : 
+        props.ratio == null ? '0%' : 
+        Array.isArray(props.ratio) ? props.ratio.map(ratio => `${ (ratio ?? 0) * 100 }%`) :
+        ((ratioMap) => { const outputData : Record<string, string>= {}; Object.getOwnPropertyNames(ratioMap).forEach(bp => { outputData[bp] = `${ (ratioMap[bp] ?? 0) * 100 }%`}); return outputData; })(props.ratio)
+
     const boxStyles : SxProps<Theme> = { 
         width: props.width, 
         height: 0, 
-        paddingBottom: `${props.ratio * 100}%`, 
+        paddingBottom, 
         position: "relative", 
         overflow: "hidden",
         ...props.sx
     }
 
-    return <Box sx={ boxStyles }>
+    return <Box sx={ boxStyles } className="aspect-ratio-box">
         { props.background }
         <Box sx={{ position: "absolute", top: "0", left: "0", width: "100%", height: "100%"}}>
             { props.children }

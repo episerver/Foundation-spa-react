@@ -8,7 +8,8 @@ import { useSettings } from '@framework/foundation/cms/settings'
 import { readValue as pv } from '@optimizely/cms/utils'
 
 // Components
-import { Container, Grid, Typography, List, ListItem, ListItemButton, ListItemText } from '@mui/material'
+import { Container, Grid, Typography, List, ListItem, ListItemButton, ListItemText, ListItemIcon, Box } from '@mui/material'
+import { Bookmark as BookmarkIcon } from '@mui/icons-material'
 import { ContentArea } from '@components/shared/Utils/ContentArea'
 import Link from 'next/link'
 
@@ -21,12 +22,15 @@ export const Footer : FunctionComponent<FooterProps> = props =>
     const cmsSettings = useSettings<LayoutSettings>('LayoutSettings').data?.settings
     const links = pv(cmsSettings, "links") ?? []
     const socials = pv(cmsSettings, "socialLinks") ?? []
+    const introductionText = pv(cmsSettings, "introduction")
 
-    return <Container maxWidth="xl" component="footer">
+    return <Box component="footer" sx={{ backgroundColor: 'primary.light', py: { xs: 1, md: 2 }, borderTopColor: 'primary.main', borderTopStyle: 'solid', borderTopWidth: '2px', mt: 3 }}><Container maxWidth="xl">
         <Grid container spacing="2">
-            <Grid item xs={12} sx={{ textAlign: "center"}}>
-                <Typography variant="h6" component="p">{ pv(cmsSettings, "introduction") ?? "" }</Typography>
+            { introductionText ?
+            <Grid item xs={12} sx={{ textAlign: "center", my: { xs: 1, md: 2, lg: 3 }}}>
+                <Typography variant="h5" component="p">{ introductionText }</Typography>
             </Grid>
+            : undefined }
             <Grid item xs={4} md={3}>
                 <Typography variant="subtitle1">{ pv(cmsSettings, "companyHeader") ?? "" }</Typography>
                 <Typography variant="body2">{ pv(cmsSettings, "companyName") ?? "" }</Typography>
@@ -36,11 +40,12 @@ export const Footer : FunctionComponent<FooterProps> = props =>
             </Grid>
             <Grid item xs={4} md={2}>
                 <Typography variant="subtitle1">{ pv(cmsSettings, "linksHeader") ?? "" }</Typography>
-                <List>
+                <List dense>
                 { links.map(link => {
                     return  <ListItem key={"link-"+link.href} disablePadding>
                         <Link href={link.href} passHref>
                             <ListItemButton component="a" title={ link.title } target={ link.target }>
+                                <ListItemIcon><BookmarkIcon/></ListItemIcon>
                                 <ListItemText primary={ link.text } />
                             </ListItemButton>
                         </Link>
@@ -50,11 +55,12 @@ export const Footer : FunctionComponent<FooterProps> = props =>
             </Grid>
             <Grid item xs={4} md={2}>
                 <Typography variant="subtitle1">{ pv(cmsSettings, "socialHeader") ?? "" }</Typography>
-                <List>
+                <List dense>
                 { socials.map(link => {
                     return  <ListItem key={"social-"+link.href} disablePadding>
                         <Link href={link.href} passHref>
                             <ListItemButton component="a" title={ link.title } target={ link.target }>
+                                <ListItemIcon><BookmarkIcon/></ListItemIcon>
                                 <ListItemText primary={ link.text } />
                             </ListItemButton>
                         </Link>
@@ -70,6 +76,7 @@ export const Footer : FunctionComponent<FooterProps> = props =>
             </Grid>
         </Grid>
     </Container>
+    </Box>
 }
 
 export default Footer

@@ -6,6 +6,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import React from 'react'
 import { LocationListPage, LocationItemPage } from 'schema'
+import siteInfo from 'website.cjs'
 
 const INITIAL_PAGE_SIZE = 8
 
@@ -17,10 +18,11 @@ export type AdditionalProps = {
 
 export const LocationListPageComponent : IContentComponent<LocationListPage, AdditionalProps> = props => {
     
+    const title = `${ props.content?.name } :: ${ siteInfo.name }`
+
     return <div className='location-list-page'>
         <Head>
-            { /* @ts-expect-error React18 types causing issues here */ }
-            <title>{ props.content?.name } :: Foundation</title>
+            <title>{ title }</title>
         </Head>
         <Typography variant='h2' component='h1'>
             <EditableField field='name' inline >{ pv(props.content, 'name') ?? 'Location list page' }</EditableField>
@@ -71,11 +73,16 @@ LocationListPageComponent.getStaticProps = async (content, context) => {
     const search_results = await context.api.search<LocationItemPage>(undefined, filter, orderBy, 0, INITIAL_PAGE_SIZE, true, {
         ...options,
         select: ["name", "url", "mainIntro"],
+    }).catch(e => {
+        return {
+            totalMatching: 0,
+            results: []
+        }
     })
     const parents = (await context.api.getAncestors<IContent>(content.contentLink.guidValue, {
         ...options,
         select: ["name", "url"]
-    })) ?? null
+    }).catch(e => { return [] } )) ?? null
     
     return {
         locations: search_results.results.map(x => { 

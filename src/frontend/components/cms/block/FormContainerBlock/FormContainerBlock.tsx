@@ -8,6 +8,8 @@ import { useContent} from '@optimizely/cms'
 import { readValue as pv } from '@optimizely/cms/utils'
 import { EditableField } from '@optimizely/cms/components'
 
+import styles from "./FormContainerBlock.module.scss";
+
 export type FormContainerProps = {
 
 }
@@ -52,7 +54,7 @@ export const FormContainerBlockComponent : IContentComponent<FormsApiContainer<F
         <Script id={ `${ contentId }-prerequisite` } >{ formModel.assets.prerequisite }</Script>
         <Script id={ `${ contentId }-viewModeJs` } >{ formModel.assets.viewModeJs }</Script>
         { title ? <h1><EditableField field='title' inline>{ title }</EditableField></h1> : undefined }
-        <FormTemplate className='EPiServerFormsContainer' tpl={formModel.template ?? ''}></FormTemplate>
+        <FormTemplate className={ styles.EPiServerFormsContainer } tpl={formModel.template ?? ''}></FormTemplate>
     </div>
 }
 

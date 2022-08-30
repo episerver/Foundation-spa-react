@@ -25,18 +25,21 @@ export const TeaserBlockComponent : IContentComponent<TeaserBlock> = props => {
     return <Card sx={{
             backgroundColor,
             opacity,
+            display: 'flex',
+            flexFlow: 'column wrap',
+            justifyContent: 'space-between',
             height: '100%'
         }}>
-            { imageUrl ? <CardMedia component="img" height="140" image={ imageUrl } alt=""/> : <></> }
-            <CardContent>
+            { imageUrl ? <CardMedia component="img" height="140" image={ imageUrl } alt="" sx={{ flexGrow: 0 }} /> : <></> }
+            <CardContent sx={{ flexGrow: 1 }} >
                 <Typography gutterBottom variant="h5" component="div" sx={{ color: headingColor }}>{ pv(props.content, "heading") }</Typography>
                 <Typography variant="body2" color="text.secondary" component="div">
                     <HtmlContent html={ pv(props.content, "text") ?? "" } />
                 </Typography>
             </CardContent>
-            { linkUrl ? <CardActions>
+            { linkUrl ? <CardActions sx={{ flexGrow: 0 }} >
                 <Link href={ rls(linkUrl) } passHref>
-                    <Button size="medium" variant="outlined">Discover { (pv(props.content, "heading") ?? "").toLocaleLowerCase() } services</Button>
+                    <Button size="medium" variant="contained" color="secondary">Discover { (pv(props.content, "heading") ?? "").toLocaleLowerCase() } services</Button>
                 </Link>
             </CardActions> : <></> }
         </Card>

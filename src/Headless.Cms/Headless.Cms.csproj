@@ -6,7 +6,7 @@
     <RootNamespace>HeadlessCms</RootNamespace>
     <!-- Prepare for a nullable codebase -->
     <Nullable>warnings</Nullable>
-    <Version>1.0.0.14</Version>
+    <Version>1.0.0.15</Version>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Authors>Remko Jantzen / Optimizely SA Team</Authors>

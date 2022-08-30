@@ -44,23 +44,23 @@ export const PageListBlockComponent : IContentComponent<PageListBlock> = props =
     const pages = isErrorResponse(data) ? [] : data.pages
     
     const heading = pv(props.content, 'heading')
-    return <Box>
-        <Typography component="div" variant='h4' ><EditableField field='' inline>{ heading ?? '' }</EditableField></Typography>
+    return <Box sx={{ p: 2, backgroundColor: 'primary.light' }}>
+        <Typography component="div" variant='h4' sx={{mb: 2, fontWeight: 700 }} ><EditableField field='' inline>{ heading ?? '' }</EditableField></Typography>
         <Grid container direction="row" justifyContent="space-around" alignItems="stretch" spacing={2}>
         { pages.map(teaser => {
             const image = pv(teaser, 'pageImage')?.url
             const name = pv(teaser, 'name') ?? 'Content name'
             const url = pv(teaser, 'url') || '/'
             return <Grid item key={ `teaser-${ props.content?.contentLink.id }-${ teaser.contentLink.id }` } xs={6} md={4}>
-        <Card sx={{ height: '100%' }}>
-            { image ? <CardMedia component="img" height="140" image={ image } alt={ name} /> : <></> }
-            <CardContent>
+        <Card sx={{ height: '100%', display: 'flex', flexFlow: 'column wrap', justifyContent: 'space-between' }} >
+            { image ? <CardMedia component="img" height="140" image={ image } alt={ name} sx={{ flexGrow: 0 }} /> : <></> }
+            <CardContent sx={{ flexGrow: 1 }}>
                 <Typography gutterBottom variant="h5" component="div">{ name }</Typography>
                 <Typography variant="body2" color="text.secondary" dangerouslySetInnerHTML={{__html: pv(teaser, 'teaserText') ?? ''}} />
             </CardContent>
-            <CardActions>
+            <CardActions sx={{ flexGrow: 0 }}>
                 <Link passHref href={url}>
-                    <Button size="small">{ pv(teaser, 'teaserButtonText') ?? 'Continue reading' }</Button>
+                    <Button size="small" color="secondary" variant="contained">{ pv(teaser, 'teaserButtonText') ?? 'Continue reading' }</Button>
                 </Link>
             </CardActions>
             </Card>
