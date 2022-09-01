@@ -10,6 +10,7 @@ import * as SWR from 'swr'                             // SWR Context
 import { Layout } from '@components/shared'                 // Generic website layout
 import { AuthorizeApi } from '@components/shared/Utils'     // Get the authorization API
 import CmsComponents from '@components/cms'                 // Get the component cache to be used
+import { Suspense } from 'react'
 
 function MyApp({ Component, pageProps: { fallback, session, baseType, components, ...pageProps } }: AppProps) {
     fallback = fallback ?? {}
@@ -20,11 +21,13 @@ function MyApp({ Component, pageProps: { fallback, session, baseType, components
                     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
                     <title>Foundation</title>
                 </Head>
-                <SWR.SWRConfig value={{ fallback }} >
-                    { baseType === 'Block' ? 
-                        <Component { ...pageProps } /> : 
-                        <Layout contentId={ pageProps.contentId ?? '-' }><Component { ...pageProps } /></Layout> }
-                </SWR.SWRConfig>
+                <Suspense fallback={ <p> Loading... </p>}>
+                    <SWR.SWRConfig value={{ fallback }} >
+                        { baseType === 'Block' ? 
+                            <Component { ...pageProps } /> : 
+                            <Layout contentId={ pageProps.contentId ?? '-' }><Component { ...pageProps } /></Layout> }
+                    </SWR.SWRConfig>
+                </Suspense>
             </AuthorizeApi>
         </SessionProvider>
     </Optimizely.ContextProvider>

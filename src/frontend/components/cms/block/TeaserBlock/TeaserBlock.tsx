@@ -10,17 +10,27 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link'
 import { HtmlContent } from '@components/shared/Utils'
+import Image from '@optimizely/next-js'
 
 function rls(inp: string) {
     return inp.replace(/\/$/, "")
 }
 
 export const TeaserBlockComponent : IContentComponent<TeaserBlock> = props => {
-    const imageUrl = pv(props.content, "image")?.url
+    let imageUrl = pv(props.content, "image")?.url
     const backgroundColor = pv(props.content, "backgroundColor") ?? undefined
     const opacity = pv(props.content, "blockOpacity") ?? undefined
     const headingColor = pv(props.content, "headingColor") ?? undefined
     const linkUrl = pv(props.content, "link")?.url
+
+    if (imageUrl) {
+        let imgUrl = new URL(imageUrl)
+        imgUrl.searchParams.set('height', '90')
+        imgUrl.searchParams.set('width', '450')
+        imgUrl.searchParams.set('quality', '80')
+        imgUrl.searchParams.set('rmode', 'pad')
+        imageUrl = imgUrl.href
+    }
 
     return <Card sx={{
             backgroundColor,
@@ -30,7 +40,7 @@ export const TeaserBlockComponent : IContentComponent<TeaserBlock> = props => {
             justifyContent: 'space-between',
             height: '100%'
         }}>
-            { imageUrl ? <CardMedia component="img" height="140" image={ imageUrl } alt="" sx={{ flexGrow: 0 }} /> : <></> }
+            { imageUrl ? <CardMedia image={ imageUrl } sx={{ flexGrow: 0, pb: '20%', mt: 2, backgroundSize: "contain" }} /> : <></> }
             <CardContent sx={{ flexGrow: 1 }} >
                 <Typography gutterBottom variant="h5" component="div" sx={{ color: headingColor }}>{ pv(props.content, "heading") }</Typography>
                 <Typography variant="body2" color="text.secondary" component="div">

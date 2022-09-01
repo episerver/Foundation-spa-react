@@ -1,16 +1,16 @@
 import type { ComponentType } from "react"
-import createDynamicComponent from 'next/dynamic'
+import dynamic from 'next/dynamic'
 
 export const CmsPageComponents : Record<string, ComponentType> = {
-    "page/BlogItemPage":        createDynamicComponent(() => import("./BlogItemPage"), { ssr: true }),
-    "page/BlogListPage":        createDynamicComponent(() => import("./BlogListPage"), { ssr: true }),
-    "page/FolderPage":          createDynamicComponent(() => import("./FolderPage"), { ssr: true }),
-    "page/HomePage":            createDynamicComponent(() => import("./HomePage"), { ssr: true }),
-    "page/LandingPage":         createDynamicComponent(() => import("./LandingPage"), { ssr: true }),
-    "page/LocationItemPage":    createDynamicComponent(() => import("./LocationItemPage"), { ssr: true }),
-    "page/LocationListPage":    createDynamicComponent(() => import("./LocationListPage"), { ssr: true }),
-    "page/StandardPage":        createDynamicComponent(() => import("./StandardPage"), { ssr: true }),
-    "page/TagPage":             createDynamicComponent(() => import("./TagPage"), { ssr: true }),
+    "page/BlogItemPage":        dynamic(() => import("./BlogItemPage"), { ssr: true, suspense: true  }),
+    "page/BlogListPage":        dynamic(() => import("./BlogListPage"), { ssr: true, suspense: true }),
+    "page/FolderPage":          dynamic(() => import("./FolderPage"), { ssr: true, suspense: true }),
+    "page/HomePage":            dynamic(() => import("./HomePage"), { ssr: true, suspense: true }),
+    "page/LandingPage":         dynamic(() => import("./LandingPage"), { ssr: true, suspense: true }),
+    "page/LocationItemPage":    dynamic(() => import("./LocationItemPage"), { ssr: true, suspense: true }),
+    "page/LocationListPage":    dynamic(() => import("./LocationListPage"), { ssr: true, suspense: true }),
+    "page/StandardPage":        dynamic(() => import("./StandardPage"), { ssr: true, suspense: true }),
+    "page/TagPage":             dynamic(() => import("./TagPage"), { ssr: true, suspense: true }),
 }
 
 export default CmsPageComponents

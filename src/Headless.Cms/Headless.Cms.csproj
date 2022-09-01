@@ -6,7 +6,7 @@
     <RootNamespace>HeadlessCms</RootNamespace>
     <!-- Prepare for a nullable codebase -->
     <Nullable>warnings</Nullable>
-    <Version>1.0.0.15</Version>
+    <Version>1.0.0.18</Version>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Authors>Remko Jantzen / Optimizely SA Team</Authors>
@@ -38,6 +38,7 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <PackageReference Include="Baaijte.Optimizely.ImageSharp.Web" Version="2.0.0" />
     <PackageReference Include="EPiServer.CloudPlatform.Cms" Version="1.0.5" />
     <PackageReference Include="EPiServer.CMS" Version="12.10.0" />
     <PackageReference Include="EPiServer.CMS.UI.VisitorGroups" Version="12.10.0" />
@@ -57,6 +58,7 @@
     <PackageReference Include="EPiServer.Labs.ProjectEnhancements" Version="1.0.0" />
     <PackageReference Include="EPiServer.OpenIDConnect" Version="3.5.0" />
     <PackageReference Include="EPiServer.OpenIDConnect.UI" Version="3.5.0" />
+    <PackageReference Include="SixLabors.ImageSharp.Web.Providers.Azure" Version="2.0.2" />
     <PackageReference Include="UNRVLD.ODP.VisitorGroups" Version="1.2.0.23" />
     <!-- Lab projects broken by CMS 12.8 -->
     <!--<PackageReference Include="EPiServer.Labs.ContentManager" Version="1.0.2" />-->

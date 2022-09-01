@@ -186,6 +186,10 @@ Write-Progress -Activity "Publishing" -Status "Installing Frontend - Packages"
 Set-Location $frontendPubPath
 yarn install --immutable
 
+$duration = $stopwatch.Elapsed.TotalMinutes
+Write-Output ""
+Write-Output "Building took $duration minutes to complete"
+
 If(!(Test-Path $artefactsPath)) {
     New-Item -ItemType Directory -Force -Path $artefactsPath
 }
@@ -193,6 +197,10 @@ Write-Progress -Activity "Packaging" -Status "Creating NuGet file for DXP"
 Write-Output "Creating NuGet file for DXP"
 Compress-Archive -Path "$cmsPubPath\*" -DestinationPath "$dxpAsset.zip" -Force -CompressionLevel Optimal
 Move-Item -Path "$dxpAsset.zip" -Destination $dxpAsset -Force
+
+$duration = $stopwatch.Elapsed.TotalMinutes
+Write-Output ""
+Write-Output "Building & Packaging took $duration minutes to complete"
 
 # Connect EpiCloud using credentials from portal
 Write-Progress -Activity "Deploying" -Status "Connecting to project $projectId"
@@ -208,6 +216,10 @@ Add-EpiDeploymentPackage -SasUrl $sasUrl -Path $dxpAsset
 Write-Progress -Activity "Deploying" -Status "Deploying to $environment environment"
 Write-Output "Deploying to $environment environment"
 Start-EpiDeployment -DeploymentPackage $nuGetName -TargetEnvironment $environment -DirectDeploy -Wait
+
+$duration = $stopwatch.Elapsed.TotalMinutes
+Write-Output ""
+Write-Output "Building, Packaging & Deploying took $duration minutes to complete"
 
 Set-Location $artefactsPath
 
@@ -235,9 +247,9 @@ Write-Output "- New Version: $nv"
 $xml.Project.PropertyGroup.Version = "$nv"
 $xml.Save($cmsProjectFile)
 
-Remove-Item Env\:OPTI_BUILD_ENV
+Remove-Item Env:\OPTI_BUILD_ENV
 
 $stopwatch.Stop()
 $duration = $stopwatch.Elapsed.TotalMinutes
 Write-Output ""
-Write-Output "Building, packaging and deploying took $duration minutes to complete"
+Write-Output "Building, Packaging, Deploying & Cleaning took $duration minutes to complete"

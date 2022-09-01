@@ -1,11 +1,14 @@
-﻿using EPiServer.ContentApi.Cms;
+﻿using Baaijte.Optimizely.ImageSharp.Web;
+using Baaijte.Optimizely.ImageSharp.Web.Providers;
+using SixLabors.ImageSharp.Web.Caching.Azure;
+using SixLabors.ImageSharp.Web.DependencyInjection;
+using EPiServer.ContentApi.Cms;
 using EPiServer.ContentApi.Cms.Internal;
 using EPiServer.ContentApi.Core.Configuration;
 using EPiServer.ContentApi.Core.DependencyInjection;
 using EPiServer.ContentDefinitionsApi;
 using EPiServer.ContentManagementApi;
 using EPiServer.DependencyInjection;
-using EPiServer.Core;
 using EPiServer.Cms.UI.AspNetIdentity;
 //using EPiServer.Labs.ContentManager;
 //using EPiServer.Labs.GridView;
@@ -18,9 +21,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using Foundation.ContentActionsApi;
 using EPiServer.Labs.BlockEnhancements;
 using EPiServer.Labs.ProjectEnhancements;
@@ -42,12 +42,6 @@ namespace HeadlessCms
 
         public void ConfigureServices(IServiceCollection services)
         {
-
-            if (_webHostingEnvironment.IsDevelopment())
-            {
-                //Add development configuration
-            }
-
             #region Optimizely: CMS
             // Add standard CMS Configured for external application & templates
             services
@@ -75,21 +69,7 @@ namespace HeadlessCms
             // OpenID Connect
             services.AddAndConfiureOpenIDConnect<ApplicationUser>(
                 configuration: _configuration,
-                webhost: _webHostingEnvironment/*,
-                configureOptions: options =>
-                {
-                    options.Applications.Add(new OpenIDConnectApplication
-                    {
-                        ClientId = "cms",
-                        Scopes = { "openid", "offline_access", "profile", "email", "roles", ContentDeliveryApiOptionsDefaults.Scope, ContentManagementApiOptionsDefaults.Scope, ContentDefinitionsApiOptionsDefaults.Scope },
-                        PostLogoutRedirectUris = { BackendUri },
-                        RedirectUris =
-                        {
-                            new Uri(BackendUri, "/login-callback"),
-                            new Uri(BackendUri, "/login-renewal"),
-                        },
-                    });
-                }*/
+                webhost: _webHostingEnvironment
             );
             #endregion
 
@@ -124,8 +104,8 @@ namespace HeadlessCms
                 options.MaximumSearchResults = maxSearchResults;
             });
             services.AddFormsApi();
-            services.AddContentManagementApi(OpenIDConnectOptionsDefaults.AuthenticationScheme, options => {});
-            services.AddContentDefinitionsApi(OpenIDConnectOptionsDefaults.AuthenticationScheme, options => {});
+            services.AddContentManagementApi(OpenIDConnectOptionsDefaults.AuthenticationScheme, options => { });
+            services.AddContentDefinitionsApi(OpenIDConnectOptionsDefaults.AuthenticationScheme, options => { });
 
             // Configure the ContentDeliveryAPI for a Decoupled deployment, using updated preferences
             services
@@ -207,7 +187,7 @@ namespace HeadlessCms
             // Setup Response compression and caching
             services
                 .AddResponseCompression();
-            //.AddResponseCaching();
+                //.AddResponseCaching();
             #endregion
 
             #region Headless.CMS Extensions & Services
@@ -226,8 +206,22 @@ namespace HeadlessCms
             #endregion
 
             #region Optimizely DXP
-            if (!_webHostingEnvironment.IsDevelopment()) 
+            if (!_webHostingEnvironment.IsDevelopment())
+            {
                 services.AddCmsCloudPlatformSupport(_configuration);
+                services.Configure<AzureBlobStorageCacheOptions>(options =>
+                    {
+                        options.ConnectionString = _configuration.GetConnectionString("EPiServerAzureBlobs");
+                        options.ContainerName = "mysitemedia";
+                    });
+                services.AddImageSharp()
+                    .ClearProviders()
+                    .AddProvider<BlobImageProvider>()
+                    .SetCache<AzureBlobStorageCache>();
+            } else
+            {
+                services.AddBaaijteOptimizelyImageSharp();
+            }
             #endregion
         }
 
@@ -251,6 +245,7 @@ namespace HeadlessCms
             #endregion
 
             #region Headless.CMS Extensions & Services
+            app.UseBaaijteOptimizelyImageSharp();
             app.UseFoundationSettings();
             app.UseContentActionApi();
             app.UseApiExplorer();

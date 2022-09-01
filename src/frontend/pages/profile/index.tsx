@@ -1,9 +1,25 @@
 import type { FunctionComponent } from "react"
 import type { DefaultUser } from "next-auth"
-import React from 'react'
+import React, { useState } from "react"
 import { useSession, signIn } from 'next-auth/react'
 import LinearProgress from '@mui/material/LinearProgress'
 import Alert from "@mui/material/Alert"
+import Button from "@mui/material/Button"
+import List from "@mui/material/List"
+import ListItem from "@mui/material/ListItem"
+import ListItemText from "@mui/material/ListItemText"
+import ListItemIcon from "@mui/material/ListItemIcon"
+import Card from "@mui/material/Card"
+import CardContent from "@mui/material/CardContent"
+import CardHeader from "@mui/material/CardHeader"
+import CardActions from "@mui/material/CardActions"
+import Grid from "@mui/material/Grid"
+import Typography from "@mui/material/Typography"
+import Box from "@mui/material/Box"
+import Switch from "@mui/material/Switch"
+
+import { Person, Email, Group, Edit, LockOpen, Password } from "@mui/icons-material"
+import { useRouter } from "next/router"
 
 export type ProfilePageProps = {
 
@@ -14,6 +30,18 @@ type UserWithRole = DefaultUser & { role?: string }
 export const ProfilePage : FunctionComponent<ProfilePageProps> = props => 
 {
     const session = useSession()
+    const router = useRouter()
+    const [ showDetails, setShowDetails ] = useState<boolean>(false)
+
+    function onDetailsChanged(event: React.ChangeEvent<HTMLInputElement>)
+    {
+        setShowDetails(event.target.checked)
+    }
+    function onEditProfile() 
+    {
+        const profileUrl = new URL(`${ (process.env as any).OPTIMIZELY_DXP_ADMIN_PREFIX }/EPiServer.Cms.UI.Settings/settings`, process.env.OPTIMIZELY_DXP_URL)
+        router.push(profileUrl.href)
+    }
     
     if (session.status === "unauthenticated")
         signIn()
@@ -22,23 +50,78 @@ export const ProfilePage : FunctionComponent<ProfilePageProps> = props =>
         return <LinearProgress />
 
     return <>
-        <h1>About me</h1>
+        <Typography variant="h1">Dashboard</Typography>
         { session.data?.error ? 
-            <Alert severity="error">{ (session.data?.error as string | undefined) ?? "Undefined error" }</Alert> : 
-            <Alert severity="success">Valid session</Alert>
+            <Alert severity="error" sx={{mb: 3}}>{ (session.data?.error as string | undefined) ?? "Undefined error" }</Alert> : 
+            <Alert severity="success" sx={{mb: 3}}>Valid session</Alert>
         }
-        <dl>
-            <dt>Username:</dt>
-            <dd>{ session.data?.user?.name }</dd>
-            <dt>E-Mail:</dt>
-            <dd>{ session.data?.user?.email }</dd>
-            <dt>Roles:</dt>
-            <dd><ul>{ ((session.data?.user as UserWithRole)?.role ?? "").split(":").map(role => <li key={`role-${ role }`}>{role}</li>) }</ul></dd>
-            <dt>Services:</dt>
-            <dd><ul>{ ((session.data?.scope as string | undefined) ?? "").split(" ").map(scope => <li key={`scope-${ scope }`}>{scope}</li>) }</ul></dd>
-            <dt>Token:</dt>
-            <dd style={{fontSize: "0.6em"}}>{ session.data?.at as string | undefined }</dd>
-        </dl>
+        <Box sx={{mb: 3}}>
+            <Typography>
+                <Switch checked={ showDetails } onChange={ onDetailsChanged }/> Show technical information
+            </Typography>
+        </Box>
+        <Grid container spacing={3}>
+            <Grid item xs={12} md={6} sx={{ height: '100%'}}>
+                <Card>
+                    <CardHeader title="Profile" subheader="The data we have on you"/>
+                    <CardContent>
+                        <List>
+                            <ListItem>
+                                <ListItemIcon><Person /></ListItemIcon>
+                                <ListItemText primary={ session.data?.user?.name ?? "Not authenticated" } secondary="Your username / login" />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemIcon><Email /></ListItemIcon>
+                                <ListItemText primary={ session.data?.user?.email ?? "Not authenticated" } secondary="This is where we'll message you when we need your attention" />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemIcon><Password /></ListItemIcon>
+                                <ListItemText primary="********" secondary="Rest assured, even we cannot read your password" />
+                            </ListItem>
+                        </List>
+                    </CardContent>
+                    <CardActions>
+                        <Button color="secondary" variant="contained" onClick={ onEditProfile } startIcon={ <Edit/> }>Edit profile</Button>
+                    </CardActions>
+                </Card>
+            </Grid>
+            <Grid item xs={12} md={6} sx={{ height: '100%'}}>
+                <Card>
+                    <CardHeader title="Groups" subheader="These are the groups you belong to"/>
+                    <CardContent>
+                        <List>
+                        { ((session.data?.user as UserWithRole)?.role ?? "").split(":").map(role => role.trim()).sort().map(role => <ListItem key={`role-${ role }`}>
+                                <ListItemIcon><Group /></ListItemIcon>
+                                <ListItemText primary={ role ?? "Not authenticated" } />
+                            </ListItem>) }
+                        </List>
+                    </CardContent>
+                </Card>
+            </Grid>
+            { showDetails ?
+            <Grid item xs={12} md={6} sx={{ height: '100%'}}>
+                <Card>
+                    <CardHeader title="Services" subheader="These are the services you've authenticated for the website"/>
+                    <CardContent>
+                        <List>
+                        { ((session.data?.scope as string | undefined) ?? "").split(" ").map(scope => <ListItem key={`scope-${ scope }`}>
+                                <ListItemIcon><LockOpen /></ListItemIcon>
+                                <ListItemText primary={ scope ?? "Not authenticated" } />
+                            </ListItem>) }
+                        </List>
+                    </CardContent>
+                </Card>
+            </Grid> : undefined }
+            { showDetails ?
+            <Grid item xs={12} md={6} sx={{ height: '100%'}}>
+                <Card>
+                    <CardHeader title="Token" subheader="This is how you identify yourself with our services, sharing this with anyone is just not a good idea."/>
+                    <CardContent>
+                        <Typography variant="body2" sx={{ fontSize: "0.5rem" }}>{ session.data?.at as string | undefined }</Typography>
+                    </CardContent>
+                </Card>
+            </Grid> : undefined }
+        </Grid>
     </>
 }
 

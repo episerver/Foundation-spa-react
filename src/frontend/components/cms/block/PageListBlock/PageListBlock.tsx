@@ -48,12 +48,21 @@ export const PageListBlockComponent : IContentComponent<PageListBlock> = props =
         <Typography component="div" variant='h4' sx={{mb: 2, fontWeight: 700 }} ><EditableField field='' inline>{ heading ?? '' }</EditableField></Typography>
         <Grid container direction="row" justifyContent="space-around" alignItems="stretch" spacing={2}>
         { pages.map(teaser => {
-            const image = pv(teaser, 'pageImage')?.url
+            let image = pv(teaser, 'pageImage')?.url
             const name = pv(teaser, 'name') ?? 'Content name'
             const url = pv(teaser, 'url') || '/'
+
+            if (image) {
+                const imgUrl = new URL(image)
+                imgUrl.searchParams.set('height', '100')
+                imgUrl.searchParams.set('width', '500')
+                imgUrl.searchParams.set('quality', '80')
+                image = imgUrl.href
+            }
+
             return <Grid item key={ `teaser-${ props.content?.contentLink.id }-${ teaser.contentLink.id }` } xs={6} md={4}>
         <Card sx={{ height: '100%', display: 'flex', flexFlow: 'column wrap', justifyContent: 'space-between' }} >
-            { image ? <CardMedia component="img" height="140" image={ image } alt={ name} sx={{ flexGrow: 0 }} /> : <></> }
+            { image ? <CardMedia image={ image } sx={{ flexGrow: 0, pb: '20%' }} /> : <></> }
             <CardContent sx={{ flexGrow: 1 }}>
                 <Typography gutterBottom variant="h5" component="div">{ name }</Typography>
                 <Typography variant="body2" color="text.secondary" dangerouslySetInnerHTML={{__html: pv(teaser, 'teaserText') ?? ''}} />

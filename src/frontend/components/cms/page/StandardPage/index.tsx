@@ -6,6 +6,7 @@ import { EditableField } from '@optimizely/cms/components'
 import { ContentArea } from '@components/shared/Utils'
 import Head from 'next/head'
 import { Typography, Box } from '@mui/material'
+import { Breadcrumbs } from '@components/shared'
 
 const defaultName = "Standard Page"
 
@@ -22,6 +23,7 @@ export const StandardPageComponent : IContentComponent<StandardPage> = props =>
             <style>{ pv(props.content, "css") }</style>
         </Head>
         <Box sx={{marginBlockStart: "0.67em"}}>
+            <Breadcrumbs />
             <EditableField field='name'><Typography variant="h1">{ pageHeading }</Typography></EditableField>
             <EditableField field='mainBody' >
                 <Typography dangerouslySetInnerHTML={{__html: pageBody}} variant="body1" component="div" />
