@@ -402,9 +402,9 @@ async function listAction(args, api) {
 
 var website = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    command: command$1,
     aliases: aliases$1,
     builder: builder$1,
+    command: command$1,
     deprecated: deprecated$1,
     describe: describe$1,
     handler: handler$1
@@ -560,9 +560,9 @@ function processPropertyName(propName) {
 
 var types = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    command: command,
     aliases: aliases,
     builder: builder,
+    command: command,
     deprecated: deprecated,
     describe: describe,
     handler: handler
@@ -570,8 +570,8 @@ var types = /*#__PURE__*/Object.freeze({
 
 var CommandDictionary = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    Website: website,
-    Type: types
+    Type: types,
+    Website: website
 });
 
 const commands = [];
