@@ -1,0 +1,1 @@
+{"version":3,"file":"content-link.js","sourceRoot":"","sources":["../../src/util/content-link.ts"],"names":[],"mappings":"AAEA,MAAM,UAAU,aAAa,CAAC,MAAe;IAEzC,IAAI,OAAM,CAAC,MAAM,CAAC,KAAK,QAAQ,IAAI,MAAM,KAAK,IAAI;QAC9C,OAAO,KAAK,CAAC;IACjB,OAAO,OAAM,CAAE,MAAsB,CAAC,SAAS,CAAC,IAAI,QAAQ,IAAI,OAAM,CAAE,MAAsB,CAAC,EAAE,CAAC,IAAI,QAAQ,CAAC;AACnH,CAAC"}

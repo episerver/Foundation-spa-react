@@ -1,0 +1,43 @@
+{
+	"folders": [
+		{
+			"path": "src/frontend"
+		},
+		{
+			"path": "src/Foundation.Settings"
+		},
+		{
+			"path": "src/Foundation.ContentActionsApi"
+		},
+		{
+			"path": "src/Foundation.ApiExplorer"
+		},
+		{
+			"path": "tools"
+		},
+		{
+			"path": "src/Foundation.ContentApi.Extensions"
+		},
+		{
+			"path": "src/Headless.Cms"
+		}
+	],
+	"settings": {
+		"search.showLineNumbers": true,
+		"search.smartCase": true,
+		"search.useGlobalIgnoreFiles": true,
+		"powershell.cwd": "c:\\Episerver\\FoundationSpaReact\\tools",
+		"typescript.enablePromptUseWorkspaceTsdk": true,
+		"typescript.tsdk": "frontend/.yarn/sdks/typescript/lib"
+	},
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"label": "echo",
+				"type": "shell",
+				"command": "echo Hello"
+			}
+		]
+	}
+}

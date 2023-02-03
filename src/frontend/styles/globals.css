@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@400;700&display=swap');
+
+/* Optimizely Forms */
+.EPiServerForms .Form__MainBody,
+.EPiServerForms .Form__Element {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-evenly;
+}
+.EPiServerForms .Form__Element {
+  flex-flow: row wrap;
+  flex-grow: 1;
+  justify-content: flex-start;
+  margin-bottom: 8px;
+}
+.EPiServerForms .Form__Element.FormStep {
+  flex-flow: column wrap;
+  justify-content: space-evenly;
+}
+.EPiServerForms .Form__Element .Form__Element__Caption {
+  width: 100%;
+}
+.EPiServerForms .Form__Element input,
+.EPiServerForms .Form__Element select,
+.EPiServerForms .Form__Element button {
+  font-family: "Oxygen","Helvetica","Arial",sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  width: 100%;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.EPiServerForms .Form__Element.hide {
+  display: none;
+}
+.EPiServerForms .Form__Element .Form__Element__ValidationError {
+  display: block;
+}
+
+/* Next.JS Debug Styles*/
+.debug-info {
+  margin: 2rem auto;
+  width: 1200px;
+  max-width: 85%;
+  font-size: 0.8rem;
+}
+.debug-info dt {
+  font-weight: bold;
+}
+.debug-info dt::after {
+  content: ":"
+}
+
+/* Global classes */
+.float-right {
+  float: right;
+}
+
+.caught-error {
+  border: 2px solid #FF0000;
+  border-radius: 5px;
+  box-shadow: 0px 5px 5px #000000;
+}

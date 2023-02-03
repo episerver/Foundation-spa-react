@@ -1,0 +1,46 @@
+{
+  "name": "@optimizely/next-js",
+  "version": "0.1.2",
+  "description": "Next.JS Specific logic & components for Optimizely Content Cloud",
+  "main": "index.js",
+  "sideEffects": false,
+  "type": "module",
+  "scripts": {
+    "test": "test/index.js",
+    "prebuild": "yarn shx rm -rf ./dist ./cjs ./.*.tsbuildinfo",
+    "build": "yarn tsc --build ./tsconfig.json ./tsconfig.cjs.json",
+    "postbuild": "yarn renamer --find .js --replace .cjs --path-element ext ./cjs/**/*.js && yarn opti-cjsUpdate ./cjs/**/*.cjs",
+    "watch": "yarn tsc --build ./tsconfig.json --watch"
+  },
+  "keywords": [
+    "Optimizely",
+    "CMS"
+  ],
+  "author": "Remko Jantzen",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@optimizely/build-tools": "workspace:*",
+    "@optimizely/cms": "workspace:^",
+    "@types/react": "^18.0.27",
+    "cross-fetch": "^3.1.5",
+    "next": "^13.1.6",
+    "next-auth": "^4.19.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "renamer": "^4.0.0",
+    "shx": "^0.3.4",
+    "swr": "^2.0.3",
+    "tslib": "^2.4.0",
+    "typescript": "^4.8.0"
+  },
+  "peerDependencies": {
+    "@optimizely/cms": "workspace:*",
+    "cross-fetch": "*",
+    "next": "*",
+    "next-auth": "*",
+    "react": "*",
+    "react-dom": "*",
+    "swr": "*",
+    "tslib": "*"
+  }
+}

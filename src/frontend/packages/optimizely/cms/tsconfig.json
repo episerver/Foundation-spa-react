@@ -1,0 +1,39 @@
+{
+  "include": ["src"],
+  "compilerOptions": {
+    // Set build target
+    "target": "ES2020",
+    "module": "ESNext",
+    "lib": ["ES2020", "ES2020.BigInt", "ES2020.Intl", "ES2020.Promise", "ES2020.SharedMemory", "ES2020.String", "ES2020.Symbol.WellKnown", "DOM", "DOM.Iterable"],
+
+    // Set Output & Module resolution
+    "composite": true,
+    "rootDir": "src",
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "declaration": true,
+    "sourceMap": true,
+    "incremental": true,
+    "tsBuildInfoFile": ".mjs.tsbuildinfo",
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+
+    // Language checking
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noEmit": false,
+    "importHelpers": true,
+    "removeComments": false, // Some Modules have Webpack specific comments to allow lazy loading
+    "skipLibCheck": true,
+    
+    // React component support
+    "jsx": "preserve",
+    "allowSyntheticDefaultImports": true, // Needed to import the main React variable
+    "esModuleInterop": true, // Needed for React components
+  },
+  
+  "exclude": ["node_modules", "tests", "dist", "cjs"]
+}

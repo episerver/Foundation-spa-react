@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "target": "ES2020",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ES2020","ES2020.BigInt","ES2020.Intl","ES2020.Promise","ES2020.SharedMemory","ES2020.String","ES2020.Symbol.WellKnown"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "paths": {
+      "@components": [ "components" ],
+      "@components/*": [ "components/*" ],
+      "@component-queries": [ "components/queries" ],
+      "@component-queries/*": [ "components/queries/*" ],
+      "@framework": [ "framework" ],
+      "@framework/*": [ "framework/*" ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "app-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "packages"
+  ],
+  "references": [
+    { "path": "./packages/optimizely/cms" },
+    { "path": "./packages/optimizely/next-js" }
+  ]
+}

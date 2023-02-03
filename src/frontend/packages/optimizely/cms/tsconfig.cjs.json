@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // Set module system
+    "target": "ES6",
+    "module": "CommonJS",
+    "lib": ["ES6", "DOM", "DOM.Iterable"],
+
+    // Set Output & Module resolution
+    "tsBuildInfoFile": ".cjs.tsbuildinfo",
+    "outDir": "./cjs",
+  },
+}

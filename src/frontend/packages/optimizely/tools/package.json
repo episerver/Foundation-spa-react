@@ -1,0 +1,17 @@
+{
+  "name": "@optimizely/build-tools",
+  "version": "1.0.3",
+  "description": "A collection of build tools for Optimizely Packages",
+  "main": "index.js",
+  "bin": {
+    "opti-cjsUpdate": "bin/updateRequire.js"
+  },
+  "author": "Remko Jantzen",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "glob": "^8.0.3"
+  },
+  "peerDependencies": {
+    "glob": "*"
+  }
+}

@@ -1,0 +1,1 @@
+export { ContentAreaItem, ContentAreaItem as default, ContentAreaItemContainer } from './dist/components/ContentAreaItem'

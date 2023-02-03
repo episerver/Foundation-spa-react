@@ -1,0 +1,35 @@
+{
+  "include": ["src"],
+  "compilerOptions": {
+    // Set build target
+    "target": "ES2020",
+    "module": "ES2020",
+    "lib": ["ES2020", "ES2020.Promise", "ES2020.String", "ES2020.BigInt", "DOM", "DOM.Iterable"],
+    "jsx": "preserve",
+    "rootDir": "src",
+
+    // Set Output & Module resolution
+    "composite": true,
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "declaration": true,
+    "sourceMap": true,
+    "incremental": true,
+    "skipLibCheck": true,
+    "tsBuildInfoFile": ".mjs.tsbuildinfo",
+
+    // Language checking
+    "strict": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": true,
+    "removeComments": true,
+    "isolatedModules": true,
+    "listEmittedFiles": true
+  },
+  "exclude": ["node_modules", "tests", "dist", "cjs"],
+  "references": [
+    { "path": "../cms" }
+  ]
+}

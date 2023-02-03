@@ -1,0 +1,12 @@
+<Deployment>
+    <!-- 
+    Create a copy of this file, rename it to "deploy.local.config.xml" and 
+    change the values below. This should be provided to you from the DXP
+    environment. If not provided you may leave the EpiCloudApiEndpointUri empty
+    -->
+    <EpiCloudApiEndpointUri>CHANGEME</EpiCloudApiEndpointUri>
+    <ProjectId>CHANGEME</ProjectId>
+    <Key>CHANGEME</Key>
+    <Secret>CHANGEME</Secret>
+    <Integration>CHANGEME</Integration>
+</Deployment>

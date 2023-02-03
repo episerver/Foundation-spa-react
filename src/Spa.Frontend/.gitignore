@@ -1,8 +1,0 @@
-node_modules/
-.vscode/
-build/
-dist/
-dist-html/
-obj/
-bin/
-.env*.local
