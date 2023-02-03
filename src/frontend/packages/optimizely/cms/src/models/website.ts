@@ -1,4 +1,5 @@
 import LanguageList from './language-list';
+import Language from './language';
 import ContentRootList from './content-root-list';
 
 export type HostDefinition = {
@@ -15,7 +16,7 @@ export type HostDefinition = {
     /**
      * The default language for the host
      */
-    language: null | string
+    language: null | undefined | Language
 }
 
 /**

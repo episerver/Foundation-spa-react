@@ -6,7 +6,6 @@ using EPiServer.Shell.ObjectEditing;
 using EPiServer.Validation;
 using EPiServer.Web;
 using HeadlessCms.Features.Shared;
-using HeadlessCms.Infrastructure;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,8 +16,7 @@ namespace HeadlessCms.Features.PageListBlock
     [ContentType(DisplayName = "Page List Block",
         GUID = "30685434-33DE-42AF-88A7-3126B936AEAD",
         Description = "A block that lists a bunch of pages",
-        GroupName = GroupNames.Content)]
-    [ImageUrl("/icons/cms/blocks/CMS-icon-block-18.png")]
+        GroupName = "Content")]
     public class PageListBlock : FoundationBlockData
     {
         [CultureSpecific]
@@ -48,7 +46,6 @@ namespace HeadlessCms.Features.PageListBlock
         [Display(Name = "Filter by page type", GroupName = SystemTabNames.Content, Order = 70)]
         public virtual PageType PageTypeFilter { get; set; }
 
-        //[Categories]
         [Display(Name = "Filter by category",
             Description = "Categories to filter the list on",
             GroupName = SystemTabNames.Content,

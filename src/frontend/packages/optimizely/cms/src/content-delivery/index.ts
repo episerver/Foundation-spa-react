@@ -74,7 +74,7 @@ class ContentDeliveryContainer {
     public createBasicConfig(partial ?: Partial<Config>) : Config
     {
         const myConfig : Partial<Config> = {
-            apiUrl: process.env.OPTIMIZELY_DXP_URL || 'http://localhost',
+            apiUrl: process.env.OPTIMIZELY_DXP_URL || 'http://localhost:8000',
             debug: process.env.OPTIMIZELY_DXP_DEBUG?.toLowerCase() === 'true' || process.env.OPTIMIZELY_DXP_DEBUG === '1'
         }
 

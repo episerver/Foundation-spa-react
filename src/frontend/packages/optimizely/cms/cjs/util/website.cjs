@@ -7,7 +7,7 @@ const hostnameFilter = (website, host, language, matchWildcard = true) => {
             return true;
         if (h.name !== host)
             return false;
-        return language && h.language ? language === h.language : true;
+        return language && h.language ? language === h.language.name : true;
     }) : []).length > 0;
     return matchHost;
 };

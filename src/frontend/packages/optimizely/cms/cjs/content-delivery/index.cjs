@@ -9,6 +9,7 @@ exports.ApiConfig = tslib_1.__importStar(require("./config"));
 tslib_1.__exportStar(require("./NetworkError"), exports);
 const config_1 = require("./config");
 const content_delivery_api_1 = require("./content-delivery-api");
+const util_1 = require("./util");
 class ContentDeliveryContainer {
     constructor() {
         this.apiType = content_delivery_api_1.ContentDeliveryAPI;
@@ -51,7 +52,7 @@ class ContentDeliveryContainer {
     createBasicConfig(partial) {
         var _a;
         const myConfig = {
-            apiUrl: process.env.OPTIMIZELY_DXP_URL || 'http://localhost',
+            apiUrl: process.env.OPTIMIZELY_DXP_URL || 'http://localhost:8000',
             debug: ((_a = process.env.OPTIMIZELY_DXP_DEBUG) === null || _a === void 0 ? void 0 : _a.toLowerCase()) === 'true' || process.env.OPTIMIZELY_DXP_DEBUG === '1'
         };
         // Set default branch if configured
@@ -73,7 +74,7 @@ function createInstance(config) {
     return instance;
 }
 exports.createInstance = createInstance;
-exports.MODE_DELIVERY = "content" /* OptiContentMode.Delivery */;
-exports.MODE_EDIT = "contentmanagement" /* OptiContentMode.Edit */;
+exports.MODE_DELIVERY = util_1.OptiContentMode.Delivery;
+exports.MODE_EDIT = util_1.OptiContentMode.Edit;
 exports.default = Current;
 //# sourceMappingURL=index.js.map

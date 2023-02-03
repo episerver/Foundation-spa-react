@@ -4,7 +4,10 @@ import type { IContent, IContentData } from '../models/icontent'
 import React, { useId } from 'react'
 import { readValue, processValue } from '../util/property'
 import ContentAreaItem, { ContentAreaItemContainer, ContentAreaItemContainerProps } from './ContentAreaItem'
-import { useOptimizely } from '../index'
+import { useEditMode } from '../provider/edit-mode'
+import { useOptimizelyCms } from '../provider/index'
+
+const DEBUG = process.env.NODE_ENV != 'production'
 
 export type KeyOfType<T, V> = keyof {
     [P in keyof T as T[P] extends V ? P : never ]: any
@@ -83,7 +86,8 @@ export type ContentAreaProps<T extends IContent = IContent, I extends T | undefi
 
 export function ContentArea<T extends IContent = IContentData>(props: PropsWithChildren<ContentAreaProps<T>>): ReactElement<any, any> | null
 {
-    const opti = useOptimizely()
+    const cms = useOptimizelyCms()
+    const opti = useEditMode()
     var isEditable = opti.inEditMode || opti.isEditable
     const myId = useId()
 
@@ -96,16 +100,26 @@ export function ContentArea<T extends IContent = IContentData>(props: PropsWithC
 
     const propName : string = props.name.toString()
     const value = ((processValue(props.value) ?? readValue(props.content, props.name)) || []) as ContentAreaPropertyValue
-    const language = props.language ?? opti.defaultBranch ?? '';
+    const language = props.language ?? cms.defaultBranch ?? '';
     const contentScope = props.scope ?? props.content?.contentLink.guidValue
+    const contentId = props.content?.contentLink.id
+    const contentWorkId = props.content?.contentLink.workId
 
-    const editContentId = parseInt(opti?.editableContent?.id || opti?.currentContentId)
-    //console.log("LIB ContentArea 1:", isEditable)
-    if (isEditable && props.content?.contentLink?.id && editContentId) {
-        //console.log("LIB ContentArea 1a:", props.content?.contentLink?.id, editContentId, props.content?.contentLink?.id === editContentId)
-        isEditable = props.content?.contentLink?.id === editContentId
+    const allowEdit : boolean = 
+        (contentId && (contentId == opti.contentId) ? true : false) && 
+        (contentWorkId && opti.contentWorkId ? contentWorkId == opti.contentWorkId : true)
+
+    if (DEBUG) {
+        console.groupCollapsed(`Optimizely - CMS: ContentArea [${ propName }]`)
+        console.log("Optimizely - CMS: ContentArea: contentId", contentId)
+        console.log("Optimizely - CMS: ContentArea: contentWorkId", contentWorkId)
+        console.log("Optimizely - CMS: ContentArea: contentScope", contentScope)
+        console.log("Optimizely - CMS: ContentArea: inEditMode", isEditable ? "Yes" : "No")
+        console.log("Optimizely - CMS: ContentArea: allowEdit", allowEdit ? "Yes" : "No")
+        console.groupEnd()
     }
-    //console.log("LIB ContentArea 2:", isEditable)
+
+    isEditable = allowEdit && isEditable
 
     const ContainerElement = props.container
     const ItemContainerElement = props.itemContainer

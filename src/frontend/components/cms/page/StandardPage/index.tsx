@@ -5,8 +5,10 @@ import { readValue as pv, prefetchContentAreaRecursive } from '@optimizely/cms/u
 import { EditableField } from '@optimizely/cms/components'
 import { ContentArea } from '@components/shared/Utils'
 import Head from 'next/head'
-import { Typography, Box } from '@mui/material'
-import { Breadcrumbs } from '@components/shared'
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
+import Breadcrumbs from '@components/shared/Breadcrumbs'
+import StructuredHtml from '@framework/foundation/cms/structuredhtml'
 
 const defaultName = "Standard Page"
 
@@ -17,20 +19,16 @@ export const StandardPageComponent : IContentComponent<StandardPage> = props =>
     const pageBody = pv(props.content, 'mainBody') ?? ""
     const pageHeading = pv(props.content, 'name') ?? defaultName
 
-    return <>
+    return <Box sx={{marginBlockStart: "0.67em"}}>
         <Head>
             <title>{ pageTitle }</title>
             <style>{ pv(props.content, "css") }</style>
         </Head>
-        <Box sx={{marginBlockStart: "0.67em"}}>
-            <Breadcrumbs />
-            <EditableField field='name'><Typography variant="h1">{ pageHeading }</Typography></EditableField>
-            <EditableField field='mainBody' >
-                <Typography dangerouslySetInnerHTML={{__html: pageBody}} variant="body1" component="div" />
-            </EditableField>
-            <ContentArea content={ props.content } name="mainContentArea"/>
-        </Box>
-    </>
+        <Breadcrumbs />
+        <EditableField field='name'><Typography variant="h1">{ pageHeading }</Typography></EditableField>
+        <EditableField field='mainBody'><StructuredHtml propertyData={ props.content?.mainBody } /></EditableField>
+        <ContentArea content={ props.content } name="mainContentArea"/>
+    </Box>
 }
 
 StandardPageComponent.getStaticProps = async (content, { locale, inEditMode, api }) => {

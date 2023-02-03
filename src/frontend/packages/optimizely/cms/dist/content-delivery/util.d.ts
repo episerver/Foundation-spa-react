@@ -17,10 +17,10 @@ export declare const enum OptiContentMode {
     'Delivery' = "content",
     'Edit' = "contentmanagement"
 }
-export declare type Dictionary = {
+export type Dictionary = {
     [key: string]: string;
 };
-export declare type BuildUrlVars = {
+export type BuildUrlVars = {
     contentMode?: OptiContentMode;
     version?: string;
 } & Dictionary;

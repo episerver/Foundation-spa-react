@@ -1,5 +1,5 @@
 import type { FunctionComponent, MouseEvent } from 'react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Tooltip, IconButton, Avatar, Menu, MenuItem, Typography } from '@mui/material'
 import { useSession, signIn, signOut } from "next-auth/react"
 import Link from 'next/link'
@@ -8,13 +8,18 @@ const settings = ['Preferences'];
 
 export type UserMenuProps = {}
 
-export const UserMenu : FunctionComponent<UserMenuProps> = props => 
+const FallbackUserMenu : FunctionComponent<{}> = () => {
+    return <IconButton size="small" color='inherit' aria-haspopup="false">
+        <Avatar alt="Login please" src="/static/images/avatar/2.jpg" />
+    </IconButton>
+}
+
+export const UserMenu : FunctionComponent<UserMenuProps> = () => 
 {
     const { data: session, status } = useSession()
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const open = Boolean(anchorEl);
 
-    
     const handleOpen = (event: MouseEvent<HTMLElement>) => {
         switch (status) {
             case "authenticated":
@@ -80,7 +85,7 @@ export const UserMenu : FunctionComponent<UserMenuProps> = props =>
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
             <MenuItem key="dashboard">
-                <Link href="/profile" passHref={true} ><Typography textAlign="center">Dashboard</Typography></Link>
+                <Link href="/profile" style={{textAlign: "center"}} >Dashboard</Link>
             </MenuItem>
             {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleClose}>

@@ -4,7 +4,8 @@ import type { FormContainerBlock } from 'schema'
 import React, { useEffect, useRef } from 'react'
 import Head from 'next/head'
 import Script from 'next/script'
-import { useContent} from '@optimizely/cms'
+import { useContent} from '@optimizely/cms/use-content'
+import { useEditMode } from '@optimizely/cms/context'
 import { readValue as pv } from '@optimizely/cms/utils'
 import { EditableField } from '@optimizely/cms/components'
 
@@ -38,11 +39,18 @@ export const FormContainerBlockComponent : IContentComponent<FormsApiContainer<F
     const fullFormData = useContent<FormsApiContainer<FormContainerBlock>>(contentId, undefined, undefined, props.content?.language.name || "en", "FullFormData")
     const formModel = fullFormData?.data?.formModel
     const title = pv(props.content, "title")
+    const { inEditMode } = useEditMode()
 
     if (!formModel)
         return <div className='EPiServerFormsComponent EPiServerFormsPlaceholder' data-form-id={contentId}>
             { title ? <h1><EditableField field='title' inline>{ title }</EditableField></h1> : undefined }
             <p>Forms will be loaded client side only</p>
+        </div>
+
+    if (inEditMode)
+        return <div className='EPiServerFormsComponent EPiServerFormsPlaceholder' data-form-id={contentId}>
+            { title ? <h1><EditableField field='title' inline>{ title }</EditableField></h1> : undefined }
+            <p>Forms are disabled in edit mode</p>
         </div>
     
     return <div className='EPiServerFormsComponent' data-form-id={contentId}>

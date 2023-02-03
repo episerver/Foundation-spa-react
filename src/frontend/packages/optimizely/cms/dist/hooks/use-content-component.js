@@ -1,19 +1,26 @@
 import { useRef, useState, useEffect, useMemo } from 'react';
-import { useOptimizely } from '../provider/use';
+import { useOptimizelyCms } from '../provider/index';
 export function useContentComponent(contentTypePath, prefix, tag) {
-    const opti = useOptimizely();
-    const loader = opti?.loader;
-    const typePath = useMemo(() => contentTypePath ?? ['OptiContentLoading'], [contentTypePath]);
-    const id = `${typePath.join('/')}::p-${prefix ?? "default"}::t-${tag ?? "default "}`;
+    // Get a reference to the loader from the CMS
+    const { loader } = useOptimizelyCms();
+    // Recalculate the parameters only when the context changes
+    const { id, importPath, typePath } = useMemo(() => {
+        const typePath = contentTypePath ?? ['OptiContentLoading'];
+        const id = `${typePath.join('/')}::p-${prefix ?? "default"}::t-${tag ?? "default "}`;
+        const importPath = loader?.buildComponentImport(typePath, prefix, tag);
+        return { id, importPath, typePath };
+    }, [loader, contentTypePath, prefix, tag]);
+    // Update the fields & references
     const contentComponent = useRef();
     const [loadedComponentType, setLoadedComponentType] = useState(contentComponent.current ? id : "-");
     const [isError, setIsError] = useState(false);
     contentComponent.current = loader?.tryDynamicSync(typePath, prefix, tag);
-    const importPath = loader?.buildComponentImport(typePath, prefix, tag);
-    //console.log("ContentComponent.Current", loader, contentTypePath, contentComponent.current);
+    // Fall back to async in case we don't have the component yet
     useEffect(() => {
         let isCancelled = false;
         if (!loader)
+            return;
+        if (contentComponent.current)
             return;
         loader.tryDynamicAsync(typePath, prefix, tag).then(x => {
             if (isCancelled)

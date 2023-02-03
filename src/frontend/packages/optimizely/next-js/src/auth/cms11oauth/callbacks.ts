@@ -1,4 +1,5 @@
 import type { JWTCallback as JWTCallbackType, SessionCallback as SessionCallbackType } from './types'
+import type { Session } from 'next-auth'
 import { isUser } from './guards'
 import OAuthClient from './client'
 
@@ -46,7 +47,7 @@ export const JWTCallback : (baseUrl: string) => JWTCallbackType = baseUrl => asy
  * @returns     The Session
  */
 export const SessionCallback: (baseUrl: string) => SessionCallbackType = baseUrl => async params => {
-    const session = params.session
+    const session : Session & { apiToken?: string }= params.session
     const apiToken = params?.token?.auth ?? '';
     if (!apiToken || apiToken === '') {
         delete session.apiToken

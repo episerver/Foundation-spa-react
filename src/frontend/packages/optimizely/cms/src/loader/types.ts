@@ -1,5 +1,7 @@
 import { ComponentType } from 'react'
 
+export type ComponentsCache = Record<string, ComponentType>
+
 export type DynamicProps = Record<string, any>
 
 export type ComponentLoaderStatic = {

@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useMemo } from 'react'
+import { useRef, useState, useEffect, useMemo, startTransition } from 'react'
 
 /**
  * The statuses of the library loading
@@ -63,7 +63,7 @@ export const useLibrary = <K extends keyof Window>(script: string, globalVar: K,
                 throw new Error("Cancelled process")
             
             lib.current = x
-            setStatus(UseLibraryStatus.Ready)
+            startTransition(() => setStatus(UseLibraryStatus.Ready))
         }).catch(() => { /* Ignore, it will be used when remounting */})
 
         return () => {

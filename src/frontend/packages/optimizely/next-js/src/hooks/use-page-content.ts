@@ -1,10 +1,11 @@
-import type { ContentDelivery } from '@optimizely/cms'
+import type { ComponentLoader, IContentDeliveryAPI } from '@optimizely/cms/types'
 import type { IContentData, ContentTypePath, ContentReference } from '@optimizely/cms/models'
-import { useOptimizely } from '@optimizely/cms'
+import { useOptimizelyCms, useEditMode } from '@optimizely/cms/context'
 import useSWR from 'swr'
 import { loadAdditionalPropsAndFilter, filterProps, createApiId } from '@optimizely/cms/utils'
-import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+
+const DEBUG_ENABLED = process.env.NODE_ENV != "production";
 
 export type PageRenderingProps = {
 
@@ -32,56 +33,72 @@ export type PageRenderingProps = {
     /**
      * Marker to indicate the base type of the referenced content
      */
-    baseType?: string
+    prefix?: string
 
     /**
-     * The components required to render the page
+     * The component required to render the page
      */
-    components : ContentTypePath[]
+    component : ContentTypePath
 } & Record<string, any>
 
 export function usePageContent(ref: ContentReference, inEditMode ?: boolean, locale ?: string)
 {
-    const opti = useOptimizely()
+    if (DEBUG_ENABLED) {
+        console.groupCollapsed("Optimizely - Next.JS: usePageContent")
+        console.log("Optimizely - Next.JS: usePageContent - Reference:", ref)
+    }
+    const opti = useOptimizelyCms()
+    const editModeInfo = useEditMode()
     const router = useRouter()
-    const editMode = inEditMode === undefined ? opti.isEditable : inEditMode
+    const editMode = inEditMode ?? editModeInfo.isEditable
     const contentId = ref ? createApiId(ref, true, editMode) : '#'
     const pageLocale = locale ?? router.locale ?? router.defaultLocale
+    if (DEBUG_ENABLED) {
+        console.log("Optimizely - Next.JS: usePageContent - Content ID:", contentId)
+        console.log("Optimizely - Next.JS: usePageContent - Edit Mode:", editMode)
+        console.log("Optimizely - Next.JS: usePageContent - Locale:", pageLocale)
+        console.groupEnd()
+    }
 
     const api = opti.api
     if (!api)
         throw new Error("Optimizely not initialized")
 
-    const fetchContent = async (id: string) => {
-        await getSession()
-        const content = await fetchPageContent(id, api, undefined, editMode)
-        return content;
-    }
+    const fetcher = (id: string) => fetchPageContent(id, api, pageLocale, editMode)
 
-    return useSWR<IContentData | undefined, {}, string>(contentId, fetchContent)
+    return useSWR<IContentData | undefined, {}, string>(contentId, fetcher)
 }
 
-async function fetchPageContent(ref: ContentReference, api: ContentDelivery.IContentDeliveryAPI, locale?: string, inEditMode: boolean = false) : Promise<IContentData | undefined>
+async function fetchPageContent(ref: ContentReference, api: IContentDeliveryAPI, locale?: string, inEditMode: boolean = false) : Promise<IContentData | undefined>
 {
+    if (DEBUG_ENABLED)
+        console.log("usePageContent.fetcher: Fetching page data", ref, locale, inEditMode)
+
     if (!ref || ref === '#') 
         return undefined
-        
-    //console.log("Fetching Page Content:", ref)
 
     const contentId = createApiId(ref, true, inEditMode)
     const content = await api.getContent(contentId, {
         branch: locale,
         editMode: inEditMode,
         urlParams: {}
-    }).catch(() => undefined)
+    }).catch(e => {
+        if (DEBUG_ENABLED)
+            console.error("usePageContent.fetcher: Error while communicating with Content Cloud", e)
+        throw e
+        //return undefined
+    })
+
+    if (DEBUG_ENABLED)
+        console.log("usePageContent.fetcher: Received page data", content)
 
     if (!content)
         return undefined
 
-    return filterProps(content, api, locale, inEditMode)
+    return content //filterProps(content, api, locale, inEditMode)
 }
 
-export async function loadPageContentByUrl(url: URL|string, api: ContentDelivery.IContentDeliveryAPI, locale?: string, inEditMode: boolean = false) : Promise<PageRenderingProps | undefined>
+export async function loadPageContentByUrl(url: URL|string, api: IContentDeliveryAPI, locale?: string, inEditMode: boolean = false, cLoader?: ComponentLoader) : Promise<PageRenderingProps | undefined>
 {
     var path = typeof(url) === 'object' && url !== null ? url.href : url
     const content = await api.resolveRoute(path, {
@@ -97,7 +114,7 @@ export async function loadPageContentByUrl(url: URL|string, api: ContentDelivery
 
     const contentId = createApiId(content, true, inEditMode)
     
-    return await iContentDataToProps(content, contentId, api, locale, inEditMode)
+    return await iContentDataToProps(content, contentId, api, locale, inEditMode, cLoader)
 }
 
 /**
@@ -109,7 +126,7 @@ export async function loadPageContentByUrl(url: URL|string, api: ContentDelivery
  * @param inEditMode    Whether or not to load from the draft versions
  * @returns             The data for the apge
  */
-export async function loadPageContent(ref: ContentReference, api: ContentDelivery.IContentDeliveryAPI, locale?: string, inEditMode: boolean = false) : Promise<PageRenderingProps | undefined>
+export async function loadPageContent(ref: ContentReference, api: IContentDeliveryAPI, locale?: string, inEditMode: boolean = false, cLoader ?: ComponentLoader) : Promise<PageRenderingProps | undefined>
 {
     const contentId = createApiId(ref, true, inEditMode)
     const content = await api.getContent(contentId, {
@@ -122,17 +139,17 @@ export async function loadPageContent(ref: ContentReference, api: ContentDeliver
     if (!content)
         return undefined
 
-    return await iContentDataToProps(content, contentId, api, locale, inEditMode)
+    return await iContentDataToProps(content, contentId, api, locale, inEditMode, cLoader)
 }
 
-async function iContentDataToProps(content: IContentData, contentId: string, api: ContentDelivery.IContentDeliveryAPI, locale?: string, inEditMode: boolean = false) : Promise<PageRenderingProps>
+async function iContentDataToProps(content: IContentData, contentId: string, api: IContentDeliveryAPI, locale?: string, inEditMode: boolean = false, cLoader ?: ComponentLoader) : Promise<PageRenderingProps>
 {
-    const props = await loadAdditionalPropsAndFilter(content, api, locale, inEditMode)
+    const props = await loadAdditionalPropsAndFilter(content, api, locale, inEditMode, undefined, cLoader)
     if(!props.fallback) props.fallback = {}
     props.fallback[contentId] = content
 
     const ct : string[] = content.contentType ?? []
-    const baseType = ct[0] ?? 'page'
+    const prefix = ct[0] ?? 'page'
 
     const pageProps : PageRenderingProps = {
         ...props,
@@ -140,8 +157,8 @@ async function iContentDataToProps(content: IContentData, contentId: string, api
         contentId,
         locale: content.language.name,
         inEditMode,
-        baseType,
-        components: [ content.contentType ]
+        prefix,
+        component: content.contentType
     }
     if (pageProps.content)
         delete pageProps.content

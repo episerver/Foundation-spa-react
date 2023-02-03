@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
-    "target": "ESNext",
+    "target": "ES2020",
     "lib": [
-      "dom",
-      "dom.iterable",
-      "ESNext","ESNext.Array","ESNext.Promise","ESNext.String"
+      "DOM",
+      "DOM.Iterable",
+      "ES2020","ES2020.BigInt","ES2020.Intl","ES2020.Promise","ES2020.SharedMemory","ES2020.String","ES2020.Symbol.WellKnown"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -20,24 +20,12 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@components": [
-        "components"
-      ],
-      "@components/*": [
-        "components/*"
-      ],
-      "@component-queries": [
-        "components/queries"
-      ],
-      "@component-queries/*": [
-        "components/queries/*"
-      ],
-      "@framework": [
-        "framework"
-      ],
-      "@framework/*": [
-        "framework/*"
-      ]
+      "@components": [ "components" ],
+      "@components/*": [ "components/*" ],
+      "@component-queries": [ "components/queries" ],
+      "@component-queries/*": [ "components/queries/*" ],
+      "@framework": [ "framework" ],
+      "@framework/*": [ "framework/*" ]
     }
   },
   "include": [
@@ -48,7 +36,10 @@
   ],
   "exclude": [
     "node_modules",
-    "packages",
-    "components"
+    "packages"
+  ],
+  "references": [
+    { "path": "./packages/optimizely/cms" },
+    { "path": "./packages/optimizely/next-js" }
   ]
 }

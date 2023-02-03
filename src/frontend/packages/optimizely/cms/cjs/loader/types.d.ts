@@ -1,6 +1,7 @@
 import { ComponentType } from 'react';
-export declare type DynamicProps = Record<string, any>;
-export declare type ComponentLoaderStatic = {
+export type ComponentsCache = Record<string, ComponentType>;
+export type DynamicProps = Record<string, any>;
+export type ComponentLoaderStatic = {
     new (...args: any[]): ComponentLoader;
     name?: string;
 };

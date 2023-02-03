@@ -1,4 +1,4 @@
-export declare type OptiOnPageEditingContext = {
+export type OptiOnPageEditingContext = {
     beta: {
         /**
          * @deprecated
@@ -21,7 +21,7 @@ export declare type OptiOnPageEditingContext = {
         remove: () => void;
     };
 };
-export declare type OptiEvents = {
+export type OptiEvents = {
     contentSaved: {
         contentLink: string;
         editUrl: string;

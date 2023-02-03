@@ -12,18 +12,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
-        {
           "name": "Padding",
           "dataType": "PropertyLongString",
           "branchSpecific": false,
@@ -103,18 +91,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
-        {
           "name": "Video",
           "dataType": "PropertyContentReference",
           "branchSpecific": true,
@@ -183,18 +159,6 @@
         "sortOrder": 0
       },
       "properties": [
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
         {
           "name": "Padding",
           "dataType": "PropertyLongString",
@@ -300,18 +264,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
-        {
           "name": "Padding",
           "dataType": "PropertyLongString",
           "branchSpecific": false,
@@ -403,18 +355,6 @@
         "sortOrder": 0
       },
       "properties": [
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
         {
           "name": "Padding",
           "dataType": "PropertyLongString",
@@ -528,18 +468,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
-        {
           "name": "FilterTitle",
           "dataType": "PropertyLongString",
           "branchSpecific": true,
@@ -618,18 +546,6 @@
         "sortOrder": 0
       },
       "properties": [
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
         {
           "name": "FilterTitle",
           "dataType": "PropertyLongString",
@@ -710,18 +626,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
-        {
           "name": "FilterTitle",
           "dataType": "PropertyLongString",
           "branchSpecific": true,
@@ -800,18 +704,6 @@
         "sortOrder": 0
       },
       "properties": [
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
-          }
-        },
         {
           "name": "TeaserRatio",
           "dataType": "PropertyLongString",
@@ -1175,18 +1067,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
-          }
-        },
-        {
           "name": "TeaserRatio",
           "dataType": "PropertyLongString",
           "branchSpecific": true,
@@ -1526,661 +1406,6 @@
       ]
     },
     {
-      "id": "3bedeaa0-67ba-4f6a-a420-dabf6ad6890b",
-      "name": "VectorImageMediaData",
-      "baseType": "Image",
-      "editSettings": {
-        "displayName": "Vector Image File",
-        "description": "Used for svg image file type",
-        "available": true,
-        "sortOrder": 0
-      },
-      "properties": [
-        {
-          "name": "LargeThumbnail",
-          "dataType": "PropertyBlob",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Large thumbnail",
-            "groupName": "Information",
-            "sortOrder": 10
-          }
-        },
-        {
-          "name": "ImageAlignment",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Image alignment",
-            "groupName": "BlockStyling",
-            "sortOrder": 10
-          }
-        },
-        {
-          "name": "FileSize",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "File size",
-            "groupName": "Information",
-            "sortOrder": 20
-          }
-        },
-        {
-          "name": "PaddingTop",
-          "dataType": "PropertyNumber",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Padding top",
-            "groupName": "BlockStyling",
-            "sortOrder": 20
-          }
-        },
-        {
-          "name": "PaddingRight",
-          "dataType": "PropertyNumber",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Padding right",
-            "groupName": "BlockStyling",
-            "sortOrder": 21
-          }
-        },
-        {
-          "name": "PaddingBottom",
-          "dataType": "PropertyNumber",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Padding bottom",
-            "groupName": "BlockStyling",
-            "sortOrder": 22
-          }
-        },
-        {
-          "name": "PaddingLeft",
-          "dataType": "PropertyNumber",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Padding left",
-            "groupName": "BlockStyling",
-            "sortOrder": 23
-          }
-        },
-        {
-          "name": "AccentColor",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Accent color",
-            "groupName": "Information",
-            "sortOrder": 30
-          }
-        },
-        {
-          "name": "Caption",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Caption",
-            "groupName": "Information",
-            "sortOrder": 40
-          }
-        },
-        {
-          "name": "ClipArtType",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Clip art type",
-            "groupName": "Information",
-            "sortOrder": 50
-          }
-        },
-        {
-          "name": "DominantColorBackground",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Dominant color background",
-            "groupName": "Information",
-            "sortOrder": 60
-          }
-        },
-        {
-          "name": "DominantColorForeground",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Dominant color foreground",
-            "groupName": "Information",
-            "sortOrder": 70
-          }
-        },
-        {
-          "name": "DominantColors",
-          "dataType": "PropertyStringList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Dominant colors",
-            "groupName": "Information",
-            "sortOrder": 80
-          }
-        },
-        {
-          "name": "ImageCategories",
-          "dataType": "PropertyStringList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Image categories",
-            "groupName": "Information",
-            "sortOrder": 90
-          }
-        },
-        {
-          "name": "IsAdultContent",
-          "dataType": "PropertyBoolean",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Is adult content",
-            "groupName": "Information",
-            "sortOrder": 100
-          }
-        },
-        {
-          "name": "IsBwImg",
-          "dataType": "PropertyBoolean",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Is black & white image",
-            "groupName": "Information",
-            "sortOrder": 110
-          }
-        },
-        {
-          "name": "IsRacyContent",
-          "dataType": "PropertyBoolean",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Is racy content",
-            "groupName": "Information",
-            "sortOrder": 120
-          }
-        },
-        {
-          "name": "LineDrawingType",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Line drawing type",
-            "groupName": "Information",
-            "sortOrder": 130
-          }
-        },
-        {
-          "name": "Tags",
-          "dataType": "PropertyStringList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Tags",
-            "groupName": "Information",
-            "sortOrder": 140
-          }
-        },
-        {
-          "name": "Title",
-          "dataType": "PropertyLongString",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Title",
-            "groupName": "Information",
-            "sortOrder": 150
-          }
-        },
-        {
-          "name": "Description",
-          "dataType": "PropertyLongString",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Description",
-            "groupName": "Information",
-            "sortOrder": 160,
-            "helpText": "Description of the image"
-          }
-        },
-        {
-          "name": "AltText",
-          "dataType": "PropertyLongString",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Alternate text",
-            "groupName": "Information",
-            "sortOrder": 170
-          }
-        },
-        {
-          "name": "CreditsText",
-          "dataType": "PropertyLongString",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Credits text",
-            "groupName": "Information",
-            "sortOrder": 180
-          }
-        },
-        {
-          "name": "CreditsLink",
-          "dataType": "PropertyUrl",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Credits link",
-            "groupName": "Information",
-            "sortOrder": 190,
-            "hint": "Url"
-          }
-        },
-        {
-          "name": "Link",
-          "dataType": "PropertyContentReference",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Link",
-            "groupName": "Information",
-            "sortOrder": 200,
-            "helpText": "Link to content",
-            "hint": "allcontent"
-          }
-        },
-        {
-          "name": "Copyright",
-          "dataType": "PropertyLongString",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Copyright",
-            "groupName": "Information",
-            "sortOrder": 210
-          }
-        }
-      ]
-    },
-    {
-      "id": "646ece50-3ce7-4f8b-ba33-9924c9adc9c6",
-      "name": "StandardFile",
-      "baseType": "Media",
-      "editSettings": {
-        "displayName": "Standard File",
-        "description": "Used for standard file types such as Word, Excel, PowerPoint or text documents.",
-        "available": true,
-        "sortOrder": 0
-      },
-      "properties": [
-        {
-          "name": "FileSize",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "FileSize",
-            "groupName": "Information",
-            "sortOrder": 0
-          }
-        }
-      ]
-    },
-    {
-      "id": "20644be7-3ca1-4f84-b893-ee021b73ce6c",
-      "name": "ImageMediaData",
-      "baseType": "Image",
-      "version": "1.0.0.4",
-      "editSettings": {
-        "displayName": "Image File",
-        "description": "Used for image file types such as jpg, jpeg, jpe, ico, gif, bmp, png",
-        "available": true,
-        "sortOrder": 0
-      },
-      "properties": [
-        {
-          "name": "LargeThumbnail",
-          "dataType": "PropertyBlob",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Large thumbnail",
-            "groupName": "Information",
-            "sortOrder": 10
-          }
-        },
-        {
-          "name": "ImageAlignment",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Image alignment",
-            "groupName": "BlockStyling",
-            "sortOrder": 10
-          }
-        },
-        {
-          "name": "FileSize",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "File size",
-            "groupName": "Information",
-            "sortOrder": 20
-          }
-        },
-        {
-          "name": "PaddingTop",
-          "dataType": "PropertyNumber",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Padding top",
-            "groupName": "BlockStyling",
-            "sortOrder": 20
-          }
-        },
-        {
-          "name": "PaddingRight",
-          "dataType": "PropertyNumber",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Padding right",
-            "groupName": "BlockStyling",
-            "sortOrder": 21
-          }
-        },
-        {
-          "name": "PaddingBottom",
-          "dataType": "PropertyNumber",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Padding bottom",
-            "groupName": "BlockStyling",
-            "sortOrder": 22
-          }
-        },
-        {
-          "name": "PaddingLeft",
-          "dataType": "PropertyNumber",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Padding left",
-            "groupName": "BlockStyling",
-            "sortOrder": 23
-          }
-        },
-        {
-          "name": "AccentColor",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Accent color",
-            "groupName": "Information",
-            "sortOrder": 30
-          }
-        },
-        {
-          "name": "Caption",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Caption",
-            "groupName": "Information",
-            "sortOrder": 40
-          }
-        },
-        {
-          "name": "ClipArtType",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Clip art type",
-            "groupName": "Information",
-            "sortOrder": 50
-          }
-        },
-        {
-          "name": "DominantColorBackground",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Dominant color background",
-            "groupName": "Information",
-            "sortOrder": 60
-          }
-        },
-        {
-          "name": "DominantColorForeground",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Dominant color foreground",
-            "groupName": "Information",
-            "sortOrder": 70
-          }
-        },
-        {
-          "name": "DominantColors",
-          "dataType": "PropertyStringList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Dominant colors",
-            "groupName": "Information",
-            "sortOrder": 80
-          }
-        },
-        {
-          "name": "ImageCategories",
-          "dataType": "PropertyStringList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Image categories",
-            "groupName": "Information",
-            "sortOrder": 90
-          }
-        },
-        {
-          "name": "IsAdultContent",
-          "dataType": "PropertyBoolean",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Is adult content",
-            "groupName": "Information",
-            "sortOrder": 100
-          }
-        },
-        {
-          "name": "IsBwImg",
-          "dataType": "PropertyBoolean",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Is black & white image",
-            "groupName": "Information",
-            "sortOrder": 110
-          }
-        },
-        {
-          "name": "IsRacyContent",
-          "dataType": "PropertyBoolean",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Is racy content",
-            "groupName": "Information",
-            "sortOrder": 120
-          }
-        },
-        {
-          "name": "LineDrawingType",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Line drawing type",
-            "groupName": "Information",
-            "sortOrder": 130
-          }
-        },
-        {
-          "name": "Tags",
-          "dataType": "PropertyStringList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Tags",
-            "groupName": "Information",
-            "sortOrder": 140
-          }
-        },
-        {
-          "name": "Title",
-          "dataType": "PropertyLongString",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Title",
-            "groupName": "Information",
-            "sortOrder": 150
-          }
-        },
-        {
-          "name": "Description",
-          "dataType": "PropertyLongString",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Description",
-            "groupName": "Information",
-            "sortOrder": 160,
-            "helpText": "Description of the image"
-          }
-        },
-        {
-          "name": "AltText",
-          "dataType": "PropertyLongString",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Alternate text",
-            "groupName": "Information",
-            "sortOrder": 170
-          }
-        },
-        {
-          "name": "CreditsText",
-          "dataType": "PropertyLongString",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Credits text",
-            "groupName": "Information",
-            "sortOrder": 180
-          }
-        },
-        {
-          "name": "CreditsLink",
-          "dataType": "PropertyUrl",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Credits link",
-            "groupName": "Information",
-            "sortOrder": 190,
-            "hint": "Url"
-          }
-        },
-        {
-          "name": "Link",
-          "dataType": "PropertyContentReference",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Link",
-            "groupName": "Information",
-            "sortOrder": 200,
-            "helpText": "Link to content",
-            "hint": "allcontent"
-          }
-        },
-        {
-          "name": "Copyright",
-          "dataType": "PropertyLongString",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Copyright",
-            "groupName": "Information",
-            "sortOrder": 210
-          }
-        }
-      ]
-    },
-    {
-      "id": "cbbfab00-eac0-40ab-b9bf-2966b901841e",
-      "name": "CodingFile",
-      "baseType": "Media",
-      "editSettings": {
-        "displayName": "Coding File",
-        "description": "Used for coding file types such as Css, Javascript.",
-        "available": true,
-        "sortOrder": 0
-      },
-      "properties": [
-        {
-          "name": "Description",
-          "dataType": "PropertyLongString",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Description",
-            "groupName": "Information",
-            "sortOrder": 10
-          }
-        }
-      ]
-    },
-    {
       "id": "40e76908-6aa2-4cb7-8239-607d941df3a6",
       "name": "BookmarksPage",
       "baseType": "Page",
@@ -2191,18 +1416,6 @@
         "sortOrder": 0
       },
       "properties": [
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
-          }
-        },
         {
           "name": "TeaserRatio",
           "dataType": "PropertyLongString",
@@ -2532,18 +1745,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
-        {
           "name": "MainBody",
           "dataType": "PropertyXhtmlString",
           "branchSpecific": true,
@@ -2611,18 +1812,6 @@
         "sortOrder": 0
       },
       "properties": [
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
         {
           "name": "Padding",
           "dataType": "PropertyLongString",
@@ -2826,18 +2015,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
-        {
           "name": "Padding",
           "dataType": "PropertyLongString",
           "branchSpecific": false,
@@ -2955,18 +2132,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
-        {
           "name": "Padding",
           "dataType": "PropertyLongString",
           "branchSpecific": false,
@@ -3045,18 +2210,6 @@
         "sortOrder": 0
       },
       "properties": [
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
         {
           "name": "Padding",
           "dataType": "PropertyLongString",
@@ -3183,18 +2336,6 @@
             "displayName": "Start date",
             "groupName": "Information",
             "sortOrder": 10
-          }
-        },
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
           }
         },
         {
@@ -3567,18 +2708,6 @@
             "displayName": "Root",
             "groupName": "BlogList",
             "sortOrder": 10
-          }
-        },
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
           }
         },
         {
@@ -4024,18 +3153,6 @@
           }
         },
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
-          }
-        },
-        {
           "name": "TeaserRatio",
           "dataType": "PropertyLongString",
           "branchSpecific": true,
@@ -4364,18 +3481,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
-        {
           "name": "Padding",
           "dataType": "PropertyLongString",
           "branchSpecific": false,
@@ -4477,18 +3582,6 @@
         "sortOrder": 0
       },
       "properties": [
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
         {
           "name": "Padding",
           "dataType": "PropertyLongString",
@@ -4615,18 +3708,6 @@
         "sortOrder": 0
       },
       "properties": [
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
-          }
-        },
         {
           "name": "TeaserRatio",
           "dataType": "PropertyLongString",
@@ -4956,18 +4037,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
-        {
           "name": "Padding",
           "dataType": "PropertyLongString",
           "branchSpecific": false,
@@ -5174,18 +4243,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
-        {
           "name": "MainContentArea",
           "dataType": "PropertyContentArea",
           "branchSpecific": false,
@@ -5264,18 +4321,6 @@
         "sortOrder": 0
       },
       "properties": [
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
         {
           "name": "Padding",
           "dataType": "PropertyLongString",
@@ -5367,18 +4412,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
-        {
           "name": "ApiKey",
           "dataType": "PropertyLongString",
           "branchSpecific": false,
@@ -5469,18 +4502,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
-        {
           "name": "Padding",
           "dataType": "PropertyLongString",
           "branchSpecific": false,
@@ -5558,64 +4579,6 @@
             "groupName": "Presentation",
             "sortOrder": 10,
             "helpText": "The height of the bot in pixels as shown on screen"
-          }
-        }
-      ]
-    },
-    {
-      "id": "8a9d9d4b-cd4b-40e8-a777-414cfbda7770",
-      "name": "VideoFile",
-      "baseType": "Video",
-      "editSettings": {
-        "displayName": "Video File",
-        "description": "Used for video file types such as mp4, flv, webm",
-        "available": true,
-        "sortOrder": 0
-      },
-      "properties": [
-        {
-          "name": "PreviewImage",
-          "dataType": "PropertyContentReference",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Preview image",
-            "groupName": "Information",
-            "sortOrder": 10,
-            "hint": "image"
-          }
-        },
-        {
-          "name": "Copyright",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Copyright",
-            "groupName": "Information",
-            "sortOrder": 20
-          }
-        },
-        {
-          "name": "DisplayControls",
-          "dataType": "PropertyBoolean",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Display controls",
-            "groupName": "Information",
-            "sortOrder": 30
-          }
-        },
-        {
-          "name": "Autoplay",
-          "dataType": "PropertyBoolean",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Autoplay",
-            "groupName": "Information",
-            "sortOrder": 40
           }
         }
       ]
@@ -5828,18 +4791,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
-        {
           "name": "CarouselItems",
           "dataType": "PropertyContentArea",
           "branchSpecific": true,
@@ -5917,18 +4868,6 @@
             "displayName": "Subject",
             "groupName": "Information",
             "sortOrder": 1
-          }
-        },
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
           }
         },
         {
@@ -6260,18 +5199,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
-          }
-        },
-        {
           "name": "TeaserRatio",
           "dataType": "PropertyLongString",
           "branchSpecific": true,
@@ -6600,18 +5527,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
-          }
-        },
-        {
           "name": "TeaserRatio",
           "dataType": "PropertyLongString",
           "branchSpecific": true,
@@ -6928,7 +5843,7 @@
         }
       ]
     },
-	{
+    {
       "id": "b5af511b-96c9-4ad7-828f-254924542430",
       "name": "PersonPage",
       "baseType": "Page",
@@ -7019,18 +5934,6 @@
           }
         },
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
-          }
-        },
-        {
           "name": "TeaserRatio",
           "dataType": "PropertyLongString",
           "branchSpecific": true,
@@ -7347,7 +6250,7 @@
         }
       ]
     },
-	{
+    {
       "id": "30685434-33de-42af-88a7-3126b936aead",
       "name": "PageListBlock",
       "baseType": "Block",
@@ -7359,18 +6262,6 @@
         "sortOrder": 0
       },
       "properties": [
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
         {
           "name": "Padding",
           "dataType": "PropertyLongString",
@@ -7576,18 +6467,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 0,
-            "helpText": "Categories associated with this content"
-          }
-        },
-        {
           "name": "FilterTitle",
           "dataType": "PropertyLongString",
           "branchSpecific": true,
@@ -7655,7 +6534,7 @@
         }
       ]
     },
-	{
+    {
       "id": "f94571b0-65c4-4e49-8a88-5930d045e19d",
       "name": "TwoColumnLandingPage",
       "baseType": "Page",
@@ -7666,18 +6545,6 @@
         "sortOrder": 0
       },
       "properties": [
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
-          }
-        },
         {
           "name": "TeaserRatio",
           "dataType": "PropertyLongString",
@@ -8071,18 +6938,6 @@
             "displayName": "Continent",
             "groupName": "Location",
             "sortOrder": 10
-          }
-        },
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
           }
         },
         {
@@ -8526,18 +7381,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
-          }
-        },
-        {
           "name": "TeaserRatio",
           "dataType": "PropertyLongString",
           "branchSpecific": true,
@@ -8865,7 +7708,7 @@
         }
       ]
     },
-	{
+    {
       "id": "71f9e8e1-46da-4d40-883f-a1befacaeb88",
       "name": "ProfileLandingPage",
       "baseType": "Page",
@@ -8876,18 +7719,6 @@
         "sortOrder": 0
       },
       "properties": [
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
-          }
-        },
         {
           "name": "TeaserRatio",
           "dataType": "PropertyLongString",
@@ -9236,18 +8067,6 @@
             "displayName": "Images",
             "groupName": "Information",
             "sortOrder": 10
-          }
-        },
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
           }
         },
         {
@@ -9612,18 +8431,6 @@
       },
       "properties": [
         {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
-          }
-        },
-        {
           "name": "TeaserRatio",
           "dataType": "PropertyLongString",
           "branchSpecific": true,
@@ -9974,18 +8781,6 @@
         "sortOrder": 0
       },
       "properties": [
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
-          }
-        },
         {
           "name": "TeaserRatio",
           "dataType": "PropertyLongString",
@@ -10373,309 +9168,6 @@
       ]
     },
     {
-      "id": "46652356-ef68-4ef2-b57e-293aa4f87be8",
-      "name": "WebImageMediaData",
-      "baseType": "Image",
-      "editSettings": {
-        "displayName": "Webp Image File",
-        "description": "Used for webp image file type",
-        "available": true,
-        "sortOrder": 0
-      },
-      "properties": [
-        {
-          "name": "LargeThumbnail",
-          "dataType": "PropertyBlob",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Large thumbnail",
-            "groupName": "Information",
-            "sortOrder": 10
-          }
-        },
-        {
-          "name": "ImageAlignment",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Image alignment",
-            "groupName": "BlockStyling",
-            "sortOrder": 10
-          }
-        },
-        {
-          "name": "FileSize",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "File size",
-            "groupName": "Information",
-            "sortOrder": 20
-          }
-        },
-        {
-          "name": "PaddingTop",
-          "dataType": "PropertyNumber",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Padding top",
-            "groupName": "BlockStyling",
-            "sortOrder": 20
-          }
-        },
-        {
-          "name": "PaddingRight",
-          "dataType": "PropertyNumber",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Padding right",
-            "groupName": "BlockStyling",
-            "sortOrder": 21
-          }
-        },
-        {
-          "name": "PaddingBottom",
-          "dataType": "PropertyNumber",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Padding bottom",
-            "groupName": "BlockStyling",
-            "sortOrder": 22
-          }
-        },
-        {
-          "name": "PaddingLeft",
-          "dataType": "PropertyNumber",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Padding left",
-            "groupName": "BlockStyling",
-            "sortOrder": 23
-          }
-        },
-        {
-          "name": "AccentColor",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Accent color",
-            "groupName": "Information",
-            "sortOrder": 30
-          }
-        },
-        {
-          "name": "Caption",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Caption",
-            "groupName": "Information",
-            "sortOrder": 40
-          }
-        },
-        {
-          "name": "ClipArtType",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Clip art type",
-            "groupName": "Information",
-            "sortOrder": 50
-          }
-        },
-        {
-          "name": "DominantColorBackground",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Dominant color background",
-            "groupName": "Information",
-            "sortOrder": 60
-          }
-        },
-        {
-          "name": "DominantColorForeground",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Dominant color foreground",
-            "groupName": "Information",
-            "sortOrder": 70
-          }
-        },
-        {
-          "name": "DominantColors",
-          "dataType": "PropertyStringList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Dominant colors",
-            "groupName": "Information",
-            "sortOrder": 80
-          }
-        },
-        {
-          "name": "ImageCategories",
-          "dataType": "PropertyStringList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Image categories",
-            "groupName": "Information",
-            "sortOrder": 90
-          }
-        },
-        {
-          "name": "IsAdultContent",
-          "dataType": "PropertyBoolean",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Is adult content",
-            "groupName": "Information",
-            "sortOrder": 100
-          }
-        },
-        {
-          "name": "IsBwImg",
-          "dataType": "PropertyBoolean",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Is black & white image",
-            "groupName": "Information",
-            "sortOrder": 110
-          }
-        },
-        {
-          "name": "IsRacyContent",
-          "dataType": "PropertyBoolean",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Is racy content",
-            "groupName": "Information",
-            "sortOrder": 120
-          }
-        },
-        {
-          "name": "LineDrawingType",
-          "dataType": "PropertyLongString",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Line drawing type",
-            "groupName": "Information",
-            "sortOrder": 130
-          }
-        },
-        {
-          "name": "Tags",
-          "dataType": "PropertyStringList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Tags",
-            "groupName": "Information",
-            "sortOrder": 140
-          }
-        },
-        {
-          "name": "Title",
-          "dataType": "PropertyLongString",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Title",
-            "groupName": "Information",
-            "sortOrder": 150
-          }
-        },
-        {
-          "name": "Description",
-          "dataType": "PropertyLongString",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Description",
-            "groupName": "Information",
-            "sortOrder": 160,
-            "helpText": "Description of the image"
-          }
-        },
-        {
-          "name": "AltText",
-          "dataType": "PropertyLongString",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Alternate text",
-            "groupName": "Information",
-            "sortOrder": 170
-          }
-        },
-        {
-          "name": "CreditsText",
-          "dataType": "PropertyLongString",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Credits text",
-            "groupName": "Information",
-            "sortOrder": 180
-          }
-        },
-        {
-          "name": "CreditsLink",
-          "dataType": "PropertyUrl",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Credits link",
-            "groupName": "Information",
-            "sortOrder": 190,
-            "hint": "Url"
-          }
-        },
-        {
-          "name": "Link",
-          "dataType": "PropertyContentReference",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Link",
-            "groupName": "Information",
-            "sortOrder": 200,
-            "helpText": "Link to content",
-            "hint": "allcontent"
-          }
-        },
-        {
-          "name": "Copyright",
-          "dataType": "PropertyLongString",
-          "branchSpecific": true,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Copyright",
-            "groupName": "Information",
-            "sortOrder": 210
-          }
-        }
-      ]
-    },
-    {
       "id": "947edf31-8c8c-4595-8591-a17def75685e",
       "name": "ThreeColumnLandingPage",
       "baseType": "Page",
@@ -10686,18 +9178,6 @@
         "sortOrder": 0
       },
       "properties": [
-        {
-          "name": "Categories",
-          "dataType": "PropertyContentReferenceList",
-          "branchSpecific": false,
-          "editSettings": {
-            "visibility": "default",
-            "displayName": "Categories",
-            "groupName": "EPiServerCMS_SettingsPanel",
-            "sortOrder": 10,
-            "helpText": "Categories associated with this content."
-          }
-        },
         {
           "name": "TeaserRatio",
           "dataType": "PropertyLongString",
@@ -11256,11 +9736,6 @@
       "systemGroup": false
     },
     {
-      "name": "EPiServerCMS_SettingsPanel",
-      "sortOrder": 1,
-      "systemGroup": false
-    },
-    {
       "name": "Bot Configuration",
       "sortOrder": 1,
       "systemGroup": false
@@ -11280,34 +9755,6 @@
       "enabled": true
     },
     {
-      "name": "en-GB",
-      "displayName": "English (United Kingdom)",
-      "urlSegment": "en-GB",
-      "sortOrder": 20,
-      "enabled": false
-    },
-    {
-      "name": "en-NZ",
-      "displayName": "English (New Zealand)",
-      "urlSegment": "en-NZ",
-      "sortOrder": 30,
-      "enabled": false
-    },
-    {
-      "name": "en-ZA",
-      "displayName": "English (South Africa)",
-      "urlSegment": "en-ZA",
-      "sortOrder": 40,
-      "enabled": false
-    },
-    {
-      "name": "de",
-      "displayName": "Deutsch",
-      "urlSegment": "de",
-      "sortOrder": 50,
-      "enabled": false
-    },
-    {
       "name": "fr",
       "displayName": "Français",
       "urlSegment": "fr",
@@ -11315,73 +9762,10 @@
       "enabled": true
     },
     {
-      "name": "es",
-      "displayName": "español",
-      "urlSegment": "es",
-      "sortOrder": 70,
-      "enabled": false
-    },
-    {
       "name": "sv",
       "displayName": "svenska",
       "urlSegment": "sv",
       "sortOrder": 80,
-      "enabled": false
-    },
-    {
-      "name": "no",
-      "displayName": "norsk",
-      "urlSegment": "no",
-      "sortOrder": 90,
-      "enabled": false
-    },
-    {
-      "name": "da",
-      "displayName": "dansk",
-      "urlSegment": "da",
-      "sortOrder": 100,
-      "enabled": false
-    },
-    {
-      "name": "fi",
-      "displayName": "suomi",
-      "urlSegment": "fi",
-      "sortOrder": 110,
-      "enabled": false
-    },
-    {
-      "name": "nl",
-      "displayName": "Nederlands",
-      "urlSegment": "nl",
-      "sortOrder": 120,
-      "enabled": true
-    },
-    {
-      "name": "nl-BE",
-      "displayName": "Nederlands (België)",
-      "urlSegment": "nl-BE",
-      "sortOrder": 130,
-      "enabled": true
-    },
-    {
-      "name": "pt-BR",
-      "displayName": "português (Brasil)",
-      "urlSegment": "pt-BR",
-      "sortOrder": 140,
-      "enabled": false
-    },
-    {
-      "name": "fr-BE",
-      "displayName": "Français (Belgique)",
-      "urlSegment": "fr-BE",
-      "sortOrder": 160,
-      "enabled": true
-    },
-    {
-      "name": "en-NL",
-      "displayName": "English (Netherlands)",
-      "urlSegment": "en-NL",
-      "sortOrder": 170,
       "enabled": true
     }
   ]

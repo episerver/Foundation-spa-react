@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+const DEBUG_ENABLED = process.env.NODE_ENV != "production";
 export class ErrorBoundary extends Component {
     constructor(props) {
         super(props);
@@ -6,16 +7,20 @@ export class ErrorBoundary extends Component {
     }
     static getDerivedStateFromError(error) {
         // Update state so the next render will show the fallback UI.
-        return { hasError: true };
+        if (DEBUG_ENABLED)
+            console.error(error);
+        return { hasError: true, error };
     }
     componentDidCatch(error, errorInfo) {
         try {
-            const groupName = `‼ ${this.props.componentName ?? 'Component'} error caught at boundary`;
-            console.groupCollapsed(groupName);
-            console.info("Component name", this.props.componentName ?? '');
-            console.info(errorInfo);
-            console.error(error);
-            console.groupEnd();
+            if (DEBUG_ENABLED) {
+                const groupName = `‼ ${this.props.componentName ?? 'Component'} error caught at boundary`;
+                console.groupCollapsed(groupName);
+                console.info("Component name", this.props.componentName ?? '');
+                console.info(errorInfo);
+                console.error(error);
+                console.groupEnd();
+            }
         }
         catch {
             // Just give up...
@@ -25,15 +30,20 @@ export class ErrorBoundary extends Component {
     }
     render() {
         if (this.state.hasError) {
-            return <></>;
+            return this.props.fallback ?
+                this.props.fallback :
+                <div className='error caught-error'>{this.state?.error?.name}: {this.state?.error?.message}</div>;
         }
         return this.props.children;
     }
 }
 ErrorBoundary.displayName = "Optimizely CMS: Error boundary";
-export function withErrorBoundary(BaseComponent) {
-    const wrapped = (props) => <ErrorBoundary componentName={BaseComponent.displayName}><BaseComponent {...props}/></ErrorBoundary>;
+export function withErrorBoundary(BaseComponent, fallback) {
+    const wrapped = (props) => <ErrorBoundary componentName={BaseComponent.displayName} fallback={fallback}>
+        <BaseComponent {...props}/>
+    </ErrorBoundary>;
     wrapped.displayName = `${BaseComponent.displayName ?? 'Component'} with error boundary`;
     return wrapped;
 }
+export default ErrorBoundary;
 //# sourceMappingURL=ErrorBoundary.jsx.map

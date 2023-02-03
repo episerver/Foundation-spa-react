@@ -1,27 +1,29 @@
-// React Bindings
-export * as Models from './models/index'
-export * as Provider from './provider/index'
-export * as Components from './components/index'
+// Export complete sub-systems
+export * from './provider'
+export * from './hooks'
 
-// Convenience short-hands
-export { useOptimizely, useAndInitOptimizely } from './provider/use'
+// Export models and types
+export * from './models'
+export type { IContentDeliveryAPI, IContentDeliveryAPIStatic, ContentRequest } from './content-delivery/icontent-delivery-api'
+export type { ComponentLoader, ComponentLoaderStatic, ComponentsCache } from './loader/types'
+
+// Export factories
+export { createComponentLoader } from './loader/factory'
+export { createInstance as createContentDeliveryClient } from './content-delivery/factory'
+
+// Export components
+export { ContentArea } from './components/ContentArea'
+export { ContentAreaItem } from './components/ContentAreaItem'
 export { ContentComponent } from './components/ContentComponent'
 export { EditableField } from './components/EditableField'
-export { useContent, useContents, useContentComponent } from './hooks'
+export { ErrorBoundary } from './components/ErrorBoundary'
 
-// Dynamic component loader (Webpack 5+)
-export * as ComponentLoader from './loader/index'
+// Exports HOCs
+export { withOnPageEditing } from './components/EditableField'
+export { withErrorBoundary } from './components/ErrorBoundary'
 
-// GraphQL Client
-export { setup as createGqlClient } from './graphql/index'
-export * as GraphQL from './graphql/index'
-
-// Content Delivery API Client
-export { default as cdapi } from './content-delivery/index'
-export * as ContentDelivery from './content-delivery/index'
-
-// Various utilities
-export * as Utils from './util/index'
+// Export utilities as namespaces
+export * as Utils from './util'
 
 // Global scope additions
 import type { OptiOnPageEditingContext } from './opti-on-page-editing'

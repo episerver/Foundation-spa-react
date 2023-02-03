@@ -15,9 +15,9 @@ export const ContainerBlockComponent : IContentComponent<ContainerBlock> = props
     </Box>
 }
 
-ContainerBlockComponent.getStaticProps = async (content, { locale, inEditMode, api }) => {
+ContainerBlockComponent.getStaticProps = async (content, { locale, inEditMode, api, loader }) => {
     return {
-        fallback: await prefetchContentAreaRecursive(content, [{ name: "mainContentArea" }], locale, inEditMode == true, undefined, api)
+        fallback: await prefetchContentAreaRecursive(content, [{ name: "mainContentArea" }], locale, inEditMode == true, undefined, api, loader)
     }
 }
 

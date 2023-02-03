@@ -1,10 +1,4 @@
 export class NetworkError extends Error {
-    constructor(message, response) {
-        super(message);
-        this._type = "NetworkError";
-        this._response = response;
-        console.error(message);
-    }
     /**
      * @deprecated      Do not use this as this will make your code dependant on the Response implementations
      */
@@ -19,6 +13,12 @@ export class NetworkError extends Error {
     }
     get statusText() {
         return this._response.statusText;
+    }
+    constructor(message, response) {
+        super(message);
+        this._type = "NetworkError";
+        this._response = response;
+        console.error(message);
     }
 }
 export function isNetworkError(toTest) {

@@ -12,16 +12,16 @@ export function validateConfig(config) {
     return false;
 }
 export class Client {
-    constructor(config) {
-        this.config = { ...defaultConfiguration, ...config };
-        globalThis.OptiGQL = this;
-    }
     get debug() { return this.config.debug; }
     get throwOnError() { return this.config.throwOnError; }
     get endpoint() {
         const apiUrl = new URL(GRAPHQL_SERVICE_PATH, this.config.domain);
         apiUrl.searchParams.set('auth', this.config.token);
         return apiUrl;
+    }
+    constructor(config) {
+        this.config = { ...defaultConfiguration, ...config };
+        globalThis.OptiGQL = this;
     }
     async query(query, variables, requestInit) {
         const gqlEndpoint = this.endpoint;

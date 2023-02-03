@@ -1,0 +1,1 @@
+export { createInstance as createContentDeliveryClient, createInstance as default } from './dist/content-delivery/factory'

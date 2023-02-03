@@ -2,7 +2,7 @@
  * Type describing configuration to use when making
  * requests to the Content Delivery API.
  */
-export declare type Config = {
+export type Config = {
     /**
      * URL to the Content Delivery API.
      */

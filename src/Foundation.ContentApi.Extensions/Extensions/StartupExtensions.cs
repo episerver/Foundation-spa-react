@@ -12,6 +12,9 @@ using Foundation.ContentApi.Extensions.Services;
 using Foundation.ContentApi.Extensions.Infrastructure;
 using Microsoft.AspNetCore.Authentication;
 using EPiServer.Security;
+using EPiServer.ContentApi.Core.Serialization;
+using Foundation.ContentApi.Extensions.Conversion;
+using Foundation.ContentApi.Extensions.Conversion.StructuredHtml;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -30,13 +33,19 @@ namespace Microsoft.Extensions.DependencyInjection
             // Add the services specific to this extension
             services
                 .AddSingleton<IApiRequestAssessor, DefaultApiRequestAssessor>() // Add a pluggable method to determine if an URL is a API URL
-                .AddHttpContextOrThreadScoped(serviceProvider => {
+                .AddHttpContextOrThreadScoped(serviceProvider =>
+                {
                     var httpContextAccessor = serviceProvider.GetInstance<IHttpContextAccessor>();
                     var authenticationService = serviceProvider.GetInstance<IAuthenticationService>();
                     var principalAccessor = serviceProvider.GetInstance<IPrincipalAccessor>();
                     return new ApiPrincipalAccessor(httpContextAccessor, authenticationService, principalAccessor, authSchema);
                 })
-                .AddHttpContextOrThreadScoped<UniversalContextModeResolver, UniversalContextModeResolver>();
+                .AddHttpContextOrThreadScoped<UniversalContextModeResolver, UniversalContextModeResolver>()
+                .AddHttpContextOrThreadScoped<IPropertyConverterProvider, StructuredHtmlPropertyConverterProvider>()
+                .AddHttpContextOrThreadScoped<StructuredHtmlPropertyConverter, StructuredHtmlPropertyConverter>()
+                .AddTransient<IPropertyConverter, StructuredHtmlPropertyConverter>(s => s.GetInstance<StructuredHtmlPropertyConverter>())
+                .AddTransient<DefaultBlockView>()
+                .AddOptions<StructuredHtmlPropertyOptions>();
 
             // Replace the Context Mode Resolvers with an universal version, so the context mode is resolved the same at
             // any location

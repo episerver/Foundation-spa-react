@@ -1,11 +1,13 @@
 import type { ComponentType } from 'react'
 import type { IContent, IContentData } from './icontent'
 import type { IContentDeliveryAPI } from '../content-delivery'
+import type { ComponentLoader } from '../loader/types'
 
 export type GetStaticPropsContext = {
     api: IContentDeliveryAPI
     locale ?: string
     inEditMode?: boolean
+    loader?: ComponentLoader
 }
 export type GetDynamicPropsContext = {
     api: IContentDeliveryAPI

@@ -1,5 +1,5 @@
 import type { FunctionComponent } from "react"
-import type { DefaultUser } from "next-auth"
+import type { DefaultUser, } from "next-auth"
 import React, { useState } from "react"
 import { useSession, signIn } from 'next-auth/react'
 import LinearProgress from '@mui/material/LinearProgress'
@@ -26,10 +26,12 @@ export type ProfilePageProps = {
 }
 
 type UserWithRole = DefaultUser & { role?: string }
+type EnhancedSessionData = (NonNullable<ReturnType<typeof useSession>['data']> & { at?: string, error?: string, scope?: string }) | null
+type EnhancedSessionHook = Omit<ReturnType<typeof useSession>, 'data'> & { data: EnhancedSessionData }
 
 export const ProfilePage : FunctionComponent<ProfilePageProps> = props => 
 {
-    const session = useSession()
+    const { status: sessionStatus, data : sessionData } : EnhancedSessionHook = useSession()
     const router = useRouter()
     const [ showDetails, setShowDetails ] = useState<boolean>(false)
 
@@ -43,16 +45,16 @@ export const ProfilePage : FunctionComponent<ProfilePageProps> = props =>
         router.push(profileUrl.href)
     }
     
-    if (session.status === "unauthenticated")
+    if (sessionStatus === "unauthenticated")
         signIn()
 
-    if (session.status === "loading")
+    if (sessionStatus === "loading")
         return <LinearProgress />
 
     return <>
         <Typography variant="h1">Dashboard</Typography>
-        { session.data?.error ? 
-            <Alert severity="error" sx={{mb: 3}}>{ (session.data?.error as string | undefined) ?? "Undefined error" }</Alert> : 
+        { sessionData?.error ? 
+            <Alert severity="error" sx={{mb: 3}}>{ (sessionData?.error as string | undefined) ?? "Undefined error" }</Alert> : 
             <Alert severity="success" sx={{mb: 3}}>Valid session</Alert>
         }
         <Box sx={{mb: 3}}>
@@ -68,11 +70,11 @@ export const ProfilePage : FunctionComponent<ProfilePageProps> = props =>
                         <List>
                             <ListItem>
                                 <ListItemIcon><Person /></ListItemIcon>
-                                <ListItemText primary={ session.data?.user?.name ?? "Not authenticated" } secondary="Your username / login" />
+                                <ListItemText primary={ sessionData?.user?.name ?? "Not authenticated" } secondary="Your username / login" />
                             </ListItem>
                             <ListItem>
                                 <ListItemIcon><Email /></ListItemIcon>
-                                <ListItemText primary={ session.data?.user?.email ?? "Not authenticated" } secondary="This is where we'll message you when we need your attention" />
+                                <ListItemText primary={ sessionData?.user?.email ?? "Not authenticated" } secondary="This is where we'll message you when we need your attention" />
                             </ListItem>
                             <ListItem>
                                 <ListItemIcon><Password /></ListItemIcon>
@@ -90,7 +92,7 @@ export const ProfilePage : FunctionComponent<ProfilePageProps> = props =>
                     <CardHeader title="Groups" subheader="These are the groups you belong to"/>
                     <CardContent>
                         <List>
-                        { ((session.data?.user as UserWithRole)?.role ?? "").split(":").map(role => role.trim()).sort().map(role => <ListItem key={`role-${ role }`}>
+                        { ((sessionData?.user as UserWithRole)?.role ?? "").split(":").map(role => role.trim()).sort().map(role => <ListItem key={`role-${ role }`}>
                                 <ListItemIcon><Group /></ListItemIcon>
                                 <ListItemText primary={ role ?? "Not authenticated" } />
                             </ListItem>) }
@@ -104,7 +106,7 @@ export const ProfilePage : FunctionComponent<ProfilePageProps> = props =>
                     <CardHeader title="Services" subheader="These are the services you've authenticated for the website"/>
                     <CardContent>
                         <List>
-                        { ((session.data?.scope as string | undefined) ?? "").split(" ").map(scope => <ListItem key={`scope-${ scope }`}>
+                        { ((sessionData?.scope as string | undefined) ?? "").split(" ").map(scope => <ListItem key={`scope-${ scope }`}>
                                 <ListItemIcon><LockOpen /></ListItemIcon>
                                 <ListItemText primary={ scope ?? "Not authenticated" } />
                             </ListItem>) }
@@ -117,7 +119,7 @@ export const ProfilePage : FunctionComponent<ProfilePageProps> = props =>
                 <Card>
                     <CardHeader title="Token" subheader="This is how you identify yourself with our services, sharing this with anyone is just not a good idea."/>
                     <CardContent>
-                        <Typography variant="body2" sx={{ fontSize: "0.5rem" }}>{ session.data?.at as string | undefined }</Typography>
+                        <Typography variant="body2" sx={{ fontSize: "0.5rem" }}>{ sessionData?.at as string | undefined }</Typography>
                     </CardContent>
                 </Card>
             </Grid> : undefined }

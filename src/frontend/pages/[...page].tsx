@@ -1,48 +1,61 @@
-import { getStaticProps as baseGetStaticProps, staticPropsHasData } from '@optimizely/next-js/components'
-import { readValue as pv, isDxpDebugActive } from '@optimizely/cms/utils'
-import { buildContentURI, contentsFetcher } from '@optimizely/cms/hooks'
-import { preFetchSettings } from '@framework/foundation/cms/settings/prefetcher'
-import { LayoutSettings } from 'schema'
+// Optimizely CMS
+import { getStaticProps as baseGetStaticProps, staticPropsHasData } from '@optimizely/next-js/cms-page'
+import { readValue as pv } from '@optimizely/cms/utils'
+import { contentsFetcher } from '@optimizely/cms/use-contents'
+import buildContentURI from '@optimizely/cms/content-uri'
+import createComponentLoader from '@optimizely/cms/component-loader'
+import createApiClient from '@optimizely/cms/content-delivery'
 
-export { getStaticPaths } from '@optimizely/next-js/components'
-import GlobalCache from '@framework/global-cache'
+// Foundation
+import { preFetchSettings } from '@framework/foundation/cms/settings/prefetcher'
+
+// Local files
+import CmsComponents from '@components/cms'
+import { LayoutSettings } from 'schema'
 import SiteInfo from 'website.cjs'
 
-const debug = isDxpDebugActive()
 
-export const getStaticProps : typeof baseGetStaticProps = async (ctx) => 
+const DEBUG_ENABLED = process.env.NODE_ENV === 'development'
+const DXP_DEBUG = false;
+
+export const getStaticProps : typeof baseGetStaticProps = async (ctx, cLoader, cApi) => 
 {
-    const base = await baseGetStaticProps(ctx)
-    if ( !staticPropsHasData(base) )
-        return base;
+    if (DEBUG_ENABLED) {
+        console.groupCollapsed("Site - CMS Content: getStaticProps")
+        console.time("Site - CMS Content: getStaticProps")
+        console.log("Site - CMS Content: getStaticProps > Create shared services")
+    }
+    const api = cApi ?? createApiClient({ debug: DXP_DEBUG, defaultBranch: ctx.defaultLocale })
+    const loader = cLoader ?? createComponentLoader({ args: [ CmsComponents ] })
 
-    const locale = base.props.locale
+    if (DEBUG_ENABLED)
+        console.log("Site - CMS Content: getStaticProps > Invoke base method")
+    const base = await baseGetStaticProps(ctx, loader, api)
 
-    const key = `LayoutSettings::${locale}::${SiteInfo.id}`
-    if (debug) console.time(key)
-    var layoutFallback = GlobalCache.get<Record<string, any>>(key);
-    if (layoutFallback === undefined) {
-        if (debug) console.timeLog(key, "Fetching from server")
+    if (staticPropsHasData(base) ) {
+        const locale = base.props.locale
+        console.log("Site - CMS Content: getStaticProps > Locale:", locale)
+        console.log("Site - CMS Content: getStaticProps > Fetching Layout settings")
         const layoutSettings = await preFetchSettings<LayoutSettings>("LayoutSettings", locale, SiteInfo.id)
-        if (debug) console.timeLog(key, "Fetched raw settings", layoutSettings)
-        layoutFallback = {}
         if (layoutSettings.value) {
-            //base.props.fallback = base.props.fallback ?? {}
-            layoutFallback[layoutSettings.id] = layoutSettings.value
+            base.props.fallback = base.props.fallback ?? {}
+            base.props.fallback[layoutSettings.id] = layoutSettings.value
+            console.log("Site - CMS Content: getStaticProps > Fetching Menu Items")
             const mainMenuItems = (pv(layoutSettings.value.settings, "mainMenu") ?? []).map(mm => mm.contentLink)
             const itemsId = buildContentURI(mainMenuItems, ["name","url"], undefined, locale, false, undefined).href
-            layoutFallback[itemsId] = await contentsFetcher(itemsId)
+            base.props.fallback[itemsId] = await contentsFetcher(itemsId, api)
         }
     }
-    
-    if (debug) console.timeLog(key, "Copying fallback data")
-    if (!base.props.fallback) base.props.fallback = {}
-    Object.getOwnPropertyNames(layoutFallback)
-        .forEach( fallbackId => { (base.props.fallback as Record<string, any>)[fallbackId] = (layoutFallback as Record<string, any>)[fallbackId]; })
-    
-        if (debug) console.timeEnd(key)
-    
+    if (DEBUG_ENABLED) {
+        console.timeEnd("Site - CMS Content: getStaticProps")
+        console.groupEnd()
+    }
+
     return base
 }
 
-export { OptimizelyCmsPage as CmsPage, OptimizelyCmsPage as default } from '@optimizely/next-js/components'
+export { 
+    getStaticPaths, 
+    OptimizelyCmsPage as CmsPage, 
+    OptimizelyCmsPage as default 
+} from '@optimizely/next-js/cms-page'

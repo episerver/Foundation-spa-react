@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.withOnPageEditing = exports.EditableField = void 0;
 const tslib_1 = require("tslib");
 const react_1 = tslib_1.__importDefault(require("react"));
-const index_1 = require("../index");
+const edit_mode_1 = require("../provider/edit-mode");
 /**
  * The EditableField provides the needed wrapping - when in edit mode -
  * to make a field editable. It does not control the rendering of the field,
@@ -14,8 +14,8 @@ const index_1 = require("../index");
  */
 const EditableField = (props) => {
     var _a;
-    const opti = (0, index_1.useOptimizely)();
-    const isEditable = opti.inEditMode || opti.isEditable;
+    const opti = (0, edit_mode_1.useEditMode)();
+    const isEditable = props.contentEditable === undefined ? opti.inEditMode || opti.isEditable : props.contentEditable;
     const cssClass = `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} opti-edit-container`;
     const htmlContent = props.html ? { __html: props.html } : undefined;
     if (!isEditable)

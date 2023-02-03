@@ -1,8 +1,8 @@
 import type { IContentData } from '@optimizely/cms/models'
+import type  { ComponentLoader } from '@optimizely/cms/types'
 import type { ContentApiComponentModule, ContentApiComponent } from './types'
-import type  { ComponentLoader } from '@optimizely/cms/components'
 import { resolve } from '@optimizely/cms/utils'
-import { setup as createComponentLoader } from '@optimizely/cms/components'
+import createComponentLoader from '@optimizely/cms/component-loader'
 
 const loadModule = async <AdditionalProps = {}, ContentModel extends IContentData = IContentData>(forItem: ContentModel, prefix?: string, tag?: string, componentLoader?: ComponentLoader) : Promise<ContentApiComponentModule<ContentModel, AdditionalProps> | undefined> => 
 {

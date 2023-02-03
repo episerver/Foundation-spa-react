@@ -1,7 +1,6 @@
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.Shell.ObjectEditing;
-using HeadlessCms.Features.Shared.SelectionFactories;
 using HeadlessCms.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 
@@ -9,7 +8,6 @@ namespace HeadlessCms.Features.Shared
 {
     public abstract class FoundationBlockData : BlockData
     {
-        [SelectOne(SelectionFactoryType = typeof(PaddingSelectionFactory))]
         [Display(Name = "Padding", GroupName = TabNames.BlockStyling, Order = 1)]
         public virtual string Padding
         {
@@ -17,7 +15,6 @@ namespace HeadlessCms.Features.Shared
             set => this.SetPropertyValue(page => page.Padding, value);
         }
 
-        [SelectOne(SelectionFactoryType = typeof(MarginSelectionFactory))]
         [Display(Name = "Margin", GroupName = TabNames.BlockStyling, Order = 2)]
         public virtual string Margin
         {

@@ -44,29 +44,24 @@ function interactive(params: AuthenticateParams, context: AuthenticationContext)
                 return
             }
 
-            // Write output to browser
-            res.writeHead(200)
-            res.write("<html><head><script>window.close()</script></head><body>You may now close this window.</body></html>")
-            res.end()
-
             // Process actual request
             const params = context.client.callbackParams(req);
             if (params.code) {
+                console.log("Received authentication code")
                 context.client.callback(serverURL.href, params, { code_verifier: context.code_verifier }).then(tokenSet => {
-                    server.close(error => {
-                        if (error) {
-                            console.error("Error whilest finishing interactive authentication flow", error)
-                            reject(error)
-                        } else {
-                            console.log("Received & processed authentication")
-                            resolve(tokenSet)
-                        }
-                    })
+                    server.close()
+                    console.log("Processed authentication")
+                    resolve(tokenSet)
                 }).catch(reject)
             } else {
                 console.error("No code received from OpenID Service")
                 reject(new Error("OpenID Protocol error"))
             }
+
+            // Write output to browser
+            res.writeHead(200)
+            res.write("<html><head><script>window.close()</script></head><body>You may now close this window.</body></html>")
+            res.end()
         }
 
         const server = http.createServer(handleRequest)

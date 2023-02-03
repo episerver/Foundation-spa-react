@@ -1,5 +1,5 @@
 import React, { FunctionComponent, ComponentType, PropsWithChildren } from 'react';
-import { useOptimizely } from '../index'
+import { useEditMode } from '../provider/edit-mode'
 
 /**
  * Component properties for the EditableField component
@@ -28,6 +28,12 @@ export type Props = {
      * this allows the usage of inline on rich text fields
      */
     html ?: string
+
+    /**
+     * When set to true or false it will override the detection of the current
+     * edit mode.
+     */
+    contentEditable ?: boolean
 }
 
 /**
@@ -40,8 +46,8 @@ export type Props = {
  */
 export const EditableField : FunctionComponent<PropsWithChildren<Props>> = (props) =>
 {
-    const opti = useOptimizely();
-    const isEditable = opti.inEditMode || opti.isEditable;
+    const opti = useEditMode();
+    const isEditable = props.contentEditable === undefined ? opti.inEditMode || opti.isEditable : props.contentEditable;
 
     const cssClass = `${ props.className ?? '' } opti-edit-container`
 

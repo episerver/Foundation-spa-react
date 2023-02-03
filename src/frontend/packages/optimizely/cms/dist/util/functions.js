@@ -1,7 +1,7 @@
-import { ContentDelivery } from '..';
-import { preFetchContent } from '../hooks';
+import createApiClient from '../content-delivery/factory';
+import { preFetchContent } from '../hooks/prefetch-content';
 import { readValue as pv } from './property';
-import { ComponentLoader } from '..';
+import { createComponentLoader } from '../loader/index';
 /**
  * Normalize URLs, to ensure that they're consistent across Server Side Rendering, Static Site Generation and Client Side Hydration
  *
@@ -20,12 +20,15 @@ export function normalizeUrl(input) {
  * @returns     A promise resolving in the loaded content items
  */
 export async function getPagesForLocale(api, locale, options) {
-    if (options?.debug === true)
-        console.info(`Retrieving all pages for locale: ${locale}`);
     const first = 0;
     const take = options?.batchSize ?? 100;
+    if (options?.debug === true) {
+        console.info(`Optimizely - CMS: getPagesForLocale(${locale})`);
+        console.info(`Optimizely - CMS: getPagesForLocale(${locale}) :: Batch size:`, take);
+    }
     const filter = 'ContentType/any(t:t eq \'Page\')';
     let resultSet;
+    console.info(`Optimizely - CMS: getPagesForLocale(${locale}) :: Fetching batch:`, 1);
     try {
         resultSet = await api.search(undefined, filter, undefined, first, take, false, {
             branch: locale
@@ -33,13 +36,15 @@ export async function getPagesForLocale(api, locale, options) {
     }
     catch (e) {
         if (options?.debug === true)
-            console.error(`Error while fetching page data (Start: ${first}, Items: ${take})`, e);
+            console.error(`Optimizely - CMS: getPagesForLocale(${locale}) :: Error while fetching page data (Start: ${first}, Items: ${take})`, e);
         return [];
     }
     if (!resultSet)
         return [];
     const totalPages = Math.ceil(resultSet.totalMatching / take);
+    console.info(`Optimizely - CMS: getPagesForLocale(${locale}) :: Remaining batches:`, totalPages - 1);
     for (var i = 1; i < totalPages; i++) {
+        console.info(`Optimizely - CMS: getPagesForLocale(${locale}) :: Fetching batch:`, i + 1);
         const start = first + (i * take);
         try {
             const nextResult = await api.search(undefined, filter, undefined, start, take, false, {
@@ -51,7 +56,7 @@ export async function getPagesForLocale(api, locale, options) {
         }
         catch (e) {
             if (options?.debug === true)
-                console.error(`Error while fetching page data (Start: ${start}, Items: ${take})`, e);
+                console.error(`Optimizely - CMS: getPagesForLocale(${locale}) :: Error while fetching page data (Start: ${start}, Items: ${take})`, e);
             continue;
         }
     }
@@ -85,43 +90,35 @@ export function resolve(providedValue, factory) {
 function isPromise(toTest) {
     return typeof (toTest) === 'object' && toTest !== null && typeof (toTest.then) === 'function';
 }
-export async function loadAdditionalPropsAndFilter(content, api, locale, preview, prefix) {
+export async function loadAdditionalPropsAndFilter(content, api, locale, preview, prefix, cLoader) {
     // Load component
-    const moduleLoader = ComponentLoader.setup();
+    const moduleLoader = cLoader ?? createComponentLoader();
     const component = (await moduleLoader.tryDynamicAsync(content.contentType, prefix));
     // Load additional props
     const additionalProps = component?.getStaticProps && typeof (component?.getStaticProps) === 'function' ?
-        await component.getStaticProps(content, { api, locale: locale, inEditMode: preview }) :
+        await component.getStaticProps(content, { api, locale: locale, inEditMode: preview, loader: moduleLoader }) :
         {};
     // Apply content filter
-    let filter = component?.getContentFields ? component?.getContentFields({ inEditMode: preview }) : undefined;
-    if (isPromise(filter))
-        filter = await filter;
-    if (Array.isArray(filter)) {
-        const newContent = {
-            contentLink: content.contentLink,
-            contentType: content.contentType,
-            language: content.language,
-            name: content.name
-        };
-        for (const key of Object.getOwnPropertyNames(content))
-            if (filter.indexOf(key) >= 0)
-                newContent[key] = content[key];
-        content = newContent;
-    }
+    content = component ? await filterPropsBase(content, component, preview) : content;
     return {
         content,
         ...additionalProps
     };
 }
-export async function filterProps(content, api, locale, preview) {
+export async function filterProps(content, api, locale, preview, cLoader) {
     // Load component
-    const moduleLoader = ComponentLoader.setup();
+    const moduleLoader = cLoader ?? createComponentLoader();
     const component = (await moduleLoader.tryDynamicAsync(content.contentType));
-    // Apply content filter
-    let filter = component?.getContentFields ? component?.getContentFields({ inEditMode: preview }) : undefined;
+    // Apply filter if we have a component
+    const result = component ? await filterPropsBase(content, component, preview) : content;
+    return result;
+}
+const filterPropsBase = async (content, component, inEditMode = false) => {
+    let filter = component.getContentFields ? component.getContentFields({ inEditMode }) : undefined;
+    // Await filter if needed
     if (isPromise(filter))
         filter = await filter;
+    // Apply filter if needed
     if (Array.isArray(filter)) {
         const newContent = {
             contentLink: content.contentLink,
@@ -135,10 +132,11 @@ export async function filterProps(content, api, locale, preview) {
         content = newContent;
     }
     return content;
-}
-export async function prefetchContentAreaRecursive(content, areas, locale, inEditMode = false, scope, cdApi) {
+};
+export async function prefetchContentAreaRecursive(content, areas, locale, inEditMode = false, scope, cdApi, cLoader) {
     const contentItems = {};
-    const api = cdApi ?? ContentDelivery.createInstance({ debug: false, });
+    const api = cdApi ?? createApiClient({ debug: false, });
+    const moduleLoader = cLoader ?? createComponentLoader();
     // Retrieve the contentItems per content area
     const loadedItems = await Promise.all(areas.map(async (area) => {
         const ca = (pv(content, area.name) ?? []);
@@ -147,7 +145,7 @@ export async function prefetchContentAreaRecursive(content, areas, locale, inEdi
         for (const key of Object.keys(preFetched.fallback)) {
             const itemKey = key;
             const itemContent = preFetched.fallback[key];
-            recursions.push(loadAdditionalPropsAndFilter(itemContent, api, locale, inEditMode === true, 'block').then(d => {
+            recursions.push(loadAdditionalPropsAndFilter(itemContent, api, locale, inEditMode === true, 'block', moduleLoader).then(d => {
                 return {
                     ...d,
                     key: itemKey
@@ -172,7 +170,7 @@ export async function prefetchContentAreaRecursive(content, areas, locale, inEdi
 }
 export function isDxpDebugActive() {
     try {
-        return process?.env?.OPTIMIZELY_DXP_DEBUG == '1' || process?.env?.OPTIMIZELY_DXP_DEBUG == 'true' || (typeof (process?.env?.OPTIMIZELY_DXP_DEBUG) == 'string' && process?.env?.OPTIMIZELY_DXP_DEBUG.toLowerCase() == 'true');
+        return process?.env?.OPTIMIZELY_DXP_DEBUG == '1' || process?.env?.OPTIMIZELY_DXP_DEBUG == 'true' || (typeof (process?.env?.OPTIMIZELY_DXP_DEBUG) == 'string' && (process?.env?.OPTIMIZELY_DXP_DEBUG).toLowerCase() == 'true');
     }
     catch {
         return false;

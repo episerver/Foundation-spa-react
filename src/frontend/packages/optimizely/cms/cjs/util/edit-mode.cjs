@@ -1,7 +1,7 @@
 "use strict";
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getEditModeInfo = exports.isEditModeUrl = exports.tryGetWindowUrl = void 0;
+exports.getEditModeInfo = exports.isEditModeUrl = exports.tryGetWindowUrl = exports.getCurrentUrl = void 0;
 const tslib_1 = require("tslib");
 const guid_1 = tslib_1.__importDefault(require("./guid"));
 /**
@@ -19,10 +19,16 @@ const AdminPrefix = ((_a = process.env.OPTIMIZELY_DXP_ADMIN_PREFIX) !== null && 
  */
 function getUrl(currentUrl) {
     var url = currentUrl ?
-        (typeof (currentUrl) === 'string' ? new URL(currentUrl) : currentUrl) :
+        (typeof (currentUrl) === 'string' ? new URL(currentUrl, 'http://localhost/') : currentUrl) :
         new URL(window.location.href);
     return url;
 }
+function getCurrentUrl(defaultUrl) {
+    var _a;
+    var cUrl = tryGetWindowUrl(defaultUrl);
+    return (_a = (typeof (cUrl) === 'string' ? new URL(cUrl, 'http://localhost/') : cUrl)) !== null && _a !== void 0 ? _a : new URL('http://localhost');
+}
+exports.getCurrentUrl = getCurrentUrl;
 /**
  * Helper method to get the Window URL (window.location.href), and fall back to
  * the provided URL. The window URL will always be returned as a string, the

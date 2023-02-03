@@ -48,13 +48,9 @@ export const StyledContentAreaItem : ContentAreaItemContainer = props =>
 
     //console.log("FE ContentAreaItem:", props.dataEpiBlockId);
     if (props.dataEpiBlockId)
-        return <Grid item { ...gridItemProps } data-displayoption={ props.displayOption } data-epi-block-id={ `${ props.dataEpiBlockId }` }>
-            { content }
-        </Grid>
+        return <Grid item { ...gridItemProps } data-displayoption={ props.displayOption } data-epi-block-id={ `${ props.dataEpiBlockId }` }>{ content }</Grid>
 
-    return <Grid item { ...gridItemProps } data-displayoption={ props.displayOption }>
-        { content }
-    </Grid>
+    return <Grid item { ...gridItemProps } data-displayoption={ props.displayOption }>{ content }</Grid>
 }
 
 StyledContentAreaItem.displayName = "Foundation Decoupled: ContentArea Item"

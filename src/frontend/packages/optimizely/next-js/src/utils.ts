@@ -1,6 +1,6 @@
 import type { IContentData, Property, IContentComponent } from '@optimizely/cms/models'
-import type { ContentDelivery } from '@optimizely/cms'
-import { ComponentLoader } from '@optimizely/cms'
+import type { IContentDeliveryAPI } from '@optimizely/cms/types'
+import createComponentLoader from '@optimizely/cms/component-loader'
 
 function isPromise<T>(toTest: any) : toTest is Promise<T>
 {
@@ -11,10 +11,10 @@ export type FilteredContentWithAdditionalProps = {
     content: IContentData
 } & Record<string, Property>
 
-export async function loadAdditionalPropsAndFilter(content: IContentData, api: ContentDelivery.IContentDeliveryAPI, locale?: string, preview?: boolean) : Promise<FilteredContentWithAdditionalProps>
+export async function loadAdditionalPropsAndFilter(content: IContentData, api: IContentDeliveryAPI, locale?: string, preview?: boolean) : Promise<FilteredContentWithAdditionalProps>
 {
     // Load component
-    const moduleLoader = ComponentLoader.setup()
+    const moduleLoader = createComponentLoader()
     const component = (await moduleLoader.tryDynamicAsync( content.contentType )) as IContentComponent | undefined
 
     // Load additional props

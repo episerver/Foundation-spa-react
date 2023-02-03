@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useMemo } from 'react';
+import { useRef, useState, useEffect, useMemo, startTransition } from 'react';
 /**
  * The statuses of the library loading
  */
@@ -59,7 +59,7 @@ export const useLibrary = (script, globalVar, doNotLoad = () => false) => {
             if (cancelled)
                 throw new Error("Cancelled process");
             lib.current = x;
-            setStatus(UseLibraryStatus.Ready);
+            startTransition(() => setStatus(UseLibraryStatus.Ready));
         }).catch(() => { });
         return () => {
             cancelled = true;

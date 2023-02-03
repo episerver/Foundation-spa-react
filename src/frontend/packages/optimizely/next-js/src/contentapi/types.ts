@@ -1,20 +1,20 @@
-import React from 'react'
-import { Models } from '@optimizely/cms'
+import type { ComponentType } from 'react'
+import type { IContentData, ContentTypePath } from '@optimizely/cms/models'
 
 /**
  * Type definition for components presenting data retrieved from the Optimizely ContentDelivery API
  * this includes the means to load additional properties, based upon the content item resolved from
  * routing by Next.JS
  */
-export type ContentApiComponent<ContentModel extends Models.IContentData = Models.IContentData, AdditionalProps = {}> = 
-    React.ComponentType<ContentApiProps<ContentModel, AdditionalProps>>
+export type ContentApiComponent<ContentModel extends IContentData = IContentData, AdditionalProps = {}> = 
+    ComponentType<ContentApiProps<ContentModel, AdditionalProps>>
 
 /**
  * Property definition for a ContentApiComponent, including the additional properties retrieved through
  * the 'loadAdditionalProps' method.
  */
-export type ContentApiProps<ContentModel extends Models.IContentData = Models.IContentData, AdditionalProps = {}> = {
-    contentType: Models.ContentTypePath
+export type ContentApiProps<ContentModel extends IContentData = IContentData, AdditionalProps = {}> = {
+    contentType: ContentTypePath
     content: ContentModel
     contentId: string
 } & AdditionalProps
@@ -22,7 +22,7 @@ export type ContentApiProps<ContentModel extends Models.IContentData = Models.IC
 /**
  * Module defintion for modules containing ContentApiComponents
  */
-export type ContentApiComponentModule<ContentModel extends Models.IContentData = Models.IContentData, AdditionalProps = {}> = {
+export type ContentApiComponentModule<ContentModel extends IContentData = IContentData, AdditionalProps = {}> = {
     default: ContentApiComponent<ContentModel, AdditionalProps>
 
     /**

@@ -1,7 +1,5 @@
 import type { ComponentType } from 'react';
-import type { ComponentLoader, DynamicProps } from "./types";
-import type { ContextType } from '../provider/context';
-export declare type ComponentsCache = Required<ContextType>['components'];
+import type { ComponentLoader, DynamicProps, ComponentsCache } from "./types";
 /**
  * Default implementation of the component loader, assuming all
  * components are accessible within: @components/cms.... to allow
@@ -22,3 +20,4 @@ export declare class DefaultComponentLoader implements ComponentLoader {
     tryDynamicAsync<P = DynamicProps>(path: string[], prefix?: string, tag?: string): Promise<ComponentType<P> | undefined>;
     tryDynamicModuleAsync(path: string[], prefix?: string, tag?: string): Promise<any>;
 }
+export default DefaultComponentLoader;

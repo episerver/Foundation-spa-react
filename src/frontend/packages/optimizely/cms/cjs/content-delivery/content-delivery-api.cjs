@@ -8,11 +8,11 @@ const util_2 = require("../util");
 const cross_fetch_1 = tslib_1.__importDefault(require("cross-fetch"));
 const NetworkError_1 = require("./NetworkError");
 exports.OptiEditQueryParams = [
-    "commondrafts" /* OptiQueryParams.CommonDrafts */,
-    "epieditmode" /* OptiQueryParams.EditMode */,
-    "epiprojects" /* OptiQueryParams.Project */,
-    "epichannel" /* OptiQueryParams.Channel */,
-    "visitorgroupsByID" /* OptiQueryParams.VisitorGroup */
+    util_1.OptiQueryParams.CommonDrafts,
+    util_1.OptiQueryParams.EditMode,
+    util_1.OptiQueryParams.Project,
+    util_1.OptiQueryParams.Channel,
+    util_1.OptiQueryParams.VisitorGroup
 ];
 exports.DefaultRequestConfig = {
     addDefaultParams: true,
@@ -20,17 +20,21 @@ exports.DefaultRequestConfig = {
 };
 class ContentDeliveryAPI {
     constructor(config) {
+        this._customHeaders = {};
         this._config = Object.assign(Object.assign({}, config_1.DefaultConfig), config);
         if (!(0, config_1.validateConfig)(this._config))
             throw new Error("Invalid Content Delivery API Configuration");
         this._baseUrl = new URL(this._config.apiUrl);
         //this._config.debug = true;
     }
+    setHeader(header, value) {
+        this._customHeaders[header] = value;
+    }
     login(username, password, client_id = "Default") {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const request_data = { client_id, grant_type: "password", username, password };
             const request_body = this.convertToUrlEncoded(request_data);
-            const response = yield this.doRequest("api/episerver/auth/token" /* OptiEndpoints.OAuth */, {
+            const response = yield this.doRequest(util_1.OptiEndpoints.OAuth, {
                 method: 'POST',
                 body: request_body,
                 addDefaultParams: false,
@@ -48,7 +52,7 @@ class ContentDeliveryAPI {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const request_data = { client_id, grant_type: "refresh_token", refresh_token };
             const request_body = this.convertToUrlEncoded(request_data);
-            const response = yield this.doRequest("api/episerver/auth/token" /* OptiEndpoints.OAuth */, {
+            const response = yield this.doRequest(util_1.OptiEndpoints.OAuth, {
                 method: 'POST',
                 body: request_body,
                 addDefaultParams: false,
@@ -71,7 +75,7 @@ class ContentDeliveryAPI {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (this._config.debug)
                 console.groupCollapsed("ContentDeliveryAPI: Get Websites");
-            const websites = yield this.doRequest("api/episerver/v{ $version }/site/{ $siteId }" /* OptiEndpoints.Site */).catch(() => []);
+            const websites = yield this.doRequest(util_1.OptiEndpoints.Site).catch(() => []);
             if (this._config.debug)
                 console.groupEnd();
             return websites;
@@ -118,7 +122,7 @@ class ContentDeliveryAPI {
                 console.log("Route", path);
             }
             const req = Object.assign(Object.assign({}, config), { urlParams: Object.assign(Object.assign({}, config.urlParams), { ContentUrl: path, MatchExact: 'true' }) });
-            const list = yield this.doRequest("api/episerver/v{ $version }/content/{ $contentId }" /* OptiEndpoints.Content */, req);
+            const list = yield this.doRequest(util_1.OptiEndpoints.Content, req);
             if (this._config.debug) {
                 console.log(`Received ${(_a = list === null || list === void 0 ? void 0 : list.length) !== null && _a !== void 0 ? _a : 0} content items for ${path}`);
                 console.groupEnd();
@@ -129,7 +133,7 @@ class ContentDeliveryAPI {
         });
     }
     getContent(id, config) {
-        return this.getContentBase(id, "api/episerver/v{ $version }/content/{ $contentId }" /* OptiEndpoints.Content */, config);
+        return this.getContentBase(id, util_1.OptiEndpoints.Content, config);
     }
     getContents(ids, config) {
         var _a;
@@ -168,7 +172,7 @@ class ContentDeliveryAPI {
                 if (guids)
                     specficParams['guids'] = guids.join(',');
                 const reqConfig = Object.assign(Object.assign({}, config), { urlParams: Object.assign(Object.assign({}, config === null || config === void 0 ? void 0 : config.urlParams), specficParams) });
-                response = yield this.doRequest("api/episerver/v{ $version }/content/{ $contentId }" /* OptiEndpoints.Content */, reqConfig);
+                response = yield this.doRequest(util_1.OptiEndpoints.Content, reqConfig);
             }
             if (this._config.debug)
                 console.groupEnd();
@@ -193,7 +197,7 @@ class ContentDeliveryAPI {
                 specficParams['personalize'] = 'true';
             const reqConfig = Object.assign(Object.assign({}, config), { urlParams: Object.assign(Object.assign({}, config === null || config === void 0 ? void 0 : config.urlParams), specficParams) });
             reqConfig.editMode = false;
-            const response = yield this.doRequest("api/episerver/v{ $version }/search/content/" /* OptiEndpoints.Search */, reqConfig);
+            const response = yield this.doRequest(util_1.OptiEndpoints.Search, reqConfig);
             if (!response.results)
                 response.results = [];
             if (this._config.debug)
@@ -223,7 +227,7 @@ class ContentDeliveryAPI {
                 specficParams['personalize'] = 'true';
             const reqConfig = Object.assign(Object.assign({}, config), { urlParams: Object.assign(Object.assign({}, config === null || config === void 0 ? void 0 : config.urlParams), specficParams) });
             reqConfig.editMode = false;
-            const response = yield this.doRequest("api/episerver/v{ $version }/search/content/" /* OptiEndpoints.Search */, reqConfig);
+            const response = yield this.doRequest(util_1.OptiEndpoints.Search, reqConfig);
             if (this._config.debug)
                 console.groupEnd();
             if (response) {
@@ -235,10 +239,10 @@ class ContentDeliveryAPI {
         });
     }
     getAncestors(id, config) {
-        return this.getContentBase(id, "api/episerver/v{ $version }/content/{ $contentId }/ancestors" /* OptiEndpoints.Ancestors */, config);
+        return this.getContentBase(id, util_1.OptiEndpoints.Ancestors, config);
     }
     getChildren(id, config) {
-        return this.getContentBase(id, "api/episerver/v{ $version }/content/{ $contentId }/children" /* OptiEndpoints.Children */, config);
+        return this.getContentBase(id, util_1.OptiEndpoints.Children, config);
     }
     raw(url, options) {
         if (this._config.debug) {
@@ -247,7 +251,7 @@ class ContentDeliveryAPI {
             console.log("Options", options);
         }
         const opts = this.resolveRequestOptions(options);
-        const endpoint = (0, util_1.buildUrl)(this._baseUrl, url, Object.assign({ contentMode: opts.editMode ? "contentmanagement" /* OptiContentMode.Edit */ : "content" /* OptiContentMode.Delivery */ }, opts.urlParams));
+        const endpoint = (0, util_1.buildUrl)(this._baseUrl, url, Object.assign({ contentMode: opts.editMode ? util_1.OptiContentMode.Edit : util_1.OptiContentMode.Delivery }, opts.urlParams));
         const response = this.getResponse(endpoint, opts);
         if (this._config.debug)
             console.groupEnd();
@@ -277,7 +281,7 @@ class ContentDeliveryAPI {
         const opts = this.resolveRequestOptions(options);
         if (this._config.debug)
             console.debug("Processed request configuration", opts);
-        const url = (0, util_1.buildUrl)(this._baseUrl, service, Object.assign({ contentMode: opts.editMode ? "contentmanagement" /* OptiContentMode.Edit */ : "content" /* OptiContentMode.Delivery */ }, opts.urlParams));
+        const url = (0, util_1.buildUrl)(this._baseUrl, service, Object.assign({ contentMode: opts.editMode ? util_1.OptiContentMode.Edit : util_1.OptiContentMode.Delivery }, opts.urlParams));
         if (this._config.debug)
             console.log("Request URL", url.href);
         return this.getResponse(url, opts);
@@ -370,7 +374,7 @@ class ContentDeliveryAPI {
             if (config === null || config === void 0 ? void 0 : config.editMode) {
                 defaultHeaders["X-PreviewMode"] = "edit";
             }
-            const requestHeaders = Object.assign(Object.assign({}, defaultHeaders), config === null || config === void 0 ? void 0 : config.headers);
+            const requestHeaders = Object.assign(Object.assign(Object.assign({}, defaultHeaders), this._customHeaders), config === null || config === void 0 ? void 0 : config.headers);
             //console.log("Request Headers", requestHeaders)
             return requestHeaders;
         });
@@ -417,8 +421,10 @@ class ContentDeliveryAPI {
             else if (this._config.expandAllProperties === true)
                 output.urlParams['expand'] = '*';
         // Enforce edit mode propagation, if we're in edit mode
-        if ((0, util_1.inEditMode)(false))
+        if ((0, util_1.inEditMode)(false)) {
             output.urlParams['epieditmode'] = 'true';
+            output.urlParams['cb'] = (new Date()).getTime().toString();
+        }
         // Add branch into URL to simplify caching
         const branch = (options === null || options === void 0 ? void 0 : options.branch) || this._config.defaultBranch;
         if (branch)

@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isDxpDebugActive = exports.prefetchContentAreaRecursive = exports.filterProps = exports.loadAdditionalPropsAndFilter = exports.resolve = exports.isNonEmptyString = exports.getPagesForLocale = exports.normalizeUrl = void 0;
 const tslib_1 = require("tslib");
-const __1 = require("..");
-const hooks_1 = require("../hooks");
+const factory_1 = tslib_1.__importDefault(require("../content-delivery/factory"));
+const prefetch_content_1 = require("../hooks/prefetch-content");
 const property_1 = require("./property");
-const __2 = require("..");
+const index_1 = require("../loader/index");
 /**
  * Normalize URLs, to ensure that they're consistent across Server Side Rendering, Static Site Generation and Client Side Hydration
  *
@@ -27,12 +27,15 @@ exports.normalizeUrl = normalizeUrl;
 function getPagesForLocale(api, locale, options) {
     var _a;
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
-        if ((options === null || options === void 0 ? void 0 : options.debug) === true)
-            console.info(`Retrieving all pages for locale: ${locale}`);
         const first = 0;
         const take = (_a = options === null || options === void 0 ? void 0 : options.batchSize) !== null && _a !== void 0 ? _a : 100;
+        if ((options === null || options === void 0 ? void 0 : options.debug) === true) {
+            console.info(`Optimizely - CMS: getPagesForLocale(${locale})`);
+            console.info(`Optimizely - CMS: getPagesForLocale(${locale}) :: Batch size:`, take);
+        }
         const filter = 'ContentType/any(t:t eq \'Page\')';
         let resultSet;
+        console.info(`Optimizely - CMS: getPagesForLocale(${locale}) :: Fetching batch:`, 1);
         try {
             resultSet = yield api.search(undefined, filter, undefined, first, take, false, {
                 branch: locale
@@ -40,13 +43,15 @@ function getPagesForLocale(api, locale, options) {
         }
         catch (e) {
             if ((options === null || options === void 0 ? void 0 : options.debug) === true)
-                console.error(`Error while fetching page data (Start: ${first}, Items: ${take})`, e);
+                console.error(`Optimizely - CMS: getPagesForLocale(${locale}) :: Error while fetching page data (Start: ${first}, Items: ${take})`, e);
             return [];
         }
         if (!resultSet)
             return [];
         const totalPages = Math.ceil(resultSet.totalMatching / take);
+        console.info(`Optimizely - CMS: getPagesForLocale(${locale}) :: Remaining batches:`, totalPages - 1);
         for (var i = 1; i < totalPages; i++) {
+            console.info(`Optimizely - CMS: getPagesForLocale(${locale}) :: Fetching batch:`, i + 1);
             const start = first + (i * take);
             try {
                 const nextResult = yield api.search(undefined, filter, undefined, start, take, false, {
@@ -58,7 +63,7 @@ function getPagesForLocale(api, locale, options) {
             }
             catch (e) {
                 if ((options === null || options === void 0 ? void 0 : options.debug) === true)
-                    console.error(`Error while fetching page data (Start: ${start}, Items: ${take})`, e);
+                    console.error(`Optimizely - CMS: getPagesForLocale(${locale}) :: Error while fetching page data (Start: ${start}, Items: ${take})`, e);
                 continue;
             }
         }
@@ -96,74 +101,67 @@ exports.resolve = resolve;
 function isPromise(toTest) {
     return typeof (toTest) === 'object' && toTest !== null && typeof (toTest.then) === 'function';
 }
-function loadAdditionalPropsAndFilter(content, api, locale, preview, prefix) {
+function loadAdditionalPropsAndFilter(content, api, locale, preview, prefix, cLoader) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         // Load component
-        const moduleLoader = __2.ComponentLoader.setup();
+        const moduleLoader = cLoader !== null && cLoader !== void 0 ? cLoader : (0, index_1.createComponentLoader)();
         const component = (yield moduleLoader.tryDynamicAsync(content.contentType, prefix));
         // Load additional props
         const additionalProps = (component === null || component === void 0 ? void 0 : component.getStaticProps) && typeof (component === null || component === void 0 ? void 0 : component.getStaticProps) === 'function' ?
-            yield component.getStaticProps(content, { api, locale: locale, inEditMode: preview }) :
+            yield component.getStaticProps(content, { api, locale: locale, inEditMode: preview, loader: moduleLoader }) :
             {};
         // Apply content filter
-        let filter = (component === null || component === void 0 ? void 0 : component.getContentFields) ? component === null || component === void 0 ? void 0 : component.getContentFields({ inEditMode: preview }) : undefined;
-        if (isPromise(filter))
-            filter = yield filter;
-        if (Array.isArray(filter)) {
-            const newContent = {
-                contentLink: content.contentLink,
-                contentType: content.contentType,
-                language: content.language,
-                name: content.name
-            };
-            for (const key of Object.getOwnPropertyNames(content))
-                if (filter.indexOf(key) >= 0)
-                    newContent[key] = content[key];
-            content = newContent;
-        }
+        content = component ? yield filterPropsBase(content, component, preview) : content;
         return Object.assign({ content }, additionalProps);
     });
 }
 exports.loadAdditionalPropsAndFilter = loadAdditionalPropsAndFilter;
-function filterProps(content, api, locale, preview) {
+function filterProps(content, api, locale, preview, cLoader) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         // Load component
-        const moduleLoader = __2.ComponentLoader.setup();
+        const moduleLoader = cLoader !== null && cLoader !== void 0 ? cLoader : (0, index_1.createComponentLoader)();
         const component = (yield moduleLoader.tryDynamicAsync(content.contentType));
-        // Apply content filter
-        let filter = (component === null || component === void 0 ? void 0 : component.getContentFields) ? component === null || component === void 0 ? void 0 : component.getContentFields({ inEditMode: preview }) : undefined;
-        if (isPromise(filter))
-            filter = yield filter;
-        if (Array.isArray(filter)) {
-            const newContent = {
-                contentLink: content.contentLink,
-                contentType: content.contentType,
-                language: content.language,
-                name: content.name
-            };
-            for (const key of Object.getOwnPropertyNames(content))
-                if (filter.indexOf(key) >= 0)
-                    newContent[key] = content[key];
-            content = newContent;
-        }
-        return content;
+        // Apply filter if we have a component
+        const result = component ? yield filterPropsBase(content, component, preview) : content;
+        return result;
     });
 }
 exports.filterProps = filterProps;
-function prefetchContentAreaRecursive(content, areas, locale, inEditMode = false, scope, cdApi) {
+const filterPropsBase = (content, component, inEditMode = false) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    let filter = component.getContentFields ? component.getContentFields({ inEditMode }) : undefined;
+    // Await filter if needed
+    if (isPromise(filter))
+        filter = yield filter;
+    // Apply filter if needed
+    if (Array.isArray(filter)) {
+        const newContent = {
+            contentLink: content.contentLink,
+            contentType: content.contentType,
+            language: content.language,
+            name: content.name
+        };
+        for (const key of Object.getOwnPropertyNames(content))
+            if (filter.indexOf(key) >= 0)
+                newContent[key] = content[key];
+        content = newContent;
+    }
+    return content;
+});
+function prefetchContentAreaRecursive(content, areas, locale, inEditMode = false, scope, cdApi, cLoader) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const contentItems = {};
-        const api = cdApi !== null && cdApi !== void 0 ? cdApi : __1.ContentDelivery.createInstance({ debug: false, });
+        const api = cdApi !== null && cdApi !== void 0 ? cdApi : (0, factory_1.default)({ debug: false, });
+        const moduleLoader = cLoader !== null && cLoader !== void 0 ? cLoader : (0, index_1.createComponentLoader)();
         // Retrieve the contentItems per content area
         const loadedItems = yield Promise.all(areas.map((area) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             var _a;
             const ca = ((_a = (0, property_1.readValue)(content, area.name)) !== null && _a !== void 0 ? _a : []);
-            const preFetched = yield (0, hooks_1.preFetchContent)(ca.map(i => i.contentLink), area.select, area.expand, locale, inEditMode, scope, api);
+            const preFetched = yield (0, prefetch_content_1.preFetchContent)(ca.map(i => i.contentLink), area.select, area.expand, locale, inEditMode, scope, api);
             const recursions = [];
             for (const key of Object.keys(preFetched.fallback)) {
                 const itemKey = key;
                 const itemContent = preFetched.fallback[key];
-                recursions.push(loadAdditionalPropsAndFilter(itemContent, api, locale, inEditMode === true, 'block').then(d => {
+                recursions.push(loadAdditionalPropsAndFilter(itemContent, api, locale, inEditMode === true, 'block', moduleLoader).then(d => {
                     return Object.assign(Object.assign({}, d), { key: itemKey });
                 }));
             }

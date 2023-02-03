@@ -1,45 +1,61 @@
+// React
 import type { FunctionComponent, MouseEvent } from 'react'
+import React, { Fragment, useState } from 'react'
 
-// Component library
-import React, { useState } from 'react'
+// Next.JS & SWR
 import { useRouter} from 'next/router'
-import { Tooltip, IconButton, Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material'
-import { Language as LanguageIcon, FlagOutlined as BookmarkBorderIcon } from '@mui/icons-material'
+
+// Material UI
+import Tooltip from '@mui/material/Tooltip'
+import IconButton from '@mui/material/IconButton'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import LanguageIcon from '@mui/icons-material/Language'
+import BookmarkBorderIcon from '@mui/icons-material/FlagOutlined'
 
 // Optimizely
-import { useOptimizely, useContent } from '@optimizely/cms';
+import type { WebsiteInfo } from '@optimizely/cms/models'
+import { withErrorBoundary } from '@optimizely/cms/error-boundary'
+import { useContent } from '@optimizely/cms/use-content'
+import { useWebsite } from '@optimizely/cms/use-website'
+
+// Framework
+import useCurrentContent from '@framework/current-content'
 
 // Implementation assets
-import SiteInfo from 'website.cjs'
+import DefaultSiteInfo from 'website.cjs'
 
 export type LanguageMenuProps = {
 
 }
 
-function getLocaleHomepage(locale: string)
+function getLocaleHomepage(locale: string, siteInfo?: WebsiteInfo)
 {
-    if (!SiteInfo?.locales?.includes(locale))
+    if (!siteInfo?.locales?.includes(locale))
         return '/'
 
-    const domains : { domain: string, defaultLocale: string }[] = SiteInfo?.localeDomains || []
+    const domains : { domain: string, defaultLocale: string }[] = siteInfo?.localeDomains || []
     const domain = domains.filter(x => x.defaultLocale === locale)
     if (domain && domain.length > 0)
         return domain[0].domain
 
-    if (!SiteInfo?.primaryDomain)
+    if (!siteInfo?.primaryDomain)
         return `/${ locale }/`
 
-    const langUrl = (new URL('/'+locale, SiteInfo.primaryDomain)).href
+    const langUrl = (new URL('/'+locale, siteInfo.primaryDomain)).href
     return langUrl
 }
 
 export const LanguageMenu : FunctionComponent<LanguageMenuProps> = props =>
 {
     const router = useRouter()
-    const cms = useOptimizely()
+    const contentId = useCurrentContent() ?? "-"
+    const locale = router.locale ?? router.defaultLocale
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-    const contentData = useContent(cms.currentContentId)
-    const locale = router.locale
+    const contentData = useContent(contentId)
+    const website = useWebsite(DefaultSiteInfo, locale)
     const open = Boolean(anchorEl);
     
     const handleOpen = (event: MouseEvent<HTMLElement>) => {
@@ -49,18 +65,19 @@ export const LanguageMenu : FunctionComponent<LanguageMenuProps> = props =>
         setAnchorEl(null);
     }
     const handleClick = (event: MouseEvent<HTMLElement>, locale: string) => {
-        var languageUrl = new URL(getLocaleHomepage(locale))
-
-        const contentLinks = contentData?.data?.existingLanguages?.filter(x => x.name == locale) ?? []
-        if (contentLinks && contentLinks.length > 0 && contentLinks[0].link)
-            languageUrl = new URL(contentLinks[0].link)
+        var languageUrl = new URL(getLocaleHomepage(locale, website?.data))
+        if (contentData?.data) {
+            const contentLinks = contentData?.data?.existingLanguages?.filter(x => x.name == locale) ?? []
+            if (contentLinks && contentLinks.length > 0 && contentLinks[0].link)
+                languageUrl = new URL(contentLinks[0].link)
+        }
 
         const path = languageUrl.pathname;
         router.push(path, path, { locale });
         return false;
     }
 
-    return <>
+    return <Fragment>
         <Tooltip title="Select language">
             <IconButton onClick={handleOpen} size="small" color='inherit' aria-controls={open ? 'language-menu' : undefined} aria-haspopup="true" aria-expanded={open ? 'true' : undefined}>
                 <LanguageIcon sx={{ fontSize: '40px' }} />
@@ -102,13 +119,17 @@ export const LanguageMenu : FunctionComponent<LanguageMenuProps> = props =>
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
             <MenuItem selected={ false } divider={ true } disabled={ true }>Language:</MenuItem>
-            { SiteInfo.labels.map(label => 
+            { website?.data?.labels.map(label => 
             <MenuItem key={ label.code } onClick={ (e) => handleClick(e, label.code) } selected={ locale == label.code }>
                 <ListItemIcon><BookmarkBorderIcon /></ListItemIcon>
                 <ListItemText>{ label.label }</ListItemText>
-            </MenuItem>)}
+            </MenuItem>) }
         </Menu>
-    </>
+    </Fragment>
 }
 
-export default LanguageMenu;
+const LanguageMenuFallback : FunctionComponent<{}> = () => <IconButton size="small" color='inherit' aria-haspopup="false"><LanguageIcon sx={{ fontSize: '40px' }} /></IconButton>
+
+export const LanguageMenuWithErrorBoundary = withErrorBoundary(LanguageMenu, <LanguageMenuFallback />)
+
+export default LanguageMenuWithErrorBoundary;

@@ -101,6 +101,15 @@ export type IContentDeliveryAPIStatic = {
  * use case.
  */
 export type IContentDeliveryAPI = {
+
+    /**
+     * Set a header for all outgoing requests through the ContentDeliveryAPI
+     * 
+     * @param   header      The name of the header to set
+     * @param   value       The value of the header
+     */
+    setHeader(header: string, value: string) : void
+
     /**
      * Perform a login call against the OAuth endpoint of the ContentDeliveryAPI 
      * V2

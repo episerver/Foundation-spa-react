@@ -1,13 +1,13 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    // Set build target
+    // Set module system
     "target": "ES6",
     "module": "CommonJS",
     "lib": ["ES6", "DOM", "DOM.Iterable"],
-    "jsx": "react",
 
     // Set Output & Module resolution
+    "tsBuildInfoFile": ".cjs.tsbuildinfo",
     "outDir": "./cjs",
-  },
+  }
 }

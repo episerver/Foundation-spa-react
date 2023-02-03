@@ -7,10 +7,11 @@ import React from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { EditableField } from '@optimizely/cms/components'
+import site from 'website.cjs'
 
 export const LandingPageComponent : IContentComponent<LandingPage> = props => 
 {
-    const pageTitle = `${ pv(props.content, "name") ?? "Landing Page" } :: Mosey Health`
+    const pageTitle = `${ pv(props.content, "name") ?? "Landing Page" } :: ${ site.name }`
     const pageImage = pv(props.content, 'pageImage')?.url
     const pageBody = pv(props.content, 'mainBody') ?? undefined
 
@@ -29,9 +30,9 @@ export const LandingPageComponent : IContentComponent<LandingPage> = props =>
     </>
 }
 
-LandingPageComponent.getStaticProps = async (content, { locale, inEditMode, api }) => {
+LandingPageComponent.getStaticProps = async (content, { locale, inEditMode, api, loader }) => {
     return {
-        fallback: await prefetchContentAreaRecursive(content, [{ name: "mainContentArea" },{ name: "topContentArea" }], locale, inEditMode == true, undefined, api)
+        fallback: await prefetchContentAreaRecursive(content, [{ name: "mainContentArea" },{ name: "topContentArea" }], locale, inEditMode == true, undefined, api, loader)
     }
 }
 

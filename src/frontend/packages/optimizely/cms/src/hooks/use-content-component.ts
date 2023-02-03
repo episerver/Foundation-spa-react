@@ -2,11 +2,11 @@ import type { ContentTypePath } from '../models/content-type-path'
 import type { IContentComponent } from '../models/components'
 import type { ComponentType } from 'react'
 import { useRef, useState, useEffect, useMemo } from 'react'
-import { useOptimizely } from '../provider/use'
+import { useOptimizelyCms } from '../provider/index'
 
 export type UseContentComponentResult<T extends ComponentType = IContentComponent> = {
     loading: boolean
-    data?: T
+    data?: T | undefined
     error: boolean
     id?: string
     importPath?: string
@@ -14,20 +14,28 @@ export type UseContentComponentResult<T extends ComponentType = IContentComponen
 
 export function useContentComponent<T extends ComponentType = IContentComponent, PropsType = T extends ComponentType<infer R> ? R : any>(contentTypePath ?: ContentTypePath, prefix?: string, tag?: string) : UseContentComponentResult<T>
 {
-    const opti = useOptimizely()
-    const loader = opti?.loader
-    const typePath = useMemo(() => contentTypePath ?? ['OptiContentLoading'], [ contentTypePath])
-    const id = `${ typePath.join('/') }::p-${ prefix ?? "default"}::t-${ tag ?? "default "}`
+    // Get a reference to the loader from the CMS
+    const { loader } = useOptimizelyCms()
+
+    // Recalculate the parameters only when the context changes
+    const { id, importPath, typePath } = useMemo(() => {
+        const typePath = contentTypePath ?? ['OptiContentLoading']
+        const id = `${ typePath.join('/') }::p-${ prefix ?? "default"}::t-${ tag ?? "default "}`
+        const importPath = loader?.buildComponentImport(typePath, prefix, tag)
+        return { id, importPath, typePath }
+    }, [ loader, contentTypePath, prefix, tag ])
+    
+    // Update the fields & references
     const contentComponent = useRef<T | undefined>()
     const [loadedComponentType, setLoadedComponentType] = useState<string>(contentComponent.current ? id : "-")
     const [ isError, setIsError ] = useState<boolean>(false)
     contentComponent.current = loader?.tryDynamicSync<PropsType>(typePath, prefix, tag) as T | undefined
-    const importPath = loader?.buildComponentImport(typePath, prefix, tag)
-    //console.log("ContentComponent.Current", loader, contentTypePath, contentComponent.current);
 
+    // Fall back to async in case we don't have the component yet
     useEffect(() => {
         let isCancelled = false
         if (!loader) return
+        if (contentComponent.current) return
 
         loader.tryDynamicAsync<PropsType>(typePath, prefix, tag).then(x => {
             if (isCancelled) return
@@ -46,7 +54,7 @@ export function useContentComponent<T extends ComponentType = IContentComponent,
 
     return {
         loading: loadedComponentType === "-",
-        data: contentComponent.current as T,
+        data: contentComponent.current,
         error: isError,
         id,
         importPath

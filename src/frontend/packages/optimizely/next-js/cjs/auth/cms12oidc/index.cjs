@@ -7,5 +7,5 @@ tslib_1.__exportStar(require("./types"), exports);
 tslib_1.__exportStar(require("./helpers"), exports);
 tslib_1.__exportStar(require("./service"), exports);
 var provider_1 = require("./provider");
-Object.defineProperty(exports, "Provider", { enumerable: true, get: function () { return provider_1.default; } });
+Object.defineProperty(exports, "Provider", { enumerable: true, get: function () { return tslib_1.__importDefault(provider_1).default; } });
 //# sourceMappingURL=index.js.map

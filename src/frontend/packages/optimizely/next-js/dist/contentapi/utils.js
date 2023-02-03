@@ -1,5 +1,5 @@
 import { resolve } from '@optimizely/cms/utils';
-import { setup as createComponentLoader } from '@optimizely/cms/components';
+import createComponentLoader from '@optimizely/cms/component-loader';
 const loadModule = async (forItem, prefix, tag, componentLoader) => {
     const loader = resolve(componentLoader, createComponentLoader);
     const contentType = forItem.contentType;

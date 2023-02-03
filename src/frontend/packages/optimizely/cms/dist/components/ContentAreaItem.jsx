@@ -3,7 +3,9 @@ import { useContent } from '../hooks';
 import ContentComponent from './ContentComponent';
 export const ContentAreaItem = props => {
     const ItemContainerElement = props.itemContainer;
-    const { data, error } = useContent(props.item.contentLink, undefined, undefined, props.language, undefined, props.isEditable);
+    const ct = useContent(props.item.contentLink, undefined, undefined, props.language, undefined, props.isEditable);
+    const data = ct?.data;
+    const error = ct?.error;
     const itemData = data ?? error;
     const contentTypePath = itemData?.contentType;
     const dataIsLoading = data == undefined;

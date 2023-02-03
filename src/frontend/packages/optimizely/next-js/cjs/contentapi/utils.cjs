@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.loadComponent = exports.loadAdditionalProps = void 0;
 const tslib_1 = require("tslib");
 const utils_1 = require("@optimizely/cms/utils");
-const components_1 = require("@optimizely/cms/components");
+const component_loader_1 = tslib_1.__importDefault(require("@optimizely/cms/component-loader"));
 const loadModule = (forItem, prefix, tag, componentLoader) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    const loader = (0, utils_1.resolve)(componentLoader, components_1.setup);
+    const loader = (0, utils_1.resolve)(componentLoader, component_loader_1.default);
     const contentType = forItem.contentType;
     return loader.tryDynamicModuleAsync(contentType, prefix, tag);
 });

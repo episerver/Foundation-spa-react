@@ -6,7 +6,7 @@ This is an example project showing a decoupled backend (Optimizely Content Cloud
 
 - [1. Running locally](#1-running-locally)
   - [1.1. Prerequisites](#11-prerequisites)
-  - [1.2. Environment variables](#12-environment-variables)
+  - [1.2. Installing the environments](#12-installing-the-environments)
   - [1.3. Starting the backend](#13-starting-the-backend)
   - [1.4. Starting the frontend](#14-starting-the-frontend)
 - [2. Deploying](#2-deploying)
@@ -16,13 +16,19 @@ This is an example project showing a decoupled backend (Optimizely Content Cloud
 Please make sure that the following tools are installed:
 - [CMS 12 Development environment](https://world.optimizely.com/documentation/developer-guides/CMS/getting-started/set-up-a-development-environment/)
 - [Node.JS Latest LTS (16+)*](https://nodejs.org/en/download/)
-- [NPM 8.5+](https://docs.npmjs.com/try-the-latest-stable-version-of-npm)
+- [NPM 9+](https://docs.npmjs.com/try-the-latest-stable-version-of-npm)
 - [Visual Studio Code (Recommended)](https://code.visualstudio.com/)
 
-*) Please refrain from using native module support (Node-Gyp) or ensure it's working correctly and able to build native modules.
+*Note:* Please refrain from using native module support (Node-Gyp) or ensure it's working correctly and able to build native modules.
 
-### 1.2. Environment variables
-Both the frontend and backend can be configured through environment variables
+### 1.2. Installing the environments
+To successfully install the two applications, you need to go through these steps:
+1. Install the CMS, by following the instructions in the [backend docs](src/Headless.Cms/README.md).
+2. Start the CMS and make sure it's running (typically at http://localhost:8000).
+  
+   *If you have the CMS running at a different domain/port, you must manually adjust the instructions in the next steps.*
+
+3. Install the frontend, by following the instructions in the [frontend docs](src/frontend/README.md).
 
 ### 1.3. Starting the backend
 The backend leverages the built-in OIDC server to perform authentication, which requires encryption of the messages between server and client. If - and only if - the environment resolves to a development environment the built-in development certificates are used.

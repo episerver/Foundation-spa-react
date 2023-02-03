@@ -2,6 +2,18 @@ import fetch from 'node-fetch';
 import { authenticate as doAuthenticate } from './openid-login';
 import { refresh as doRefresh } from './openid-refresh';
 export class Client {
+    get dxpUrl() {
+        if (typeof (this.config.dxp_url) === 'string' && this.config.dxp_url !== "")
+            return this.config.dxp_url;
+        throw new Error("Unable to determine the Optimizely DXP URL, please check the configuration");
+    }
+    get isAuthenticated() {
+        if (this._token === undefined || this._token === false)
+            return false;
+        const expires_at = this._token?.expires_at ?? 0;
+        const now = Math.floor(Date.now() / 1000);
+        return now < expires_at;
+    }
     constructor(config) {
         this.config = config;
         try {
@@ -22,18 +34,6 @@ export class Client {
         }
         if (this.config.debug)
             console.log("Optimizely Content Cloud Config:", this.config);
-    }
-    get dxpUrl() {
-        if (typeof (this.config.dxp_url) === 'string' && this.config.dxp_url !== "")
-            return this.config.dxp_url;
-        throw new Error("Unable to determine the Optimizely DXP URL, please check the configuration");
-    }
-    get isAuthenticated() {
-        if (this._token === undefined || this._token === false)
-            return false;
-        const expires_at = this._token?.expires_at ?? 0;
-        const now = Math.floor(Date.now() / 1000);
-        return now < expires_at;
     }
     async connect() {
         const connectUrl = (new URL("/globalassets", this.dxpUrl)).href;

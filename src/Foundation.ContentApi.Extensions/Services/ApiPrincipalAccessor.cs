@@ -31,18 +31,24 @@ namespace Foundation.ContentApi.Extensions.Services
         public IPrincipal? Principal { 
             get
             {
-                if (_principalAccessor.Principal.Identity?.IsAuthenticated == true)
-                    return _principalAccessor.Principal;
-                
-                if (_authSchema is not null && _httpContextAccessor.HttpContext is not null)
+                try
                 {
-                    var authTask = _authenticationService.AuthenticateAsync(_httpContextAccessor.HttpContext, _authSchema);
-                    authTask.Wait();
-                    _principal = authTask.Result.Principal;
-                    if (_principal?.Identity?.IsAuthenticated == true)
-                        _principalAccessor.Principal = _principal;
+                    if (_principalAccessor.Principal.Identity?.IsAuthenticated == true)
+                        return _principalAccessor.Principal;
+
+                    if (_authSchema is not null && _httpContextAccessor.HttpContext is not null)
+                    {
+                        var authTask = _authenticationService.AuthenticateAsync(_httpContextAccessor.HttpContext, _authSchema);
+                        authTask.Wait();
+                        _principal = authTask.Result.Principal;
+                        if (_principal?.Identity?.IsAuthenticated == true)
+                            _principalAccessor.Principal = _principal;
+                    }
+                    return _principalAccessor.Principal;
+                } catch
+                {
+                    return null;
                 }
-                return _principalAccessor.Principal;
             }
             set {
                 _principalAccessor.Principal = value;

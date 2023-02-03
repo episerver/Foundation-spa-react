@@ -1,4 +1,4 @@
-export declare type WebsiteDefinition = {
+export type WebsiteDefinition = {
     /**
      * The website name as configured within Content Cloud
      */
@@ -35,7 +35,7 @@ export declare type WebsiteDefinition = {
      */
     localeDomains: any;
 };
-export declare type WebsiteLocaleLabel = {
+export type WebsiteLocaleLabel = {
     code: string;
     label: string;
 };

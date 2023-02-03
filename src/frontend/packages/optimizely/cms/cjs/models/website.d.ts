@@ -1,6 +1,7 @@
 import LanguageList from './language-list';
+import Language from './language';
 import ContentRootList from './content-root-list';
-export declare type HostDefinition = {
+export type HostDefinition = {
     /**
      * The name of the host (domain name)
      */
@@ -12,12 +13,12 @@ export declare type HostDefinition = {
     /**
      * The default language for the host
      */
-    language: null | string;
+    language: null | undefined | Language;
 };
 /**
  * Episerver Website Model, as returned by the ContentDelivery API.
  */
-export declare type Website = {
+export type Website = {
     /**
      * The GUID of the website
      */

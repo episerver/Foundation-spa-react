@@ -2,14 +2,14 @@ import type { PropsWithChildren, ReactElement, ComponentType } from 'react';
 import type { PropertyContentArea } from '../models/property';
 import type { IContent, IContentData } from '../models/icontent';
 import { ContentAreaItemContainer } from './ContentAreaItem';
-export declare type KeyOfType<T, V> = keyof {
+export type KeyOfType<T, V> = keyof {
     [P in keyof T as T[P] extends V ? P : never]: any;
 };
-export declare type ContentAreaContainerProps = {
+export type ContentAreaContainerProps = {
     dataEpiEdit?: string;
 };
-export declare type ContentAreaContainer = ComponentType<PropsWithChildren<ContentAreaContainerProps>>;
-export declare type ContentAreaProps<T extends IContent = IContent, I extends T | undefined = T | undefined> = {
+export type ContentAreaContainer = ComponentType<PropsWithChildren<ContentAreaContainerProps>>;
+export type ContentAreaProps<T extends IContent = IContent, I extends T | undefined = T | undefined> = {
     /**
      * The name of the ContentArea property, to be fetched from
      * the content and used to render the properties to make it

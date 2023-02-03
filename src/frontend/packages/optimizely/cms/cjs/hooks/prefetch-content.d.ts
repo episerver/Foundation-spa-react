@@ -1,7 +1,7 @@
 import type { ContentReference } from '../models/content-link';
 import type { IContent, IContentData } from '../models/icontent';
 import { IContentDeliveryAPI } from '../content-delivery';
-export declare type PreFetchContentResult<T extends IContent = IContentData> = {
+export type PreFetchContentResult<T extends IContent = IContentData> = {
     fallback: Record<string, T>;
     errors: Record<string, any>;
 };

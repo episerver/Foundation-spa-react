@@ -9,7 +9,7 @@ export declare const enum CONTENT_PARAMS {
     Scope = "scope",
     VisitorGroup = "vg"
 }
-export declare type ContentUriData<T extends IContent = IContentData> = {
+export type ContentUriData<T extends IContent = IContentData> = {
     contentIds: string[];
     select?: (keyof T)[];
     expand?: (keyof T)[];

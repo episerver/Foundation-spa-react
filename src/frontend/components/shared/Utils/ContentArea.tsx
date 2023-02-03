@@ -1,12 +1,21 @@
-import type { ContentAreaContainer, ContentAreaProps } from '@optimizely/cms/components'
-import type { IContent, IContentData } from '@optimizely/cms/models'
-import { ContentArea as BaseContentArea } from '@optimizely/cms/components'
+// React
 import type { PropsWithChildren, FunctionComponent } from 'react'
-import { useRouter } from 'next/router'
 import React from 'react'
+
+// Next.JS
+import { useRouter } from 'next/router'
+
+// Material UI
 import Grid from '@mui/material/Grid'
+
+// Optimizely CMS
+import type { ContentAreaContainer, ContentAreaProps } from '@optimizely/cms/content-area'
+import type { IContent, IContentData } from '@optimizely/cms/models'
+import BaseContentArea from '@optimizely/cms/content-area'
+import { useOptimizelyCms } from '@optimizely/cms/context'
+
+// Local imports
 import StyledContentAreaItem from './ContentAreaItem'
-import { useOptimizely } from '@optimizely/cms'
 
 /**
  * Wrapper for the default Content Area, configuring it for the layout system
@@ -17,9 +26,9 @@ import { useOptimizely } from '@optimizely/cms'
  */
 export const ContentArea = <T extends IContent = IContentData, I extends T | undefined = T | undefined>(props: PropsWithChildren<ContentAreaProps<T, I>>) => 
 {
-    const route = useRouter()
-    const opti = useOptimizely()
-    const language = opti.defaultBranch ?? route.locale ?? 'en'
+    const router = useRouter()
+    const opti = useOptimizelyCms()
+    const language = router.locale ?? router.defaultLocale ?? opti.defaultBranch  ?? 'en'
     const newProps : ContentAreaProps<T, I> = {
         language,
         container: StyledContentArea,

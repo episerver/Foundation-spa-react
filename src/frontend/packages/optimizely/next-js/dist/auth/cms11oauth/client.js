@@ -13,7 +13,6 @@ export class OAuthClient {
         loginBody.set('client_id', clientId);
         loginBody.set('username', username || '');
         loginBody.set('password', password || '');
-        // Send the actual request
         const res = await fetch(this.serviceUrl.href, {
             method: 'post',
             body: loginBody,
@@ -31,7 +30,6 @@ export class OAuthClient {
         loginBody.set('grant_type', 'refresh_token');
         loginBody.set('client_id', clientId);
         loginBody.set('refresh_token', refresh_token || '');
-        // Send the actual request
         const res = await fetch(this.serviceUrl.href, {
             method: 'post',
             body: loginBody,

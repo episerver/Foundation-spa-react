@@ -102,7 +102,7 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
         {
             if (!Options.AutoStart)
             {
-                Logger.LogInformation("Node.JS Process start requested, but disabled by configuration");
+                Logger.LogWarning("Node.JS Process start requested, but disabled by configuration");
                 return;
             }
             JsProcess = Process.Start(CreateProcessDescriptor());

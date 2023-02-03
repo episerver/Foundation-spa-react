@@ -10,17 +10,23 @@ export function createPalette(mode: PaletteMode = "light") : PaletteOptions
         ...( 
             mode === "light" ? {
                 primary: {
-                    //main: '#61a0a8',
-                    //dark: '#27747e',
-                    main: '#27747e',
-                    light: '#e6f3ef'
+                    main: '#27747E',
+                    light: '#E6F3EF'
                 },
                 secondary: {
-                    //main: '#f50057',
                     main: '#4C3B4D'
+                },
+                background: {
+                    paper: '#F9F9F9',
                 }
             } : {
-
+                primary: {
+                    main: '#000000',
+                    light: '#222222'
+                },
+                secondary: {
+                    main: '#27747E'
+                }
             }
         )
     }

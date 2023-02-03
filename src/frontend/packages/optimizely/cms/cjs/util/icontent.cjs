@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createErrorContent = exports.isIContent = void 0;
+const error_content_1 = require("../models/error-content");
 function isIContent(toTest) {
     var _a, _b;
     if (!toTest)
@@ -11,26 +12,7 @@ function isIContent(toTest) {
 }
 exports.isIContent = isIContent;
 function createErrorContent(errorType, code, message, contentReference, details) {
-    return {
-        contentLink: {
-            id: 0,
-            guidValue: "00000000-0000-0000-0000-000000000000",
-            url: ""
-        },
-        contentType: ["Error", errorType],
-        name: "Error",
-        language: {
-            displayName: "English",
-            name: "en"
-        },
-        isError: true,
-        errorData: {
-            code,
-            message,
-            details
-        },
-        contentReference
-    };
+    return new error_content_1.ErrorContentClass(errorType, code, message, contentReference, details);
 }
 exports.createErrorContent = createErrorContent;
 //# sourceMappingURL=icontent.js.map

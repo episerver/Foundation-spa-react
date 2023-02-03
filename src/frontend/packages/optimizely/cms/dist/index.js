@@ -1,20 +1,20 @@
-// React Bindings
-export * as Models from './models/index';
-export * as Provider from './provider/index';
-export * as Components from './components/index';
-// Convenience short-hands
-export { useOptimizely, useAndInitOptimizely } from './provider/use';
+// Export complete sub-systems
+export * from './provider';
+export * from './hooks';
+// Export models and types
+export * from './models';
+// Export factories
+export { createComponentLoader } from './loader/factory';
+export { createInstance as createContentDeliveryClient } from './content-delivery/factory';
+// Export components
+export { ContentArea } from './components/ContentArea';
+export { ContentAreaItem } from './components/ContentAreaItem';
 export { ContentComponent } from './components/ContentComponent';
 export { EditableField } from './components/EditableField';
-export { useContent, useContents, useContentComponent } from './hooks';
-// Dynamic component loader (Webpack 5+)
-export * as ComponentLoader from './loader/index';
-// GraphQL Client
-export { setup as createGqlClient } from './graphql/index';
-export * as GraphQL from './graphql/index';
-// Content Delivery API Client
-export { default as cdapi } from './content-delivery/index';
-export * as ContentDelivery from './content-delivery/index';
-// Various utilities
-export * as Utils from './util/index';
+export { ErrorBoundary } from './components/ErrorBoundary';
+// Exports HOCs
+export { withOnPageEditing } from './components/EditableField';
+export { withErrorBoundary } from './components/ErrorBoundary';
+// Export utilities as namespaces
+export * as Utils from './util';
 //# sourceMappingURL=index.js.map

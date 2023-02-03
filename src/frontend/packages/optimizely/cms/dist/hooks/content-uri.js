@@ -1,5 +1,14 @@
 import { createApiId } from '../util/content-reference';
 export const CMS_CONTENT_PROTOCOL = 'opti-cms:';
+export var CONTENT_PARAMS;
+(function (CONTENT_PARAMS) {
+    CONTENT_PARAMS["Select"] = "select";
+    CONTENT_PARAMS["Expand"] = "expand";
+    CONTENT_PARAMS["InEditMode"] = "epieditmode";
+    CONTENT_PARAMS["Language"] = "branch";
+    CONTENT_PARAMS["Scope"] = "scope";
+    CONTENT_PARAMS["VisitorGroup"] = "vg";
+})(CONTENT_PARAMS || (CONTENT_PARAMS = {}));
 export function buildContentURI(contentReference, select, expand, branch, inEditMode = false, scope, visitorGroup) {
     //console.log("Building contentURI with branch", branch)
     const path = Array.isArray(contentReference) ?
@@ -14,17 +23,17 @@ export function buildContentURI(contentReference, select, expand, branch, inEdit
             //Ignored on purpose
         }
     if (select)
-        contentRef.searchParams.set("select" /* CONTENT_PARAMS.Select */, select.map(x => encodeURIComponent(x)).join(','));
+        contentRef.searchParams.set(CONTENT_PARAMS.Select, select.map(x => encodeURIComponent(x)).join(','));
     if (expand)
-        contentRef.searchParams.set("expand" /* CONTENT_PARAMS.Expand */, expand.map(x => encodeURIComponent(x)).join(','));
+        contentRef.searchParams.set(CONTENT_PARAMS.Expand, expand.map(x => encodeURIComponent(x)).join(','));
     if (inEditMode)
-        contentRef.searchParams.set("epieditmode" /* CONTENT_PARAMS.InEditMode */, "true");
+        contentRef.searchParams.set(CONTENT_PARAMS.InEditMode, "true");
     if (branch)
-        contentRef.searchParams.set("branch" /* CONTENT_PARAMS.Language */, branch);
+        contentRef.searchParams.set(CONTENT_PARAMS.Language, branch);
     if (scope)
-        contentRef.searchParams.set("scope" /* CONTENT_PARAMS.Scope */, scope);
+        contentRef.searchParams.set(CONTENT_PARAMS.Scope, scope);
     if (visitorGroup)
-        contentRef.searchParams.set("vg" /* CONTENT_PARAMS.VisitorGroup */, visitorGroup);
+        contentRef.searchParams.set(CONTENT_PARAMS.VisitorGroup, visitorGroup);
     //console.log("Generated content id", contentRef.href, "for language", branch)
     return contentRef;
 }
@@ -33,12 +42,12 @@ export function parseContentURI(contentURI) {
     if (uri.protocol !== CMS_CONTENT_PROTOCOL)
         throw new Error("Invalid content protocol");
     const contentIds = uri.pathname.substring(1).split('/');
-    const select = (uri.searchParams.get("select" /* CONTENT_PARAMS.Select */) ? uri.searchParams.get("select" /* CONTENT_PARAMS.Select */)?.split(",") : undefined);
-    const expand = (uri.searchParams.get("expand" /* CONTENT_PARAMS.Expand */) ? uri.searchParams.get("expand" /* CONTENT_PARAMS.Expand */)?.split(",") : undefined);
-    const editMode = uri.searchParams.get("epieditmode" /* CONTENT_PARAMS.InEditMode */) === 'true';
-    const branch = (uri.searchParams.get("branch" /* CONTENT_PARAMS.Language */) ? uri.searchParams.get("branch" /* CONTENT_PARAMS.Language */) : undefined);
-    const scope = (uri.searchParams.get("scope" /* CONTENT_PARAMS.Scope */) ? uri.searchParams.get("scope" /* CONTENT_PARAMS.Scope */) : undefined);
-    const visitorGroup = uri.searchParams.get("vg" /* CONTENT_PARAMS.VisitorGroup */) ?? undefined;
+    const select = (uri.searchParams.get(CONTENT_PARAMS.Select) ? uri.searchParams.get(CONTENT_PARAMS.Select)?.split(",") : undefined);
+    const expand = (uri.searchParams.get(CONTENT_PARAMS.Expand) ? uri.searchParams.get(CONTENT_PARAMS.Expand)?.split(",") : undefined);
+    const editMode = uri.searchParams.get(CONTENT_PARAMS.InEditMode) === 'true';
+    const branch = (uri.searchParams.get(CONTENT_PARAMS.Language) ? uri.searchParams.get(CONTENT_PARAMS.Language) : undefined);
+    const scope = (uri.searchParams.get(CONTENT_PARAMS.Scope) ? uri.searchParams.get(CONTENT_PARAMS.Scope) : undefined);
+    const visitorGroup = uri.searchParams.get(CONTENT_PARAMS.VisitorGroup) ?? undefined;
     return { contentIds, select, expand, editMode, branch, scope, visitorGroup };
 }
 //# sourceMappingURL=content-uri.js.map

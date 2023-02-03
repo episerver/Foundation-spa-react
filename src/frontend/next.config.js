@@ -6,6 +6,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')(
     }
 )
 
+const isProduction = process.env.NODE_ENV == 'production'
+
 /** @type { import('next').NextConfig } */
 const nextConfig = withBundleAnalyzer(withOptimizelyConfig({
     reactStrictMode: true,
@@ -17,9 +19,9 @@ const nextConfig = withBundleAnalyzer(withOptimizelyConfig({
         domains: ['localhost']
     },
     compiler: {
-      removeConsole: {
-        exclude: ['error'],
-      },
+      removeConsole: isProduction ? {
+        exclude: isProduction ? ['error'] : undefined,
+      } : false,
     },
     swcMinify: true,
 }, optiWebsite))

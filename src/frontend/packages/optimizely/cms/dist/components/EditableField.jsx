@@ -1,5 +1,5 @@
 import React from 'react';
-import { useOptimizely } from '../index';
+import { useEditMode } from '../provider/edit-mode';
 /**
  * The EditableField provides the needed wrapping - when in edit mode -
  * to make a field editable. It does not control the rendering of the field,
@@ -9,8 +9,8 @@ import { useOptimizely } from '../index';
  * @returns
  */
 export const EditableField = (props) => {
-    const opti = useOptimizely();
-    const isEditable = opti.inEditMode || opti.isEditable;
+    const opti = useEditMode();
+    const isEditable = props.contentEditable === undefined ? opti.inEditMode || opti.isEditable : props.contentEditable;
     const cssClass = `${props.className ?? ''} opti-edit-container`;
     const htmlContent = props.html ? { __html: props.html } : undefined;
     if (!isEditable)

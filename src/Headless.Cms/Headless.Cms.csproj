@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <RestoreSources>
@@ -6,7 +6,7 @@
     <RootNamespace>HeadlessCms</RootNamespace>
     <!-- Prepare for a nullable codebase -->
     <Nullable>warnings</Nullable>
-    <Version>1.0.0.18</Version>
+    <Version>1.0.0.19</Version>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Authors>Remko Jantzen / Optimizely SA Team</Authors>
@@ -33,51 +33,56 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Models\" />
     <Folder Include="wwwroot\" />
     <None Include="..\..\README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <PackageReference Include="Baaijte.Optimizely.ImageSharp.Web" Version="2.0.0" />
-    <PackageReference Include="EPiServer.CloudPlatform.Cms" Version="1.0.5" />
-    <PackageReference Include="EPiServer.CMS" Version="12.10.0" />
-    <PackageReference Include="EPiServer.CMS.UI.VisitorGroups" Version="12.10.0" />
-    <PackageReference Include="EPiServer.ContentDefinitionsApi" Version="3.5.0" />
-    <PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="3.5.0" />
-    <PackageReference Include="EPiServer.ContentDeliveryApi.Forms" Version="3.5.0" />
-    <PackageReference Include="EPiServer.ContentDeliveryApi.Search" Version="3.5.0" />
-    <PackageReference Include="EPiServer.ContentManagementApi" Version="3.5.0" />
-    <PackageReference Include="EPiServer.Find" Version="14.0.4" />
-    <PackageReference Include="EPiServer.Find.Cms" Version="14.0.4" />
-    <PackageReference Include="EPiServer.Find.Cms.AttachmentFilter" Version="14.0.4" />
-    <PackageReference Include="EPiServer.Find.Framework" Version="14.0.4" />
-    <PackageReference Include="EPiServer.Find.Personalization" Version="14.0.4" />
-    <PackageReference Include="EPiServer.Labs.BlockEnhancements" Version="1.1.1" />
-    <PackageReference Include="EPiServer.Labs.LanguageManager" Version="5.1.1" />
-    <PackageReference Include="EPiServer.Labs.LinkItemProperty" Version="1.0.2" />
-    <PackageReference Include="EPiServer.Labs.ProjectEnhancements" Version="1.0.0" />
-    <PackageReference Include="EPiServer.OpenIDConnect" Version="3.5.0" />
-    <PackageReference Include="EPiServer.OpenIDConnect.UI" Version="3.5.0" />
-    <PackageReference Include="SixLabors.ImageSharp.Web.Providers.Azure" Version="2.0.2" />
-    <PackageReference Include="UNRVLD.ODP.VisitorGroups" Version="1.2.0.23" />
-    <!-- Lab projects broken by CMS 12.8 -->
-    <!--<PackageReference Include="EPiServer.Labs.ContentManager" Version="1.0.2" />-->
-    <!--<PackageReference Include="EPiServer.Labs.GridView" Version="1.0.2" />-->
-    <!-- Optimizely Content Graph Private Beta -->
-    <!--<PackageReference Include="Optimizely.ContentGraph.Cms" Version="2.0.0-pre-42270" />-->
-    <!-- EPiServer.Forms is not yet supported within Headless CMS Builds, so the API Package has been disabled. -->
-    <PackageReference Include="EPiServer.Forms" Version="5.2.1" />
-    <PackageReference Include="EPiServer.ConnectForMarketingAutomation" Version="6.1.0" />
-    <PackageReference Include="EPiServer.Marketing.Automation.Forms" Version="3.1.0" />
-    <!--<PackageReference Include="EPiServer.ContentDeliveryApi.Forms" Version="3.0.0-pre-000226" />-->
-    <!-- Conflict resolution -->
-    <PackageReference Include="EPiServer.CMS.UI" Version="12.10.0" />
-    <!-- Resolve dependency warning by EPiServer.CMS.TinyMce -->
-    <PackageReference Include="EPiServer.Hosting" Version="12.9.0" />
-    <!-- EPiServer.CMS 12.7.0 has an explicit dependency on EPiServer.Hosting 12.4.2, causing errors -->
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
-    <PackageReference Include="Yarp.ReverseProxy" Version="1.1.1" />
-    <!-- EPiServer.CMS.AspNetCore.Mvc declares a dependency on 5.x, however EPiServer.CloudPlatform.Cms declares a dependency on 6.x -->
+    
+	<!-- Optimizely CMS, with OIDC provider -->
+    <PackageReference Include="EPiServer.CMS" Version="12.16.0" />
+	<PackageReference Include="EPiServer.OpenIDConnect" Version="3.6.0" />
+	<PackageReference Include="EPiServer.OpenIDConnect.UI" Version="3.6.0" />
+	  
+	<!-- APIs -->
+    <PackageReference Include="EPiServer.ContentDefinitionsApi" Version="3.6.0" />
+    <PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="3.6.0" />
+    <PackageReference Include="EPiServer.ContentDeliveryApi.Forms" Version="3.6.0" />
+    <PackageReference Include="EPiServer.ContentDeliveryApi.Search" Version="3.6.0" />
+    <PackageReference Include="EPiServer.ContentManagementApi" Version="3.6.0" />
+	  
+	<!-- Optimizely Search & Navigation -->
+    <PackageReference Include="EPiServer.Find.Cms" Version="14.2.4" />
+    <PackageReference Include="EPiServer.Find.Personalization" Version="14.2.4" />
+	  
+	<!-- Add support for Optimizely DXP -->
+	<PackageReference Include="EPiServer.CloudPlatform.Cms" Version="1.3.0" />
+	  
+	<!-- Productivity enhancements from Optimizely Labs-->  
+	<PackageReference Include="EPiServer.Labs.BlockEnhancements" Version="1.1.1" />
+	<PackageReference Include="EPiServer.Labs.ContentManager" Version="1.1.0" />
+	<PackageReference Include="EPiServer.Labs.GridView" Version="1.1.0" />
+	<PackageReference Include="EPiServer.Labs.LanguageManager" Version="5.1.2" />
+	<PackageReference Include="EPiServer.Labs.LinkItemProperty" Version="1.0.2" />
+	<PackageReference Include="EPiServer.Labs.ProjectEnhancements" Version="1.0.0" />
+	  
+	<!-- Optimizely Forms & Marketing Automation Connectors -->
+    <PackageReference Include="EPiServer.Forms" Version="5.4.0" />
+    <PackageReference Include="EPiServer.ConnectForMarketingAutomation" Version="6.1.2" />
+	<PackageReference Include="Optimizely.Labs.MarketingAutomationIntegration.ODP" Version="1.0.2" />
+	<PackageReference Include="EPiServer.MarketingAutomationIntegration.Pardot" Version="7.1.1" />
+    <PackageReference Include="EPiServer.Marketing.Automation.Forms" Version="3.1.2" />
+
+	<!-- ImageSharp wrapper for Optimizely CMS -->  
+	<PackageReference Include="Baaijte.Optimizely.ImageSharp.Web" Version="2.1.2" />
+	<PackageReference Include="SixLabors.ImageSharp.Web.Providers.Azure" Version="2.0.2" />
+	  
+	<!-- Visitor group criterion for ODP -->
+	<PackageReference Include="UNRVLD.ODP.VisitorGroups" Version="1.2.0.23" />
+	  
+	<!-- Reverse proxy to communicate with Next.JS running on the same server-->
+	<PackageReference Include="Yarp.ReverseProxy" Version="1.1.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Foundation.ContentApi.Extensions\Foundation.ContentApi.Extensions.csproj" />

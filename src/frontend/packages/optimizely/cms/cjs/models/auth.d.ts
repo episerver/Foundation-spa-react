@@ -1,4 +1,4 @@
-export declare type AuthResponse = {
+export type AuthResponse = {
     access_token: string;
     token_type: string;
     expires_in: number;
@@ -8,10 +8,10 @@ export declare type AuthResponse = {
     ".issued": Date;
     ".expires": Date;
 };
-export declare type AuthApiResponse = {
+export type AuthApiResponse = {
     readonly [P in keyof AuthResponse]: AuthResponse[P] extends Date ? string : AuthResponse[P];
 };
-export declare type AuthRequest = {
+export type AuthRequest = {
     client_id: "Default";
 } & ({
     grant_type: "refresh_token";

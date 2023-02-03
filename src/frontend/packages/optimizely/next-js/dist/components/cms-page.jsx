@@ -2,19 +2,16 @@ import { getToken } from 'next-auth/jwt';
 import React from 'react';
 import { useRouter } from 'next/router';
 import { getPagesForLocale, EditMode } from '@optimizely/cms/utils';
-import { ContentDelivery, ContentComponent, useAndInitOptimizely as useOptimizely } from '@optimizely/cms';
-import { usePageContent, loadPageContentByUrl, loadPageContent } from '../hooks';
+import createContentDeliveryClient from '@optimizely/cms/content-delivery';
+import { useEditMode } from '@optimizely/cms/context';
+import ContentComponent from '@optimizely/cms/content-component';
+import { usePageContent, loadPageContentByUrl, loadPageContent } from '../hooks/use-page-content';
 import * as Auth from '../auth/cms12oidc';
-const inDebugMode = false;
+const DEBUG_ENABLED = process.env.NODE_ENV != 'production';
+const DXP_DEBUG = false;
 export function isStringArray(toTest) {
     return Array.isArray(toTest) && toTest.every(x => typeof (x) === 'string');
 }
-/**
- * Validate that the CMS Props have data (e.g. the props have yielded an actual page)
- *
- * @param       toTest      The variable to test
- * @returns     boolean
- */
 export function staticPropsHasData(toTest) {
     const retyped = toTest;
     if (retyped?.props && retyped.props.locale && typeof (retyped.props.locale) === 'string')
@@ -35,22 +32,27 @@ export async function resolveAwaitableProps(toResolve) {
         return { props: await toResolve.props };
     return toResolve;
 }
-/**
- * Resolve the paths available within the CMS, which should be pre-rendered by Next.JS
- *
- * @param       context
- * @returns     The paths to pre-render during SSG
- */
 export async function getStaticPaths(context) {
-    console.time("@optimizely/next-js/components/cms-page/getStaticPaths");
+    if (DEBUG_ENABLED) {
+        console.log("Optimizely - Next.JS: CMS-Page > getStaticPaths :: Start");
+        console.time("Optimizely - Next.JS: CMS-Page > getStaticPaths");
+    }
     const { defaultLocale, locales } = context;
-    const api = ContentDelivery.createInstance({ debug: inDebugMode, defaultBranch: defaultLocale });
-    const pages = (await Promise.all((locales ?? []).map((loc) => getPagesForLocale(api, loc)))).flat(1);
+    if (DEBUG_ENABLED) {
+        console.log("Optimizely - Next.JS: CMS-Page > getStaticPaths :: Default Locale", defaultLocale);
+        console.log("Optimizely - Next.JS: CMS-Page > getStaticPaths :: Locales", locales);
+    }
+    const api = createContentDeliveryClient({ debug: DXP_DEBUG, defaultBranch: defaultLocale });
+    const pages = (await Promise.all((locales ?? []).map((loc) => {
+        if (DEBUG_ENABLED)
+            console.log("Optimizely - Next.JS: CMS-Page > getStaticPaths :: Fetching paths for locale", loc);
+        return getPagesForLocale(api, loc, { debug: DEBUG_ENABLED });
+    }))).flat(1);
     const homepages = (locales ?? []).map(x => `/${x}/`);
     const paths = pages
-        .filter(c => (c.contentType?.indexOf('SysRecycleBin') ?? -1) < 0) // Filter out "Recycle bin"
+        .filter(c => (c.contentType?.indexOf('SysRecycleBin') ?? -1) < 0)
         .map(data => (new URL(data.url ?? '/', "http://localhost")).pathname)
-        .filter(path => (path || '').length > 0 && path != '/') // Filter out the homepage, without language code
+        .filter(path => (path || '').length > 0 && path != '/')
         .filter(x => {
         if (homepages.length == 0)
             return true;
@@ -58,46 +60,36 @@ export async function getStaticPaths(context) {
             return false;
         return true;
     });
-    //const paths = locales?.map(locale => `/${locale}/`) ?? []
-    console.timeEnd("@optimizely/next-js/components/cms-page/getStaticPaths");
+    console.timeEnd("Optimizely - Next.JS: CMS-Page > getStaticPaths");
     return {
         paths,
-        fallback: 'blocking' // Fallback to SSR when there's no SSG version of the page
+        fallback: 'blocking'
     };
 }
-/**
- * Resolve the properties needed to render the current path from the content
- * managed within the Optimizely CMS.
- *
- * @param       context     The context provided by Next.JS
- * @returns     The Page properties
- */
-export async function getStaticProps(context) {
-    // Read the context
-    const { params, locale, defaultLocale } = context;
+export const getStaticProps = async ({ params, locale, defaultLocale }, cLoader, cApi) => {
+    if (DEBUG_ENABLED) {
+        console.log("Optimizely - Next.JS: CMS-Page > getStaticProps :: Start");
+        console.time("Optimizely - Next.JS: CMS-Page > getStaticProps");
+    }
     const currentLocale = locale ?? defaultLocale ?? 'en';
-    // Create the content-api client and resolve the actual content item
-    const page = params?.page ?? [];
-    const api = ContentDelivery.createInstance({ debug: inDebugMode, defaultBranch: defaultLocale });
+    const page = !Array.isArray(params?.page) ? [params?.page] : (params?.page ?? []);
+    const api = cApi ?? createContentDeliveryClient({ debug: DXP_DEBUG, defaultBranch: defaultLocale });
     const path = page.length > 0 && page[0] != currentLocale ? `/${currentLocale}/${page.join("/") ?? ''}` : "/";
-    // This is for a published page URL, not a preview/edit URL, so always loading the published code
-    const props = await loadPageContentByUrl(path, api, currentLocale, false);
-    if (!props)
-        return { notFound: true, revalidate: 1 };
-    // Return the page props
-    return {
+    const props = await loadPageContentByUrl(path, api, currentLocale, false, cLoader);
+    if (DEBUG_ENABLED) {
+        console.log("Optimizely - Next.JS: CMS-Page > getStaticProps :: Path:", path);
+        console.log("Optimizely - Next.JS: CMS-Page > getStaticProps :: Properties:", Object.getOwnPropertyNames(props ?? {}).join("; "));
+        console.log("Optimizely - Next.JS: CMS-Page > getStaticProps :: Base Type:", props?.prefix);
+        console.log("Optimizely - Next.JS: CMS-Page > getStaticProps :: Components:", props?.component);
+        console.log("Optimizely - Next.JS: CMS-Page > getStaticProps :: Fallback keys:", Object.getOwnPropertyNames(props?.fallback ?? {}).join("; "));
+        console.timeEnd("Optimizely - Next.JS: CMS-Page > getStaticProps");
+    }
+    return props ? {
         props: { ...props, locale: currentLocale, inEditMode: false },
         revalidate: 60
-    };
-}
-/**
- * Logic for Server Side Rendering of Optimizely CMS Pages, supporting both published and edit mode URLs
- *
- * @param param0
- * @returns
- */
+    } : { notFound: true, revalidate: 1 };
+};
 export const getServerSideProps = async ({ req, res, ...context }) => {
-    // Firstly, get the current token and return not-found if not present - due to our middleware this shouldn't happen
     const token = await getToken({ req: req, cookieName: Auth.Cms12NextAuthOptions.cookies?.sessionToken?.name });
     const hasManagementScope = (token?.scope ?? '').indexOf("epi_content_management") >= 0 && token?.accessToken ? true : false;
     const pageUrl = new URL(decodeURIComponent(context.resolvedUrl), `http://${req.headers.host ?? 'localhost'}`);
@@ -110,14 +102,12 @@ export const getServerSideProps = async ({ req, res, ...context }) => {
             }
         };
     }
-    // Get the locale
     const pageSegments = pageUrl.pathname.split("/").filter(x => x);
     if (!isStringArray(pageSegments))
         return { notFound: true };
     const urlLocale = pageSegments[0];
     const locale = context.locales?.includes(urlLocale) ? urlLocale : context.locale ?? context.defaultLocale ?? 'en';
-    // Create api & fetch content
-    const api = ContentDelivery.createInstance({
+    const api = createContentDeliveryClient({
         defaultBranch: locale,
         getAccessToken: async () => {
             return token?.accessToken ?? '';
@@ -128,7 +118,6 @@ export const getServerSideProps = async ({ req, res, ...context }) => {
         await loadPageContentByUrl(pageUrl, api, locale, false);
     if (!props)
         return { notFound: true };
-    // Build page rendering data
     const pageProps = {
         props: {
             ...props,
@@ -138,14 +127,27 @@ export const getServerSideProps = async ({ req, res, ...context }) => {
     return pageProps;
 };
 export const OptimizelyCmsPage = (props) => {
-    const opti = useOptimizely(props.inEditMode);
+    if (DEBUG_ENABLED) {
+        console.groupCollapsed("Optimizely - Next.JS: CMS-Page > render");
+    }
+    const opti = useEditMode();
     const router = useRouter();
     const locale = router.locale ?? router.defaultLocale;
-    const pageContent = usePageContent(props.contentId ?? '', opti.inEditMode, locale);
-    const content = pageContent.data;
-    if (!content)
-        return <></>;
-    return <ContentComponent {...props} content={content}/>;
+    const inEditMode = props.inEditMode ?? opti.inEditMode;
+    if (DEBUG_ENABLED) {
+        console.log("Optimizely - Next.JS: CMS-Page > render :: contentId: ", props.contentId ?? '-');
+        console.log("Optimizely - Next.JS: CMS-Page > render :: inEditMode: ", inEditMode);
+        console.log("Optimizely - Next.JS: CMS-Page > render :: locale: ", locale);
+    }
+    const { data: iContent } = usePageContent(props.contentId ?? '', inEditMode, locale);
+    if (DEBUG_ENABLED) {
+        console.log("Optimizely - Next.JS: CMS-Page > render :: iContent: ", iContent);
+    }
+    const output = iContent ? <ContentComponent {...props} content={iContent}/> : <div>Loading <span>{props.contentId}</span></div>;
+    if (DEBUG_ENABLED) {
+        console.groupEnd();
+    }
+    return output;
 };
 export default OptimizelyCmsPage;
 //# sourceMappingURL=cms-page.jsx.map

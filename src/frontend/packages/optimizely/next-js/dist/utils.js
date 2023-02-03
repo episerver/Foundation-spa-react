@@ -1,16 +1,13 @@
-import { ComponentLoader } from '@optimizely/cms';
+import createComponentLoader from '@optimizely/cms/component-loader';
 function isPromise(toTest) {
     return typeof (toTest) === 'object' && toTest !== null && typeof (toTest.then) === 'function';
 }
 export async function loadAdditionalPropsAndFilter(content, api, locale, preview) {
-    // Load component
-    const moduleLoader = ComponentLoader.setup();
+    const moduleLoader = createComponentLoader();
     const component = (await moduleLoader.tryDynamicAsync(content.contentType));
-    // Load additional props
     const additionalProps = component?.getStaticProps && typeof (component?.getStaticProps) === 'function' ?
         await component.getStaticProps(content, { api, locale: locale }) :
         {};
-    // Apply content filter
     let filter = component?.getContentFields ? component?.getContentFields({ inEditMode: preview }) : undefined;
     if (isPromise(filter))
         filter = await filter;

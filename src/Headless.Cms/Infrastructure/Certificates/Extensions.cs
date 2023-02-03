@@ -10,9 +10,8 @@ namespace HeadlessCms.Infrastructure.Certificates
     public static class Extensions
     {
         public static CertificateOptions GetCertificateOptions(this IConfiguration configuration) {
-            var config =  configuration.GetValue<CertificateOptions>("Foundation:Certificates");
-            if (config is null) config = new CertificateOptions();
-            return config;
+            var section =  configuration.GetSection("Foundation:Certificates");
+            return section is null ? new CertificateOptions() : CertificateOptions.CreateFromSection(section);
         }
 
         public static byte[] AsByteArray(this IFileInfo fileInfo)

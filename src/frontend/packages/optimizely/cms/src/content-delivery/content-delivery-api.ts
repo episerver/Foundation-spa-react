@@ -26,6 +26,7 @@ export class ContentDeliveryAPI implements IContentDeliveryAPI
     protected readonly _config : Config
     protected readonly _baseUrl : URL
     protected _accessToken ?: string
+    protected readonly _customHeaders : Record<string, string> = {}
 
     public constructor(config : Partial<Config>)
     {
@@ -34,6 +35,10 @@ export class ContentDeliveryAPI implements IContentDeliveryAPI
             throw new Error("Invalid Content Delivery API Configuration")
         this._baseUrl = new URL(this._config.apiUrl)
         //this._config.debug = true;
+    }
+
+    public setHeader(header: string, value: string): void {
+        this._customHeaders[header] = value
     }
 
     public async login(username: string, password: string, client_id: "Default" = "Default") : Promise<AuthResponse>
@@ -380,7 +385,7 @@ export class ContentDeliveryAPI implements IContentDeliveryAPI
             defaultHeaders["X-PreviewMode"] = "edit"
         }
 
-        const requestHeaders = { ...defaultHeaders, ...config?.headers }
+        const requestHeaders = { ...defaultHeaders, ...this._customHeaders, ...config?.headers }
         //console.log("Request Headers", requestHeaders)
         return requestHeaders
     }
@@ -430,8 +435,10 @@ export class ContentDeliveryAPI implements IContentDeliveryAPI
                 output.urlParams['expand'] = '*'
             
         // Enforce edit mode propagation, if we're in edit mode
-        if (inEditMode(false))
+        if (inEditMode(false)) {
             output.urlParams['epieditmode'] = 'true'
+            output.urlParams['cb'] = (new Date()).getTime().toString()
+        }
 
         // Add branch into URL to simplify caching
         const branch = options?.branch || this._config.defaultBranch

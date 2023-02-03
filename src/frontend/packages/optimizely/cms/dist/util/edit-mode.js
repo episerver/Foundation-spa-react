@@ -14,9 +14,13 @@ const AdminPrefix = (process.env.OPTIMIZELY_DXP_ADMIN_PREFIX ?? 'EPiServer').spl
  */
 function getUrl(currentUrl) {
     var url = currentUrl ?
-        (typeof (currentUrl) === 'string' ? new URL(currentUrl) : currentUrl) :
+        (typeof (currentUrl) === 'string' ? new URL(currentUrl, 'http://localhost/') : currentUrl) :
         new URL(window.location.href);
     return url;
+}
+export function getCurrentUrl(defaultUrl) {
+    var cUrl = tryGetWindowUrl(defaultUrl);
+    return (typeof (cUrl) === 'string' ? new URL(cUrl, 'http://localhost/') : cUrl) ?? new URL('http://localhost');
 }
 /**
  * Helper method to get the Window URL (window.location.href), and fall back to

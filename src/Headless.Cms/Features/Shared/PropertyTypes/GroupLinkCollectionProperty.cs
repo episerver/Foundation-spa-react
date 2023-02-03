@@ -17,6 +17,9 @@ namespace HeadlessCms.Features.Shared.PropertyTypes
         public virtual LinkItemCollection ListCategories { get; set; }
     }
 
+    /// <summary>
+    /// The GroupLinkCollectionProperty is used by the MenuItemBlock definition
+    /// </summary>
     [PropertyDefinitionTypePlugIn]
     public class GroupLinkCollectionProperty : PropertyList<GroupLinkCollection>
     {

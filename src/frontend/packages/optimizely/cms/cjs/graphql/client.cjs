@@ -17,16 +17,16 @@ function validateConfig(config) {
 }
 exports.validateConfig = validateConfig;
 class Client {
-    constructor(config) {
-        this.config = Object.assign(Object.assign({}, defaultConfiguration), config);
-        globalThis.OptiGQL = this;
-    }
     get debug() { return this.config.debug; }
     get throwOnError() { return this.config.throwOnError; }
     get endpoint() {
         const apiUrl = new URL(GRAPHQL_SERVICE_PATH, this.config.domain);
         apiUrl.searchParams.set('auth', this.config.token);
         return apiUrl;
+    }
+    constructor(config) {
+        this.config = Object.assign(Object.assign({}, defaultConfiguration), config);
+        globalThis.OptiGQL = this;
     }
     query(query, variables, requestInit) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {

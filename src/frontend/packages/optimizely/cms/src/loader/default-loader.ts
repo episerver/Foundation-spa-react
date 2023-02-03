@@ -1,11 +1,8 @@
 import type { ComponentType } from 'react'
-import type { ComponentLoader, DynamicProps } from "./types"
-import type { ContextType } from '../provider/context'
+import type { ComponentLoader, DynamicProps, ComponentsCache } from "./types"
 
-const debug = false; //process.env['NODE_ENV'] == 'development'
+const debug = process.env['NODE_ENV'] == 'development'
 const componentPromises : Record<string, Promise<any>> = {}
-
-export type ComponentsCache = Required<ContextType>['components']
 
 /**
  * Default implementation of the component loader, assuming all
@@ -24,14 +21,9 @@ export class DefaultComponentLoader implements ComponentLoader
 
     public constructor(cache ?: ComponentsCache)
     {
-        if (debug) console.log("Default-Loader.newInstance")
-
         this.cache = cache ?? {}
-
-        // try making the component loader available in the browser
-        try {
-            (window as any).__dcl__ = this;
-        } catch (e) {}
+        if (debug)
+            console.log("Optimizely - CMS: DefaultComponentLoader.newInstance")
     }
 
     public buildComponentImport(path: string[], prefix ?: string, tag : string = "") 
@@ -54,13 +46,16 @@ export class DefaultComponentLoader implements ComponentLoader
     public dynamicSync<P = DynamicProps>(path: string[], prefix?: string, tag: string = ""): ComponentType<P>
     {
         const dynamicPath = this.buildComponentImport(path, prefix, tag) 
-        if (!this.cache[dynamicPath])
+        if (!this.cache[dynamicPath]) {
+            if (debug) console.warn("Optimizely - CMS: DefaultComponentLoader.dynamicSync component not cached: ", `@components/cms/${ dynamicPath }`)
             throw new Error(`Component ${ dynamicPath } cannot be resolved synchronously`)
+        }
         return this.cache[dynamicPath] as ComponentType<P>
     }
 
     public async dynamicAsync<P = DynamicProps>(path: string[], prefix?: string, tag: string = "") : Promise<ComponentType<P>>
     {
+        if (debug) console.log("Optimizely - CMS: DefaultComponentLoader.dynamicAsync", `@components/cms/${ this.buildComponentImport(path, prefix, tag) }`)
         const dynamicModule = await this.dynamicModuleAsync<{default ?: ComponentType<P>}>(path, prefix, tag)
         if (!dynamicModule?.default)
             throw new Error(`Module ${ this.buildComponentImport(path, prefix, tag) } does not have a default export (1)`)
@@ -78,6 +73,7 @@ export class DefaultComponentLoader implements ComponentLoader
     public dynamicModuleSync<MT>(path: string[], prefix?: string, tag: string = "") : MT | undefined
     {  
         const dynamicPath = this.buildComponentImport(path, prefix, tag) 
+        if (debug) console.log("Optimizely - CMS: DefaultComponentLoader.dynamicModuleSync", `@components/cms/${dynamicPath}`)
         throw new Error(`Module "@components/cms/${dynamicPath}" cannot be loaded synchronously`)
     }
 
@@ -87,16 +83,15 @@ export class DefaultComponentLoader implements ComponentLoader
         if (typeof(dynamicPath) !== 'string' || dynamicPath.length < 1) return undefined
 
         if (Object.getOwnPropertyNames(componentPromises).includes(dynamicPath) && typeof(componentPromises[dynamicPath].then) === 'function')
-        {
             return componentPromises[dynamicPath];
-        }
 
-        if (debug) console.log("Default-Loader.dynamicModuleAsync", `@components/cms/${dynamicPath}`, Object.getOwnPropertyNames(componentPromises))
+        if (debug) console.log("Optimizely - CMS: DefaultComponentLoader.dynamicModuleAsync", `@components/cms/${dynamicPath}`)
         const dynamicModule : Promise<MT> = import(
             /* webpackInclude: /\.(js|json|jsx|ts|tsx)$/ */
             /* webpackExclude: /\.(md|css)$/ */
-            /* webpackMode: "eager" */
+            /* webpackMode: "lazy-once" */
             /* webpackPrefetch: true */
+            /* webpackChunkName: "component.[request]" */
             `@components/cms/${dynamicPath}`
         ).then(m => {
             (dynamicModule as Promise<MT> & {result?: MT}).result = m;
@@ -113,7 +108,7 @@ export class DefaultComponentLoader implements ComponentLoader
         } catch (e) {
             if (debug) {
                 const dynamicPath = this.buildComponentImport(path, prefix, tag)
-                console.warn("Default-Loader.tryDynamicSync","Error loading component", dynamicPath)
+                console.warn("Optimizely - CMS: DefaultComponentLoader.tryDynamicSync","Error loading component", dynamicPath)
             }
         }
         return undefined;
@@ -126,7 +121,7 @@ export class DefaultComponentLoader implements ComponentLoader
         } catch (e) {
             if (debug) {
                 const dynamicPath = this.buildComponentImport(path, prefix, tag)
-                console.warn("Default-Loader.tryDynamicModuleSync","Error loading component", dynamicPath)
+                console.warn("Optimizely - CMS: DefaultComponentLoader.tryDynamicModuleSync","Error loading component", dynamicPath)
             }
         }
         return undefined;
@@ -137,7 +132,7 @@ export class DefaultComponentLoader implements ComponentLoader
         return this.dynamicAsync<P>(path, prefix, tag).catch(e => {
             if (debug) {
                 const dynamicPath = this.buildComponentImport(path, prefix, tag)
-                console.warn("Default-Loader.tryDynamicAsync","Error loading component", dynamicPath)
+                console.warn("Optimizely - CMS: DefaultComponentLoader.tryDynamicAsync","Error loading component", dynamicPath)
             }
             return undefined
         })
@@ -148,9 +143,11 @@ export class DefaultComponentLoader implements ComponentLoader
         return this.dynamicModuleAsync(path, prefix, tag).catch(e => {
             if (debug) {
                 const dynamicPath = this.buildComponentImport(path, prefix, tag)
-                console.warn("Default-Loader.tryDynamicModuleAsync","Error loading component", dynamicPath)
+                console.warn("Optimizely - CMS: DefaultComponentLoader.tryDynamicModuleAsync","Error loading component", dynamicPath)
             }
             return undefined
         })
     }
 }
+
+export default DefaultComponentLoader

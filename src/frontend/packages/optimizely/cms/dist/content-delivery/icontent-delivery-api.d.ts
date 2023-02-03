@@ -5,7 +5,7 @@ import fetch from 'cross-fetch';
  * Interface describing additional request parameters
  * for requesting content.
  */
-export declare type ContentRequest<ContentType extends IContent = IContentData> = {
+export type ContentRequest<ContentType extends IContent = IContentData> = {
     /**
      * Language of the content to request, will keep the browser
      * default if not set explicitly
@@ -40,9 +40,9 @@ export declare type ContentRequest<ContentType extends IContent = IContentData> 
      */
     editMode?: boolean;
 };
-export declare type Fetch = typeof fetch extends Promise<infer R> ? R : typeof fetch;
-export declare type FetchRequest = Required<Parameters<Fetch>>[1];
-export declare type RequestConfig<T extends IContent = IContent> = ContentRequest<T> & {
+export type Fetch = typeof fetch extends Promise<infer R> ? R : typeof fetch;
+export type FetchRequest = Required<Parameters<Fetch>>[1];
+export type RequestConfig<T extends IContent = IContent> = ContentRequest<T> & {
     /**
      * The Request Method
      */
@@ -61,7 +61,7 @@ export declare type RequestConfig<T extends IContent = IContent> = ContentReques
      */
     timeOut?: number;
 };
-export declare type ContentSearchResult<T extends IContent = IContentData> = {
+export type ContentSearchResult<T extends IContent = IContentData> = {
     totalMatching: number;
     results: T[];
 };
@@ -69,7 +69,7 @@ export declare type ContentSearchResult<T extends IContent = IContentData> = {
  * Get the base type, if the given type is an array, otherwise return the
  * input type
  */
-export declare type BaseType<T> = T extends (infer X)[] ? X : T;
+export type BaseType<T> = T extends (infer X)[] ? X : T;
 /**
  * Ensure that the given type is (a descendant) of IContent, if not
  * return IContent.
@@ -77,8 +77,8 @@ export declare type BaseType<T> = T extends (infer X)[] ? X : T;
  * Usefull for generic parameter types that require an IContent as generic
  * parameter, whilest the function allows other types to be provided as well
  */
-export declare type IContentIfOther<T> = T extends IContent ? T : IContent;
-export declare type IContentDeliveryAPIStatic = {
+export type IContentIfOther<T> = T extends IContent ? T : IContent;
+export type IContentDeliveryAPIStatic = {
     new (config: Config): IContentDeliveryAPI;
 };
 /**
@@ -90,7 +90,14 @@ export declare type IContentDeliveryAPIStatic = {
  * request/response caching, however that may or may not be desired for your
  * use case.
  */
-export declare type IContentDeliveryAPI = {
+export type IContentDeliveryAPI = {
+    /**
+     * Set a header for all outgoing requests through the ContentDeliveryAPI
+     *
+     * @param   header      The name of the header to set
+     * @param   value       The value of the header
+     */
+    setHeader(header: string, value: string): void;
     /**
      * Perform a login call against the OAuth endpoint of the ContentDeliveryAPI
      * V2

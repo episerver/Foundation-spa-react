@@ -1,8 +1,10 @@
 using EPiServer.ServiceLocation;
 using EPiServer.Shell.Security;
 using HeadlessCms.Infrastructure.Installers;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,13 +21,15 @@ namespace HeadlessCms.Features.InitializeInstance
     {
         private readonly UIUserProvider _uIUserProvider;
         private readonly UIRoleProvider _uIRoleProvider;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly Injected<SchemaInstaller> _schemaInstaller;
         private readonly Injected<DataInstaller> _dataInstaller;
 
-        public InitializeInstanceController(UIUserProvider uIUserProvider, UIRoleProvider uIRoleProvider)
+        public InitializeInstanceController(UIUserProvider uIUserProvider, UIRoleProvider uIRoleProvider, IWebHostEnvironment webHostEnvironment)
         {
             _uIUserProvider = uIUserProvider;
             _uIRoleProvider = uIRoleProvider;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         /// <summary>
@@ -42,6 +46,14 @@ namespace HeadlessCms.Features.InitializeInstance
         {
             if (options is null) options = new();
             InitializeInstanceResponse response = new();
+
+            if (_webHostEnvironment.IsProduction())
+            {
+                response.Success = false;
+                response.Messages.Add("Webservice disabled");
+                return StatusCode(500, response);
+            }
+
             response.Success = true;
             if (options.CreateFirstUser)
             {

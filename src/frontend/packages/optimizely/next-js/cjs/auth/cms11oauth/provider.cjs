@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CMS11OAuth = void 0;
 const tslib_1 = require("tslib");
-const CredProvider = require("next-auth/providers/credentials");
+const CredProvider = tslib_1.__importStar(require("next-auth/providers/credentials"));
 const client_1 = require("./client");
 const CMS11OAuth = options => {
     var _a;

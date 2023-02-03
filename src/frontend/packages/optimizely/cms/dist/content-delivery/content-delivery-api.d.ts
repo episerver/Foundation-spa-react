@@ -8,7 +8,9 @@ export declare class ContentDeliveryAPI implements IContentDeliveryAPI {
     protected readonly _config: Config;
     protected readonly _baseUrl: URL;
     protected _accessToken?: string;
+    protected readonly _customHeaders: Record<string, string>;
     constructor(config: Partial<Config>);
+    setHeader(header: string, value: string): void;
     login(username: string, password: string, client_id?: "Default"): Promise<AuthResponse>;
     refresh(refresh_token: string, client_id?: "Default"): Promise<AuthResponse>;
     setAccessToken(newToken: string | undefined): void;

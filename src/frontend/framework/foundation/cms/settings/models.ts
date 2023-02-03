@@ -21,3 +21,7 @@ export type SettingsContainerData<T extends IContent = IContentData> = SettingsR
     settingGroup: string,
     settings: T
 }
+
+export type SettingsHookData<T extends IContent = IContentData> = SettingsContainerData<T> | {
+    error: any
+}

@@ -2,12 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isNetworkAuthError = exports.isNetworkError = exports.NetworkError = void 0;
 class NetworkError extends Error {
-    constructor(message, response) {
-        super(message);
-        this._type = "NetworkError";
-        this._response = response;
-        console.error(message);
-    }
     /**
      * @deprecated      Do not use this as this will make your code dependant on the Response implementations
      */
@@ -22,6 +16,12 @@ class NetworkError extends Error {
     }
     get statusText() {
         return this._response.statusText;
+    }
+    constructor(message, response) {
+        super(message);
+        this._type = "NetworkError";
+        this._response = response;
+        console.error(message);
     }
 }
 exports.NetworkError = NetworkError;

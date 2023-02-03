@@ -11,16 +11,22 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
 {
     public static class StartupExtensions
     {
+        /// <summary>
+        /// Helper method to contain the needed stpes to configure the OpenID Connect integration within the CMS
+        /// </summary>
+        /// <typeparam name="TUser">The object describing the user</typeparam>
+        /// <param name="services">The service container on which to operate</param>
+        /// <param name="configuration">The current application configuration</param>
+        /// <param name="webhost">The current application webhost</param>
+        /// <param name="configureOptions">Allows for overriding the OpenID configuration using a callback</param>
+        /// <returns>The service container with the services added</returns>
         public static IServiceCollection AddAndConfiureOpenIDConnect<TUser>(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment webhost, Action<OpenIDConnectOptions>? configureOptions = null) where TUser : ApplicationUser
         {
             var config = configuration.GetCertificateOptions();
-
-            // We shouldn't need runtime acces to this configuration, but we just add it in case
-            services.AddOptions<CertificateOptions>("Foundation:Certificates").BindConfiguration("Foundation:Certificates");
-
-            var signingCertificate = config.GetSigningCertificate(webhost);
-            var encryptionCertificate = config.GetEncryptionCertificate(webhost);
-            var useDevelopmentCertificate = signingCertificate is null || encryptionCertificate is null || config.UseDevelopmentCertificate;
+            var useDevelopmentCertificate = config.UseDevelopmentCertificate;
+            var signingCertificate = config.UseDevelopmentCertificate ? null : config.GetSigningCertificate(webhost);
+            var encryptionCertificate = config.UseDevelopmentCertificate ? null : config.GetEncryptionCertificate(webhost);
+            
             services.AddOpenIDConnect<TUser>(
                 useDevelopmentCertificate: useDevelopmentCertificate,
                 signingCertificate: signingCertificate,

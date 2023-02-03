@@ -2,7 +2,7 @@ import { FunctionComponent, ComponentType, PropsWithChildren } from 'react';
 /**
  * Component properties for the EditableField component
  */
-export declare type Props = {
+export type Props = {
     /**
      * The name of the field, as defined within the content model
      */
@@ -23,6 +23,11 @@ export declare type Props = {
      * this allows the usage of inline on rich text fields
      */
     html?: string;
+    /**
+     * When set to true or false it will override the detection of the current
+     * edit mode.
+     */
+    contentEditable?: boolean;
 };
 /**
  * The EditableField provides the needed wrapping - when in edit mode -

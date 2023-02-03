@@ -49,7 +49,7 @@ export const LocationListPageComponent : IContentComponent<LocationListPage, Add
                             <Typography variant="body2" color="text.secondary">{ pv(loc, "mainIntro") }</Typography>
                         </CardContent>
                         <CardActions>
-                            <Link href={ nu(loc.url ?? loc.contentLink.url ?? '#') } passHref>
+                            <Link href={ nu(loc.url ?? loc.contentLink.url ?? '#') } passHref legacyBehavior>
                                 { /* @ts-expect-error React18 types causing issues here */ }
                                 <Button size="small" color="primary" variant="contained" component="a">Discover { loc.name }</Button>
                             </Link>

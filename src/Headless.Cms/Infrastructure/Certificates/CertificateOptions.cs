@@ -6,9 +6,11 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
 using System;
+using Microsoft.Extensions.Configuration;
 
 namespace HeadlessCms.Infrastructure.Certificates
 {
+    [Options(ConfigurationSection = "Foundation:Certificates")]
     public class CertificateOptions
     {
         public bool UseDevelopmentCertificate { get; set; } = false;
@@ -30,12 +32,27 @@ namespace HeadlessCms.Infrastructure.Certificates
                     var rawData = certFileInfo.AsByteArray();
                     return new X509Certificate2(rawData, passPhrase, X509KeyStorageFlags.EphemeralKeySet);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Console.WriteLine($"[ERROR] Cannot open the certificate {certFile} due to {e.Message}");
                     return default;
                 }
             }
+            Console.WriteLine($"[ERROR] Could not locate the certificate {certFile}");
             return default;
+        }
+
+        public static CertificateOptions CreateFromSection(IConfigurationSection section)
+        {
+            var opts = new CertificateOptions() {
+                UseDevelopmentCertificate = section.GetValue<bool?>("UseDevelopmentCertificate") ?? false,
+                Directory = section.GetValue<string?>("Directory") ?? "certificates",
+                SigningCertificate = section.GetValue<string?>("SigningCertificate") ?? "my.pfx",
+                SigningCertificatePassPhrase = section.GetValue<string?>("SigningCertificatePassPhrase") ?? "Headless.Cms",
+                EncryptionCertificate = section.GetValue<string?>("EncryptionCertificate") ?? "my.pfx",
+                EncryptionCertificatePassPhrase = section.GetValue<string?>("EncryptionCertificatePassPhrase") ?? "Headless.Cms"
+            };
+            return opts;
         }
     }
 }

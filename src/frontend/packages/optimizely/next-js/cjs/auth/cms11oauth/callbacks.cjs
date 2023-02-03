@@ -3,16 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SessionCallback = exports.JWTCallback = void 0;
 const tslib_1 = require("tslib");
 const guards_1 = require("./guards");
-const client_1 = require("./client");
-/**
- * Update the JWT Token to cary the additional fields needed to support
- * Optimizely CMS 11 authentication
- *
- * @param       params      The handler parameters
- * @returns     The JWT Token
- */
+const client_1 = tslib_1.__importDefault(require("./client"));
 const JWTCallback = baseUrl => (params) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    // Read the current token and user
     const currentToken = params.token;
     const currentUser = params.user;
     if ((0, guards_1.isUser)(currentUser) && !currentToken.refresh) {
@@ -25,20 +17,13 @@ const JWTCallback = baseUrl => (params) => tslib_1.__awaiter(void 0, void 0, voi
         const api = new client_1.default(baseUrl);
         const userToken = yield api.refresh(currentToken.refresh);
         if (!userToken)
-            return {}; // we are no longer authenticated, so remove the data
+            return {};
         const token = Object.assign(Object.assign({}, currentToken), { refresh: userToken.refresh_token, auth: userToken.access_token, expires: userToken['.expires'] });
         return token;
     }
     return currentToken;
 });
 exports.JWTCallback = JWTCallback;
-/**
- * Update the Session to cary the additional fields needed to support
- * Optimizely CMS 11 authentication
- *
- * @param       params      The handler parameters
- * @returns     The Session
- */
 const SessionCallback = baseUrl => (params) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     const session = params.session;

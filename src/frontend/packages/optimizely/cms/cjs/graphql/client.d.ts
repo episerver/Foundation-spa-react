@@ -1,8 +1,8 @@
 import type { ClientConfiguration, QueryResponse } from './types';
 import fetch from 'cross-fetch';
-declare type Fetch = typeof fetch extends Promise<infer R> ? R : typeof fetch;
-declare type FetchConfig = Parameters<Fetch>[1];
-export declare type Response<T = any> = QueryResponse<T, Fetch>;
+type Fetch = typeof fetch extends Promise<infer R> ? R : typeof fetch;
+type FetchConfig = Parameters<Fetch>[1];
+export type Response<T = any> = QueryResponse<T, Fetch>;
 export declare function validateConfig(config: any): config is ClientConfiguration;
 export declare class Client {
     private config;

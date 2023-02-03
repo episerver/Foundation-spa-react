@@ -3,7 +3,7 @@ import type { LandingPage } from 'schema'
 
 import { readValue as pv } from '@optimizely/cms/utils'
 import Link from 'next/link'
-import { Typography, Card, CardMedia, CardContent, CardActions, Button } from '@mui/material'
+import { Typography, Card, CardMedia, CardContent, CardActions, Button, Box } from '@mui/material'
 import { HtmlContent } from '@components/shared/Utils'
 
 const defaultName = "Landing Page"
@@ -20,11 +20,13 @@ export const LandingPageBlockComponent : IContentComponent<LandingPage> = props 
     const headingColor = undefined //pv(props.content, "titleColor") ?? undefined
     const linkUrl = pv(props.content, "url") ?? '#'
     const headingText = pv(props.content, "name") ?? defaultName
+    //const padding = Number.parseInt((pv(props.content, "padding") ?? "1").split('-').slice(-1)[0]) ?? 0
+    const margin = Number.parseInt((pv(props.content, "margin") ?? "1").split('-').slice(-1)[0]) ?? 0
 
-    return <Card sx={{
-            backgroundColor,
+    return <Box sx={{ backgroundColor: 'background.default'}}><Card sx={{
             opacity,
-            height: '100%'
+            height: '100%',
+            margin
         }}>
             { imageUrl ? <CardMedia component="img" height="140" image={ imageUrl } alt=""/> : <></> }
             <CardContent>
@@ -34,11 +36,11 @@ export const LandingPageBlockComponent : IContentComponent<LandingPage> = props 
                 </Typography>
             </CardContent>
             { linkUrl ? <CardActions>
-                <Link href={ rls(linkUrl) } passHref>
-                    <Button size="medium" variant="outlined">Continue reading: { headingText.toLocaleLowerCase() }</Button>
+                <Link href={ rls(linkUrl) } passHref legacyBehavior>
+                    <Button size="medium" variant="contained" color="secondary">Continue reading: { headingText.toLocaleLowerCase() }</Button>
                 </Link>
             </CardActions> : <></> }
-        </Card>
+        </Card></Box>
 }
 
 LandingPageBlockComponent.displayName = "Optimizely Foundation: Standard Landing Block"

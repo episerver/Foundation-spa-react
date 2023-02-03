@@ -1,13 +1,18 @@
-import type { NextPage, GetStaticPathsContext, GetStaticPathsResult, GetStaticPropsContext, GetStaticPropsResult, GetServerSideProps, GetServerSidePropsResult, NextApiRequest, Redirect } from 'next'
+import type { NextPage, GetStaticProps, GetStaticPathsContext, GetStaticPathsResult, GetStaticPropsResult, GetServerSideProps, GetServerSidePropsResult, NextApiRequest, Redirect, PreviewData } from 'next'
+import type { ComponentLoader, IContentDeliveryAPI } from '@optimizely/cms/types'
+import type { ParsedUrlQuery } from 'querystring'
 import { getToken } from 'next-auth/jwt'
 import React from 'react'
 import { useRouter } from 'next/router'
 import { getPagesForLocale, EditMode } from '@optimizely/cms/utils'
-import { ContentDelivery, ContentComponent, useAndInitOptimizely as useOptimizely } from '@optimizely/cms'
-import { usePageContent, loadPageContentByUrl, loadPageContent } from '../hooks'
+import createContentDeliveryClient from '@optimizely/cms/content-delivery'
+import { useEditMode } from '@optimizely/cms/context'
+import ContentComponent from '@optimizely/cms/content-component'
+import { usePageContent, loadPageContentByUrl, loadPageContent } from '../hooks/use-page-content'
 import * as Auth from '../auth/cms12oidc'
 
-const inDebugMode = false;
+const DEBUG_ENABLED = process.env.NODE_ENV != 'production';
+const DXP_DEBUG = false;
 
 export type OptimizelyCmsPageProps = {
     /**
@@ -94,10 +99,21 @@ export async function resolveAwaitableProps(toResolve: { props: OptimizelyCmsPag
  */
 export async function getStaticPaths(context : GetStaticPathsContext) : Promise<GetStaticPathsResult>
 {
-    console.time("@optimizely/next-js/components/cms-page/getStaticPaths")
+    if (DEBUG_ENABLED) {
+        console.log("Optimizely - Next.JS: CMS-Page > getStaticPaths :: Start")
+        console.time("Optimizely - Next.JS: CMS-Page > getStaticPaths")
+    }
+    
     const { defaultLocale, locales } = context
-    const api = ContentDelivery.createInstance({ debug: inDebugMode, defaultBranch: defaultLocale })
-    const pages = (await Promise.all((locales ?? []).map((loc: string) => getPagesForLocale(api, loc)))).flat(1)
+    if (DEBUG_ENABLED) {
+        console.log("Optimizely - Next.JS: CMS-Page > getStaticPaths :: Default Locale", defaultLocale)
+        console.log("Optimizely - Next.JS: CMS-Page > getStaticPaths :: Locales", locales)
+    }
+    const api = createContentDeliveryClient({ debug: DXP_DEBUG, defaultBranch: defaultLocale })
+    const pages = (await Promise.all((locales ?? []).map((loc: string) => {
+        if (DEBUG_ENABLED)  console.log("Optimizely - Next.JS: CMS-Page > getStaticPaths :: Fetching paths for locale", loc)
+        return getPagesForLocale(api, loc, { debug: DEBUG_ENABLED })
+    }))).flat(1)
     const homepages = (locales ?? []).map(x => `/${x}/`)
     const paths = pages
         .filter(c => (c.contentType?.indexOf('SysRecycleBin') ?? -1) < 0) // Filter out "Recycle bin"
@@ -111,12 +127,18 @@ export async function getStaticPaths(context : GetStaticPathsContext) : Promise<
             return true
         })
     //const paths = locales?.map(locale => `/${locale}/`) ?? []
-    console.timeEnd("@optimizely/next-js/components/cms-page/getStaticPaths")
+    console.timeEnd("Optimizely - Next.JS: CMS-Page > getStaticPaths")
     return {
         paths,
         fallback: 'blocking' // Fallback to SSR when there's no SSG version of the page
     }
 }
+
+type CmsPageGetStaticProps<Q extends ParsedUrlQuery = ParsedUrlQuery, D extends PreviewData = PreviewData> = (
+        context: Parameters<GetStaticProps<OptimizelyCmsPageProps, Q, D>>[0],
+        cLoader?: ComponentLoader,
+        api?: IContentDeliveryAPI
+    ) => ReturnType<GetStaticProps<OptimizelyCmsPageProps, Q, D>>
 
 /**
  * Resolve the properties needed to render the current path from the content 
@@ -125,27 +147,36 @@ export async function getStaticPaths(context : GetStaticPathsContext) : Promise<
  * @param       context     The context provided by Next.JS
  * @returns     The Page properties
  */
-export async function getStaticProps(context: GetStaticPropsContext<OptimizelyCmsPageUrlParams>) : Promise<GetStaticPropsResult<OptimizelyCmsPageProps>>
+export const getStaticProps : CmsPageGetStaticProps = async ({ params, locale, defaultLocale }, cLoader, cApi) =>
 {
+    if (DEBUG_ENABLED) {
+        console.log("Optimizely - Next.JS: CMS-Page > getStaticProps :: Start")
+        console.time("Optimizely - Next.JS: CMS-Page > getStaticProps");
+    }
     // Read the context
-    const { params, locale, defaultLocale } = context
     const currentLocale = locale ?? defaultLocale ?? 'en'
 
     // Create the content-api client and resolve the actual content item
-    const page = params?.page ?? []
-    const api = ContentDelivery.createInstance({ debug: inDebugMode, defaultBranch: defaultLocale })
+    const page = !Array.isArray(params?.page) ? [ params?.page ] : (params?.page ?? [])
+    const api = cApi ?? createContentDeliveryClient({ debug: DXP_DEBUG, defaultBranch: defaultLocale })
     const path = page.length > 0 && page[0] != currentLocale ? `/${ currentLocale }/${ page.join("/") ?? '' }` : "/"
     
     // This is for a published page URL, not a preview/edit URL, so always loading the published code
-    const props = await loadPageContentByUrl(path, api, currentLocale, false)
-    if (!props)
-        return { notFound: true, revalidate: 1 }
+    const props = await loadPageContentByUrl(path, api, currentLocale, false, cLoader)
 
+    if (DEBUG_ENABLED) {
+        console.log("Optimizely - Next.JS: CMS-Page > getStaticProps :: Path:", path)
+        console.log("Optimizely - Next.JS: CMS-Page > getStaticProps :: Properties:", Object.getOwnPropertyNames(props ?? {}).join("; "))
+        console.log("Optimizely - Next.JS: CMS-Page > getStaticProps :: Base Type:", props?.prefix)
+        console.log("Optimizely - Next.JS: CMS-Page > getStaticProps :: Components:", props?.component)
+        console.log("Optimizely - Next.JS: CMS-Page > getStaticProps :: Fallback keys:", Object.getOwnPropertyNames(props?.fallback ?? {}).join("; "))
+        console.timeEnd("Optimizely - Next.JS: CMS-Page > getStaticProps")
+    }
     // Return the page props
-    return { 
+    return props ? { 
         props: { ...props, locale: currentLocale, inEditMode: false },
         revalidate: 60
-    }
+    } : { notFound: true, revalidate: 1 }
 }
 
 /**
@@ -178,7 +209,7 @@ export const getServerSideProps : GetServerSideProps<OptimizelyCmsPageProps, Opt
     const locale = context.locales?.includes(urlLocale) ? urlLocale : context.locale ?? context.defaultLocale ?? 'en'
 
     // Create api & fetch content
-    const api = ContentDelivery.createInstance({
+    const api = createContentDeliveryClient({
         defaultBranch: locale,
         getAccessToken: async () => {
             return (token?.accessToken as string|undefined) ?? ''
@@ -202,15 +233,28 @@ export const getServerSideProps : GetServerSideProps<OptimizelyCmsPageProps, Opt
 }
 
 export const OptimizelyCmsPage : NextPage<OptimizelyCmsPageProps, OptimizelyCmsPageInitialProps> = (props: OptimizelyCmsPageProps) => {
-    const opti = useOptimizely(props.inEditMode)
+    if (DEBUG_ENABLED) {
+        console.groupCollapsed("Optimizely - Next.JS: CMS-Page > render")
+    }
+    const opti = useEditMode()
     const router = useRouter()
     const locale = router.locale ?? router.defaultLocale
-    const pageContent = usePageContent(props.contentId ?? '', opti.inEditMode, locale)
-    const content = pageContent.data
-    if (!content) 
-        return <></>
-
-    return  <ContentComponent { ...props } content={ content }  />
+    const inEditMode = props.inEditMode ?? opti.inEditMode
+    if (DEBUG_ENABLED) {
+        console.log("Optimizely - Next.JS: CMS-Page > render :: contentId: ", props.contentId ?? '-')
+        console.log("Optimizely - Next.JS: CMS-Page > render :: inEditMode: ", inEditMode)
+        console.log("Optimizely - Next.JS: CMS-Page > render :: locale: ", locale)
+    }
+    const { data: iContent } = usePageContent(props.contentId ?? '', inEditMode, locale)
+    if (DEBUG_ENABLED) {
+        console.log("Optimizely - Next.JS: CMS-Page > render :: iContent: ", iContent)
+    }
+    const output =  iContent ? <ContentComponent { ...props } content={ iContent }  /> : <div>Loading <span>{ props.contentId }</span></div>
+    if (DEBUG_ENABLED) {
+        console.groupEnd()
+    }
+    return output;
+    
 }
 
 

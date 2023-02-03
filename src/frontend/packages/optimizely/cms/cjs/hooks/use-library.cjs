@@ -62,7 +62,7 @@ const useLibrary = (script, globalVar, doNotLoad = () => false) => {
             if (cancelled)
                 throw new Error("Cancelled process");
             lib.current = x;
-            setStatus(UseLibraryStatus.Ready);
+            (0, react_1.startTransition)(() => setStatus(UseLibraryStatus.Ready));
         }).catch(() => { });
         return () => {
             cancelled = true;

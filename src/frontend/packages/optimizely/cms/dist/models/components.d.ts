@@ -1,30 +1,32 @@
 import type { ComponentType } from 'react';
 import type { IContent, IContentData } from './icontent';
 import type { IContentDeliveryAPI } from '../content-delivery';
-export declare type GetStaticPropsContext = {
+import type { ComponentLoader } from '../loader/types';
+export type GetStaticPropsContext = {
+    api: IContentDeliveryAPI;
+    locale?: string;
+    inEditMode?: boolean;
+    loader?: ComponentLoader;
+};
+export type GetDynamicPropsContext = {
     api: IContentDeliveryAPI;
     locale?: string;
     inEditMode?: boolean;
 };
-export declare type GetDynamicPropsContext = {
-    api: IContentDeliveryAPI;
-    locale?: string;
+export type GetContentFieldsContext = {
     inEditMode?: boolean;
 };
-export declare type GetContentFieldsContext = {
-    inEditMode?: boolean;
-};
-export declare type WithSwrFallback<T> = T & {
+export type WithSwrFallback<T> = T & {
     fallback?: Record<string, any>;
 };
-export declare type IContentComponentProps<ICT extends IContent = IContentData, AP = any> = {
+export type IContentComponentProps<ICT extends IContent = IContentData, AP = any> = {
     content?: ICT;
     locale?: string;
 } & Partial<AP> & {
     [key: string]: any;
 };
-export declare type IContentFieldFilter<ICT extends IContent = IContentData> = (keyof ICT)[] | undefined;
-export declare type IContentComponent<ICT extends IContent = IContentData, AP = any> = ComponentType<IContentComponentProps<ICT, AP>> & {
+export type IContentFieldFilter<ICT extends IContent = IContentData> = (keyof ICT)[] | undefined;
+export type IContentComponent<ICT extends IContent = IContentData, AP = any> = ComponentType<IContentComponentProps<ICT, AP>> & {
     /**
      * Helper method that can be invoked on the actual component to fetch the additional
      * properties that it needs for static site generation, based upon the content item

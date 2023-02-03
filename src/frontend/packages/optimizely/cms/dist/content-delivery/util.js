@@ -1,3 +1,26 @@
+export var OptiEndpoints;
+(function (OptiEndpoints) {
+    //'Content'    = 'api/episerver/v{ $version }/{ $contentMode }/{ $contentId }', // ContentManagement restricts to CommonDraft only....
+    OptiEndpoints["Content"] = "api/episerver/v{ $version }/content/{ $contentId }";
+    OptiEndpoints["Children"] = "api/episerver/v{ $version }/content/{ $contentId }/children";
+    OptiEndpoints["Ancestors"] = "api/episerver/v{ $version }/content/{ $contentId }/ancestors";
+    OptiEndpoints["Site"] = "api/episerver/v{ $version }/site/{ $siteId }";
+    OptiEndpoints["Search"] = "api/episerver/v{ $version }/search/content/";
+    OptiEndpoints["OAuth"] = "api/episerver/auth/token";
+})(OptiEndpoints || (OptiEndpoints = {}));
+export var OptiQueryParams;
+(function (OptiQueryParams) {
+    OptiQueryParams["EditMode"] = "epieditmode";
+    OptiQueryParams["Project"] = "epiprojects";
+    OptiQueryParams["Channel"] = "epichannel";
+    OptiQueryParams["VisitorGroup"] = "visitorgroupsByID";
+    OptiQueryParams["CommonDrafts"] = "commondrafts";
+})(OptiQueryParams || (OptiQueryParams = {}));
+export var OptiContentMode;
+(function (OptiContentMode) {
+    OptiContentMode["Delivery"] = "content";
+    OptiContentMode["Edit"] = "contentmanagement";
+})(OptiContentMode || (OptiContentMode = {}));
 export const DEFAULT_VERSION = '3.0';
 export function getEndpoint(endpoint, version = DEFAULT_VERSION) {
     const vars = { version };
@@ -20,8 +43,8 @@ export function buildUrl(baseUrl, endpoint, variables, version = DEFAULT_VERSION
     if (!variables['version'])
         variables['version'] = version;
     //Make sure we have a valid content mode
-    if (!variables['contentMode'] || (variables['contentMode'] !== "content" /* OptiContentMode.Delivery */ && variables['contentMode'] !== "contentmanagement" /* OptiContentMode.Edit */)) {
-        variables['contentMode'] = variables['epieditmode'] === 'True' ? "contentmanagement" /* OptiContentMode.Edit */ : "content" /* OptiContentMode.Delivery */;
+    if (!variables['contentMode'] || (variables['contentMode'] !== OptiContentMode.Delivery && variables['contentMode'] !== OptiContentMode.Edit)) {
+        variables['contentMode'] = variables['epieditmode'] === 'True' ? OptiContentMode.Edit : OptiContentMode.Delivery;
     }
     // Build the path
     const path = endpoint.replace(/\{\s*\$([^\s]+?)\s*\}/gi, (fullMatch, varName, index, input) => {
@@ -68,7 +91,7 @@ export function inEpiserverShell() {
 export function inEditMode(defaultValue = false) {
     try {
         const url = new URL(window.location.href);
-        if (url.searchParams.has("epieditmode" /* OptiQueryParams.EditMode */) && url.searchParams.get("epieditmode" /* OptiQueryParams.EditMode */)?.toLowerCase() == 'true')
+        if (url.searchParams.has(OptiQueryParams.EditMode) && url.searchParams.get(OptiQueryParams.EditMode)?.toLowerCase() == 'true')
             return true;
         return window?.epi?.inEditMode === true;
     }

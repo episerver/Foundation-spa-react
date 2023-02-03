@@ -3,7 +3,7 @@ import ContentLink from './content-link';
 import ContentTypePath from './content-type-path';
 import Language from './language';
 import LanguageList from './language-list';
-export declare type IContent = {
+export type IContent = {
     contentLink: ContentLink;
     name: PropertyLongString;
     language: Language;
@@ -24,11 +24,11 @@ export declare const enum ContentStatus {
     Published = "Published",
     Draft = "Draft"
 }
-export declare type IContentData = IContent & Record<string, Property<any>>;
-export declare type CatalogContent = IContent & {
+export type IContentData = IContent & Record<string, Property<any>>;
+export type CatalogContent = IContent & {
     code: Property<string | null | undefined, never, 'PropertyLongString'>;
 };
-export declare type CatalogContentData = IContent & {
+export type CatalogContentData = IContent & {
     code: Property<string | null | undefined, never, 'PropertyLongString'>;
 } & Record<string, Property<any>>;
 export default IContent;

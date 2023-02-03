@@ -7,7 +7,9 @@ const hooks_1 = require("../hooks");
 const ContentComponent_1 = tslib_1.__importDefault(require("./ContentComponent"));
 const ContentAreaItem = props => {
     const ItemContainerElement = props.itemContainer;
-    const { data, error } = (0, hooks_1.useContent)(props.item.contentLink, undefined, undefined, props.language, undefined, props.isEditable);
+    const ct = (0, hooks_1.useContent)(props.item.contentLink, undefined, undefined, props.language, undefined, props.isEditable);
+    const data = ct === null || ct === void 0 ? void 0 : ct.data;
+    const error = ct === null || ct === void 0 ? void 0 : ct.error;
     const itemData = data !== null && data !== void 0 ? data : error;
     const contentTypePath = itemData === null || itemData === void 0 ? void 0 : itemData.contentType;
     const dataIsLoading = data == undefined;

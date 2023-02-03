@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DefaultComponentLoader = void 0;
 const tslib_1 = require("tslib");
-const debug = false; //process.env['NODE_ENV'] == 'development'
+const debug = process.env['NODE_ENV'] == 'development';
 const componentPromises = {};
 /**
  * Default implementation of the component loader, assuming all
@@ -10,19 +10,14 @@ const componentPromises = {};
  * for dynamic import building
  */
 class DefaultComponentLoader {
-    constructor(cache) {
-        this.prefix = "@components/cms";
-        if (debug)
-            console.log("Default-Loader.newInstance");
-        this.cache = cache !== null && cache !== void 0 ? cache : {};
-        // try making the component loader available in the browser
-        try {
-            window.__dcl__ = this;
-        }
-        catch (e) { }
-    }
     get AsyncComponents() {
         return componentPromises;
+    }
+    constructor(cache) {
+        this.prefix = "@components/cms";
+        this.cache = cache !== null && cache !== void 0 ? cache : {};
+        if (debug)
+            console.log("Optimizely - CMS: DefaultComponentLoader.newInstance");
     }
     buildComponentImport(path, prefix, tag = "") {
         // Process the path
@@ -38,12 +33,17 @@ class DefaultComponentLoader {
     }
     dynamicSync(path, prefix, tag = "") {
         const dynamicPath = this.buildComponentImport(path, prefix, tag);
-        if (!this.cache[dynamicPath])
+        if (!this.cache[dynamicPath]) {
+            if (debug)
+                console.warn("Optimizely - CMS: DefaultComponentLoader.dynamicSync component not cached: ", `@components/cms/${dynamicPath}`);
             throw new Error(`Component ${dynamicPath} cannot be resolved synchronously`);
+        }
         return this.cache[dynamicPath];
     }
     dynamicAsync(path, prefix, tag = "") {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            if (debug)
+                console.log("Optimizely - CMS: DefaultComponentLoader.dynamicAsync", `@components/cms/${this.buildComponentImport(path, prefix, tag)}`);
             const dynamicModule = yield this.dynamicModuleAsync(path, prefix, tag);
             if (!(dynamicModule === null || dynamicModule === void 0 ? void 0 : dynamicModule.default))
                 throw new Error(`Module ${this.buildComponentImport(path, prefix, tag)} does not have a default export (1)`);
@@ -57,24 +57,27 @@ class DefaultComponentLoader {
     }
     dynamicModuleSync(path, prefix, tag = "") {
         const dynamicPath = this.buildComponentImport(path, prefix, tag);
+        if (debug)
+            console.log("Optimizely - CMS: DefaultComponentLoader.dynamicModuleSync", `@components/cms/${dynamicPath}`);
         throw new Error(`Module "@components/cms/${dynamicPath}" cannot be loaded synchronously`);
     }
     dynamicModuleAsync(path, prefix, tag = "") {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            var _a;
             const dynamicPath = this.buildComponentImport(path, prefix, tag);
             if (typeof (dynamicPath) !== 'string' || dynamicPath.length < 1)
                 return undefined;
-            if (Object.getOwnPropertyNames(componentPromises).includes(dynamicPath) && typeof (componentPromises[dynamicPath].then) === 'function') {
+            if (Object.getOwnPropertyNames(componentPromises).includes(dynamicPath) && typeof (componentPromises[dynamicPath].then) === 'function')
                 return componentPromises[dynamicPath];
-            }
             if (debug)
-                console.log("Default-Loader.dynamicModuleAsync", `@components/cms/${dynamicPath}`, Object.getOwnPropertyNames(componentPromises));
-            const dynamicModule = Promise.resolve().then(() => tslib_1.__importStar(require(
+                console.log("Optimizely - CMS: DefaultComponentLoader.dynamicModuleAsync", `@components/cms/${dynamicPath}`);
+            const dynamicModule = (_a = 
             /* webpackInclude: /\.(js|json|jsx|ts|tsx)$/ */
             /* webpackExclude: /\.(md|css)$/ */
-            /* webpackMode: "eager" */
+            /* webpackMode: "lazy-once" */
             /* webpackPrefetch: true */
-            `@components/cms/${dynamicPath}`))).then(m => {
+            /* webpackChunkName: "component.[request]" */
+            `@components/cms/${dynamicPath}`, Promise.resolve().then(() => tslib_1.__importStar(require(_a)))).then(m => {
                 dynamicModule.result = m;
                 return m;
             });
@@ -89,7 +92,7 @@ class DefaultComponentLoader {
         catch (e) {
             if (debug) {
                 const dynamicPath = this.buildComponentImport(path, prefix, tag);
-                console.warn("Default-Loader.tryDynamicSync", "Error loading component", dynamicPath);
+                console.warn("Optimizely - CMS: DefaultComponentLoader.tryDynamicSync", "Error loading component", dynamicPath);
             }
         }
         return undefined;
@@ -101,7 +104,7 @@ class DefaultComponentLoader {
         catch (e) {
             if (debug) {
                 const dynamicPath = this.buildComponentImport(path, prefix, tag);
-                console.warn("Default-Loader.tryDynamicModuleSync", "Error loading component", dynamicPath);
+                console.warn("Optimizely - CMS: DefaultComponentLoader.tryDynamicModuleSync", "Error loading component", dynamicPath);
             }
         }
         return undefined;
@@ -111,7 +114,7 @@ class DefaultComponentLoader {
             return this.dynamicAsync(path, prefix, tag).catch(e => {
                 if (debug) {
                     const dynamicPath = this.buildComponentImport(path, prefix, tag);
-                    console.warn("Default-Loader.tryDynamicAsync", "Error loading component", dynamicPath);
+                    console.warn("Optimizely - CMS: DefaultComponentLoader.tryDynamicAsync", "Error loading component", dynamicPath);
                 }
                 return undefined;
             });
@@ -122,7 +125,7 @@ class DefaultComponentLoader {
             return this.dynamicModuleAsync(path, prefix, tag).catch(e => {
                 if (debug) {
                     const dynamicPath = this.buildComponentImport(path, prefix, tag);
-                    console.warn("Default-Loader.tryDynamicModuleAsync", "Error loading component", dynamicPath);
+                    console.warn("Optimizely - CMS: DefaultComponentLoader.tryDynamicModuleAsync", "Error loading component", dynamicPath);
                 }
                 return undefined;
             });
@@ -130,4 +133,5 @@ class DefaultComponentLoader {
     }
 }
 exports.DefaultComponentLoader = DefaultComponentLoader;
+exports.default = DefaultComponentLoader;
 //# sourceMappingURL=default-loader.js.map

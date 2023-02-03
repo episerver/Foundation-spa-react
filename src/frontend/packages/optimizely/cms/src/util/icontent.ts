@@ -1,4 +1,5 @@
 import type { IContent, ErrorType, ErrorContent } from '../models'
+import { ErrorContentClass } from '../models/error-content'
 
 export function isIContent(toTest: any) : toTest is IContent
 {
@@ -12,24 +13,5 @@ export function isIContent(toTest: any) : toTest is IContent
 
 export function createErrorContent(errorType: ErrorType, code: number, message?: string, contentReference?: string, details?: any) : ErrorContent
 {
-    return {
-        contentLink: {
-            id: 0,
-            guidValue: "00000000-0000-0000-0000-000000000000",
-            url: ""
-        },
-        contentType: ["Error", errorType],
-        name: "Error",
-        language: {
-            displayName: "English",
-            name: "en"
-        },
-        isError: true,
-        errorData: {
-            code,
-            message,
-            details
-        },
-        contentReference
-    }
+    return new ErrorContentClass(errorType, code, message, contentReference, details)
 }

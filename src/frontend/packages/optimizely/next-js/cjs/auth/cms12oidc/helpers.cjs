@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loadProfile = exports.refreshToken = exports.isRefreshTokenError = exports.wellKnownEndpointFor = exports.OptiCms12DefaultRole = void 0;
 const tslib_1 = require("tslib");
-const cross_fetch_1 = require("cross-fetch");
+const cross_fetch_1 = tslib_1.__importDefault(require("cross-fetch"));
 exports.OptiCms12DefaultRole = 'Everyone';
 function wellKnownEndpointFor(host) {
     return (new URL('/.well-known/openid-configuration', host || 'http://localhost')).href;
@@ -39,8 +39,6 @@ function refreshToken(host, refresh_token, client_id, client_secret) {
             }
         });
         if (!refreshResponse.ok) {
-            //const errorBody = await refreshResponse.text()
-            //console.error("Service error body", errorBody)
             return { error: `Failed to refresh token. (HTTP ${refreshResponse.status}: ${refreshResponse.statusText})`, error_type: "failed" };
         }
         const tokenSet = (yield refreshResponse.json());

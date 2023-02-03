@@ -158,8 +158,16 @@ namespace HeadlessCms.Infrastructure.Installers
                 success = false;
             } finally
             {
-                log?.Errors.ForEach(msg => InstallMessages.Add($"[ERROR] { msg }"));
-                log?.Warnings.ForEach(msg => InstallMessages.Add($"[WARNING] { msg }"));
+                log?.Errors.ForEach(msg =>
+                {
+                    InstallMessages.Add($"[ERROR] {msg}");
+                    _logger.LogError("EpiServer Data File Import Error: {msg}", msg);
+                });
+                log?.Warnings.ForEach(msg =>
+                {
+                    InstallMessages.Add($"[WARNING] {msg}");
+                    _logger.LogWarning("EpiServer Data File Import Warning {msg}", msg);
+                });
             }
 
             return success;

@@ -3,6 +3,7 @@ import type { ContentLink, IContent } from "@optimizely/cms/models"
 import Link from 'next/link'
 import Typography from "@mui/material/Typography"
 import { Image } from '@optimizely/next-js/components'
+import { useMemo } from 'react'
 
 export type LogoProps = {
     companyLogo ?: ContentLink<IContent>
@@ -13,12 +14,11 @@ export type LogoProps = {
 
 export const Logo : FunctionComponent<LogoProps> = ({ companyLogo, companyName, logoHeight, logoWidth }) => 
 {
-    logoWidth = logoWidth ?? ((250 / 75) * (logoHeight ?? 75))
+    
+    const renderLogoWidth = useMemo(() => logoWidth ?? ((250 / 75) * (logoHeight ?? 75)), [ logoWidth, logoHeight ])
+    const renderLogoHeight = logoHeight
 
-    console.log("logoWidth", logoWidth)
-    console.log("logoHeight", logoHeight)
-
-    return <Link href="/" passHref>
+    return <Link href="/" passHref legacyBehavior>
         <Typography variant="h6" noWrap component="a" sx={{ 
             mr: {
                 xs: 'inherit',
@@ -41,7 +41,7 @@ export const Logo : FunctionComponent<LogoProps> = ({ companyLogo, companyName, 
             },
             display: 'flex'
         }} >
-            { companyLogo ? <Image src={ companyLogo } alt={ companyName} height={ logoHeight } width={ logoWidth } /> : companyName }
+            { companyLogo ? <Image src={ companyLogo } alt={ companyName} height={ renderLogoHeight } width={ renderLogoWidth } priority /> : companyName }
         </Typography>
     </Link>
 }

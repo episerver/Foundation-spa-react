@@ -11,10 +11,10 @@ export const DefaultConfig = {
 };
 export function validateConfig(config) {
     // No configuration is an invalid configuration
-    if (!config)
+    if (typeof (config) !== 'object' && config === null)
         return false;
     // The API URL must end in a slash to be valid
-    if (config.apiUrl?.substr(-1) !== '/')
+    if (!config.apiUrl?.endsWith('/'))
         return false;
     // All tests passed
     return true;

@@ -74,8 +74,7 @@ export function createApiId(id: ContentReference, preferGuid : boolean = true, i
             console.warn("Empty Optimizely Content Delivery ID")
             return id
         }
-        //console.error("Unable to generate an Optimizely Content Delivery API ID [01]", typeof(id))
-        return "-"
+        throw new Error(`The provided Content Reference is not resolvable to a ContentID; DataType: ${ typeof(id) }; Value: ${ id }`)
     }
 
     // Return the GUID if it's preferred or the identifier is not set

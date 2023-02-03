@@ -1,0 +1,1 @@
+export { createComponentLoader, createComponentLoader as default } from './dist/loader/factory'

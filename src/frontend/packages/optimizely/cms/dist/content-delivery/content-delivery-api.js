@@ -1,14 +1,14 @@
-import { buildUrl, inEditMode } from './util';
+import { OptiEndpoints, OptiQueryParams, buildUrl, inEditMode, OptiContentMode } from './util';
 import { DefaultConfig, validateConfig } from './config';
 import { Website as WebsiteUtils, ContentReference as ContentLinkService } from '../util';
 import fetch from 'cross-fetch';
 import { NetworkError } from './NetworkError';
 export const OptiEditQueryParams = [
-    "commondrafts" /* OptiQueryParams.CommonDrafts */,
-    "epieditmode" /* OptiQueryParams.EditMode */,
-    "epiprojects" /* OptiQueryParams.Project */,
-    "epichannel" /* OptiQueryParams.Channel */,
-    "visitorgroupsByID" /* OptiQueryParams.VisitorGroup */
+    OptiQueryParams.CommonDrafts,
+    OptiQueryParams.EditMode,
+    OptiQueryParams.Project,
+    OptiQueryParams.Channel,
+    OptiQueryParams.VisitorGroup
 ];
 export const DefaultRequestConfig = {
     addDefaultParams: true,
@@ -16,16 +16,20 @@ export const DefaultRequestConfig = {
 };
 export class ContentDeliveryAPI {
     constructor(config) {
+        this._customHeaders = {};
         this._config = { ...DefaultConfig, ...config };
         if (!validateConfig(this._config))
             throw new Error("Invalid Content Delivery API Configuration");
         this._baseUrl = new URL(this._config.apiUrl);
         //this._config.debug = true;
     }
+    setHeader(header, value) {
+        this._customHeaders[header] = value;
+    }
     async login(username, password, client_id = "Default") {
         const request_data = { client_id, grant_type: "password", username, password };
         const request_body = this.convertToUrlEncoded(request_data);
-        const response = await this.doRequest("api/episerver/auth/token" /* OptiEndpoints.OAuth */, {
+        const response = await this.doRequest(OptiEndpoints.OAuth, {
             method: 'POST',
             body: request_body,
             addDefaultParams: false,
@@ -41,7 +45,7 @@ export class ContentDeliveryAPI {
     async refresh(refresh_token, client_id = "Default") {
         const request_data = { client_id, grant_type: "refresh_token", refresh_token };
         const request_body = this.convertToUrlEncoded(request_data);
-        const response = await this.doRequest("api/episerver/auth/token" /* OptiEndpoints.OAuth */, {
+        const response = await this.doRequest(OptiEndpoints.OAuth, {
             method: 'POST',
             body: request_body,
             addDefaultParams: false,
@@ -62,7 +66,7 @@ export class ContentDeliveryAPI {
     async getWebsites() {
         if (this._config.debug)
             console.groupCollapsed("ContentDeliveryAPI: Get Websites");
-        const websites = await this.doRequest("api/episerver/v{ $version }/site/{ $siteId }" /* OptiEndpoints.Site */).catch(() => []);
+        const websites = await this.doRequest(OptiEndpoints.Site).catch(() => []);
         if (this._config.debug)
             console.groupEnd();
         return websites;
@@ -104,7 +108,7 @@ export class ContentDeliveryAPI {
             console.log("Route", path);
         }
         const req = { ...config, urlParams: { ...config.urlParams, ContentUrl: path, MatchExact: 'true' } };
-        const list = await this.doRequest("api/episerver/v{ $version }/content/{ $contentId }" /* OptiEndpoints.Content */, req);
+        const list = await this.doRequest(OptiEndpoints.Content, req);
         if (this._config.debug) {
             console.log(`Received ${list?.length ?? 0} content items for ${path}`);
             console.groupEnd();
@@ -114,7 +118,7 @@ export class ContentDeliveryAPI {
         return undefined;
     }
     getContent(id, config) {
-        return this.getContentBase(id, "api/episerver/v{ $version }/content/{ $contentId }" /* OptiEndpoints.Content */, config);
+        return this.getContentBase(id, OptiEndpoints.Content, config);
     }
     async getContents(ids, config) {
         // Just return an empty array if we don't have ids
@@ -151,7 +155,7 @@ export class ContentDeliveryAPI {
             if (guids)
                 specficParams['guids'] = guids.join(',');
             const reqConfig = { ...config, urlParams: { ...config?.urlParams, ...specficParams } };
-            response = await this.doRequest("api/episerver/v{ $version }/content/{ $contentId }" /* OptiEndpoints.Content */, reqConfig);
+            response = await this.doRequest(OptiEndpoints.Content, reqConfig);
         }
         if (this._config.debug)
             console.groupEnd();
@@ -174,7 +178,7 @@ export class ContentDeliveryAPI {
             specficParams['personalize'] = 'true';
         const reqConfig = { ...config, urlParams: { ...config?.urlParams, ...specficParams } };
         reqConfig.editMode = false;
-        const response = await this.doRequest("api/episerver/v{ $version }/search/content/" /* OptiEndpoints.Search */, reqConfig);
+        const response = await this.doRequest(OptiEndpoints.Search, reqConfig);
         if (!response.results)
             response.results = [];
         if (this._config.debug)
@@ -201,7 +205,7 @@ export class ContentDeliveryAPI {
             specficParams['personalize'] = 'true';
         const reqConfig = { ...config, urlParams: { ...config?.urlParams, ...specficParams } };
         reqConfig.editMode = false;
-        const response = await this.doRequest("api/episerver/v{ $version }/search/content/" /* OptiEndpoints.Search */, reqConfig);
+        const response = await this.doRequest(OptiEndpoints.Search, reqConfig);
         if (this._config.debug)
             console.groupEnd();
         if (response) {
@@ -212,10 +216,10 @@ export class ContentDeliveryAPI {
             return { results: [], totalMatching: 0 };
     }
     getAncestors(id, config) {
-        return this.getContentBase(id, "api/episerver/v{ $version }/content/{ $contentId }/ancestors" /* OptiEndpoints.Ancestors */, config);
+        return this.getContentBase(id, OptiEndpoints.Ancestors, config);
     }
     getChildren(id, config) {
-        return this.getContentBase(id, "api/episerver/v{ $version }/content/{ $contentId }/children" /* OptiEndpoints.Children */, config);
+        return this.getContentBase(id, OptiEndpoints.Children, config);
     }
     raw(url, options) {
         if (this._config.debug) {
@@ -224,7 +228,7 @@ export class ContentDeliveryAPI {
             console.log("Options", options);
         }
         const opts = this.resolveRequestOptions(options);
-        const endpoint = buildUrl(this._baseUrl, url, { contentMode: opts.editMode ? "contentmanagement" /* OptiContentMode.Edit */ : "content" /* OptiContentMode.Delivery */, ...opts.urlParams });
+        const endpoint = buildUrl(this._baseUrl, url, { contentMode: opts.editMode ? OptiContentMode.Edit : OptiContentMode.Delivery, ...opts.urlParams });
         const response = this.getResponse(endpoint, opts);
         if (this._config.debug)
             console.groupEnd();
@@ -252,7 +256,7 @@ export class ContentDeliveryAPI {
         const opts = this.resolveRequestOptions(options);
         if (this._config.debug)
             console.debug("Processed request configuration", opts);
-        const url = buildUrl(this._baseUrl, service, { contentMode: opts.editMode ? "contentmanagement" /* OptiContentMode.Edit */ : "content" /* OptiContentMode.Delivery */, ...opts.urlParams });
+        const url = buildUrl(this._baseUrl, service, { contentMode: opts.editMode ? OptiContentMode.Edit : OptiContentMode.Delivery, ...opts.urlParams });
         if (this._config.debug)
             console.log("Request URL", url.href);
         return this.getResponse(url, opts);
@@ -339,7 +343,7 @@ export class ContentDeliveryAPI {
         if (config?.editMode) {
             defaultHeaders["X-PreviewMode"] = "edit";
         }
-        const requestHeaders = { ...defaultHeaders, ...config?.headers };
+        const requestHeaders = { ...defaultHeaders, ...this._customHeaders, ...config?.headers };
         //console.log("Request Headers", requestHeaders)
         return requestHeaders;
     }
@@ -384,8 +388,10 @@ export class ContentDeliveryAPI {
             else if (this._config.expandAllProperties === true)
                 output.urlParams['expand'] = '*';
         // Enforce edit mode propagation, if we're in edit mode
-        if (inEditMode(false))
+        if (inEditMode(false)) {
             output.urlParams['epieditmode'] = 'true';
+            output.urlParams['cb'] = (new Date()).getTime().toString();
+        }
         // Add branch into URL to simplify caching
         const branch = options?.branch || this._config.defaultBranch;
         if (branch)

@@ -50,3 +50,14 @@
 .debug-info dt::after {
   content: ":"
 }
+
+/* Global classes */
+.float-right {
+  float: right;
+}
+
+.caught-error {
+  border: 2px solid #FF0000;
+  border-radius: 5px;
+  box-shadow: 0px 5px 5px #000000;
+}

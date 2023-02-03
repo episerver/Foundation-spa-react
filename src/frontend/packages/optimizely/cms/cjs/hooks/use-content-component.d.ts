@@ -1,9 +1,9 @@
 import type { ContentTypePath } from '../models/content-type-path';
 import type { IContentComponent } from '../models/components';
 import type { ComponentType } from 'react';
-export declare type UseContentComponentResult<T extends ComponentType = IContentComponent> = {
+export type UseContentComponentResult<T extends ComponentType = IContentComponent> = {
     loading: boolean;
-    data?: T;
+    data?: T | undefined;
     error: boolean;
     id?: string;
     importPath?: string;

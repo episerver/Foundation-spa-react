@@ -10,8 +10,8 @@ using EPiServer.ContentDefinitionsApi;
 using EPiServer.ContentManagementApi;
 using EPiServer.DependencyInjection;
 using EPiServer.Cms.UI.AspNetIdentity;
-//using EPiServer.Labs.ContentManager;
-//using EPiServer.Labs.GridView;
+using EPiServer.Labs.ContentManager;
+using EPiServer.Labs.GridView;
 using EPiServer.OpenIDConnect;
 using EPiServer.Web;
 using EPiServer.Web.Routing;
@@ -26,6 +26,9 @@ using EPiServer.Labs.BlockEnhancements;
 using EPiServer.Labs.ProjectEnhancements;
 using EPiServer.Labs.LinkItemProperty;
 using UNRVLD.ODP.VisitorGroups.Initilization;
+using UNRVLD.ODP.VisitorGroups;
+using EPiServer.ServiceLocation;
+using ODPApiUserProfile = HeadlessCms.Infrastructure.ODPUserProfile;
 
 namespace HeadlessCms
 {
@@ -132,29 +135,29 @@ namespace HeadlessCms
 
             #region Optimizely Labs: Content Manager / Grid view / Out-of-context editing / etc..
             // Add Content Manager
-            //services.AddContentManager(options =>
-            //{
-            //    options.IsContentManagerEnabled = true;
-            //    options.IsBlocksProviderEnabled = true;
-            //    options.AutocompleteEnabled = true;
-            //    options.NotificationReceiversRoles = new[] { "WebEditors" };
-            //    options.CustomViewsFolderName = "CustomExternalViews";
-            //    options.AvailableGadgets = new[]
-            //    {
-            //        ExternalDashboardGadgetType.Starred,
-            //        ExternalDashboardGadgetType.Rejected,
-            //        ExternalDashboardGadgetType.Tasks
-            //    };
-            //});
+            services.AddContentManager(options =>
+            {
+                options.IsContentManagerEnabled = true;
+                options.IsBlocksProviderEnabled = true;
+                options.AutocompleteEnabled = true;
+                options.NotificationReceiversRoles = new[] { "WebEditors" };
+                options.CustomViewsFolderName = "CustomExternalViews";
+                options.AvailableGadgets = new[]
+                {
+                    ExternalDashboardGadgetType.Starred,
+                    ExternalDashboardGadgetType.Rejected,
+                    ExternalDashboardGadgetType.Tasks
+                };
+            });
 
             // Add Gridview
-            //services.AddGridView(options =>
-            //{
-            //    options.IsComponentEnabled = true;
-            //    options.IsViewEnabled = true;
-            //    options.HideChildrenOfContainersInPageTree = true;
-            //    options.ChildrenConvertCommandEnabled = true;
-            //});
+            services.AddGridView(options =>
+            {
+                options.IsComponentEnabled = true;
+                options.IsViewEnabled = true;
+                options.HideChildrenOfContainersInPageTree = true;
+                options.ChildrenConvertCommandEnabled = true;
+            });
 
             // Add Block Enhancements
             services.AddBlockEnhancements(options =>
@@ -181,6 +184,7 @@ namespace HeadlessCms
 
             #region Optimizely Data Platform
             services.AddODPVisitorGroups();
+            services.AddHttpContextOrThreadScoped<IODPUserProfile, ODPApiUserProfile>();
             #endregion
 
             #region Standard .Net Web Application
@@ -206,12 +210,13 @@ namespace HeadlessCms
             #endregion
 
             #region Optimizely DXP
-            if (!_webHostingEnvironment.IsDevelopment())
+            var blobConnection = _configuration.GetConnectionString("EPiServerAzureBlobs");
+            if (!_webHostingEnvironment.IsDevelopment() && !string.IsNullOrWhiteSpace(blobConnection))
             {
                 services.AddCmsCloudPlatformSupport(_configuration);
                 services.Configure<AzureBlobStorageCacheOptions>(options =>
                     {
-                        options.ConnectionString = _configuration.GetConnectionString("EPiServerAzureBlobs");
+                        options.ConnectionString = blobConnection;
                         options.ContainerName = "mysitemedia";
                     });
                 services.AddImageSharp()

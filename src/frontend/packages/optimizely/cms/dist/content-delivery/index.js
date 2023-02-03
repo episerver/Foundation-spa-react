@@ -5,6 +5,7 @@ export * as ApiConfig from './config';
 export * from './NetworkError';
 import { validateConfig, DefaultConfig } from './config';
 import { ContentDeliveryAPI } from './content-delivery-api';
+import { OptiContentMode } from './util';
 class ContentDeliveryContainer {
     constructor() {
         this.apiType = ContentDeliveryAPI;
@@ -46,7 +47,7 @@ class ContentDeliveryContainer {
     }
     createBasicConfig(partial) {
         const myConfig = {
-            apiUrl: process.env.OPTIMIZELY_DXP_URL || 'http://localhost',
+            apiUrl: process.env.OPTIMIZELY_DXP_URL || 'http://localhost:8000',
             debug: process.env.OPTIMIZELY_DXP_DEBUG?.toLowerCase() === 'true' || process.env.OPTIMIZELY_DXP_DEBUG === '1'
         };
         // Set default branch if configured
@@ -66,7 +67,7 @@ export function createInstance(config) {
     const instance = Container.createInstance(config);
     return instance;
 }
-export const MODE_DELIVERY = "content" /* OptiContentMode.Delivery */;
-export const MODE_EDIT = "contentmanagement" /* OptiContentMode.Edit */;
+export const MODE_DELIVERY = OptiContentMode.Delivery;
+export const MODE_EDIT = OptiContentMode.Edit;
 export default Current;
 //# sourceMappingURL=index.js.map

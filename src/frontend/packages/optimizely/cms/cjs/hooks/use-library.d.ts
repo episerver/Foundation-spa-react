@@ -6,7 +6,7 @@ export declare enum UseLibraryStatus {
     Ready = "ULS-READY",
     NotAvailable = "ULS-NOTAVAILABLE"
 }
-export declare type UseLibraryResponse<K extends keyof Window> = {
+export type UseLibraryResponse<K extends keyof Window> = {
     lib: Window[K] | undefined;
     status: UseLibraryStatus;
 };

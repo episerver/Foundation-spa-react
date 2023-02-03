@@ -8,6 +8,8 @@ import { EditableField as Editable } from '@optimizely/cms/components'
 import ContentArea from '@components/shared/Utils/ContentArea'
 import Head from 'next/head'
 import { Typography, Grid, List, ListItem, ListItemText } from '@mui/material'
+import XHtmlContent from '@framework/foundation/cms/structuredhtml'
+import componentFactory from '@components/shared/Utils/factory'
 
 export const Component : IContentComponent<LocationItemPage> = props =>
 {
@@ -49,9 +51,9 @@ export const Component : IContentComponent<LocationItemPage> = props =>
             </Grid>
             <Grid item xs={9}>
                 <ContentArea content={ content } name="mainContentArea" />
-                <Typography variant='body2' component='div'>
-                    <Editable field="mainBody" html={pv(content, "mainBody" ) ?? ""}></Editable>
-                </Typography>
+                <Editable field="mainBody">
+                    <XHtmlContent propertyData={ content?.mainBody } componentFactory={ componentFactory } />
+                </Editable>
             </Grid>
         </Grid>
     </div>

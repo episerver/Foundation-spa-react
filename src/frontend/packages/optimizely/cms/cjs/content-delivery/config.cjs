@@ -15,10 +15,10 @@ exports.DefaultConfig = {
 function validateConfig(config) {
     var _a;
     // No configuration is an invalid configuration
-    if (!config)
+    if (typeof (config) !== 'object' && config === null)
         return false;
     // The API URL must end in a slash to be valid
-    if (((_a = config.apiUrl) === null || _a === void 0 ? void 0 : _a.substr(-1)) !== '/')
+    if (!((_a = config.apiUrl) === null || _a === void 0 ? void 0 : _a.endsWith('/')))
         return false;
     // All tests passed
     return true;

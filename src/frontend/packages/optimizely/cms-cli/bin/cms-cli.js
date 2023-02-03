@@ -64,28 +64,22 @@ function interactive(params, context) {
                 res.end();
                 return;
             }
-            res.writeHead(200);
-            res.write("<html><head><script>window.close()</script></head><body>You may now close this window.</body></html>");
-            res.end();
             const params = context.client.callbackParams(req);
             if (params.code) {
+                console.log("Received authentication code");
                 context.client.callback(serverURL.href, params, { code_verifier: context.code_verifier }).then(tokenSet => {
-                    server.close(error => {
-                        if (error) {
-                            console.error("Error whilest finishing interactive authentication flow", error);
-                            reject(error);
-                        }
-                        else {
-                            console.log("Received & processed authentication");
-                            resolve(tokenSet);
-                        }
-                    });
+                    server.close();
+                    console.log("Processed authentication");
+                    resolve(tokenSet);
                 }).catch(reject);
             }
             else {
                 console.error("No code received from OpenID Service");
                 reject(new Error("OpenID Protocol error"));
             }
+            res.writeHead(200);
+            res.write("<html><head><script>window.close()</script></head><body>You may now close this window.</body></html>");
+            res.end();
         };
         const server = http.createServer(handleRequest);
         server.listen(Number.parseInt(serverURL.port), serverURL.hostname, () => {
@@ -146,6 +140,18 @@ function getInternalServerUrl({ local_host, local_port }) {
 }
 
 class Client {
+    get dxpUrl() {
+        if (typeof (this.config.dxp_url) === 'string' && this.config.dxp_url !== "")
+            return this.config.dxp_url;
+        throw new Error("Unable to determine the Optimizely DXP URL, please check the configuration");
+    }
+    get isAuthenticated() {
+        if (this._token === undefined || this._token === false)
+            return false;
+        const expires_at = this._token?.expires_at ?? 0;
+        const now = Math.floor(Date.now() / 1000);
+        return now < expires_at;
+    }
     constructor(config) {
         this.config = config;
         try {
@@ -166,18 +172,6 @@ class Client {
         }
         if (this.config.debug)
             console.log("Optimizely Content Cloud Config:", this.config);
-    }
-    get dxpUrl() {
-        if (typeof (this.config.dxp_url) === 'string' && this.config.dxp_url !== "")
-            return this.config.dxp_url;
-        throw new Error("Unable to determine the Optimizely DXP URL, please check the configuration");
-    }
-    get isAuthenticated() {
-        if (this._token === undefined || this._token === false)
-            return false;
-        const expires_at = this._token?.expires_at ?? 0;
-        const now = Math.floor(Date.now() / 1000);
-        return now < expires_at;
     }
     async connect() {
         const connectUrl = (new URL("/globalassets", this.dxpUrl)).href;

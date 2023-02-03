@@ -1,7 +1,7 @@
-import type { FunctionComponent, ReactElement } from 'react';
-import type { IContent, ContentTypePath } from '../models';
+import type { FunctionComponent, ReactElement, PropsWithChildren } from 'react';
+import type { IContent, ContentTypePath, ContentLink } from '../models';
 import React from 'react';
-export declare type ContentComponentProps = ({
+export type ContentComponentProps = ({
     /**
      * The content identifier of the content item to load. This
      * content item must have the same contentType as provided
@@ -28,7 +28,7 @@ export declare type ContentComponentProps = ({
      * This value will be passed to the component performing the actual
      * rendering.
      */
-    content: IContent;
+    content: IContent | ContentLink;
 }) & {
     /**
      * The prefix to ensure that the right template is used, even when
@@ -61,6 +61,6 @@ export declare type ContentComponentProps = ({
  * @param       props       The component properties
  * @returns     The rendered component
  */
-export declare const ContentComponent: FunctionComponent<ContentComponentProps>;
-declare const _default: React.ComponentType<ContentComponentProps>;
+export declare const ContentComponent: FunctionComponent<PropsWithChildren<ContentComponentProps>>;
+declare const _default: React.ComponentType<PropsWithChildren<ContentComponentProps>>;
 export default _default;
