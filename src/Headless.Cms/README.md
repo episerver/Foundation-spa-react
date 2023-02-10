@@ -31,7 +31,7 @@ dotnet-episerver add-admin-user .\Headless.Cms.csproj -u [username] -e [email] -
 ```
 
 ### 1.3. Service configuration
-The CMS implementation leverages both Search & Navigation as well as Project GraphQL, make sure that these services are configured within the appsettings.json. The configuration structure is already in place, make sure to replace the values with your accounts.
+The CMS implementation leverages both Search & Navigation as well as Project GraphQL, make sure that these services are configured within the appsettings.json. The configuration structure is already in place, make sure to replace the values with your accounts. By default, the solution comes with support for Optimizely Data Platform to drive personalization using the standard capabilities of the CMS.
 
 ```json
 "EPiServer": {
@@ -40,6 +40,12 @@ The CMS implementation leverages both Search & Navigation as well as Project Gra
       "ServiceUrl": "https://example.com/index_token/",
       "TrackingSanitizerEnabled": true,
       "TrackingTimeout": 30000
+    },
+    "OdpVisitorGroupOptions": {
+      "OdpCookieName": "vuid",
+      "CacheTimeoutSeconds": 1,
+      "BaseEndPoint": "https://api.example.com",
+      "PrivateApiKey": "private_api_key"
     }
   },
   "Optimizely": {
@@ -56,8 +62,11 @@ The CMS implementation leverages both Search & Navigation as well as Project Gra
 Make sure that the URLs in your appsettings.json are correct, the API Explorer uses the first URL from the appsettings to connect to. So all "typical" browser restrictions on connecting to this URL apply. (*i.e. Ensure that any https url is first in the list*)
 
 **Obtaining accounts:**
-* Search and Navigation: https://find.episerver.com/
+* Search & Navigation: https://find.episerver.com/
 * Content Graph: https://docs.developers.optimizely.com/digital-experience-platform/v1.4.0-content-graph/docs/project-graphql
+* Data Platform: https://www.optimizely.com/data-platform/
+
+With the provided frontend, only Optimizely Search & Navigation is mandatory, if you do not have access to Content Graph and/or Data Platform, you can remove the packages and adjust the [Startup.cs](./Startup.cs) accordingly.
 
 ## 2. Initial schema & content
 During the first page load, the site will check if there's a website with the name "Foundation Headless", if it is present it will skip loading the initial content.
