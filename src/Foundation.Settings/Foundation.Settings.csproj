@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EPiServer.CMS.Core" Version="12.12.0" />
-    <PackageReference Include="EPiServer.CMS.UI.Core" Version="12.16.0" />
+    <PackageReference Include="EPiServer.CMS.Core" Version="12.12.1" />
+    <PackageReference Include="EPiServer.CMS.UI.Core" Version="12.16.1" />
     <PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="3.6.0" />
     <PackageReference Include="EPiServer.ContentDeliveryApi.Core" Version="3.6.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
@@ -16,12 +16,12 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 
     <!-- Forced version to resolve conflict -->
-    <PackageReference Include="EPiServer.Framework" Version="12.12.0" />
-    <PackageReference Include="EPiServer.CMS.AspNetCore" Version="12.12.0" />
-    <PackageReference Include="EPiServer.CMS.AspNetCore.HtmlHelpers" Version="12.12.0" />
-    <PackageReference Include="EPiServer.CMS.AspNetCore.Mvc" Version="12.12.0" />
-    <PackageReference Include="EPiServer.CMS.AspNetCore.Routing" Version="12.12.0" />
-    <PackageReference Include="EPiServer.CMS.AspNetCore.Templating" Version="12.12.0" />
+    <PackageReference Include="EPiServer.Framework" Version="12.12.1" />
+    <PackageReference Include="EPiServer.CMS.AspNetCore" Version="12.12.1" />
+    <PackageReference Include="EPiServer.CMS.AspNetCore.HtmlHelpers" Version="12.12.1" />
+    <PackageReference Include="EPiServer.CMS.AspNetCore.Mvc" Version="12.12.1" />
+    <PackageReference Include="EPiServer.CMS.AspNetCore.Routing" Version="12.12.1" />
+    <PackageReference Include="EPiServer.CMS.AspNetCore.Templating" Version="12.12.1" />
   </ItemGroup>
 
 </Project>

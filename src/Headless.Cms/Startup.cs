@@ -130,7 +130,7 @@ namespace HeadlessCms
 
             #region Optimizely: Project GraphQL
             // Add Project GraphQL
-            // services.AddContentGraph(_configuration);
+            services.AddContentGraph(_configuration);
             #endregion
 
             #region Optimizely Labs: Content Manager / Grid view / Out-of-context editing / etc..
