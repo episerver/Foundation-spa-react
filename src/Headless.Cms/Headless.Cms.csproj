@@ -41,7 +41,7 @@
     </None>
     
 	<!-- Optimizely CMS, with OIDC provider -->
-    <PackageReference Include="EPiServer.CMS" Version="12.16.1" />
+    <PackageReference Include="EPiServer.CMS" Version="12.17.0" />
 	<PackageReference Include="EPiServer.OpenIDConnect" Version="3.6.0" />
 	<PackageReference Include="EPiServer.OpenIDConnect.UI" Version="3.6.0" />
 	  
@@ -53,11 +53,11 @@
     <PackageReference Include="EPiServer.ContentManagementApi" Version="3.6.0" />
 	  
 	<!-- Optimizely Search & Navigation -->
-    <PackageReference Include="EPiServer.Find.Cms" Version="14.0.4" />
-    <PackageReference Include="EPiServer.Find.Personalization" Version="14.0.4" />
+    <PackageReference Include="EPiServer.Find.Cms" Version="14.2.4" />
+    <PackageReference Include="EPiServer.Find.Personalization" Version="14.2.4" />
 	  
 	<!-- Optimizely Content Graph -->
-    <PackageReference Include="Optimizely.ContentGraph.Cms" Version="2.2.0" />
+    <!--<PackageReference Include="Optimizely.ContentGraph.Cms" Version="2.2.0" />-->
 	  
 	<!-- Add support for Optimizely DXP -->
 	<PackageReference Include="EPiServer.CloudPlatform.Cms" Version="1.3.0" />
@@ -85,7 +85,7 @@
 	<PackageReference Include="UNRVLD.ODP.VisitorGroups" Version="1.3.0" />
 	  
 	<!-- Reverse proxy to communicate with Next.JS running on the same server-->
-	<PackageReference Include="Yarp.ReverseProxy" Version="1.1.1" />
+	<PackageReference Include="Yarp.ReverseProxy" Version="2.0.0" />
 	  
 	<!-- Fix Linq.Async version to allow old version of Find to be used with CMS -->
 	<PackageReference Include="System.Linq.Async" Version="6.0.1" />
