@@ -1,3 +1,5 @@
+import type { GetStaticPathsContext, GetStaticPathsResult } from 'next'
+
 // Optimizely CMS
 import { getStaticProps as baseGetStaticProps, staticPropsHasData } from '@optimizely/next-js/cms-page'
 import { readValue as pv } from '@optimizely/cms/utils'
@@ -18,6 +20,40 @@ import SiteInfo from 'website.cjs'
 const DEBUG_ENABLED = process.env.NODE_ENV === 'development'
 const DXP_DEBUG = false;
 
+/**
+ * Statically generate all HTML for the pages currently published whithin the 
+ * CMS. This uses an Optimizely Foundation SPA React specific service to get
+ * all the routes very efficiently.
+ * 
+ * @param ctx The Static Path Generation context
+ * @returns The list of pages
+ */
+export async function getStaticPaths(ctx : GetStaticPathsContext) : Promise<GetStaticPathsResult>
+{
+    const cms = createApiClient({ debug: DXP_DEBUG, defaultBranch: ctx.defaultLocale })
+    
+    let paths : string[] = [];
+    for (const locale of ctx.locales ?? [ ctx.defaultLocale ])
+    {
+        const localPaths = await (cms.raw(`api/foundation/v1.0/routes/${ SiteInfo.id }/`, { branch: locale }) as Promise<string[]>)
+        paths = paths.concat(localPaths.map(lp => (new URL(lp)).pathname))
+    }
+
+    return {
+        paths,
+        fallback: 'blocking' // If a 404 for the first request to a page is acceptable, set this to: true
+    }
+}
+
+/**
+ * Override the default loading of static properties to append the site 
+ * settings as provided by the Foundation SPA React demo site.
+ * 
+ * @param ctx 
+ * @param cLoader 
+ * @param cApi 
+ * @returns 
+ */
 export const getStaticProps : typeof baseGetStaticProps = async (ctx, cLoader, cApi) => 
 {
     if (DEBUG_ENABLED) {
@@ -54,8 +90,7 @@ export const getStaticProps : typeof baseGetStaticProps = async (ctx, cLoader, c
     return base
 }
 
-export { 
-    getStaticPaths, 
+export {
     OptimizelyCmsPage as CmsPage, 
     OptimizelyCmsPage as default 
 } from '@optimizely/next-js/cms-page'

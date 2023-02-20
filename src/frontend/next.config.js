@@ -31,6 +31,3 @@ if (optiWebsite.localeDomains?.length > 0) {
 }
 
 module.exports = nextConfig
-
-// Add basic logging to aid in setup
-console.log('next.config.js', JSON.stringify(module.exports, null, 2))
