@@ -41,7 +41,7 @@ export const Logo : FunctionComponent<LogoProps> = ({ companyLogo, companyName, 
             },
             display: 'flex'
         }} >
-            { companyLogo ? <Image src={ companyLogo } alt={ companyName} height={ renderLogoHeight } width={ renderLogoWidth } priority /> : companyName }
+            { companyLogo ? <Image className="optiReact__site-logo" src={ companyLogo } alt={ companyName} height={ renderLogoHeight } width={ renderLogoWidth } priority /> : companyName }
         </Typography>
     </Link>
 }

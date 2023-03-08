@@ -13,7 +13,7 @@ export const ButtonBlockComponent : IContentComponent<ButtonBlock> = ({ content,
     const buttonCaption = pv(content, "buttonCaption")
     const buttonComponent = buttonLink ? "a" : "button"
 
-    let button = <Button component={ buttonComponent} variant="contained" color="secondary">{ buttonText }</Button>
+    let button = <Button className="optiReact__button-block" component={ buttonComponent} variant="contained" color="secondary">{ buttonText }</Button>
     if (buttonLink)
         button = <Link href={ buttonLink } passHref legacyBehavior>{ button }</Link>
 

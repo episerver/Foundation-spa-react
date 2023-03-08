@@ -61,3 +61,328 @@
   border-radius: 5px;
   box-shadow: 0px 5px 5px #000000;
 }
+
+
+
+
+/***** doneil updates // 2023-03-08 *****/
+
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&display=swap'); 
+* {
+  font-family: 'Figtree', sans-serif !important;
+}
+
+/* overrides */
+h1 {
+  font-size: 4rem !important;
+}
+h2 {
+  font-size: 3rem !important;
+}
+h3 {
+  font-size: 2rem !important;
+}
+h4 {
+  font-size: 1rem !important;
+}
+a {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* header */
+
+.optiReact__site-logo {
+  width: auto;
+}
+.optiReact__header {
+  box-shadow: 0 0 200px -40px #fff;
+  background-color: #080734 !Important;
+  color: white !Important;
+}
+
+@media(max-width:800px){
+  .optiReact__site-logo {
+    max-width: 70%;
+    object-fit: contain;
+}
+.optiReact__top-buttons {
+  display: flex;
+}
+}
+
+/* main menu */
+.optiReact__main-menu a {
+  font-weight: bold;
+}
+.optiReact__main-menu {
+  gap: 2rem;
+}
+
+/* home hero */
+
+.optiReact__hero-block {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  max-width: 100rem;
+  width: 100%;
+  margin: auto;
+  padding-bottom: 5rem;
+}
+.optiReact__hero-block h1 {
+  font-weight: bold ;
+  font-size: 4rem;
+}
+.optiReact__hero-block p {
+  padding: 2rem 0;
+  font-size: 1.5rem;
+}
+@media (max-width: 1600px) {
+  .optiReact__hero-block {
+      padding:0 1rem;
+  }
+  .optiReact__hero-block > div{
+      max-width: 800px;
+  }
+  .optiReact__hero-block > div p {
+      padding: 1rem 0
+  }
+}
+@media (max-width: 800px) {
+div:has( > .optiReact__hero-block) {
+  position: relative;
+}
+
+.aspect-ratio-box:has( > div > div.optiReact__hero-block) {
+  padding-bottom: 100%;
+  margin-top: 0;
+}
+
+.aspect-ratio-box:has( > div > div.optiReact__hero-block) > img {
+  width: 200% !important;
+}
+
+.optiReact__hero-block {
+  height: auto;
+  padding: 1rem 1rem;
+}
+
+.optiReact__hero-block *:not(a) {
+  font-size: larger !important;
+}
+}
+
+/* button block */
+a.optiReact__button-block,
+a.optiReact__button-block:hover{
+    background-color: #0037ff;
+    border-radius: 50px;
+    padding-right: 2rem;
+}
+a.optiReact__button-block:after {
+    pointer-events: none;
+    content: "";
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0px;
+    transform: translate(-10px) scale(.55);
+    transform-origin: right;
+    width: 1.25rem;
+    height: 100%;
+    border: 4px solid yellow;
+    border-left: 0;
+    border-radius: 0 2rem 2rem 0;
+    transition: cubic-bezier(.2,.98,.63,1) .35s all;
+}
+a.optiReact__button-block:hover:after {
+    transform:scale(1);
+    transition:50ms;
+    border: 3px solid #ffce00;
+    border-left: 0;
+}
+
+/* home form */
+.optiReact__form-block {
+  background: #f6f6f6;
+  padding: 2rem;
+  border-radius: 10px;
+}
+.optiReact__form-block .ValidationRequired .Form__Element__Caption:after {
+  display: none;
+}
+.optiReact__form-block .FormTextbox__Input {
+  padding: 1rem;
+  border-radius: 30px;
+  border: none;
+  height: 2rem;
+}
+.optiReact__form-block .Form__Element.FormStep {
+  flex-flow: wrap;
+  gap: 1rem;
+}
+.optiReact__form-block .Form__Element.FormSelection {
+  width: 100%;
+}
+.optiReact__form-block button {
+  background-color: #861DFE;
+  color: #fff;
+  border-radius: 20px;
+  justify-content: center !important;
+  margin: 0 30% !important;
+}
+.optiReact__form-block select {
+  border-radius: 50px;
+  border: none;
+  color: #999;
+  height: 2rem;
+}
+.optiReact__form-block .Form__Status:before {
+  content: "First, we need to know a couple of things about you";
+  color: #861DFD;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-bottom: 2rem;
+  display: block;
+}
+
+.optiReact__form-block .Form__Status .Form__Status__Message {
+  display: none;
+}
+.optiReact__form-block .Form__Element.FormSelection.ValidationRequired {
+  flex-flow: nowrap;
+  gap: 5rem;
+}
+
+.optiReact__form-block .Form__Element.FormSelection.ValidationRequired > label {
+  width: auto;
+  white-space: nowrap;
+}
+
+/* home news articles */
+.optiReact__page-list-block{
+  max-width: 100rem;
+  margin:auto;
+}
+.optiReact__page-list-block-item > div {
+  border-radius: 1rem 1rem 0 0;
+  gap: 1rem;
+  box-shadow: none;
+}
+.optiReact__page-list-block-item > div:hover {
+  box-shadow:0px 0px 30px -10px rgb(0 0 0 / 50%);
+}
+.optiReact__page-list-block-item-card > div{
+  position:relative;
+}
+.optiReact__page-list-block-item-card > div:after{
+  content: "";
+  background-color: rgb(249, 249, 249);
+  height: 20px;
+  width: 100%;
+  display: block;
+  top: 90%;
+  position: absolute;
+  transform: rotate(-2deg);
+  left: 1px;
+}
+.optiReact__page-list-block a,
+.optiReact__page-list-block a:hover{
+    background-color: #0037ff;
+    border-radius: 50px;
+    padding-right: 2rem;
+}
+.optiReact__page-list-block a:after {
+    pointer-events: none;
+    content: "";
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0px;
+    transform: translate(-10px) scale(.55);
+    transform-origin: right;
+    width: 1.25rem;
+    height: 100%;
+    border: 4px solid yellow;
+    border-left: 0;
+    border-radius: 0 2rem 2rem 0;
+    transition: cubic-bezier(.2,.98,.63,1) .35s all;
+}
+.optiReact__page-list-block a:hover:after {
+    transform:scale(1);
+    transition:50ms;
+    border: 3px solid #ffce00;
+    border-left: 0;
+}
+.optiReact__page-list-block-item-card > div {
+  position: relative;
+}
+.optiReact__page-list-block-item-card > div:after {
+  content: "";
+  background-color: rgb(249, 249, 249);
+  height: 20px;
+  width: 100%;
+  display: block;
+  top: 90%;
+  position: absolute;
+  transform: rotate(-2deg);
+  left: 1px;
+}
+
+.optiReact__page-list-block-item > div > div:last-child {
+  padding: 0 0 1rem 1rem;
+}
+.optiReact__page-list-block-item {
+  padding-left: 2rem !important;
+  padding-top: 2rem !important;
+  padding-bottom: 1rem;
+}
+.optiReact__page-list-block-item {
+  padding-left: 2rem !important;
+  padding-top: 2rem !important;
+  padding-bottom: 1rem;
+}
+@media (max-width: 800px) {
+  .optiReact__page-list-block > div > div {
+    flex-basis: 100% !important;
+    max-width: 100%;
+  }
+  }
+
+/* home dxp */
+.optiReact__container-block.home-dxp h3 {
+  color: #0037FE;
+  font-weight: bold;
+  margin-bottom: .5rem;
+  font-size: 1.75rem !important;
+}
+.optiReact__container-block.home-dxp > div > div:not(:first-child) {
+  padding: 0 3rem 0 0;
+}
+.optiReact__container-block.home-dxp > div > div:nth-child(2) a:not(.optiReact__button-block) {
+  color: #861dff;
+}
+.optiReact__container-block.home-dxp > div > div:nth-child(3) a:not(.optiReact__button-block) {
+  color: #2FB366;
+}
+.optiReact__container-block.home-dxp > div > div:nth-child(4) a:not(.optiReact__button-block) {
+  color: #ff8110;
+}
+
+@media (max-width: 800px) {
+
+.optiReact__container-block.home-dxp > div > div:not(:first-child) {
+  flex-basis: 100% !important;
+  max-width: 100%;
+  padding: 0 !important;
+  margin-bottom: 3rem;
+}
+}
+
+/* footer */
+footer.optiReact__footer {
+  background-color: #080736;
+  color: #fff;
+  border: none;
+}

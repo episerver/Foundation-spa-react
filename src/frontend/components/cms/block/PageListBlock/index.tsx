@@ -47,7 +47,7 @@ export const PageListBlockComponent : IContentComponent<PageListBlock> = props =
     const defaultHeading = contentEditable ? 'No heading defined' : ''
     
     const heading = pv(props.content, 'heading')
-    return <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
+    return <Box className="optiReact__page-list-block" sx={{ p: 2, backgroundColor: 'background.default' }}>
         <Typography component="div" variant='h4' sx={{mb: 2, fontWeight: 700 }} ><EditableField field='' inline contentEditable={ contentEditable }>{ heading ?? defaultHeading }</EditableField></Typography>
         <Grid container direction="row" justifyContent="space-around" alignItems="stretch" spacing={2}>
         { pages.map(teaser => {
@@ -63,8 +63,8 @@ export const PageListBlockComponent : IContentComponent<PageListBlock> = props =
                 image = imgUrl.href
             }
 
-            return <Grid item key={ `teaser-${ props.content?.contentLink.id }-${ teaser.contentLink.id }` } xs={6} md={4}>
-        <Card sx={{ height: '100%', display: 'flex', flexFlow: 'column wrap', justifyContent: 'space-between' }} >
+            return <Grid className="optiReact__page-list-block-item" item key={ `teaser-${ props.content?.contentLink.id }-${ teaser.contentLink.id }` } xs={6} md={4}>
+        <Card className="optiReact__page-list-block-item-card" sx={{ height: '100%', display: 'flex', flexFlow: 'column wrap', justifyContent: 'space-between' }} >
             { image ? <CardMedia image={ image } sx={{ flexGrow: 0, pb: '20%' }} /> : <></> }
             <CardContent sx={{ flexGrow: 1 }}>
                 <Typography gutterBottom variant="h5" component="div">{ name }</Typography>

@@ -17,7 +17,7 @@ export const HeroBlockComponent : IContentComponent<HeroBlock> = props => {
 
     const background = bgImage ? <Image src={ bgImage.url} alt={ name } fill priority style={{ objectFit: "cover" }} /> : <></>
     
-    return <AspectRatioBox ratio={{ xs: 0.5, md: 0.33, lg: 0.25 }} background={ background } sx={{ opacity, backgroundColor }} >
+    return <AspectRatioBox className="optiReact__hero-block" ratio={{ xs: 0.5, md: 0.33, lg: 0.25 }} background={ background } sx={{ opacity, backgroundColor }} >
             <HeroBlockCalloutComponent content={ callout } />
         </AspectRatioBox>
 }

@@ -48,7 +48,7 @@ export const Header : FunctionComponent<HeaderProps> = props =>
         return (new URL(url, 'http://localhost')).pathname
     }
 
-    return <AppBar position="sticky">
+    return <AppBar position="sticky" className="optiReact__header">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Logo companyName={ companyName } companyLogo={ companyLogo } logoHeight={ logoHeight } />
@@ -65,7 +65,7 @@ export const Header : FunctionComponent<HeaderProps> = props =>
                             ))}
                         </Menu>
                     </Box>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, order: 2 }}>
+                    <Box className="optiReact__main-menu" sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, order: 2 }}>
                         {pages.map((page) => (
                             <Link key={page.name} href={removeLastSlash(page.href)} passHref legacyBehavior>
                                 <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
@@ -74,7 +74,7 @@ export const Header : FunctionComponent<HeaderProps> = props =>
                             </Link>
                         ))}
                     </Box>
-                    <Box sx={{ flexGrow: 0, order: 3 }}>
+                    <Box className="optiReact__top-buttons" sx={{ flexGrow: 0, order: 3 }}>
                         <LanguageMenu />
                         <UserMenu />
                     </Box>

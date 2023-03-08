@@ -23,7 +23,7 @@ export const Footer : FunctionComponent<FooterProps> = props =>
     const socials = pv(cmsSettings, "socialLinks") ?? []
     const introductionText = pv(cmsSettings, "introduction")
 
-    return <Box component="footer" sx={{ backgroundColor: 'primary.light', py: { xs: 1, md: 2 }, borderTopColor: 'primary.main', borderTopStyle: 'solid', borderTopWidth: '2px', mt: 3 }}><Container maxWidth="xl">
+    return <Box className="optiReact__footer" component="footer" sx={{ backgroundColor: 'primary.light', py: { xs: 1, md: 2 }, borderTopColor: 'primary.main', borderTopStyle: 'solid', borderTopWidth: '2px', mt: 3 }}><Container maxWidth="xl">
         <Grid container spacing="2">
             { introductionText ?
             <Grid item xs={12} sx={{ textAlign: "center", my: { xs: 1, md: 2, lg: 3 }}}>
