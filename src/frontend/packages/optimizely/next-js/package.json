@@ -24,7 +24,7 @@
     "@types/react": "^18.0.28",
     "cross-fetch": "^3.1.5",
     "next": "^13.1.6",
-    "next-auth": "^4.19.2",
+    "next-auth": "^4.20.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "renamer": "^4.0.0",
