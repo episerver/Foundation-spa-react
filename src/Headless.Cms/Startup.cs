@@ -29,6 +29,12 @@ using UNRVLD.ODP.VisitorGroups.Initilization;
 using UNRVLD.ODP.VisitorGroups;
 using EPiServer.ServiceLocation;
 using ODPApiUserProfile = HeadlessCms.Infrastructure.ODPUserProfile;
+using EPiServer.Cms.TinyMce.Core;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using System;
+using EPiServer.Authorization;
+using Microsoft.Azure.Amqp.Framing;
 
 namespace HeadlessCms
 {
@@ -68,11 +74,50 @@ namespace HeadlessCms
                 });
             #endregion
 
+            #region Optimizely: TinyMCE Configuration
+            services.Configure<TinyMceConfiguration>(config =>
+            {
+                config
+                    .Default()
+                    .AddSettingsTransform("tinymce-webadmin-only-features", (settings, content, propertyName) => {
+                        var httpContext = ServiceLocator.Current.GetInstance<IHttpContextAccessor>().HttpContext;
+                        var user = httpContext?.User;
+
+                        if (user is ClaimsPrincipal principal && principal.IsInRole("WebAdmins"))
+                        {
+                            settings.AddPlugin("code");
+                            settings.AppendToolbar("| code");
+                        }
+                    })
+                    .AppendToolbar("| alignnone alignleft aligncenter alignright alignjustify");
+            });
+            #endregion
+
             #region Optimizely: Authentication (OpenID Connect)
             // OpenID Connect
             services.AddAndConfiureOpenIDConnect<ApplicationUser>(
                 configuration: _configuration,
-                webhost: _webHostingEnvironment
+                webhost: _webHostingEnvironment,
+
+                // Configuring apps in code, as the UI is broken on CMS 12.17.1
+                configureOptions: (oidcOptions) =>
+                {
+                    var cli = new OpenIDConnectApplication
+                    {
+                        ClientId = "cli",
+                        ClientSecret = "cli",
+                    };
+                    cli.Scopes.UnionWith(new[] { "openid", "offline_access", "profile", "email", "roles", ContentDefinitionsApiOptionsDefaults.Scope, ContentManagementApiOptionsDefaults.Scope, ContentDeliveryApiOptionsDefaults.Scope });
+                    var web = new OpenIDConnectApplication
+                    {
+                        ClientId = "frontend",
+                    };
+                    web.RedirectUris.Add(new Uri("http://localhost:3000/api/auth/callback/opticms12"));
+                    web.PostLogoutRedirectUris.Add(new Uri("http://localhost:3000"));
+                    web.Scopes.UnionWith(new[] { "openid", "offline_access", "profile", "email", "roles", ContentDefinitionsApiOptionsDefaults.Scope, ContentManagementApiOptionsDefaults.Scope, ContentDeliveryApiOptionsDefaults.Scope });
+                    oidcOptions.Applications.Add(cli);
+                    oidcOptions.Applications.Add(web);
+                }
             );
             #endregion
 
@@ -130,7 +175,7 @@ namespace HeadlessCms
 
             #region Optimizely: ContentGraph - GraphQL Service
             // Add ContentGraph - GraphQL Service
-            //services.AddContentGraph(_configuration);
+            // services.AddContentGraph(_configuration);
             #endregion
 
             #region Optimizely Labs: Content Manager / Grid view / Out-of-context editing / etc..
@@ -191,7 +236,7 @@ namespace HeadlessCms
             // Setup Response compression and caching
             services
                 .AddResponseCompression();
-                //.AddResponseCaching();
+            //.AddResponseCaching();
             #endregion
 
             #region Headless.CMS Extensions & Services

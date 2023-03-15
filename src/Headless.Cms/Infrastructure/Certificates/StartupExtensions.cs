@@ -5,6 +5,10 @@ using EPiServer.OpenIDConnect;
 using EPiServer.Cms.UI.AspNetIdentity;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting;
+using OpenIddict.Server;
+using EPiServer.ContentApi.Cms;
+using EPiServer.ContentDefinitionsApi;
+using EPiServer.ContentManagementApi;
 
 #nullable enable
 namespace Microsoft.Extensions.DependencyInjection.Extensions
@@ -39,6 +43,22 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                     configureOptions?.Invoke(options);
                 }
             );
+
+            services.PostConfigureAll<OpenIddictServerOptions>(opts =>
+            {
+                // Ensure the Content Definitions API Scope has been registered
+                if (!opts.Scopes.Contains(ContentDefinitionsApiOptionsDefaults.Scope))
+                    opts.Scopes.Add(ContentDefinitionsApiOptionsDefaults.Scope);
+
+                // Ensure the Content Management API Scope has been registered
+                if (!opts.Scopes.Contains(ContentManagementApiOptionsDefaults.Scope))
+                    opts.Scopes.Add(ContentManagementApiOptionsDefaults.Scope);
+
+                // Ensure the Content Delivery API Scope has been registered
+                if (!opts.Scopes.Contains(ContentDeliveryApiOptionsDefaults.Scope))
+                    opts.Scopes.Add(ContentDeliveryApiOptionsDefaults.Scope);
+            });
+
             services.AddOpenIDConnectUI();
             return services;
         }

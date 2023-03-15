@@ -10,7 +10,7 @@
 		<Authors>Remko Jantzen</Authors>
 		<Company>Optimizely</Company>
 		<Description>Adds a Swashbuckle based API Explorer to the Optimizely CMS</Description>
-		<Copyright>(c)2022 Remko Jantzen</Copyright>
+		<Copyright>(c)2023 Remko Jantzen</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>EPiServerProtectedModulePackage Swashbuckle Optimizely EPiServer Episerver Swagger</PackageTags>
     </PropertyGroup>
@@ -24,7 +24,7 @@
 	</ItemGroup>
 
     <ItemGroup>
-		<PackageReference Include="EPiServer.CMS.UI.Core" Version="12.17.0" />
+		<PackageReference Include="EPiServer.CMS.UI.Core" Version="12.17.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.14" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.5.0" />

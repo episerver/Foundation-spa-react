@@ -8,6 +8,7 @@ using EPiServer.Framework.TypeScanner;
 using EPiServer.Security;
 using EPiServer.ServiceLocation;
 using EPiServer.Shell;
+using EPiServer.Shell.Modules;
 using EPiServer.Shell.UI.Internal;
 using EPiServer.Web;
 using Microsoft.AspNetCore.Http;
@@ -20,15 +21,13 @@ using System.Threading.Tasks;
 
 namespace Foundation.ApiExplorer
 {
-    public class ApiExplorerModule : CmsModule
+    public class ApiExplorerModule : ShellModule
     {
-        public ApiExplorerModule(string name, string routeBasePath, string resourceBasePath)
-            : base(name, routeBasePath, resourceBasePath)
+        public ApiExplorerModule(string name, string routeBasePath, string resourceBasePath) : base(name, routeBasePath, resourceBasePath)
         {
         }
 
-        public ApiExplorerModule(string name, string routeBasePath, string resourceBasePath, Uri uiUrl, Uri utilUrl, Func<string, string> absolutePathConverter, ITypeScannerLookup typeScannerLookup, IFileProvider vpp, IEnumerable<IContentRepositoryDescriptor> contentRepositoryDescriptors, CmsUIDefaults cmsUiDefaults, CategoryRepository categoryRepository, DisplayResolutionService displayResolutionService, ServiceAccessor<SiteDefinition> currentSiteDefinition, IFrameRepository frameRepository, IProjectService projectService, IHttpContextAccessor requestContext, IFeatureNotificationService featureNotificationService, ServiceAccessor<ExternalApplicationOptions> externalApplicationOptionsAccessor, UserGuideUrlProvider userGuideUrlProvider, IContentLanguageAccessor contentLanguageAccessor, ImageEditorOptions imageEditorOptions, IPrincipalAccessor principalAccessor, UIOptions uiOptions, HeadlessModeOptions headlessModeOptions)
-            : base(name, routeBasePath, resourceBasePath, uiUrl, utilUrl, absolutePathConverter, typeScannerLookup, vpp, contentRepositoryDescriptors, cmsUiDefaults, categoryRepository, displayResolutionService, currentSiteDefinition, frameRepository, projectService, requestContext, featureNotificationService, externalApplicationOptionsAccessor, userGuideUrlProvider, contentLanguageAccessor, imageEditorOptions, principalAccessor, uiOptions, headlessModeOptions)
+        public ApiExplorerModule(string name, string routeBasePath, string resourceBasePath, ITypeScannerLookup typeScannerLookup, IFileProvider virtualPathProvider) : base(name, routeBasePath, resourceBasePath, typeScannerLookup, virtualPathProvider)
         {
         }
     }
