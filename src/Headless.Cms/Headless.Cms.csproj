@@ -41,7 +41,7 @@
     </None>
     
 	<!-- Optimizely CMS, with OIDC provider -->
-    <PackageReference Include="EPiServer.CMS" Version="12.17.0" />
+    <PackageReference Include="EPiServer.CMS" Version="12.17.1" />
 	<PackageReference Include="EPiServer.OpenIDConnect" Version="3.6.0" />
 	<PackageReference Include="EPiServer.OpenIDConnect.UI" Version="3.6.0" />
 	  
@@ -60,7 +60,7 @@
     <!--<PackageReference Include="Optimizely.ContentGraph.Cms" Version="2.2.0" />-->
 	  
 	<!-- Add support for Optimizely DXP -->
-	<PackageReference Include="EPiServer.CloudPlatform.Cms" Version="1.3.0" />
+	<PackageReference Include="EPiServer.CloudPlatform.Cms" Version="1.3.1" />
 	  
 	<!-- Productivity enhancements from Optimizely Labs-->  
 	<PackageReference Include="EPiServer.Labs.BlockEnhancements" Version="1.1.1" />
@@ -71,10 +71,10 @@
 	<PackageReference Include="EPiServer.Labs.ProjectEnhancements" Version="1.0.0" />
 	  
 	<!-- Optimizely Forms & Marketing Automation Connectors -->
-    <PackageReference Include="EPiServer.Forms" Version="5.4.0" />
+    <PackageReference Include="EPiServer.Forms" Version="5.5.0" />
     <PackageReference Include="EPiServer.ConnectForMarketingAutomation" Version="6.1.2" />
 	<PackageReference Include="Optimizely.Labs.MarketingAutomationIntegration.ODP" Version="1.0.2" />
-	<PackageReference Include="EPiServer.MarketingAutomationIntegration.Pardot" Version="7.1.1" />
+	<PackageReference Include="EPiServer.MarketingAutomationIntegration.Pardot" Version="7.1.2" />
     <PackageReference Include="EPiServer.Marketing.Automation.Forms" Version="3.1.2" />
 
 	<!-- ImageSharp wrapper for Optimizely CMS -->  
@@ -86,9 +86,10 @@
 	  
 	<!-- Reverse proxy to communicate with Next.JS running on the same server-->
 	<PackageReference Include="Yarp.ReverseProxy" Version="2.0.0" />
-	  
-	<!-- Fix Linq.Async version to allow old version of Find to be used with CMS -->
+
+	  <!-- Fix Dependency graph by explicitly stating package versions -->
 	<PackageReference Include="System.Linq.Async" Version="6.0.1" />
+	<PackageReference Include="EPiServer.Hosting" Version="12.13.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Foundation.ContentApi.Extensions\Foundation.ContentApi.Extensions.csproj" />
