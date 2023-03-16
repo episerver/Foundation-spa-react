@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@400;700&display=swap');
-
 /* Optimizely Forms */
 .EPiServerForms .Form__MainBody,
 .EPiServerForms .Form__Element {
@@ -67,38 +65,11 @@
 
 /***** doneil updates // 2023-03-08 *****/
 
-@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&display=swap'); 
-* {
-  font-family: 'Figtree', sans-serif !important;
-}
-
-/* overrides */
-h1 {
-  font-size: 4rem !important;
-}
-h2 {
-  font-size: 3rem !important;
-}
-h3 {
-  font-size: 2rem !important;
-}
-h4 {
-  font-size: 1rem !important;
-}
-a {
-  text-decoration: none;
-  font-weight: bold;
-}
-
-/* header */
-
 .optiReact__site-logo {
   width: auto;
 }
 .optiReact__header {
   box-shadow: 0 0 200px -40px #fff;
-  background-color: #080734 !Important;
-  color: white !Important;
 }
 
 @media(max-width:800px){
@@ -112,9 +83,6 @@ a {
 }
 
 /* main menu */
-.optiReact__main-menu a {
-  font-weight: bold;
-}
 .optiReact__main-menu {
   gap: 2rem;
 }

@@ -15,6 +15,8 @@ export type AspectRatioBoxProps = {
 
     background ?: ReactNode
 
+    className ?: string
+
     sx?: SxProps<Theme>
 }
 
@@ -35,7 +37,9 @@ export const AspectRatioBox : FunctionComponent<PropsWithChildren<AspectRatioBox
         ...props.sx
     }
 
-    return <Box sx={ boxStyles } className="aspect-ratio-box">
+    const className = ['aspect-ratio-box', props.className ].filter(x=>x).join(' ')
+
+    return <Box sx={ boxStyles } className={ className }>
         { props.background }
         <Box sx={{ position: "absolute", top: "0", left: "0", width: "100%", height: "100%"}}>
             { props.children }

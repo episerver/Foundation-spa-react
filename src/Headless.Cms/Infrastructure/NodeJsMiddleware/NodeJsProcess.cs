@@ -105,15 +105,23 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
                 Logger.LogWarning("Node.JS Process start requested, but disabled by configuration");
                 return;
             }
-            JsProcess = Process.Start(CreateProcessDescriptor());
-            if (JsProcess is null)
-                throw new ApplicationException("Unable to start Node.JS Process");
-            
+            try
+            {
+                JsProcess = Process.Start(CreateProcessDescriptor());
+                if (JsProcess is null)
+                    throw new ApplicationException("Unable to start Node.JS Process");
+            } catch (Exception ex)
+            {
+                var message = ex.Message;
+                Logger.LogCritical("Node.js process failed to start with message: {message}", message);
+                return;
+            }            
             JsProcess.OutputDataReceived += NodeJsProcess_OutputDataReceived;
             JsProcess.ErrorDataReceived += NodeJsProcess_ErrorDataReceived;
             JsProcess.Exited += JsProcess_Exited;
             JsProcess.BeginErrorReadLine();
             JsProcess.BeginOutputReadLine();
+            Logger.LogInformation("Node.js process started");
         }
 
         protected void JsProcess_Exited(object? sender, EventArgs e)
@@ -127,7 +135,7 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
             }
             Logger.LogWarning("Node.JS Process exited");
             if (_mayRestart && Options.AutoRestart) {
-                Logger.LogInformation("Trying to restart process");
+                Logger.LogWarning("Trying to restart process");
                 StartProcess();
             }  else
                 Logger.LogCritical("Not restarting Node.JS - disabled frontend");
@@ -170,11 +178,23 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Create the process description of the Node.JS process to invoke
+        /// </summary>
+        /// <returns>The process descriptor</returns>
+        /// <exception cref="ApplicationException">If something occured that prevented the process descriptor from being generated.</exception>
         protected virtual ProcessStartInfo CreateProcessDescriptor()
         {
             var frontedPath = Path.GetFullPath(Path.Join(Environment.ContentRootPath, Options.FrontendPath));
             if (!Directory.Exists(frontedPath))
+            {
+                _mayRestart = false;
+                Options.Disabled = true;
+                Options.AutoRestart = false;
+                Options.AutoStart = false;
+                Logger.LogCritical("The configured frontend path could not be found, disabling the Node.js Middleware completely");
                 throw new ApplicationException("The configured frontend path cannot be found on disk (relative to the content root path)");
+            }
 
             IList<string> arguments = new List<string>();
 
