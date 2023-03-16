@@ -25,7 +25,7 @@
 
     <ItemGroup>
 		<PackageReference Include="EPiServer.CMS.UI.Core" Version="12.17.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.14" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.15" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.5.0" />
     </ItemGroup>

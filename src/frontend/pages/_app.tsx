@@ -24,12 +24,18 @@ import CmsComponents from '@components/cms'                 // Get the component
 import Website from 'website.cjs'
 import '../styles/globals.css'
 
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import createEmotionCache from '../components/shared/Layout/createEmotionCache';
+
 const CMS_DOMAIN = process.env.OPTIMIZELY_DXP_URL ?? ''
 const DEBUG = process.env.NODE_ENV !== 'production';
 
+// Client-side cache, shared for the whole session of the user in the browser.
+const clientSideEmotionCache = createEmotionCache();
+
 type AppType<P = {}> = FunctionComponent<AppProps<P>>
 
-const MyApp : AppType<MyAppProps> = ({ Component, pageProps: { fallback, session, baseType, ...pageProps }, router }) =>
+const MyApp : AppType<MyAppProps> = ({ Component, pageProps: { fallback, session, baseType, emotionCache = clientSideEmotionCache, ...pageProps }, router }) =>
 {
     //Define the default locale for the context
     const defaultLocale = (router as NextRouter).locale ?? (router as NextRouter).defaultLocale ?? 'en'
@@ -64,24 +70,26 @@ const MyApp : AppType<MyAppProps> = ({ Component, pageProps: { fallback, session
         console.groupEnd()
     }
     return <OptimizelyCmsContext cmsDomain={ CMS_DOMAIN } defaultBranch={ defaultLocale } components={ CmsComponents } defaultSiteId={ defaultSiteId } currentUrl={ requestPath } swrOptions={ swrConfig }>
-        <Head>
-            <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-            <title>{ Website.name }</title>
-            <meta name="x-component-type" content={ baseType } />
-        </Head>
-        <ErrorBoundary componentName='Optimizely CMS Root'>
-            <SessionProvider session={ session } refetchOnWindowFocus refetchWhenOffline={ false } refetchInterval={ 120 } >
-                <AuthorizeApi>
-                    <CurrentContent value={ pageProps.contentId }>
-                        { baseType === 'Block' ? <Component {...pageProps} /> : <Layout><Component { ...pageProps }/></Layout> }
-                    </CurrentContent>
-                </AuthorizeApi>
-            </SessionProvider>
-        </ErrorBoundary>
+        <CacheProvider value={emotionCache}>
+            <Head>
+                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+                <title>{ Website.name }</title>
+                <meta name="x-component-type" content={ baseType } />
+            </Head>
+            <ErrorBoundary componentName='Optimizely CMS Root'>
+                <SessionProvider session={ session } refetchOnWindowFocus refetchWhenOffline={ false } refetchInterval={ 120 } >
+                    <AuthorizeApi>
+                        <CurrentContent value={ pageProps.contentId }>
+                            { baseType === 'Block' ? <Component {...pageProps} /> : <Layout><Component { ...pageProps }/></Layout> }
+                        </CurrentContent>
+                    </AuthorizeApi>
+                </SessionProvider>
+            </ErrorBoundary>
+        </CacheProvider>
     </OptimizelyCmsContext>
 }
 
-type MyAppProps = {
+export type MyAppProps = {
     /**
      * SWR Fallback data
      */

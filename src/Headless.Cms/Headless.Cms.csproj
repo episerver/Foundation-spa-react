@@ -1,37 +1,87 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<RootNamespace>HeadlessCms</RootNamespace>
-		<Nullable>warnings</Nullable>
-		<Version>1.0.0.19</Version>
-		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<Authors>Remko Jantzen / Optimizely SA Team</Authors>
-		<Company>Optimizely</Company>
-		<Product>Foundation SPA React (CMS 12)</Product>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>HeadlessCms</RootNamespace>
+    <!-- Prepare for a nullable codebase -->
+    <Nullable>warnings</Nullable>
+    <Version>1.0.0.19</Version>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Authors>Remko Jantzen / Optimizely SA Team</Authors>
+    <Company>Optimizely</Company>
+    <Product>Foundation SPA React (CMS 12)</Product>
+  </PropertyGroup>
+  <!-- Resolve file publishing issue related to the EPiServer.Forms module -->
+  <ItemGroup>
+    <Compile Remove="modules\_protected\EPiServer.Forms\**" />
+    <Content Remove="modules\_protected\EPiServer.Forms\**" />
+    <EmbeddedResource Remove="modules\_protected\EPiServer.Forms\**" />
+    <None Remove="modules\_protected\EPiServer.Forms\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="App_Data\certificates\my.pfx" />
+    <None Remove="App_Data\foundation.episerverdata" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\certificates\my.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\foundation.episerverdata">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="wwwroot\" />
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    
+	<!-- Optimizely CMS, with OIDC provider -->
+    <PackageReference Include="EPiServer.CMS" Version="12.17.1" />
+	<PackageReference Include="EPiServer.OpenIDConnect" Version="3.6.0" />
+	<PackageReference Include="EPiServer.OpenIDConnect.UI" Version="3.6.0" />
+	  
+	<!-- APIs -->
+    <PackageReference Include="EPiServer.ContentDefinitionsApi" Version="3.6.0" />
+    <PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="3.6.0" />
+    <PackageReference Include="EPiServer.ContentDeliveryApi.Forms" Version="3.6.0" />
+    <PackageReference Include="EPiServer.ContentDeliveryApi.Search" Version="3.6.0" />
+    <PackageReference Include="EPiServer.ContentManagementApi" Version="3.6.0" />
+	  
+	<!-- Optimizely Search & Navigation -->
+    <PackageReference Include="EPiServer.Find.Cms" Version="14.2.4" />
+    <PackageReference Include="EPiServer.Find.Personalization" Version="14.2.4" />
+	  
+	<!-- Optimizely Content Graph -->
+    <!--<PackageReference Include="Optimizely.ContentGraph.Cms" Version="2.2.0" />-->
+	  
+	<!-- Add support for Optimizely DXP -->
+	<PackageReference Include="EPiServer.CloudPlatform.Cms" Version="1.3.1" />
+	  
+	<!-- Productivity enhancements from Optimizely Labs-->  
+	<PackageReference Include="EPiServer.Labs.BlockEnhancements" Version="1.1.1" />
+	<PackageReference Include="EPiServer.Labs.ContentManager" Version="1.1.0" />
+	<PackageReference Include="EPiServer.Labs.GridView" Version="1.1.0" />
+	<PackageReference Include="EPiServer.Labs.LanguageManager" Version="5.1.2" />
+	<PackageReference Include="EPiServer.Labs.LinkItemProperty" Version="1.0.2" />
+	<PackageReference Include="EPiServer.Labs.ProjectEnhancements" Version="1.0.0" />
+	  
+	<!-- Optimizely Forms & Marketing Automation Connectors -->
+    <PackageReference Include="EPiServer.Forms" Version="5.5.0" />
+    <PackageReference Include="EPiServer.ConnectForMarketingAutomation" Version="6.1.2" />
+	<PackageReference Include="Optimizely.Labs.MarketingAutomationIntegration.ODP" Version="1.0.2" />
+	<PackageReference Include="EPiServer.MarketingAutomationIntegration.Pardot" Version="7.1.2" />
+    <PackageReference Include="EPiServer.Marketing.Automation.Forms" Version="3.1.2" />
 	
-	<!-- Make sure a "Clean" App_Data is published -->
-	<ItemGroup>
-		<Content Update="App_Data\**">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-		<None Update="App_Data\certificates\my.pfx">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
-		</None>
-		<None Update="App_Data\foundation.episerverdata">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
-		</None>
-		<Content Update="App_Data\foundation.contentmanifest.json">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
-		</Content>
-	</ItemGroup>
+	<!-- Reverse proxy to communicate with Next.JS running on the same server-->
+	<PackageReference Include="Yarp.ReverseProxy" Version="2.0.0" />
+
+	  <!-- Fix Dependency graph by explicitly stating package versions -->
+	<PackageReference Include="System.Linq.Async" Version="6.0.1" />
+	<PackageReference Include="EPiServer.Hosting" Version="12.13.1" />
+  </ItemGroup>
 
 	<!-- Make sure only locally managed modules are published from the project -->
 	<ItemGroup>
@@ -49,65 +99,10 @@
 		</None>
 	</ItemGroup>
 	
-	<!-- Dependencies -->
-	<ItemGroup>
-		<!-- Optimizely CMS, with OIDC provider -->
-		<PackageReference Include="EPiServer.CMS" Version="12.17.1" />
-		<PackageReference Include="EPiServer.OpenIDConnect" Version="3.6.0" />
-		<PackageReference Include="EPiServer.OpenIDConnect.UI" Version="3.6.0" />
-	  
-		<!-- APIs -->
-		<PackageReference Include="EPiServer.ContentDefinitionsApi" Version="3.6.0" />
-		<PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="3.6.0" />
-		<PackageReference Include="EPiServer.ContentDeliveryApi.Forms" Version="3.6.0" />
-		<PackageReference Include="EPiServer.ContentDeliveryApi.Search" Version="3.6.0" />
-		<PackageReference Include="EPiServer.ContentManagementApi" Version="3.6.0" />
-	  
-		<!-- Optimizely Search & Navigation -->
-		<PackageReference Include="EPiServer.Find.Cms" Version="14.2.4" />
-		<PackageReference Include="EPiServer.Find.Personalization" Version="14.2.4" />
-	  
-		<!-- Optimizely Content Graph -->
-		<!--<PackageReference Include="Optimizely.ContentGraph.Cms" Version="2.2.0" />-->
-	  
-		<!-- Add support for Optimizely DXP -->
-		<PackageReference Include="EPiServer.CloudPlatform.Cms" Version="1.3.1" />
-	  
-		<!-- Productivity enhancements from Optimizely Labs-->  
-		<PackageReference Include="EPiServer.Labs.BlockEnhancements" Version="1.1.1" />
-		<PackageReference Include="EPiServer.Labs.ContentManager" Version="1.1.0" />
-		<PackageReference Include="EPiServer.Labs.GridView" Version="1.1.0" />
-		<PackageReference Include="EPiServer.Labs.LanguageManager" Version="5.1.2" />
-		<PackageReference Include="EPiServer.Labs.LinkItemProperty" Version="1.0.2" />
-		<PackageReference Include="EPiServer.Labs.ProjectEnhancements" Version="1.0.0" />
-	  
-		<!-- Optimizely Forms & Marketing Automation Connectors -->
-		<PackageReference Include="EPiServer.Forms" Version="5.5.0" />
-		<PackageReference Include="EPiServer.ConnectForMarketingAutomation" Version="6.1.2" />
-		<PackageReference Include="Optimizely.Labs.MarketingAutomationIntegration.ODP" Version="1.0.2" />
-		<PackageReference Include="EPiServer.MarketingAutomationIntegration.Pardot" Version="7.1.2" />
-		<PackageReference Include="EPiServer.Marketing.Automation.Forms" Version="3.1.2" />
-
-		<!-- ImageSharp wrapper for Optimizely CMS -->  
-		<PackageReference Include="Baaijte.Optimizely.ImageSharp.Web" Version="2.1.2" />
-		<PackageReference Include="SixLabors.ImageSharp.Web.Providers.Azure" Version="2.0.2" />
-	  
-		<!-- Visitor group criterion for ODP -->
-		<PackageReference Include="UNRVLD.ODP.VisitorGroups" Version="1.3.0" />
-	  
-		<!-- Reverse proxy to communicate with Next.JS running on the same server-->
-		<PackageReference Include="Yarp.ReverseProxy" Version="2.0.0" />
-		
-		<!-- Package dependency conflict resolution -->
-		<PackageReference Include="EPiServer.Hosting" Version="12.13.1" />
-	</ItemGroup>
-	
-	<!-- Project Dependencies -->
-	<ItemGroup>
-		<ProjectReference Include="..\Foundation.ContentApi.Extensions\Foundation.ContentApi.Extensions.csproj" />
-		<ProjectReference Include="..\Foundation.Settings\Foundation.Settings.csproj" />
-		<ProjectReference Include="..\Foundation.ApiExplorer\Foundation.ApiExplorer.csproj" />
-		<ProjectReference Include="..\Foundation.ContentActionsApi\Foundation.ContentActionsApi.csproj" />
-		<ProjectReference Include="E:\Optimizely\kinandcarta-epi-webhooks\WebHookAddOn\KinAndCarta.Connect.Webhooks.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Foundation.ContentApi.Extensions\Foundation.ContentApi.Extensions.csproj" />
+    <ProjectReference Include="..\Foundation.Settings\Foundation.Settings.csproj" />
+    <ProjectReference Include="..\Foundation.ApiExplorer\Foundation.ApiExplorer.csproj" />
+    <ProjectReference Include="..\Foundation.ContentActionsApi\Foundation.ContentActionsApi.csproj" />
+  </ItemGroup>
 </Project>

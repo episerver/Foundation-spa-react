@@ -19,6 +19,7 @@ export const TeaserBlockComponent : IContentComponent<TeaserBlock> = props => {
     const headingColor = pv(props.content, "headingColor") ?? undefined
     const rawLinkUrl = pv(props.content, "link")?.url
     const linkUrl = rawLinkUrl ? new URL(rawLinkUrl, 'http://localhost').pathname : undefined
+    const buttonText = `Discover ${ (pv(props.content, "heading") ?? "").toLocaleLowerCase() } services`
 
     if (imageUrl) {
         let imgUrl = new URL(imageUrl)
@@ -29,22 +30,15 @@ export const TeaserBlockComponent : IContentComponent<TeaserBlock> = props => {
         imageUrl = imgUrl.href
     }
 
-    return <Card sx={{
-            backgroundColor,
-            opacity,
-            display: 'flex',
-            flexFlow: 'column wrap',
-            justifyContent: 'space-between',
-            height: '100%'
-        }}>
+    return <Card sx={{ backgroundColor, opacity }}>
             { imageUrl ? <CardMedia image={ imageUrl } sx={{ flexGrow: 0, pb: '20%', mt: 2, backgroundSize: "contain" }} /> : <></> }
-            <CardContent sx={{ flexGrow: 1 }} >
+            <CardContent>
                 <Typography gutterBottom variant="h5" component="div" sx={{ color: headingColor }}>{ pv(props.content, "heading") }</Typography>
                 <StructuredHtml propertyData={ props.content?.text } componentFactory={ componentFactory } />
             </CardContent>
-            { linkUrl ? <CardActions sx={{ flexGrow: 0 }} >
+            { linkUrl ? <CardActions>
                 <Link href={ linkUrl } passHref legacyBehavior>
-                    <Button size="medium" variant="contained" color="secondary">Discover { (pv(props.content, "heading") ?? "").toLocaleLowerCase() } services</Button>
+                    <Button size="medium" variant="contained" color="secondary">{ buttonText }</Button>
                 </Link>
             </CardActions> : <></> }
         </Card>

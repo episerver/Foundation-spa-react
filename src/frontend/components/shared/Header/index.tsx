@@ -7,14 +7,32 @@ import { readValue as pv } from '@optimizely/cms/utils'
 import { useLayoutSettings } from '../Layout/settings'
 
 import Link from 'next/link'
-import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Button, MenuItem } from '@mui/material'
+import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, MenuItem } from '@mui/material'
+import Button, { ButtonProps } from '@mui/material/Button'
 import { Menu as MenuIcon } from '@mui/icons-material'
 
 import Logo from './Logo'
 import LanguageMenu from './LanguageMenu'
 import UserMenu from './UserMenu'
+import { alpha, styled } from '@mui/material/styles'
+
+import type { AppTheme } from '../Layout/theme'
 
 export type HeaderProps = {}
+
+const TopMenuButton = styled(Button)<ButtonProps>(({ theme }) => ({
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    fontWeight: 'bold',
+    paddingRight: 'initial',
+    '&:after': {
+        content: 'none'
+    },
+    '&:hover': {
+        color: (theme as AppTheme).palette.lightBlue?.main ?? '#fff'
+    }
+}));
+  
 
 export const Header : FunctionComponent<HeaderProps> = props => 
 {
@@ -48,7 +66,7 @@ export const Header : FunctionComponent<HeaderProps> = props =>
         return (new URL(url, 'http://localhost')).pathname
     }
 
-    return <AppBar position="sticky">
+    return <AppBar position="sticky" className="optiReact__header">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Logo companyName={ companyName } companyLogo={ companyLogo } logoHeight={ logoHeight } />
@@ -60,21 +78,23 @@ export const Header : FunctionComponent<HeaderProps> = props =>
                         <Menu id="menu-appbar" anchorEl={anchorElNav} anchorOrigin={{ vertical: 'bottom', horizontal: 'left', }} keepMounted transformOrigin={{ vertical: 'top', horizontal: 'left' }} open={Boolean(anchorElNav)} onClose={handleCloseNavMenu} sx={{ display: { xs: 'block', md: 'none' } }} >
                             {pages.map((page) => (
                                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                                    <Link href={removeLastSlash(page.href)} passHref legacyBehavior><Typography textAlign="center" component="a">{page.name}</Typography></Link>
+                                    <Link href={removeLastSlash(page.href)} passHref legacyBehavior>
+                                        <Typography textAlign="center" component="a">{page.name}</Typography>
+                                    </Link>
                                 </MenuItem>
                             ))}
                         </Menu>
                     </Box>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, order: 2 }}>
+                    <Box className="optiReact__main-menu" sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, order: 2 }}>
                         {pages.map((page) => (
                             <Link key={page.name} href={removeLastSlash(page.href)} passHref legacyBehavior>
-                                <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
+                                <TopMenuButton onClick={handleCloseNavMenu}>
                                     {page.name}
-                                </Button>
+                                </TopMenuButton>
                             </Link>
                         ))}
                     </Box>
-                    <Box sx={{ flexGrow: 0, order: 3 }}>
+                    <Box className="optiReact__top-buttons" sx={{ flexGrow: 0, order: 3 }}>
                         <LanguageMenu />
                         <UserMenu />
                     </Box>

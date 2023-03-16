@@ -1,5 +1,5 @@
 import type { GetServerSidePropsContext } from 'next'
-import { unstable_getServerSession } from 'next-auth/next'
+import { getServerSession as baseGetServerSession } from 'next-auth/next'
 import NextAuth from 'next-auth'
 import { Auth } from '@optimizely/next-js'
 
@@ -29,13 +29,13 @@ export const authOptions : Auth.CMS12OIDC.Cms12NextAuthOptionsType = {
  * Simple - strong typed - helper to retrieve the current session server side,
  * wrapping the Next-Auth provided method with the appropriate types and configuration
  * 
- * @see         unstable_getServerSession()
+ * @see         baseGetServerSession()
  * @param       req     The page request to get the session for
  * @param       res     The page response to get the session for
  * @returns     The session data
  */
 export const getServerSession : ( req: GetServerSidePropsContext["req"], res: GetServerSidePropsContext["res"] ) => Promise<Session | null> = 
-    (req, res) => unstable_getServerSession(req, res, authOptions)
+    (req, res) => baseGetServerSession(req, res, authOptions)
 
 /**
  * The default NextAuth logic for these Api Routes

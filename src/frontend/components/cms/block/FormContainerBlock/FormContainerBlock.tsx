@@ -53,7 +53,7 @@ export const FormContainerBlockComponent : IContentComponent<FormsApiContainer<F
             <p>Forms are disabled in edit mode</p>
         </div>
     
-    return <div className='EPiServerFormsComponent' data-form-id={contentId}>
+    return <div className='EPiServerFormsComponent optiReact__form-block' data-form-id={contentId}>
         <Head>
             <style id={ `${ contentId }-css` }>{ formModel.assets.css }</style>
         </Head>

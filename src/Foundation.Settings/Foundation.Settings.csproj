@@ -12,11 +12,16 @@
     <PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="3.6.0" />
     <PackageReference Include="EPiServer.ContentDeliveryApi.Core" Version="3.6.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.14" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.15" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
     <!-- Forced version to resolve conflict -->
-	<PackageReference Include="EPiServer.CMS.AspNetCore.HtmlHelpers" Version="12.13.1" />
+    <PackageReference Include="EPiServer.Framework" Version="12.13.1" />
+    <PackageReference Include="EPiServer.CMS.AspNetCore" Version="12.13.1" />
+    <PackageReference Include="EPiServer.CMS.AspNetCore.HtmlHelpers" Version="12.13.1" />
+    <PackageReference Include="EPiServer.CMS.AspNetCore.Mvc" Version="12.13.1" />
+    <PackageReference Include="EPiServer.CMS.AspNetCore.Routing" Version="12.13.1" />
+    <PackageReference Include="EPiServer.CMS.AspNetCore.Templating" Version="12.13.1" />
   </ItemGroup>
 
 </Project>

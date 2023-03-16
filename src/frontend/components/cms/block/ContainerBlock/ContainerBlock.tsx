@@ -8,9 +8,11 @@ import Box from '@mui/material/Box'
 export const ContainerBlockComponent : IContentComponent<ContainerBlock> = props => {
     const backgroundColor = pv(props.content, "backgroundColor") ?? undefined
     const opacity = pv(props.content, "blockOpacity") ?? undefined
+    const cssClass = "optiReact__container-block " + pv(props.content, "cssClass")
+
     if (!props.content)
         return <></>
-    return <Box sx={{ backgroundColor, opacity }}>
+    return <Box className={cssClass} sx={{ backgroundColor, opacity }}>
         <ContentArea content={ props.content } name="mainContentArea" />
     </Box>
 }
