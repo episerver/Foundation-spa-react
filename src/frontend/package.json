@@ -12,7 +12,8 @@
     "preexport": "next build",
     "export": "next export",
     "start-static": "serve out",
-    "schema-generate": "yarn opti-cms types --wt"
+    "schema-generate": "yarn opti-cms types --wt",
+    "dotnet": "node --require=./.pnp.cjs --loader=./.pnp.loader.mjs dotnet.js 3030"
   },
   "workspaces": [
     "packages/optimizely/*"
