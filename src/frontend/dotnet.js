@@ -27,9 +27,11 @@ function run(app)
     const handle = app.getRequestHandler()
     app.prepare().then(async () =>
     {
-        // Override configuration
-        process.env.NEXTAUTH_URL=process.env.OPTIMIZELY_DXP_URL
-        process.env.SITE_URL=process.env.OPTIMIZELY_DXP_URL
+        // Set configuration if missing
+        if (!process?.env?.NEXTAUTH_URL)
+            process.env.NEXTAUTH_URL=process.env.OPTIMIZELY_DXP_URL
+        if (!process?.env?.SITE_URL)
+            process.env.SITE_URL=process.env.OPTIMIZELY_DXP_URL
 
         // Create server
         process.stdout.write("Creating HTTP Server\n")
@@ -53,6 +55,9 @@ function run(app)
         process.stdout.write(`Opening ${ hostname }:${ port } in ${ dev ? "development" : "production" } mode\n`)
         server.listen(port, hostname, () => {
             process.stdout.write(`Listening on http://${ hostname }:${ port } in ${ dev ? "development" : "production" } mode.\n`)
+            process.stdout.write(`Communicating with DXP: ${ process.env.OPTIMIZELY_DXP_URL }\n`)
+            process.stdout.write(`Next-Auth URL: ${ process.env.NEXTAUTH_URL }\n`)
+            process.stdout.write(`Frontend URL: ${ process.env.SITE_URL }\n`)
         })
     });
 }
