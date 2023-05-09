@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SessionCallback = exports.JWTCallback = void 0;
 const tslib_1 = require("tslib");
-const guards_1 = require("./guards");
-const client_1 = tslib_1.__importDefault(require("./client"));
+const guards_1 = require("./guards.cjs");
+const client_1 = tslib_1.__importDefault(require("./client.cjs"));
 const JWTCallback = baseUrl => (params) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const currentToken = params.token;
     const currentUser = params.user;
