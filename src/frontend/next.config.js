@@ -19,6 +19,11 @@ const nextConfig = withBundleAnalyzer(withOptimizelyConfig({
         domains: ['localhost']
     },
     compiler: {
+      styledComponents: {
+        displayName: true,
+        ssr: true,
+        fileName: true,
+      },
       removeConsole: isProduction ? {
         exclude: isProduction ? ['error'] : undefined,
       } : false,

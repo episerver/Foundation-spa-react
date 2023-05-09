@@ -9,6 +9,6 @@ class Guid {
         return false;
     }
 }
-exports.default = Guid;
 Guid.Empty = '00000000-0000-0000-0000-000000000000';
+exports.default = Guid;
 //# sourceMappingURL=guid.js.map

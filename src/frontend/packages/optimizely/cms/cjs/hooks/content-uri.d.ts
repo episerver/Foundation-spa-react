@@ -20,3 +20,4 @@ export type ContentUriData<T extends IContent = IContentData> = {
 };
 export declare function buildContentURI(contentReference: ContentReference | ContentReference[], select?: string[], expand?: string[], branch?: string, inEditMode?: boolean, scope?: string, visitorGroup?: string): URL;
 export declare function parseContentURI<T extends IContent = IContentData>(contentURI: string | URL): ContentUriData<T>;
+export declare function isContentURI(toTest: string | URL): boolean;

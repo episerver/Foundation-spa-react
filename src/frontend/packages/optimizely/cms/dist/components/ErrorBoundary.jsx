@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 const DEBUG_ENABLED = process.env.NODE_ENV != "production";
-export class ErrorBoundary extends Component {
+class ErrorBoundary extends Component {
     constructor(props) {
         super(props);
         this.state = { hasError: false };
@@ -38,12 +38,11 @@ export class ErrorBoundary extends Component {
     }
 }
 ErrorBoundary.displayName = "Optimizely CMS: Error boundary";
-export function withErrorBoundary(BaseComponent, fallback) {
-    const wrapped = (props) => <ErrorBoundary componentName={BaseComponent.displayName} fallback={fallback}>
-        <BaseComponent {...props}/>
-    </ErrorBoundary>;
+export { ErrorBoundary };
+export const withErrorBoundary = function (BaseComponent, fallback) {
+    const wrapped = (props) => <ErrorBoundary componentName={BaseComponent.displayName} fallback={fallback}><BaseComponent {...props}/></ErrorBoundary>;
     wrapped.displayName = `${BaseComponent.displayName ?? 'Component'} with error boundary`;
     return wrapped;
-}
+};
 export default ErrorBoundary;
 //# sourceMappingURL=ErrorBoundary.jsx.map

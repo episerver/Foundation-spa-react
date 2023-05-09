@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundation.ApiExplorer", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundation.ContentApi.Extensions", "src\Foundation.ContentApi.Extensions\Foundation.ContentApi.Extensions.csproj", "{78EA719B-9B48-41A7-A3D6-A04C878A2C32}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KinAndCarta.Connect.Webhooks", "E:\Optimizely\kinandcarta-epi-webhooks\WebHookAddOn\KinAndCarta.Connect.Webhooks.csproj", "{0ED51A90-064F-4DCC-8D51-916DB744F3BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeaneBarker.Optimizely.Webhooks", "src\Webhooks\src\DeaneBarker.Optimizely.Webhooks.csproj", "{B74A4E3B-D9A6-416B-B9A6-71C49E847820}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,10 @@ Global
 		{78EA719B-9B48-41A7-A3D6-A04C878A2C32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78EA719B-9B48-41A7-A3D6-A04C878A2C32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78EA719B-9B48-41A7-A3D6-A04C878A2C32}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0ED51A90-064F-4DCC-8D51-916DB744F3BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0ED51A90-064F-4DCC-8D51-916DB744F3BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0ED51A90-064F-4DCC-8D51-916DB744F3BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0ED51A90-064F-4DCC-8D51-916DB744F3BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B74A4E3B-D9A6-416B-B9A6-71C49E847820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B74A4E3B-D9A6-416B-B9A6-71C49E847820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B74A4E3B-D9A6-416B-B9A6-71C49E847820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B74A4E3B-D9A6-416B-B9A6-71C49E847820}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

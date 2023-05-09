@@ -25,6 +25,7 @@ export class ContentDeliveryAPI implements IContentDeliveryAPI
 
     protected readonly _config : Config
     protected readonly _baseUrl : URL
+    protected readonly _frontendUrl: URL
     protected _accessToken ?: string
     protected readonly _customHeaders : Record<string, string> = {}
 
@@ -34,6 +35,7 @@ export class ContentDeliveryAPI implements IContentDeliveryAPI
         if (!validateConfig(this._config))
             throw new Error("Invalid Content Delivery API Configuration")
         this._baseUrl = new URL(this._config.apiUrl)
+        this._frontendUrl = this._config.frontendUrl ? new URL(this._config.frontendUrl ?? '/', this._baseUrl) : this._baseUrl
         //this._config.debug = true;
     }
 
@@ -126,11 +128,12 @@ export class ContentDeliveryAPI implements IContentDeliveryAPI
 
     public async resolveRoute<C extends IContent = IContent>(path : string, config: ContentRequest<C>) : Promise<C | undefined>
     {
+        const resolvablePath = new URL(path, this._frontendUrl);
         if (this._config.debug) {
             console.groupCollapsed("ContentDeliveryAPI: Resolve route")
-            console.log("Route", path)
+            console.log("Route", resolvablePath.href)
         }
-        const req : RequestConfig<C> = { ...config, urlParams: { ...config.urlParams, ContentUrl: path, MatchExact: 'true' } }
+        const req : RequestConfig<C> = { ...config, urlParams: { ...config.urlParams, ContentUrl: resolvablePath.href, MatchExact: 'true' } }
         const list = await this.doRequest<C[]>(OptiEndpoints.Content, req as RequestConfig<IContentIfOther<C>>)
 
         if (this._config.debug) {

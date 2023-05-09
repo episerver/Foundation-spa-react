@@ -1,11 +1,13 @@
 import { ContentLink } from '../models'
 import Guid from './guid'
 
+const DEBUG = process.env.NODE_ENV != 'production'
+
 /**
  * Define the admin prefix needed to process the URLs, allowing the scripts to 
  * cope with different CMS configurations
  */
-const AdminPrefix = (process.env.OPTIMIZELY_DXP_ADMIN_PREFIX ?? 'EPiServer').split('/').filter(x => x).join('/')
+//const AdminPrefix = (process.env.OPTIMIZELY_DXP_ADMIN_PREFIX ?? 'EPiServer').split('/').filter(x => x).join('/')
 
 /**
  * Parse the given URL into a URL object, defaulting to "window.location" if 
@@ -77,8 +79,10 @@ export function isEditModeUrl(currentUrl ?: URL | string | null) : boolean
     try {
         const url = getUrl(currentUrl)
         const path = url.pathname
-        if (path.startsWith(`/${ AdminPrefix }/CMS/Content`) || path.startsWith(`/${ AdminPrefix }/CMS/Content`.toLowerCase())) {
-            return path.includes(",,") && (url.searchParams.get('epieditmode') === 'true' || url.searchParams.get('epieditmode') === 'false')
+        const mode = url.searchParams.get('mode')
+        if (path.endsWith(`/opti.${ mode }`) || path.endsWith(`/opti.${ mode }.json`)) {
+            var id = url.searchParams.get('id');
+            return typeof(id) == 'string' && id != null && id.length > 0 && (url.searchParams.get('hash') ?? '').startsWith(`${id}:`)
         }
         return false
     } catch {
@@ -90,19 +94,20 @@ export function getEditModeInfo(currentUrl ?: URL | string | null) : EditModeCon
 {
     try {
         const url = getUrl(currentUrl);
-        if (!isEditModeUrl(url)) 
+        if (!isEditModeUrl(url)) {
+            if (DEBUG) console.log('getEditModeInfo: No edit mode', url.toString(), url.pathname)
             return undefined
+        }
 
         const isPreviewActive = url.searchParams.get('epieditmode') === 'false'
-        var pattern = new RegExp(`/${ AdminPrefix }/CMS/Content`,'i')
-        const contentPath = url.pathname.replace(pattern, '').split(',,', 2)[0]
-        const contentFullId = (url.pathname.split(',,', 2)[1] ?? '0').split('_')
+        const contentPath = url.searchParams.get('path') ?? '/'
+        const contentFullId = (url.searchParams.get('id') ?? '0').split('_')
         const siteUrl = new URL(contentPath, url)
         const id = parseInt(contentFullId[0] ?? '0')
         const workId = parseInt(contentFullId[1] ?? '0') || undefined
         const projectId = parseInt(url.searchParams.get('epiprojects') ?? '0') || undefined
         const contentReference = `${id}${ workId ? "_" + workId : ""}`
-        
+
         return {
             guidValue: Guid.Empty,
             id,

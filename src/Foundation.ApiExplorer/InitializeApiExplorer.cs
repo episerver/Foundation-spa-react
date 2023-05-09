@@ -31,11 +31,13 @@ namespace EPiServer.DependencyInjection
         }
         public static IServiceCollection AddApiExplorer(this IServiceCollection services, ApiExplorerOptions options)
         {
+            // Add the Admin Module
+            services.Configure<ProtectedModuleOptions>(o => o.Items.Add(new ModuleDetails { Name = "Foundation.ApiExplorer" }));
+
             // Auth name in definition
             string AuthName = "OptiContentCloud";
 
             // Configure authentication for endpoints
-            
             var wellKnown = options.MasterUrl is not null ? new Uri(options.MasterUrl, ".well-known/openid-configuration") : new Uri("/.well-known/openid-configuration", UriKind.Relative);
             var securityDefinition = new OpenApiSecurityScheme()
             {
@@ -49,7 +51,7 @@ namespace EPiServer.DependencyInjection
             //Add Swagger
             services.AddSwaggerGen(swaggerOptions => {
                 swaggerOptions.SwaggerDoc(options.DocumentName, options.CreateApiInfo());
-                swaggerOptions.ResolveConflictingActions(ContentTypeApiDescriptionConflictResolver.Resolve);
+                swaggerOptions.ResolveConflictingActions(OptimizelyConflictResolver.Resolve);
                 swaggerOptions.AddSecurityDefinition(AuthName, securityDefinition);
 
                 if (options.GlobalAuthScopes != null && options.GlobalAuthScopes.Count > 0)

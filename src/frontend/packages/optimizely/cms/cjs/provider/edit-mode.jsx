@@ -7,6 +7,7 @@ const edit_mode_1 = require("../util/edit-mode");
 const use_library_1 = require("../hooks/use-library");
 const content_reference_1 = require("../util/content-reference");
 const swr_1 = require("swr");
+const content_uri_1 = require("../hooks/content-uri");
 const DEFAULT_CMS_PATH = 'episerver/cms';
 const DEFAULT_CMS_VERSION = 'latest';
 const DEFAULT_CMS_COMMUNICATOR = 'clientresources/epi-cms/communicationInjector.js';
@@ -64,19 +65,26 @@ const OptimizelyEditMode = ({ children, currentUrl, cmsDomain, cmsPath, cmsVersi
         const handler = (event) => {
             if (unmounted)
                 return;
-            var [contentId, workId] = event.contentLink.split('_');
+            const [contentId] = event.contentLink.split('_');
             if (DEBUG) {
-                console.log("Optimizely - CMS: Edit Mode > Received contentSaved event:", event);
-                console.log("Optimizely - CMS: Edit Mode > Refreshing SWR Data:", contentId, workId, event.contentLink);
+                console.log("Optimizely - CMS: Edit Mode > Received contentSaved event:", contentId, event);
             }
-            swr.mutate(contentId);
-            swr.mutate(event.contentLink);
+            swr.mutate((key) => {
+                let toMutate = key == contentId || key == event.contentLink;
+                if (!toMutate && typeof (key) == 'string' && (0, content_uri_1.isContentURI)(key)) {
+                    const { contentIds } = (0, content_uri_1.parseContentURI)(key);
+                    toMutate = contentIds.includes(contentId) || contentIds.includes(event.contentLink);
+                }
+                if (DEBUG && toMutate)
+                    console.log("Optimizely - CMS: Edit Mode > Refreshing SWR Data for key:", key);
+                return toMutate;
+            });
         };
         lib.subscribe("contentSaved", handler);
         return () => {
             unmounted = true;
         };
-    }, [lib, swr,]);
+    }, [lib, swr]);
     return <EditModeContext.Provider value={contextValue}>{children}</EditModeContext.Provider>;
 };
 exports.OptimizelyEditMode = OptimizelyEditMode;

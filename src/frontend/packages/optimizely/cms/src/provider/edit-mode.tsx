@@ -5,6 +5,7 @@ import { useLibrary } from '../hooks/use-library'
 import { ContentReference } from '../models/content-link'
 import { createApiId } from '../util/content-reference'
 import { useSWRConfig } from 'swr'
+import { parseContentURI, isContentURI } from '../hooks/content-uri'
 
 const DEFAULT_CMS_PATH = 'episerver/cms'
 const DEFAULT_CMS_VERSION = 'latest'
@@ -84,20 +85,27 @@ export const OptimizelyEditMode : FunctionComponent<PropsWithChildren<Optimizely
 
         const handler : Parameters<typeof lib.subscribe>[1] = (event) => {
             if (unmounted) return
-            var [contentId, workId] = event.contentLink.split('_')
+            const [ contentId ] = event.contentLink.split('_')
             if (DEBUG) {
-                console.log("Optimizely - CMS: Edit Mode > Received contentSaved event:", event)
-                console.log("Optimizely - CMS: Edit Mode > Refreshing SWR Data:", contentId, workId, event.contentLink)
+                console.log("Optimizely - CMS: Edit Mode > Received contentSaved event:", contentId, event)
             }
-            swr.mutate(contentId)
-            swr.mutate(event.contentLink)
+            swr.mutate((key) => {
+                let toMutate = key == contentId || key == event.contentLink
+                if (!toMutate && typeof(key) == 'string' && isContentURI(key)) {
+                    const { contentIds } = parseContentURI(key)
+                    toMutate = contentIds.includes(contentId) || contentIds.includes(event.contentLink)
+                }
+                if (DEBUG && toMutate)
+                    console.log("Optimizely - CMS: Edit Mode > Refreshing SWR Data for key:", key)
+                return toMutate
+            })
         }
 
         lib.subscribe("contentSaved", handler)
         return () => {
             unmounted = true
         }
-    }, [ lib, swr,  ])
+    }, [ lib, swr ])
 
     return <EditModeContext.Provider value={ contextValue }>{ children }</EditModeContext.Provider>
 }

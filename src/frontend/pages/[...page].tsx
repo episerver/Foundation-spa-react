@@ -1,4 +1,5 @@
 import type { GetStaticPathsContext, GetStaticPathsResult } from 'next'
+import type { OptimizelyCmsPageUrlParams } from '@optimizely/next-js/cms-page'
 
 // Optimizely CMS
 import { getStaticProps as baseGetStaticProps, staticPropsHasData } from '@optimizely/next-js/cms-page'
@@ -18,7 +19,7 @@ import SiteInfo from 'website.cjs'
 
 
 const DEBUG_ENABLED = process.env.NODE_ENV === 'development'
-const DXP_DEBUG = false;
+const DXP_DEBUG = false //process.env?.OPTIMIZELY_DXP_DEBUG != "0" && process.env.NODE_ENV != 'production'
 
 /**
  * Statically generate all HTML for the pages currently published whithin the 
@@ -28,15 +29,26 @@ const DXP_DEBUG = false;
  * @param ctx The Static Path Generation context
  * @returns The list of pages
  */
-export async function getStaticPaths(ctx : GetStaticPathsContext) : Promise<GetStaticPathsResult>
+export async function getStaticPaths(ctx : GetStaticPathsContext) : Promise<GetStaticPathsResult<OptimizelyCmsPageUrlParams>>
 {
     const cms = createApiClient({ debug: DXP_DEBUG, defaultBranch: ctx.defaultLocale })
     
-    let paths : string[] = [];
+    let paths : { params: OptimizelyCmsPageUrlParams, locale?: string }[] = []
     for (const locale of ctx.locales ?? [ ctx.defaultLocale ])
     {
-        const localPaths = await (cms.raw(`api/foundation/v1.0/routes/${ SiteInfo.id }/`, { branch: locale }) as Promise<string[]>)
-        paths = paths.concat(localPaths.map(lp => (new URL(lp)).pathname))
+        const localPaths = await (cms.raw(`api/episerver/v3.0/site/${ SiteInfo.id }/routes`, { branch: locale }) as Promise<string[]>)
+        paths = paths.concat(localPaths.map(lp => {
+            const pathName = (new URL(lp, 'http://localhost/')).pathname
+            const params = pathName.split('/').filter(x => x);
+            if (params[0] == locale)
+                params.shift();
+            return {
+                params: {
+                    page: params
+                },
+                locale
+            }
+        }))
     }
 
     return {

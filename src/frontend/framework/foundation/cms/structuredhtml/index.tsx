@@ -1,10 +1,10 @@
 import type { FunctionComponent, AllHTMLAttributes, ReactNode, ReactElement } from 'react'
 import type { PropertyXhtmlString } from '@optimizely/cms/models'
-import type { StructuredHtmlData, StructuredHtmlNode, StructuredHtmlElement, StructuredHtmlComponentFactory, StructuredHtemlElementComponents } from './types'
+import type { StructuredHtmlData, ParsedStructuredHtmlData, StructuredHtmlNode, StructuredHtmlElement, StructuredHtmlComponentFactory, StructuredHtemlElementComponents } from './types'
 import { ContentComponent } from '@optimizely/cms/components'
 import { Property } from '@optimizely/cms/utils'
 import React, { createElement, Fragment, Suspense } from 'react'
-import { isStructuredHtml } from './utils'
+import { isStructuredHtml, parseStructuredHtmlData } from './utils'
 import { decode as htmlDecode } from 'html-entities'
 
 export type StructuredHtmlProps = {
@@ -43,7 +43,7 @@ export const StructuredHtml : FunctionComponent<StructuredHtmlProps> = ({ proper
     }
 
     if (isStructuredHtml(data)) {
-        const s : StructuredHtmlData = data
+        const s : ParsedStructuredHtmlData = parseStructuredHtmlData(data)
         let idx = 0
         const pfx = Math.floor(Math.random() * 1000)
         return <Suspense>{ s.components.map(node => <HtmlRenderNode node={node} key={ `${ pfx }-structured-html-${ idx++ }`} componentFactory={ componentFactory } />) }</Suspense>

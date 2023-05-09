@@ -6,6 +6,7 @@ import type { AppProps } from 'next/app'
 import type { NextRouter } from 'next/router'
 import Head from 'next/head'
 import { SWRConfig } from 'swr'                                    // SWR Context
+import Script from 'next/script'
 
 // Import Next Auth
 import { SessionProvider } from 'next-auth/react'             // Authentication session
@@ -24,7 +25,9 @@ import CmsComponents from '@components/cms'                 // Get the component
 import Website from 'website.cjs'
 import '../styles/globals.css'
 
-import { CacheProvider, EmotionCache } from '@emotion/react';
+// Emotion
+import type { EmotionApp } from './_document'
+import { CacheProvider } from '@emotion/react';
 import createEmotionCache from '../components/shared/Layout/createEmotionCache';
 
 const CMS_DOMAIN = process.env.OPTIMIZELY_DXP_URL ?? ''
@@ -33,9 +36,9 @@ const DEBUG = process.env.NODE_ENV !== 'production';
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
-type AppType<P = {}> = FunctionComponent<AppProps<P>>
+type OptimizelyCmsApp<P = {}> = EmotionApp<P>
 
-const MyApp : AppType<MyAppProps> = ({ Component, pageProps: { fallback, session, baseType, emotionCache = clientSideEmotionCache, ...pageProps }, router }) =>
+const MyApp : OptimizelyCmsApp<MyAppProps> = ({ Component, emotionCache = clientSideEmotionCache, pageProps: { fallback, session, baseType, ...pageProps }, router }) =>
 {
     //Define the default locale for the context
     const defaultLocale = (router as NextRouter).locale ?? (router as NextRouter).defaultLocale ?? 'en'
@@ -49,7 +52,6 @@ const MyApp : AppType<MyAppProps> = ({ Component, pageProps: { fallback, session
             console.error("SWR Caught Error", err, key, config)
         }, 
         shouldRetryOnError(err) {
-            if (DEBUG) console.log("SWRConfig > shouldRetryOnError:", err)
             const is404 = (err as any)?.errorData?.code == 404
             return !is404
         }
@@ -63,7 +65,7 @@ const MyApp : AppType<MyAppProps> = ({ Component, pageProps: { fallback, session
         console.log("Site - _App.js > CMS Domain", CMS_DOMAIN)
         console.log("Site - _App.js > Default locale", defaultLocale)
         console.log("Site - _App.js > Default site", defaultSiteId)
-        console.log("Site - _App.js > Components", Object.getOwnPropertyNames(CmsComponents))
+        //console.log("Site - _App.js > Components", Object.getOwnPropertyNames(CmsComponents))
         console.log("Site - _App.js > Session", session)
         console.log("Site - _App.js > Base Type", baseType)
         console.log("Site - _App.js > PageProps", pageProps)
@@ -75,11 +77,13 @@ const MyApp : AppType<MyAppProps> = ({ Component, pageProps: { fallback, session
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
                 <title>{ Website.name }</title>
                 <meta name="x-component-type" content={ baseType } />
+                <link rel="shortcut icon" href="/favicon.ico" />
             </Head>
             <ErrorBoundary componentName='Optimizely CMS Root'>
                 <SessionProvider session={ session } refetchOnWindowFocus refetchWhenOffline={ false } refetchInterval={ 120 } >
                     <AuthorizeApi>
                         <CurrentContent value={ pageProps.contentId }>
+                            <Script strategy='afterInteractive' id={`track-view-${ pageProps.contentId }`} dangerouslySetInnerHTML={{__html: `console.log(\"Event: Page View of ${ pageProps.contentId }\"); zaius.event('pageview');`}}></Script>
                             { baseType === 'Block' ? <Component {...pageProps} /> : <Layout><Component { ...pageProps }/></Layout> }
                         </CurrentContent>
                     </AuthorizeApi>

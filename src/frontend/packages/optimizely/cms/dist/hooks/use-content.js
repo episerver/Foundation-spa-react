@@ -35,6 +35,8 @@ export function useContent(contentReference, select, expand, branch, scope, inEd
                 return true;
             if (a == undefined || b == undefined) // If either side is undefined, it's always unequal
                 return false;
+            if (loadInEditMode) // In edit mode always update the view
+                return false;
             const idA = createLanguageId(a, contentBranch, loadInEditMode);
             const idB = createLanguageId(a, contentBranch, loadInEditMode);
             return idA == idB;

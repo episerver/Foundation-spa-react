@@ -50,4 +50,10 @@ export function parseContentURI(contentURI) {
     const visitorGroup = uri.searchParams.get(CONTENT_PARAMS.VisitorGroup) ?? undefined;
     return { contentIds, select, expand, editMode, branch, scope, visitorGroup };
 }
+export function isContentURI(toTest) {
+    var urlString = typeof (toTest) == 'object' && toTest != null && toTest.href ? toTest.href : toTest;
+    if (typeof (urlString) != 'string')
+        return false;
+    return urlString.startsWith(CMS_CONTENT_PROTOCOL);
+}
 //# sourceMappingURL=content-uri.js.map

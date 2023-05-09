@@ -2,9 +2,10 @@ import type { ComponentLoader, IContentDeliveryAPI } from '@optimizely/cms/types
 import type { IContentData, ContentTypePath, ContentReference } from '@optimizely/cms/models'
 import { useOptimizelyCms, useEditMode } from '@optimizely/cms/context'
 import useSWR from 'swr'
-import { loadAdditionalPropsAndFilter, filterProps, createApiId } from '@optimizely/cms/utils'
+import { loadAdditionalPropsAndFilter, createApiId, ContentReference as ContentReferenceUtils } from '@optimizely/cms/utils'
 import { useRouter } from 'next/router'
 
+const { createLanguageId } = ContentReferenceUtils
 const DEBUG_ENABLED = process.env.NODE_ENV != "production";
 
 export type PageRenderingProps = {
@@ -66,7 +67,19 @@ export function usePageContent(ref: ContentReference, inEditMode ?: boolean, loc
 
     const fetcher = (id: string) => fetchPageContent(id, api, pageLocale, editMode)
 
-    return useSWR<IContentData | undefined, {}, string>(contentId, fetcher)
+    return useSWR<IContentData | undefined, {}, string>(contentId, fetcher, {
+        compare(a, b) {
+            if (a == b) 
+                return true
+            if (a == undefined || b == undefined) // If either side is undefined, it's always unequal
+                return false
+            if (editMode) // If in edit mode always return unequal
+                return false
+            const idA = createLanguageId(a, pageLocale, editMode)
+            const idB = createLanguageId(a, pageLocale, editMode)
+            return idA == idB
+        }
+    })
 }
 
 async function fetchPageContent(ref: ContentReference, api: IContentDeliveryAPI, locale?: string, inEditMode: boolean = false) : Promise<IContentData | undefined>

@@ -1,4 +1,4 @@
-export default class Guid {
+class Guid {
     static isEmpty(value) {
         if (!value)
             return true;
@@ -8,4 +8,5 @@ export default class Guid {
     }
 }
 Guid.Empty = '00000000-0000-0000-0000-000000000000';
+export default Guid;
 //# sourceMappingURL=guid.js.map

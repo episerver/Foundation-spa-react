@@ -1,7 +1,8 @@
 import { useOptimizelyCms, useEditMode } from '@optimizely/cms/context';
 import useSWR from 'swr';
-import { loadAdditionalPropsAndFilter, createApiId } from '@optimizely/cms/utils';
+import { loadAdditionalPropsAndFilter, createApiId, ContentReference as ContentReferenceUtils } from '@optimizely/cms/utils';
 import { useRouter } from 'next/router';
+const { createLanguageId } = ContentReferenceUtils;
 const DEBUG_ENABLED = process.env.NODE_ENV != "production";
 export function usePageContent(ref, inEditMode, locale) {
     if (DEBUG_ENABLED) {
@@ -24,7 +25,19 @@ export function usePageContent(ref, inEditMode, locale) {
     if (!api)
         throw new Error("Optimizely not initialized");
     const fetcher = (id) => fetchPageContent(id, api, pageLocale, editMode);
-    return useSWR(contentId, fetcher);
+    return useSWR(contentId, fetcher, {
+        compare(a, b) {
+            if (a == b)
+                return true;
+            if (a == undefined || b == undefined)
+                return false;
+            if (editMode)
+                return false;
+            const idA = createLanguageId(a, pageLocale, editMode);
+            const idB = createLanguageId(a, pageLocale, editMode);
+            return idA == idB;
+        }
+    });
 }
 async function fetchPageContent(ref, api, locale, inEditMode = false) {
     if (DEBUG_ENABLED)

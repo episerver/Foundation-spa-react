@@ -1,5 +1,7 @@
 import type { ContentReference, IContent, ContentLink, ContentApiId } from '../models'
-import { isContentLink  } from './content-link';
+import { isContentLink  } from './content-link'
+
+const DXP_URL = process.env.OPTIMIZELY_DXP_URL ?? 'http://localhost:8000/'
 
 export function referenceIsIContent(ref ?: ContentReference | null | undefined): ref is IContent {
     if (typeof(ref) !== 'object' || ref === null)
@@ -97,9 +99,24 @@ export function createApiId(id: ContentReference, preferGuid : boolean = true, i
     throw new Error("Unable to generate an Optimizely Content Delivery API ID [02]")
 }
 
-export function createContentUrl(id: ContentReference) : string | undefined
+export function createContentUrl(id: ContentReference, rebase: boolean = true) : string | undefined
 {
-    if (referenceIsString(id)) return id
-    if (referenceIsIContent(id)) return id.contentLink.url
-    if (referenceIsContentLink(id)) return id.url
+    let urlString : string | undefined = undefined
+    if (referenceIsString(id)) urlString = id
+    if (referenceIsIContent(id)) urlString = id.contentLink.url
+    if (referenceIsContentLink(id)) urlString = id.url
+    if (rebase && urlString) {
+        try {
+            const url = new URL(urlString, DXP_URL)
+            const du = new URL(DXP_URL)
+            if (url.host != du.host)
+                url.host = du.host
+            if (url.protocol != du.protocol)
+                url.protocol = du.protocol
+            return url.href
+        } catch {
+            return undefined
+        }
+    }
+    return urlString
 }

@@ -7,8 +7,9 @@ import createComponentLoader from '../loader/factory'
 
 const DEFAULT_CMS_BRANCH = 'en'
 const DEFAULT_SITE_ID = '00000000-0000-0000-0000-000000000000'
-const DEBUG = process.env.NODE_ENV != 'production'
+const NODE_DEBUG = process.env.NODE_ENV != 'production'
 const DXP_DEBUG = process.env.OPTIMIZELY_DXP_DEBUG?.toLowerCase() === 'true' || process.env.OPTIMIZELY_DXP_DEBUG === '1'
+const DEBUG = NODE_DEBUG && DXP_DEBUG
 
 export type OptimizelyCmsContextData = {
     api?: IContentDeliveryApi

@@ -1,17 +1,8 @@
-﻿using EPiServer;
-using EPiServer.Web;
-using EPiServer.Core;
-using EPiServer.ServiceLocation;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Linq;
-using CoreContentLoaderService = EPiServer.ContentApi.Core.Internal.ContentLoaderService;
+﻿using ContentApiContentLoaderService = EPiServer.ContentApi.Core.Internal.ContentLoaderService;
 using ContentApiIContextModeResolver = EPiServer.ContentApi.Core.Internal.IContextModeResolver;
 using WebContextModeResolver = EPiServer.Web.IContextModeResolver;
 using Foundation.ContentApi.Extensions.Services;
 using Foundation.ContentApi.Extensions.Infrastructure;
-using Microsoft.AspNetCore.Authentication;
-using EPiServer.Security;
 using EPiServer.ContentApi.Core.Serialization;
 using Foundation.ContentApi.Extensions.Conversion;
 using Foundation.ContentApi.Extensions.Conversion.StructuredHtml;
@@ -24,64 +15,75 @@ namespace Microsoft.Extensions.DependencyInjection
     /// </summary>
     public static class StartupExtensions
     {
-        public static IServiceCollection ApplyContentApiExtensions(this IServiceCollection services, string? authSchema = null, bool interceptLoaderSerivce = false)
+        /// <summary>
+        /// Add the following ContentDeliveryAPI Extensions: UnifiedContextMode, UnifiedPrincipal, StructuredHtml, ContentLoader
+        /// </summary>
+        /// <param name="services">The service collection to add the extensions to</param>
+        /// <returns>The enriched service collection</returns>
+        /// <exception cref="Exception">If the extension is applied prior to the ContentDeliveryAPI</exception>
+        /// <see cref="AddStructuredHtml(IServiceCollection)"/>
+        /// <see cref="AddUnifiedContextModeResolver(IServiceCollection)"/>
+        /// <see cref="AddUnifiedPrincipalResolution(IServiceCollection, string?)"/>
+        public static IServiceCollection ApplyContentApiExtensions(this IServiceCollection services)
         {
             // Check preconditions
-            if (!services.Any(x => x.ServiceType == typeof(CoreContentLoaderService)))
+            if (!services.Any(x => x.ServiceType == typeof(ContentApiContentLoaderService)))
                 throw new Exception("No ContentLoaderService has been configured - did you configure the ContentDeliveryAPI?");
 
+            services
+                .AddUnifiedContextModeResolver()
+                .AddStructuredHtml()
+                .AddEnhancedContentLoader();
+
+            return services;
+        }
+
+        public static IServiceCollection AddUnifiedContextModeResolver(this IServiceCollection services)
+        {
+
+            // Replace the Context Mode Resolvers with an universal version, so the context mode is resolved the same at
+            // any location
+            services
+                .AddSingleton<IApiRequestAssessor, DefaultApiRequestAssessor>()
+                .AddHttpContextOrThreadScoped<UniversalContextModeResolver, UniversalContextModeResolver>()
+                .AddHttpContextOrThreadScoped<WebContextModeResolver>(locator => locator.GetInstance<UniversalContextModeResolver>())
+                .AddHttpContextOrThreadScoped<ContentApiIContextModeResolver>(locator => locator.GetInstance<UniversalContextModeResolver>());
+            return services;
+        }
+
+
+        public static IServiceCollection AddStructuredHtml(this IServiceCollection services)
+        {
             // Add the services specific to this extension
             services
-                .AddSingleton<IApiRequestAssessor, DefaultApiRequestAssessor>() // Add a pluggable method to determine if an URL is a API URL
-                .AddHttpContextOrThreadScoped(serviceProvider =>
-                {
-                    var httpContextAccessor = serviceProvider.GetInstance<IHttpContextAccessor>();
-                    var authenticationService = serviceProvider.GetInstance<IAuthenticationService>();
-                    var principalAccessor = serviceProvider.GetInstance<IPrincipalAccessor>();
-                    return new ApiPrincipalAccessor(httpContextAccessor, authenticationService, principalAccessor, authSchema);
-                })
-                .AddHttpContextOrThreadScoped<UniversalContextModeResolver, UniversalContextModeResolver>()
                 .AddHttpContextOrThreadScoped<IPropertyConverterProvider, StructuredHtmlPropertyConverterProvider>()
                 .AddHttpContextOrThreadScoped<StructuredHtmlPropertyConverter, StructuredHtmlPropertyConverter>()
                 .AddTransient<IPropertyConverter, StructuredHtmlPropertyConverter>(s => s.GetInstance<StructuredHtmlPropertyConverter>())
                 .AddTransient<DefaultBlockView>()
                 .AddOptions<StructuredHtmlPropertyOptions>();
-
-            // Replace the Context Mode Resolvers with an universal version, so the context mode is resolved the same at
-            // any location
-            services
-                .AddHttpContextOrThreadScoped<WebContextModeResolver>(locator => locator.GetInstance<UniversalContextModeResolver>())
-                .AddHttpContextOrThreadScoped<ContentApiIContextModeResolver>(locator => locator.GetInstance<UniversalContextModeResolver>());
-
-            services.TryIntercept<IPrincipalAccessor>((serviceProvider, principalAccessor) =>
-            {
-                var httpContextAccessor = serviceProvider.GetInstance<IHttpContextAccessor>();
-                var authenticationService = serviceProvider.GetInstance<IAuthenticationService>();
-                //var principalAccessor = serviceProvider.GetInstance<IPrincipalAccessor>();
-                return new ApiPrincipalAccessor(httpContextAccessor, authenticationService, principalAccessor, authSchema);
-            });
-
-            if (interceptLoaderSerivce)
-            {
-                // Wrap the current ContentLoaderService with a new version, supporting projects and more. This is only
-                // needed due to ContentApi.Commerce providing a new content-loader and this extension should be operational
-                // regardless of the commerce being installed
-                services.Intercept<CoreContentLoaderService>((serviceProvider, currentService) =>
-                {
-                    var contentLoader = serviceProvider.GetInstance<IContentLoader>();
-                    var permanentLinkMapper = serviceProvider.GetInstance<IPermanentLinkMapper>();
-                    var providerManager = serviceProvider.GetInstance<IContentProviderManager>();
-                    var contextModeResolver = serviceProvider.GetInstance<UniversalContextModeResolver>();
-                    var projectResolver = serviceProvider.GetInstance<IProjectResolver>();
-                    var httpContextAccessor = serviceProvider.GetInstance<IHttpContextAccessor>();
-                    return new ContentLoaderServiceWrapper(contentLoader, permanentLinkMapper, providerManager, contextModeResolver, projectResolver, httpContextAccessor, currentService);
-                });
-            } else
-            {
-                services.AddTransient<CoreContentLoaderService, ContentLoaderService>();
-            }
-
             return services;
+        }
+
+        /// <summary>
+        /// Repace the ContentLoader Service with a content loader that fully supports:
+        /// <list type="bullet">
+        ///     <item>Loading any content version</item>
+        ///     <item>Access rights checking on each content item</item>
+        ///     <item>Loading the correct draft based on a selected project</item>
+        ///     <item>Loading the correct draft based on a visitor group preview</item>
+        /// </list>
+        /// The ContentLoader service is implemented as interceptor, so it does not interferes
+        /// to a minimum with any other extension of the ContentLoader services
+        /// </summary>
+        /// <param name="services">The service collection to add the replacement to</param>
+        /// <returns>The changed service collection</returns>
+        public static IServiceCollection AddEnhancedContentLoader(this IServiceCollection services)
+        {
+            // Wrap the current ContentLoaderService with a new version, supporting projects and more. This is only
+            // needed due to ContentApi.Commerce providing a new content-loader and this extension should be operational
+            // regardless of the commerce being installed
+            return services
+                .AddTransient<ContentApiContentLoaderService, EnhancedContentLoaderService>();
         }
     }
 }

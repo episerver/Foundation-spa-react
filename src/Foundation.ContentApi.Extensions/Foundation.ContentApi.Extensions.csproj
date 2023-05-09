@@ -6,8 +6,23 @@
 		<Description>Extension to the ContentDelivery API to allow for Edit Mode access to the content</Description>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="3.6.0" />
-		<PackageReference Include="EPiServer.ContentDeliveryApi.Search" Version="3.6.0" />
+		<Using Include="System" />
+		<Using Include="System.Collections" />
+		<Using Include="System.Collections.Generic" />
+		<Using Include="System.Linq" />
+		<Using Include="System.IO" />
+		<Using Include="System.Threading" />
+		<Using Include="Microsoft.Extensions.DependencyInjection" />
+		<Using Include="Microsoft.Extensions.DependencyInjection.Extensions" />
+		<Using Include="EPiServer" />
+		<Using Include="EPiServer.ServiceLocation"/>
+		<Using Include="EPiServer.Core" />
+		<Using Include="EPiServer.DataAbstraction" />
+		<Using Include="EPiServer.DataAnnotations" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="3.7.0" />
+		<PackageReference Include="EPiServer.ContentDeliveryApi.Search" Version="3.7.0" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
 	</ItemGroup>
 </Project>

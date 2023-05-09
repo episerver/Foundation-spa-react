@@ -10,7 +10,6 @@ using EPiServer.ContentDefinitionsApi;
 using EPiServer.ContentManagementApi;
 using EPiServer.DependencyInjection;
 using EPiServer.Cms.UI.AspNetIdentity;
-using EPiServer.Labs.ContentManager;
 using EPiServer.Labs.GridView;
 using EPiServer.OpenIDConnect;
 using EPiServer.Web;
@@ -18,8 +17,6 @@ using EPiServer.Web.Routing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Foundation.ContentActionsApi;
 using EPiServer.Labs.BlockEnhancements;
@@ -32,9 +29,6 @@ using ODPApiUserProfile = HeadlessCms.Infrastructure.ODPUserProfile;
 using EPiServer.Cms.TinyMce.Core;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
-using System;
-using EPiServer.Authorization;
-using Microsoft.Azure.Amqp.Framing;
 
 namespace HeadlessCms
 {
@@ -97,27 +91,7 @@ namespace HeadlessCms
             // OpenID Connect
             services.AddAndConfiureOpenIDConnect<ApplicationUser>(
                 configuration: _configuration,
-                webhost: _webHostingEnvironment,
-
-                // Configuring apps in code, as the UI is broken on CMS 12.17.1
-                configureOptions: (oidcOptions) =>
-                {
-                    var cli = new OpenIDConnectApplication
-                    {
-                        ClientId = "cli",
-                        ClientSecret = "cli",
-                    };
-                    cli.Scopes.UnionWith(new[] { "openid", "offline_access", "profile", "email", "roles", ContentDefinitionsApiOptionsDefaults.Scope, ContentManagementApiOptionsDefaults.Scope, ContentDeliveryApiOptionsDefaults.Scope });
-                    var web = new OpenIDConnectApplication
-                    {
-                        ClientId = "frontend",
-                    };
-                    web.RedirectUris.Add(new Uri("http://localhost:3000/api/auth/callback/opticms12"));
-                    web.PostLogoutRedirectUris.Add(new Uri("http://localhost:3000"));
-                    web.Scopes.UnionWith(new[] { "openid", "offline_access", "profile", "email", "roles", ContentDefinitionsApiOptionsDefaults.Scope, ContentManagementApiOptionsDefaults.Scope, ContentDeliveryApiOptionsDefaults.Scope });
-                    oidcOptions.Applications.Add(cli);
-                    oidcOptions.Applications.Add(web);
-                }
+                webhost: _webHostingEnvironment
             );
             #endregion
 
@@ -175,26 +149,10 @@ namespace HeadlessCms
 
             #region Optimizely: ContentGraph - GraphQL Service
             // Add ContentGraph - GraphQL Service
-            // services.AddContentGraph(_configuration);
+            //services.AddContentGraph(_configuration);
             #endregion
 
             #region Optimizely Labs: Content Manager / Grid view / Out-of-context editing / etc..
-            // Add Content Manager
-            services.AddContentManager(options =>
-            {
-                options.IsContentManagerEnabled = true;
-                options.IsBlocksProviderEnabled = true;
-                options.AutocompleteEnabled = true;
-                options.NotificationReceiversRoles = new[] { "WebEditors" };
-                options.CustomViewsFolderName = "CustomExternalViews";
-                options.AvailableGadgets = new[]
-                {
-                    ExternalDashboardGadgetType.Starred,
-                    ExternalDashboardGadgetType.Rejected,
-                    ExternalDashboardGadgetType.Tasks
-                };
-            });
-
             // Add Gridview
             services.AddGridView(options =>
             {
@@ -207,8 +165,8 @@ namespace HeadlessCms
             // Add Block Enhancements
             services.AddBlockEnhancements(options =>
             {
-                options.InlineTranslate = true;
-                options.AllowQuickEditOnSharedBlocks = true;
+                options.StatusIndicator = true;
+                options.PublishPageWithBlocks = true;
             });
 
             // Add Project Enhancements
@@ -243,7 +201,7 @@ namespace HeadlessCms
             services
                 .AddJsonConversionStandard()        // Ensure that all JSON responses align with the ContentDeliveryAPI
                 .AddFoundationSettings()            // Add settings extension
-                .ApplyContentApiExtensions(OpenIDConnectOptionsDefaults.AuthenticationScheme)        // Add extensions for the ContentDeliveryAPI to fully support OPE
+                .ApplyContentApiExtensions()        // Add extensions for the ContentDeliveryAPI to fully support OPE
                 .AddContentActionApi()              // Add Content Actions API
                 .AddApiExplorer(options => {        // Add & Configure API Explorer
                     options.DefaultAuthScopes.Add(ContentDefinitionsApiOptionsDefaults.Scope);

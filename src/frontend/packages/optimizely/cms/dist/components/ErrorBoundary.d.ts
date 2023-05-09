@@ -1,5 +1,5 @@
-import type { ComponentType, PropsWithChildren, ReactNode } from 'react';
-import React, { Component } from 'react';
+import type { ComponentType, PropsWithChildren, ReactNode, FunctionComponent } from 'react';
+import { Component } from 'react';
 export type ErrorBoundaryProps = PropsWithChildren<{
     componentName?: string;
     fallback?: ReactNode;
@@ -16,7 +16,8 @@ export declare class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
         error: Error;
     };
     componentDidCatch(error: Error, errorInfo: any): void;
-    render(): string | number | boolean | React.ReactFragment | JSX.Element | null | undefined;
+    render(): ReactNode;
 }
-export declare function withErrorBoundary<P>(BaseComponent: ComponentType<P>, fallback?: ReactNode): ComponentType<P>;
+export type ErrorBoundaryWrapper = <P>(BaseComponent: ComponentType<P>, fallback?: ReactNode) => FunctionComponent<P>;
+export declare const withErrorBoundary: ErrorBoundaryWrapper;
 export default ErrorBoundary;

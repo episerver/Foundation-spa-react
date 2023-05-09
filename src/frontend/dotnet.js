@@ -27,9 +27,9 @@ function run(app)
     const handle = app.getRequestHandler()
     app.prepare().then(async () =>
     {
-        // Override NextAuth configuration
+        // Override configuration
         process.env.NEXTAUTH_URL=process.env.OPTIMIZELY_DXP_URL
-		process.env.NEXTAUTH_URL_INTERNAL=process.env.OPTIMIZELY_DXP_URL
+        process.env.SITE_URL=process.env.OPTIMIZELY_DXP_URL
 
         // Create server
         process.stdout.write("Creating HTTP Server\n")

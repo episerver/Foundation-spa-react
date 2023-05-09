@@ -1,6 +1,5 @@
 import type { FunctionComponent, ReactElement, PropsWithChildren } from 'react';
 import type { IContent, ContentTypePath, ContentLink } from '../models';
-import React from 'react';
 export type ContentComponentProps = ({
     /**
      * The content identifier of the content item to load. This
@@ -62,5 +61,5 @@ export type ContentComponentProps = ({
  * @returns     The rendered component
  */
 export declare const ContentComponent: FunctionComponent<PropsWithChildren<ContentComponentProps>>;
-declare const _default: React.ComponentType<PropsWithChildren<ContentComponentProps>>;
+declare const _default: FunctionComponent<PropsWithChildren<ContentComponentProps>>;
 export default _default;

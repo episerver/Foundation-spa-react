@@ -43,16 +43,14 @@ class ErrorBoundary extends react_1.Component {
         return this.props.children;
     }
 }
-exports.ErrorBoundary = ErrorBoundary;
 ErrorBoundary.displayName = "Optimizely CMS: Error boundary";
-function withErrorBoundary(BaseComponent, fallback) {
+exports.ErrorBoundary = ErrorBoundary;
+const withErrorBoundary = function (BaseComponent, fallback) {
     var _a;
-    const wrapped = (props) => <ErrorBoundary componentName={BaseComponent.displayName} fallback={fallback}>
-        <BaseComponent {...props}/>
-    </ErrorBoundary>;
+    const wrapped = (props) => <ErrorBoundary componentName={BaseComponent.displayName} fallback={fallback}><BaseComponent {...props}/></ErrorBoundary>;
     wrapped.displayName = `${(_a = BaseComponent.displayName) !== null && _a !== void 0 ? _a : 'Component'} with error boundary`;
     return wrapped;
-}
+};
 exports.withErrorBoundary = withErrorBoundary;
 exports.default = ErrorBoundary;
 //# sourceMappingURL=ErrorBoundary.jsx.map

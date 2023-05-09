@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.parseContentURI = exports.buildContentURI = exports.CONTENT_PARAMS = exports.CMS_CONTENT_PROTOCOL = void 0;
+exports.isContentURI = exports.parseContentURI = exports.buildContentURI = exports.CONTENT_PARAMS = exports.CMS_CONTENT_PROTOCOL = void 0;
 const content_reference_1 = require("../util/content-reference");
 exports.CMS_CONTENT_PROTOCOL = 'opti-cms:';
 var CONTENT_PARAMS;
@@ -57,4 +57,11 @@ function parseContentURI(contentURI) {
     return { contentIds, select, expand, editMode, branch, scope, visitorGroup };
 }
 exports.parseContentURI = parseContentURI;
+function isContentURI(toTest) {
+    var urlString = typeof (toTest) == 'object' && toTest != null && toTest.href ? toTest.href : toTest;
+    if (typeof (urlString) != 'string')
+        return false;
+    return urlString.startsWith(exports.CMS_CONTENT_PROTOCOL);
+}
+exports.isContentURI = isContentURI;
 //# sourceMappingURL=content-uri.js.map

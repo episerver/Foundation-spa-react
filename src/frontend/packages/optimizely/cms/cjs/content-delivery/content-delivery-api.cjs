@@ -20,11 +20,13 @@ exports.DefaultRequestConfig = {
 };
 class ContentDeliveryAPI {
     constructor(config) {
+        var _a;
         this._customHeaders = {};
         this._config = Object.assign(Object.assign({}, config_1.DefaultConfig), config);
         if (!(0, config_1.validateConfig)(this._config))
             throw new Error("Invalid Content Delivery API Configuration");
         this._baseUrl = new URL(this._config.apiUrl);
+        this._frontendUrl = this._config.frontendUrl ? new URL((_a = this._config.frontendUrl) !== null && _a !== void 0 ? _a : '/', this._baseUrl) : this._baseUrl;
         //this._config.debug = true;
     }
     setHeader(header, value) {
@@ -117,11 +119,12 @@ class ContentDeliveryAPI {
     resolveRoute(path, config) {
         var _a;
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const resolvablePath = new URL(path, this._frontendUrl);
             if (this._config.debug) {
                 console.groupCollapsed("ContentDeliveryAPI: Resolve route");
-                console.log("Route", path);
+                console.log("Route", resolvablePath.href);
             }
-            const req = Object.assign(Object.assign({}, config), { urlParams: Object.assign(Object.assign({}, config.urlParams), { ContentUrl: path, MatchExact: 'true' }) });
+            const req = Object.assign(Object.assign({}, config), { urlParams: Object.assign(Object.assign({}, config.urlParams), { ContentUrl: resolvablePath.href, MatchExact: 'true' }) });
             const list = yield this.doRequest(util_1.OptiEndpoints.Content, req);
             if (this._config.debug) {
                 console.log(`Received ${(_a = list === null || list === void 0 ? void 0 : list.length) !== null && _a !== void 0 ? _a : 0} content items for ${path}`);

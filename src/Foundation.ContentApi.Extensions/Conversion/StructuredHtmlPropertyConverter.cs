@@ -5,10 +5,6 @@ using EPiServer.SpecializedProperties;
 using Foundation.ContentApi.Extensions.Conversion.StructuredHtml;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Foundation.ContentApi.Extensions.Conversion
 {
@@ -29,10 +25,6 @@ namespace Foundation.ContentApi.Extensions.Conversion
         {
             get
             {
-                // When we're running without HttpContext always return the raw XHtml data
-                if (_httpContextAccessor.HttpContext is null)
-                    return true;
-
                 if (_options.StructureByDefault && string.Equals("true", _httpContextAccessor.HttpContext?.Request?.Query["rawHtml"], StringComparison.OrdinalIgnoreCase))
                     return true;
 
@@ -47,12 +39,20 @@ namespace Foundation.ContentApi.Extensions.Conversion
         {
             if (propertyData is PropertyXhtmlString propertyXhtmlString)
             {
+                // Convert to property model
+                IPropertyModel? propertyModel;
                 if (OutputRawHtml || contentMappingContext.IsContentManagementRequest)
-                    return new XhtmlPropertyModel(propertyXhtmlString, contentMappingContext);
+                    propertyModel = new XhtmlPropertyModel(propertyXhtmlString, contentMappingContext);
+                else
+                    propertyModel = new StructuredHtmlPropertyModel(propertyXhtmlString, contentMappingContext, StructuredHtmlContext.FromConverterContext(contentMappingContext));
 
-                return new StructuredHtmlPropertyModel(propertyXhtmlString, contentMappingContext);
+                // Add support for expansion
+                if (contentMappingContext.ShouldExpand(propertyData.Name) && propertyModel is IExpandableProperty expandableProperty)
+                    expandableProperty.Expand(contentMappingContext.Language);
+
+                // Return the result
+                return propertyModel;
             }
-
             throw new ApplicationException("The provided propertyData is of the incorrect type");
         }
     }
