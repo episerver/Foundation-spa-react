@@ -1,11 +1,11 @@
 // Import React
-import type { ComponentProps, FunctionComponent } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 // Import Next.JS & SWR
-import type { AppProps } from 'next/app'
 import type { NextRouter } from 'next/router'
 import Head from 'next/head'
-import { SWRConfig } from 'swr'                                    // SWR Context
+import type { SWRConfig } from 'swr'
 import Script from 'next/script'
 
 // Import Next Auth
@@ -14,12 +14,10 @@ import { SessionProvider } from 'next-auth/react'             // Authentication 
 // Import Optimizely CMS
 import OptimizelyCmsContext from '@optimizely/cms/context'    // Optimizely Content Cloud Context
 import ErrorBoundary from '@optimizely/cms/error-boundary'    // Optimizely Content Cloud Context
-
-// Framework
 import { CurrentContent } from '@framework/current-content'
 
 // Local files
-import { Layout } from '@components/shared/Layout'                 // Generic website layout
+import { Layout } from '@components/shared/Layout'          // Generic website layout
 import { AuthorizeApi } from '@components/shared/Utils'     // Get the authorization API
 import CmsComponents from '@components/cms'                 // Get the component cache to be used
 import Website from 'website.cjs'
@@ -36,16 +34,16 @@ const DEBUG = process.env.NODE_ENV !== 'production';
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
+type OptimizelySWRConfig = ComponentProps<typeof SWRConfig>['value']
 type OptimizelyCmsApp<P = {}> = EmotionApp<P>
 
 const MyApp : OptimizelyCmsApp<MyAppProps> = ({ Component, emotionCache = clientSideEmotionCache, pageProps: { fallback, session, baseType, ...pageProps }, router }) =>
 {
     //Define the default locale for the context
     const defaultLocale = (router as NextRouter).locale ?? (router as NextRouter).defaultLocale ?? 'en'
-    const requestPath = (router as NextRouter).asPath
     
     // Bulid the configuration for the SWR Library
-    const swrConfig : ComponentProps<typeof SWRConfig>["value"] = { 
+    const swrConfig : OptimizelySWRConfig = { 
         fallback: fallback ?? {}, 
         suspense: false,
         onError(err, key, config) {
@@ -54,24 +52,28 @@ const MyApp : OptimizelyCmsApp<MyAppProps> = ({ Component, emotionCache = client
         shouldRetryOnError(err) {
             const is404 = (err as any)?.errorData?.code == 404
             return !is404
-        }
+        },
+        provider: browserCacheProviderFactory()
     }
 
     // Create the application, using the following structure CMS > Error Boundary > Settings > Resolved Content > 
     const defaultSiteId = Website.id
     if (DEBUG) {
         console.groupCollapsed("Site - _App.js")
-        console.log("Site - _App.js > SWR Config", swrConfig)
-        console.log("Site - _App.js > CMS Domain", CMS_DOMAIN)
-        console.log("Site - _App.js > Default locale", defaultLocale)
-        console.log("Site - _App.js > Default site", defaultSiteId)
-        //console.log("Site - _App.js > Components", Object.getOwnPropertyNames(CmsComponents))
-        console.log("Site - _App.js > Session", session)
-        console.log("Site - _App.js > Base Type", baseType)
-        console.log("Site - _App.js > PageProps", pageProps)
+        console.log("Site - _App.js > Route:", router.pathname)
+        console.log("Site - _App.js > Path:", router.asPath)
+        console.log("Site - _App.js > CMS Domain:", CMS_DOMAIN)
+        console.log("Site - _App.js > Default locale:", defaultLocale)
+        console.log("Site - _App.js > Default site:", defaultSiteId)
+        console.log("Site - _App.js > Session:", session)
+        console.log("Site - _App.js > Base Type:", baseType)
+        console.log("Site - _App.js > PageProps:", pageProps)
+        console.log("Site - _App.js > SWR Fallback:", Object.getOwnPropertyNames(swrConfig.fallback ?? {}))
+        console.log("Site - _App.js > SWR Cache:", swrConfig.provider ? "Set" : "Default")
         console.groupEnd()
     }
-    return <OptimizelyCmsContext cmsDomain={ CMS_DOMAIN } defaultBranch={ defaultLocale } components={ CmsComponents } defaultSiteId={ defaultSiteId } currentUrl={ requestPath } swrOptions={ swrConfig }>
+
+    return <OptimizelyCmsContext cmsDomain={ CMS_DOMAIN } defaultBranch={ defaultLocale } components={ CmsComponents } defaultSiteId={ defaultSiteId } swrOptions={ swrConfig }>
         <CacheProvider value={emotionCache}>
             <Head>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -127,3 +129,26 @@ export type MyAppProps = {
 }
 
 export default MyApp
+
+function browserCacheProviderFactory() 
+{
+    try {
+        const w = window
+        const s = window.localStorage
+
+        if (w && s)
+            return () => {
+                if (DEBUG) console.log("Activating Local Storage Cache for SWR")
+                const map = new Map<string, any>(JSON.parse(window.localStorage.getItem('$$swr$$app-cache$$') || '[]'))
+                window.addEventListener('beforeunload', () => {
+                    const appCache = JSON.stringify(Array.from(map.entries()))
+                    window.localStorage.setItem('$$swr$$app-cache$$', appCache)
+                })
+                return map
+            }
+
+        return undefined
+    } catch {
+        return undefined
+    }
+}

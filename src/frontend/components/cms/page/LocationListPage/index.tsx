@@ -7,6 +7,7 @@ import Link from 'next/link'
 import React from 'react'
 import { LocationListPage, LocationItemPage } from 'schema'
 import siteInfo from 'website.cjs'
+import StructuredHtml from '@framework/foundation/cms/structuredhtml'
 
 const INITIAL_PAGE_SIZE = 8
 
@@ -18,20 +19,23 @@ export type AdditionalProps = {
 
 export const LocationListPageComponent : IContentComponent<LocationListPage, AdditionalProps> = props => {
     
-    const title = `${ props.content?.name } :: ${ siteInfo.name }`
+    const title = `${ props.content?.name ?? "Location List Page" } :: ${ siteInfo.name }`
 
     return <div className='location-list-page'>
         <Head>
             <title>{ title }</title>
+            <meta name="x-epi-page-type" content='Optimizely Location List Page'/>
         </Head>
         <Typography variant='h2' component='h1'>
             <EditableField field='name' inline >{ pv(props.content, 'name') ?? 'Location list page' }</EditableField>
         </Typography>
-        <Typography variant='body1' component='div'><EditableField field='mainBody' html={ pv(props.content, 'mainBody') || '' }></EditableField></Typography>
+        <Typography variant='body1' component='div'>
+            <EditableField field='mainBody'><StructuredHtml propertyData={ props.content?.mainBody } /></EditableField>
+        </Typography>
         <Grid container>
             <Grid item xs={12} md={3}>
                 <Typography variant='h6' component='p'>Filters</Typography>
-                <Typography variant='body2' component='p'>ContentSearch API does not support retrieving filters</Typography>
+                <Typography variant='body2' component='p'>ToDo...</Typography>
             </Grid>
             <Grid item xs={12} md={9}>
                 <Toolbar>Toolbar...</Toolbar>

@@ -35,11 +35,11 @@
     "cli-table3": "^0.6.3",
     "dotenv": "^16.0.3",
     "dotenv-expand": "^10.0.0",
-    "glob": "^10.2.2",
+    "glob": "^10.2.3",
     "node-fetch": "^3.3.1",
     "open": "^9.1.0",
     "openid-client": "^5.4.2",
-    "rollup": "^3.21.5",
+    "rollup": "^3.21.6",
     "typescript": "^5.0.4",
     "yargs": "^17.7.2"
   },

@@ -40,6 +40,8 @@ export type PageRenderingProps = {
      * The component required to render the page
      */
     component : ContentTypePath
+
+    baseType?: 'Page' | 'Block' | 'Media'
 } & Record<string, any>
 
 export function usePageContent(ref: ContentReference, inEditMode ?: boolean, locale ?: string)
@@ -162,7 +164,7 @@ async function iContentDataToProps(content: IContentData, contentId: string, api
     props.fallback[contentId] = content
 
     const ct : string[] = content.contentType ?? []
-    const prefix = ct[0] ?? 'page'
+    const prefix = (ct[0] ?? 'Page') as 'Page' | 'Block' | 'Media'
 
     const pageProps : PageRenderingProps = {
         ...props,
@@ -171,7 +173,8 @@ async function iContentDataToProps(content: IContentData, contentId: string, api
         locale: content.language.name,
         inEditMode,
         prefix,
-        component: content.contentType
+        component: content.contentType,
+        baseType: prefix
     }
     if (pageProps.content)
         delete pageProps.content

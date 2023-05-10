@@ -108,9 +108,9 @@ function iContentDataToProps(content, contentId, api, locale, inEditMode = false
             props.fallback = {};
         props.fallback[contentId] = content;
         const ct = (_a = content.contentType) !== null && _a !== void 0 ? _a : [];
-        const prefix = (_b = ct[0]) !== null && _b !== void 0 ? _b : 'page';
+        const prefix = ((_b = ct[0]) !== null && _b !== void 0 ? _b : 'Page');
         const pageProps = Object.assign(Object.assign({}, props), { fallback: (_c = props.fallback) !== null && _c !== void 0 ? _c : {}, contentId, locale: content.language.name, inEditMode,
-            prefix, component: content.contentType });
+            prefix, component: content.contentType, baseType: prefix });
         if (pageProps.content)
             delete pageProps.content;
         return pageProps;

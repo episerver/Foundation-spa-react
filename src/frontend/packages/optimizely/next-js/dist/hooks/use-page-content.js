@@ -92,7 +92,7 @@ async function iContentDataToProps(content, contentId, api, locale, inEditMode =
         props.fallback = {};
     props.fallback[contentId] = content;
     const ct = content.contentType ?? [];
-    const prefix = ct[0] ?? 'page';
+    const prefix = (ct[0] ?? 'Page');
     const pageProps = {
         ...props,
         fallback: props.fallback ?? {},
@@ -100,7 +100,8 @@ async function iContentDataToProps(content, contentId, api, locale, inEditMode =
         locale: content.language.name,
         inEditMode,
         prefix,
-        component: content.contentType
+        component: content.contentType,
+        baseType: prefix
     };
     if (pageProps.content)
         delete pageProps.content;

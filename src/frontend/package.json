@@ -14,7 +14,8 @@
     "export": "next export",
     "start-static": "serve out",
     "schema-generate": "opti-cms types --wt",
-    "dotnet": "node --require=./.pnp.cjs --loader=./.pnp.loader.mjs dotnet.js 3030"
+    "dotnet": "node --require ./.pnp.cjs --experimental-loader ./.pnp.loader.mjs dotnet.js 3030",
+    "dnb": "node dotnet.js 3000"
   },
   "workspaces": [
     "packages/optimizely/*"
@@ -25,7 +26,7 @@
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.11.16",
-    "@mui/material": "^5.12.3",
+    "@mui/material": "^5.13.0",
     "@mui/system": "^5.12.3",
     "@mui/utils": "^5.12.3",
     "@next/env": "^13.4.1",
@@ -49,7 +50,7 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.4.1",
-    "@types/node": "^20.1.1",
+    "@types/node": "^20.1.2",
     "@types/react": "^18.2.6",
     "@yarnpkg/sdks": "^3.0.0-rc.43",
     "browserslist": "^4.21.5",
@@ -58,7 +59,9 @@
     "typescript": "^5.0.4"
   },
   "resolutions": {
-    "@types/react": "^18.2.6"
+    "@types/react": "^18.2.6",
+    "@types/react-is": "^18.2.0",
+    "react-is": "^18.2.0"
   },
   "packageManager": "yarn@3.5.1",
   "version": "1.0.0"

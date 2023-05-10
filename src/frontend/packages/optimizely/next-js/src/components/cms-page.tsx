@@ -1,5 +1,6 @@
 import type { NextPage, GetStaticProps, GetStaticPathsContext, GetStaticPathsResult, GetStaticPropsResult, GetServerSideProps, GetServerSidePropsResult, NextApiRequest, Redirect, PreviewData } from 'next'
 import type { ComponentLoader, IContentDeliveryAPI } from '@optimizely/cms/types'
+import type { ContentTypePath } from '@optimizely/cms'
 import type { ParsedUrlQuery } from 'querystring'
 import { getToken } from 'next-auth/jwt'
 import React from 'react'
@@ -37,8 +38,12 @@ export type OptimizelyCmsPageProps = {
      * and the communicationInjector completing initialization.
      */
     inEditMode?: boolean
+
+    component?: ContentTypePath
+
+    baseType?: 'Page' | 'Block' | 'Media'
 }
-export type OptimizelyCmsPageInitialProps = OptimizelyCmsPageProps & {}
+export type OptimizelyCmsPageInitialProps = OptimizelyCmsPageProps
 
 /**
  * The path for the current page, as resolved into segments by Next.JS

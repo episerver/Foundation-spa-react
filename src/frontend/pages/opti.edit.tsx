@@ -1,8 +1,15 @@
-import { readValue as pv, EditMode } from '@optimizely/cms/utils'
-import { getServerSideProps as baseGetServerSideProps } from '@optimizely/next-js/cms-page'
+import type { OptimizelyCmsPageProps } from '@optimizely/next-js/cms-page'
+import type { NextPage, GetServerSideProps } from 'next'
+import { useEffect, useState } from 'react'
+import { EditMode } from '@optimizely/cms/utils'
 import { getServerSession } from "./api/auth/[...nextauth]"
+import ContentComponent from '@optimizely/cms/content-component'
 
 const DEBUG_ENABLED = process.env.NODE_ENV != 'production'
+
+type EditPageProps = Omit<OptimizelyCmsPageProps, 'fallback'>
+type EditPageServerProps = OptimizelyCmsPageProps & { baseType: string }
+type EditPageInitialProps = EditPageProps
 
 /**
  * Retrieve the server side rendering props for the edit pages (which are always
@@ -12,7 +19,7 @@ const DEBUG_ENABLED = process.env.NODE_ENV != 'production'
  * @param       ctx     The context for the server side rendering.
  * @returns     The parameters neeeded for server side rendering
  */
-export const getServerSideProps : typeof baseGetServerSideProps = async ({ req, defaultLocale, locale, params, query, res }) => {
+export const getServerSideProps : GetServerSideProps<EditPageServerProps> = async ({ req, defaultLocale, locale, params, query, res }) => {
     // Get Edit Mode information, return "Not Found" if no information present
     const editContext = EditMode.getEditModeInfo(req.url)
     if (!editContext) return { notFound: true }
@@ -31,7 +38,6 @@ export const getServerSideProps : typeof baseGetServerSideProps = async ({ req, 
     }
 
     // Get information for client side render
-    if (DEBUG_ENABLED) console.log("Site - Edit Page", req.url)
     const contentBranch = locale ?? defaultLocale ?? 'en'
     const contentId = editContext.contentReference
     const inEditMode = !editContext.isPreviewActive
@@ -40,19 +46,36 @@ export const getServerSideProps : typeof baseGetServerSideProps = async ({ req, 
     if (!contentId || contentId == '0')
         return { notFound: true }
 
-    if (DEBUG_ENABLED) console.log("Site - Page Mode", contentId, inEditMode ? "Edit" : "Preview", editContext)
-
     return { 
         props: {
             locale: contentBranch,
             contentId,
-            fallback: {},
-            inEditMode
+            inEditMode,
+            baseType: 'Page'
         }
     }
 }
 
-/**
- * Reexport the base component for rendering
- */
-export { OptimizelyCmsPage as CmsPage, OptimizelyCmsPage as default } from '@optimizely/next-js/components'
+export const OptiEditPage : NextPage<EditPageProps, EditPageInitialProps> = ({ locale, contentId, inEditMode, ...remainingProps }) => {
+    const [ cId, refreshContent ] = useState<string | undefined>()
+    useEffect(() => {
+        refreshContent(contentId)
+    }, [ contentId ])
+
+    if (DEBUG_ENABLED) {
+        console.group("Rendering Optimizely Edit Page")
+        console.log("Content ID:", contentId)
+        console.log("Locale:", locale)
+        console.log("Context Mode:", inEditMode ? 'Edit' : 'Preview')
+        console.log("Rendering:", cId)
+        console.log("Remaining props:", remainingProps)
+        console.groupEnd()
+    }
+
+    if (!cId)
+        return <div className='error'>No Content Selected</div>
+    
+    return <ContentComponent content={ cId } locale={ locale } contentType={[ "page", "UnknownTypePage" ]} />
+}
+
+export default OptiEditPage

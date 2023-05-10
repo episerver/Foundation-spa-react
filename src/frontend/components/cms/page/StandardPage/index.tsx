@@ -9,20 +9,22 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Breadcrumbs from '@components/shared/Breadcrumbs'
 import StructuredHtml from '@framework/foundation/cms/structuredhtml'
+import site from 'website.cjs'
 
 const defaultName = "Standard Page"
 
 export const StandardPageComponent : IContentComponent<StandardPage> = props =>
 {
-    const pageTitle = pv(props.content, "metaTitle") ?? `${ pv(props.content, "name") ?? defaultName } :: Mosey Health`
+    const pageTitle = pv(props.content, "metaTitle") ?? `${ pv(props.content, "name") ?? defaultName } :: ${ site.name }`
     //const pageImage = pv(props.content, 'pageImage')?.url
-    const pageBody = pv(props.content, 'mainBody') ?? ""
+    //const pageBody = pv(props.content, 'mainBody') ?? ""
     const pageHeading = pv(props.content, 'name') ?? defaultName
 
     return <Box sx={{marginBlockStart: "0.67em"}}>
         <Head>
             <title>{ pageTitle }</title>
             <style>{ pv(props.content, "css") }</style>
+            <meta name="x-epi-page-type" content='Optimizely Standard Page'/>
         </Head>
         <Breadcrumbs />
         <EditableField field='name'><Typography variant="h1">{ pageHeading }</Typography></EditableField>
