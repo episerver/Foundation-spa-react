@@ -8,7 +8,7 @@ import fetcher, { createFoundationSettingsUri } from './fetcher'
 export type UseSettingsHookResult<T extends IContent = IContentData> = SWRResponse<SettingsHookData<T>, any>
 export type UseSettingsHook = (group: string, branch ?: string, site ?: string) => UseSettingsHookResult
 
-const debug = process.env.NODE_ENV !== 'production'
+const debug = false //process.env.NODE_ENV !== 'production'
 let counter = 0
 
 export function useSettings<T extends IContent = IContentData>(group: string, branch ?: string, siteId: string = "default") : UseSettingsHookResult<T>

@@ -1,14 +1,17 @@
 /// <reference types="node" />
 import type { NextPage, GetStaticProps, GetStaticPathsContext, GetStaticPathsResult, GetStaticPropsResult, GetServerSideProps, GetServerSidePropsResult, Redirect, PreviewData } from 'next';
 import type { ComponentLoader, IContentDeliveryAPI } from '@optimizely/cms/types';
+import type { ContentTypePath } from '@optimizely/cms';
 import type { ParsedUrlQuery } from 'querystring';
 export type OptimizelyCmsPageProps = {
     locale: string;
     fallback?: Record<string, any>;
     contentId?: string;
     inEditMode?: boolean;
+    component?: ContentTypePath;
+    baseType?: 'Page' | 'Block' | 'Media';
 };
-export type OptimizelyCmsPageInitialProps = OptimizelyCmsPageProps & {};
+export type OptimizelyCmsPageInitialProps = OptimizelyCmsPageProps;
 export type OptimizelyCmsPageUrlParams = {
     page: string[];
 };

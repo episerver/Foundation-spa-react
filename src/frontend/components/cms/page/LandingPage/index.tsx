@@ -5,26 +5,23 @@ import { ContentArea } from '@components/shared/Utils'
 import Head from 'next/head'
 import React from 'react'
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
 import { EditableField } from '@optimizely/cms/components'
+import StructuredHtml from '@framework/foundation/cms/structuredhtml'
 import site from 'website.cjs'
 
 export const LandingPageComponent : IContentComponent<LandingPage> = props => 
 {
     const pageTitle = `${ pv(props.content, "name") ?? "Landing Page" } :: ${ site.name }`
-    const pageImage = pv(props.content, 'pageImage')?.url
-    const pageBody = pv(props.content, 'mainBody') ?? undefined
 
     return <>
         <Head>
             <title>{ pageTitle }</title>
             <style>{ pv(props.content, "css") }</style>
+            <meta name="x-epi-page-type" content='Optimizely Landing Page'/>
         </Head>
         <Box sx={{marginBlockStart: "0.67em"}}>
             <ContentArea content={ props.content } name="topContentArea" />
-            { pageBody ? <EditableField field='mainBody' >
-                <Typography dangerouslySetInnerHTML={{__html: pageBody}} variant="body1" />
-                </EditableField> : <></>}
+            <EditableField field='mainBody'><StructuredHtml propertyData={ props.content?.mainBody } /></EditableField>
             <ContentArea content={ props.content } name="mainContentArea"/>
         </Box>
     </>

@@ -1,12 +1,7 @@
 using EPiServer.ContentDefinitionsApi.Manifest;
 using EPiServer.ContentDefinitionsApi.Manifest.Internal;
-using EPiServer.DataAbstraction;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Newtonsoft.Json;
 
 namespace HeadlessCms.Infrastructure.Installers

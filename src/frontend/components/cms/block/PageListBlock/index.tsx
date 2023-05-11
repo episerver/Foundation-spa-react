@@ -1,7 +1,7 @@
 import type { IContentComponent, IContent, PropertyLongString, PropertyXhtmlString, PropertyContentReference } from '@optimizely/cms/models'
 import type { PageListBlock } from 'schema'
 import React from 'react'
-import { readValue as pv } from '@optimizely/cms/utils'
+import { readValue as pv, ContentReference } from '@optimizely/cms/utils'
 import { EditableField } from '@optimizely/cms/components'
 import { useContentEditMode } from '@optimizely/cms/context'
 import useContentAction from '@framework/foundation/cms/contentactions'
@@ -56,7 +56,8 @@ export const PageListBlockComponent : IContentComponent<PageListBlock> = props =
             const url = (new URL(pv(teaser, 'url') ?? '/', 'http://localhost')).pathname
 
             if (image) {
-                const imgUrl = new URL(image)
+                const rebasedUrl = ContentReference.createContentUrl(image) ?? image
+                const imgUrl = new URL(rebasedUrl)
                 imgUrl.searchParams.set('height', '100')
                 imgUrl.searchParams.set('width', '500')
                 imgUrl.searchParams.set('quality', '80')

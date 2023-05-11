@@ -19,15 +19,26 @@ const nextConfig = withBundleAnalyzer(withOptimizelyConfig({
         domains: ['localhost']
     },
     compiler: {
+      styledComponents: {
+        displayName: true,
+        ssr: true,
+        fileName: true,
+      },
       removeConsole: isProduction ? {
         exclude: isProduction ? ['error'] : undefined,
       } : false,
     },
     swcMinify: true,
+
+    // Somehow not having this causes issues with SWR when running on a custom server
+    experimental: {
+      appDir: false,
+    },
 }, optiWebsite))
 
 if (optiWebsite.localeDomains?.length > 0) {
 // @ToDo: Add domain based locale detection
 }
 
+console.log("Next.Config.js", nextConfig)
 module.exports = nextConfig

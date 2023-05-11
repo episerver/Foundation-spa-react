@@ -7,6 +7,12 @@ export type Config = {
      * URL to the Content Delivery API.
      */
     apiUrl: string
+
+    /**
+     * If set, this will override the frontend URL, to allow the 
+     * frontend to run on a different domain then the CMS.
+     */
+    frontendUrl?: string
   
     /**
      * Function to call to get an access token for authorizing

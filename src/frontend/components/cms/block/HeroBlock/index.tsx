@@ -1,4 +1,5 @@
 import type { IContentComponent } from "@optimizely/cms/models"
+import type { FunctionComponent } from "react"
 import { readValue as pv } from "@optimizely/cms/utils"
 import React from "react"
 import { HeroBlock, HeroBlockCallout } from "schema"
@@ -26,7 +27,7 @@ HeroBlockComponent.displayName = "CMS-Component: HeroBlock"
 
 export default HeroBlockComponent
 
-export const HeroBlockCalloutComponent : IContentComponent<HeroBlockCallout> = ({ content }) => {
+export const HeroBlockCalloutComponent : FunctionComponent<{ content?: HeroBlockCallout }> = ({ content }) => {
     return <Box sx={{ opacity: pv(content, "calloutOpacity"), m: { xs: 1, md: 2, lg: 3 }, color: pv(content, "calloutTextColor") }}>
         <StructuredHtml propertyData={ content?.calloutContent } componentFactory={ componentFactory } />
     </Box>

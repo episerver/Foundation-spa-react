@@ -6,6 +6,7 @@ const context_1 = require("@optimizely/cms/context");
 const swr_1 = tslib_1.__importDefault(require("swr"));
 const utils_1 = require("@optimizely/cms/utils");
 const router_1 = require("next/router");
+const { createLanguageId } = utils_1.ContentReference;
 const DEBUG_ENABLED = process.env.NODE_ENV != "production";
 function usePageContent(ref, inEditMode, locale) {
     var _a;
@@ -29,7 +30,19 @@ function usePageContent(ref, inEditMode, locale) {
     if (!api)
         throw new Error("Optimizely not initialized");
     const fetcher = (id) => fetchPageContent(id, api, pageLocale, editMode);
-    return (0, swr_1.default)(contentId, fetcher);
+    return (0, swr_1.default)(contentId, fetcher, {
+        compare(a, b) {
+            if (a == b)
+                return true;
+            if (a == undefined || b == undefined)
+                return false;
+            if (editMode)
+                return false;
+            const idA = createLanguageId(a, pageLocale, editMode);
+            const idB = createLanguageId(a, pageLocale, editMode);
+            return idA == idB;
+        }
+    });
 }
 exports.usePageContent = usePageContent;
 function fetchPageContent(ref, api, locale, inEditMode = false) {
@@ -95,9 +108,9 @@ function iContentDataToProps(content, contentId, api, locale, inEditMode = false
             props.fallback = {};
         props.fallback[contentId] = content;
         const ct = (_a = content.contentType) !== null && _a !== void 0 ? _a : [];
-        const prefix = (_b = ct[0]) !== null && _b !== void 0 ? _b : 'page';
+        const prefix = ((_b = ct[0]) !== null && _b !== void 0 ? _b : 'Page');
         const pageProps = Object.assign(Object.assign({}, props), { fallback: (_c = props.fallback) !== null && _c !== void 0 ? _c : {}, contentId, locale: content.language.name, inEditMode,
-            prefix, component: content.contentType });
+            prefix, component: content.contentType, baseType: prefix });
         if (pageProps.content)
             delete pageProps.content;
         return pageProps;

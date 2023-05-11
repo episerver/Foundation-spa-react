@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using EPiServer.Shell.Modules;
+using EPiServer.Web;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
 using Yarp.ReverseProxy.Forwarder;
 
@@ -13,13 +14,15 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
         private readonly NodeJsProcess _process;
         private readonly NodeJsMiddlewareOptions _options;
         private readonly NodeJsForwarder _forwarder;
+        private readonly IEnumerable<string> _SystemRootPaths;
 
         public NodeJsMiddleware(
             RequestDelegate next,
             ILogger<NodeJsMiddleware> logger,
             NodeJsProcess process,
             NodeJsMiddlewareOptions options,
-            NodeJsForwarder forwarder
+            NodeJsForwarder forwarder,
+            ProtectedModuleOptions protectedModuleOptions
         )
         {
             _next = next;
@@ -27,8 +30,14 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
             _options = options;
             _process = process;
             _forwarder = forwarder;
+            _SystemRootPaths = new string[] {
+                VirtualPathResolver.Instance.ToAbsolute(protectedModuleOptions.RootPath).TrimEnd('/'),
+                VirtualPathResolver.Instance.ToAbsolute("~/GlobalAssets/").TrimEnd('/')
+            };
             _logger.LogInformation("Node.JS Middleware instantiated");
         }
+
+
 
         public async ValueTask DisposeAsync()
         {
@@ -54,11 +63,8 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
             await _next(context);
         }
 
-        protected bool ShouldHandleRequest(HttpRequest req)
-        {
-            if (req.Path.StartsWithSegments("/globalassets"))
-                return false;
-            return true;
-        }
+        protected bool ShouldHandleRequest(HttpRequest req) => 
+            !_SystemRootPaths
+                .Any(x => req.Path.StartsWithSegments(x, StringComparison.OrdinalIgnoreCase));
     }
 }

@@ -1,11 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Microsoft.AspNetCore.Http
+﻿namespace Microsoft.AspNetCore.Http
 {
     public static class RequestExtensions
     {
@@ -22,6 +15,5 @@ namespace Microsoft.AspNetCore.Http
         }
 
         public static string GetAbsoluteUrl(this HttpRequest request) { return request.GetUri().ToString(); }
-        public static string GetAbsolutePath(this HttpRequest request) { return request.GetUri().AbsolutePath; }
     }
 }

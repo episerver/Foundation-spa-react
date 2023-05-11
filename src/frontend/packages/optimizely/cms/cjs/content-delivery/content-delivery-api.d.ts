@@ -7,6 +7,7 @@ export declare const DefaultRequestConfig: RequestConfig;
 export declare class ContentDeliveryAPI implements IContentDeliveryAPI {
     protected readonly _config: Config;
     protected readonly _baseUrl: URL;
+    protected readonly _frontendUrl: URL;
     protected _accessToken?: string;
     protected readonly _customHeaders: Record<string, string>;
     constructor(config: Partial<Config>);

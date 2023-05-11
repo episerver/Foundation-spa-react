@@ -1,14 +1,14 @@
 "use strict";
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getEditModeInfo = exports.isEditModeUrl = exports.tryGetWindowUrl = exports.getCurrentUrl = void 0;
 const tslib_1 = require("tslib");
 const guid_1 = tslib_1.__importDefault(require("./guid"));
+const DEBUG = process.env.NODE_ENV != 'production';
 /**
  * Define the admin prefix needed to process the URLs, allowing the scripts to
  * cope with different CMS configurations
  */
-const AdminPrefix = ((_a = process.env.OPTIMIZELY_DXP_ADMIN_PREFIX) !== null && _a !== void 0 ? _a : 'EPiServer').split('/').filter(x => x).join('/');
+//const AdminPrefix = (process.env.OPTIMIZELY_DXP_ADMIN_PREFIX ?? 'EPiServer').split('/').filter(x => x).join('/')
 /**
  * Parse the given URL into a URL object, defaulting to "window.location" if
  * there is no URL provided.
@@ -49,33 +49,38 @@ function tryGetWindowUrl(current) {
 }
 exports.tryGetWindowUrl = tryGetWindowUrl;
 function isEditModeUrl(currentUrl) {
+    var _a;
     try {
         const url = getUrl(currentUrl);
         const path = url.pathname;
-        if (path.startsWith(`/${AdminPrefix}/CMS/Content`) || path.startsWith(`/${AdminPrefix}/CMS/Content`.toLowerCase())) {
-            return path.includes(",,") && (url.searchParams.get('epieditmode') === 'true' || url.searchParams.get('epieditmode') === 'false');
+        const mode = url.searchParams.get('mode');
+        if (path.endsWith(`/opti.${mode}`) || path.endsWith(`/opti.${mode}.json`)) {
+            var id = url.searchParams.get('id');
+            return typeof (id) == 'string' && id != null && id.length > 0 && ((_a = url.searchParams.get('hash')) !== null && _a !== void 0 ? _a : '').startsWith(`${id}:`);
         }
         return false;
     }
-    catch (_a) {
+    catch (_b) {
         return false;
     }
 }
 exports.isEditModeUrl = isEditModeUrl;
 function getEditModeInfo(currentUrl) {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e;
     try {
         const url = getUrl(currentUrl);
-        if (!isEditModeUrl(url))
+        if (!isEditModeUrl(url)) {
+            if (DEBUG)
+                console.log('getEditModeInfo: No edit mode', url.toString(), url.pathname);
             return undefined;
+        }
         const isPreviewActive = url.searchParams.get('epieditmode') === 'false';
-        var pattern = new RegExp(`/${AdminPrefix}/CMS/Content`, 'i');
-        const contentPath = url.pathname.replace(pattern, '').split(',,', 2)[0];
-        const contentFullId = ((_a = url.pathname.split(',,', 2)[1]) !== null && _a !== void 0 ? _a : '0').split('_');
+        const contentPath = (_a = url.searchParams.get('path')) !== null && _a !== void 0 ? _a : '/';
+        const contentFullId = ((_b = url.searchParams.get('id')) !== null && _b !== void 0 ? _b : '0').split('_');
         const siteUrl = new URL(contentPath, url);
-        const id = parseInt((_b = contentFullId[0]) !== null && _b !== void 0 ? _b : '0');
-        const workId = parseInt((_c = contentFullId[1]) !== null && _c !== void 0 ? _c : '0') || undefined;
-        const projectId = parseInt((_d = url.searchParams.get('epiprojects')) !== null && _d !== void 0 ? _d : '0') || undefined;
+        const id = parseInt((_c = contentFullId[0]) !== null && _c !== void 0 ? _c : '0');
+        const workId = parseInt((_d = contentFullId[1]) !== null && _d !== void 0 ? _d : '0') || undefined;
+        const projectId = parseInt((_e = url.searchParams.get('epiprojects')) !== null && _e !== void 0 ? _e : '0') || undefined;
         const contentReference = `${id}${workId ? "_" + workId : ""}`;
         return {
             guidValue: guid_1.default.Empty,
@@ -88,7 +93,7 @@ function getEditModeInfo(currentUrl) {
             contentReference
         };
     }
-    catch (_e) {
+    catch (_f) {
         return undefined;
     }
 }

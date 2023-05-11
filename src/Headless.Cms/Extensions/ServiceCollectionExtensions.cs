@@ -1,12 +1,12 @@
 using EPiServer.Web;
+using EPiServer.Web.Routing;
 using HeadlessCms.Infrastructure;
 using HeadlessCms.Infrastructure.Installers;
+using HeadlessCms.Services;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Microsoft.Extensions.DependencyInjection.Extensions
 {
@@ -66,8 +66,15 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                     new ValidationProblemDetailsConverter()
                 };
             });
-
+            services.AddUrlResolver();
             return services;
+        }
+
+        public static IServiceCollection AddUrlResolver(this IServiceCollection services)
+        {
+            return services.Intercept<UrlResolver>((c, b) => {
+                return new DecoupledCmsUrlResolver(b);
+            });
         }
     }
 }

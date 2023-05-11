@@ -63,7 +63,6 @@ class DefaultComponentLoader {
     }
     dynamicModuleAsync(path, prefix, tag = "") {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            var _a;
             const dynamicPath = this.buildComponentImport(path, prefix, tag);
             if (typeof (dynamicPath) !== 'string' || dynamicPath.length < 1)
                 return undefined;
@@ -71,13 +70,13 @@ class DefaultComponentLoader {
                 return componentPromises[dynamicPath];
             if (debug)
                 console.log("Optimizely - CMS: DefaultComponentLoader.dynamicModuleAsync", `@components/cms/${dynamicPath}`);
-            const dynamicModule = (_a = 
+            const dynamicModule = Promise.resolve(`${
             /* webpackInclude: /\.(js|json|jsx|ts|tsx)$/ */
             /* webpackExclude: /\.(md|css)$/ */
             /* webpackMode: "lazy-once" */
             /* webpackPrefetch: true */
             /* webpackChunkName: "component.[request]" */
-            `@components/cms/${dynamicPath}`, Promise.resolve().then(() => tslib_1.__importStar(require(_a)))).then(m => {
+            `@components/cms/${dynamicPath}`}`).then(s => tslib_1.__importStar(require(s))).then(m => {
                 dynamicModule.result = m;
                 return m;
             });

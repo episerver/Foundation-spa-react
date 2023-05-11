@@ -146,6 +146,7 @@ yarn install --immutable
 Write-Output "Building Next.JS Frontend"
 yarn prebuild
 yarn build
+yarn postbuild
 Write-Progress -Activity "Publishing" -Status "Copying Frontend - Preparing"
 If(Test-Path $frontendPubPath) {
     throw "Your .Net build already includes a $frontendDir folder, blocking the publishing process"

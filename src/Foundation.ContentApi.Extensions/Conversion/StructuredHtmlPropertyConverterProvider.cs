@@ -32,15 +32,10 @@ namespace Foundation.ContentApi.Extensions.Conversion
                 BindEvents();
         }
 
-        
-
         public IPropertyConverter? Resolve(PropertyData propertyData)
         {
-            if (!_options.Enabled) return null;
-            if (propertyData is PropertyXhtmlString)
-            {
+            if (_options.Enabled && propertyData is PropertyXhtmlString)
                 return _serviceProvider.GetInstance<StructuredHtmlPropertyConverter>();
-            }
             return null;
         }
 

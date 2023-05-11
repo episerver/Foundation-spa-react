@@ -1,4 +1,5 @@
 import { isContentLink } from './content-link';
+const DXP_URL = process.env.OPTIMIZELY_DXP_URL ?? 'http://localhost:8000/';
 export function referenceIsIContent(ref) {
     if (typeof (ref) !== 'object' || ref === null)
         return false;
@@ -74,12 +75,28 @@ export function createApiId(id, preferGuid = true, inEditMode = false) {
     }
     throw new Error("Unable to generate an Optimizely Content Delivery API ID [02]");
 }
-export function createContentUrl(id) {
+export function createContentUrl(id, rebase = true) {
+    let urlString = undefined;
     if (referenceIsString(id))
-        return id;
+        urlString = id;
     if (referenceIsIContent(id))
-        return id.contentLink.url;
+        urlString = id.contentLink.url;
     if (referenceIsContentLink(id))
-        return id.url;
+        urlString = id.url;
+    if (rebase && urlString) {
+        try {
+            const url = new URL(urlString, DXP_URL);
+            const du = new URL(DXP_URL);
+            if (url.host != du.host)
+                url.host = du.host;
+            if (url.protocol != du.protocol)
+                url.protocol = du.protocol;
+            return url.href;
+        }
+        catch {
+            return undefined;
+        }
+    }
+    return urlString;
 }
 //# sourceMappingURL=content-reference.js.map

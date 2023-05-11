@@ -70,3 +70,11 @@ export function parseContentURI<T extends IContent = IContentData>(contentURI: s
 
     return { contentIds, select, expand, editMode, branch, scope, visitorGroup }
 }
+
+export function isContentURI(toTest: string | URL) : boolean
+{
+    var urlString = typeof(toTest) == 'object' && toTest != null && toTest.href ? toTest.href : toTest
+    if (typeof(urlString) != 'string')
+        return false
+    return (urlString as string).startsWith(CMS_CONTENT_PROTOCOL)
+}

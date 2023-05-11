@@ -21,6 +21,7 @@ export class ContentDeliveryAPI {
         if (!validateConfig(this._config))
             throw new Error("Invalid Content Delivery API Configuration");
         this._baseUrl = new URL(this._config.apiUrl);
+        this._frontendUrl = this._config.frontendUrl ? new URL(this._config.frontendUrl ?? '/', this._baseUrl) : this._baseUrl;
         //this._config.debug = true;
     }
     setHeader(header, value) {
@@ -103,11 +104,12 @@ export class ContentDeliveryAPI {
         return website;
     }
     async resolveRoute(path, config) {
+        const resolvablePath = new URL(path, this._frontendUrl);
         if (this._config.debug) {
             console.groupCollapsed("ContentDeliveryAPI: Resolve route");
-            console.log("Route", path);
+            console.log("Route", resolvablePath.href);
         }
-        const req = { ...config, urlParams: { ...config.urlParams, ContentUrl: path, MatchExact: 'true' } };
+        const req = { ...config, urlParams: { ...config.urlParams, ContentUrl: resolvablePath.href, MatchExact: 'true' } };
         const list = await this.doRequest(OptiEndpoints.Content, req);
         if (this._config.debug) {
             console.log(`Received ${list?.length ?? 0} content items for ${path}`);

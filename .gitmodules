@@ -1,0 +1,3 @@
+[submodule "src/Headless.Cms/Infrastructure/Webhooks"]
+	path = src/Webhooks
+	url = git@github.com:deanebarker/content-cloud-webhooks.git

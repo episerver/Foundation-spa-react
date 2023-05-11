@@ -46,6 +46,7 @@ yarn install --immutable
 Write-Output "Building Next.JS Frontend"
 yarn prebuild
 yarn build
+yarn postbuild
 Write-Progress -Activity "Publishing" -Status "Copying Frontend - Preparing"
 If(Test-Path $frontendPubPath) {
     Remove-Item -Path "$frontendPubPath" -Recurse -Force

@@ -1,4 +1,4 @@
-import type { ComponentType } from 'react'
+import type { ComponentType, PropsWithChildren } from 'react'
 import type { IContent, IContentData } from './icontent'
 import type { IContentDeliveryAPI } from '../content-delivery'
 import type { ComponentLoader } from '../loader/types'
@@ -21,12 +21,12 @@ export type WithSwrFallback<T> = T & {
     fallback?: Record<string, any>
 }
 
-export type IContentComponentProps<ICT extends IContent = IContentData, AP = any> = {
+export type IContentComponentProps<ICT extends IContent = IContentData, AP = any> = PropsWithChildren<{
     content?: ICT,
     locale?: string,
 } & Partial<AP> & {
     [ key: string ]: any
-}
+}>
 
 export type IContentFieldFilter<ICT extends IContent = IContentData> = (keyof ICT)[] | undefined
 

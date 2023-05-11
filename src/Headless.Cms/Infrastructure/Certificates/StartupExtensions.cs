@@ -1,10 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 using HeadlessCms.Infrastructure.Certificates;
-using System;
 using EPiServer.OpenIDConnect;
 using EPiServer.Cms.UI.AspNetIdentity;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting;
+using OpenIddict.Server;
+using EPiServer.ContentApi.Cms;
+using EPiServer.ContentDefinitionsApi;
+using EPiServer.ContentManagementApi;
 
 #nullable enable
 namespace Microsoft.Extensions.DependencyInjection.Extensions
@@ -39,6 +42,18 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                     configureOptions?.Invoke(options);
                 }
             );
+
+            services.PostConfigureAll<OpenIddictServerOptions>(opts =>
+            {
+                // Ensure the scopes needed for the Optimizely APIs are defined
+                opts.Scopes.UnionWith(new string[] {
+                    ContentDefinitionsApiOptionsDefaults.Scope,
+                    ContentManagementApiOptionsDefaults.Scope,
+                    ContentDeliveryApiOptionsDefaults.Scope
+                });
+                opts.DisableScopeValidation = false;
+            });
+
             services.AddOpenIDConnectUI();
             return services;
         }

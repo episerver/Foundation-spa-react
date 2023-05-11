@@ -37,7 +37,7 @@ function startCli(commands: CommandModule<GlobalArgs,GlobalArgs>[] ) {
     
     // Add all commands from the commands folder
     type inferredCommandType = Parameters<typeof args.command>[0]
-    commands.forEach(command => args.command(command as inferredCommandType))
+    commands.forEach(command => args.command(command as unknown as inferredCommandType))
 
     // Run CLI Application
     return args.parse(process.argv.slice(2))

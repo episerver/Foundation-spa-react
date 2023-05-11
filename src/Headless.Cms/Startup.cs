@@ -10,7 +10,6 @@ using EPiServer.ContentDefinitionsApi;
 using EPiServer.ContentManagementApi;
 using EPiServer.DependencyInjection;
 using EPiServer.Cms.UI.AspNetIdentity;
-using EPiServer.Labs.ContentManager;
 using EPiServer.Labs.GridView;
 using EPiServer.OpenIDConnect;
 using EPiServer.Web;
@@ -18,8 +17,6 @@ using EPiServer.Web.Routing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Foundation.ContentActionsApi;
 using EPiServer.Labs.BlockEnhancements;
@@ -29,6 +26,9 @@ using UNRVLD.ODP.VisitorGroups.Initilization;
 using UNRVLD.ODP.VisitorGroups;
 using EPiServer.ServiceLocation;
 using ODPApiUserProfile = HeadlessCms.Infrastructure.ODPUserProfile;
+using EPiServer.Cms.TinyMce.Core;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace HeadlessCms
 {
@@ -66,6 +66,25 @@ namespace HeadlessCms
                         .Add("displaymode-one-sixth", "Extra Narrow (1/6)", "u-md-size1of6", string.Empty, "epi-icon__layout--one-sixth")
                         .Add("displaymode-one-quarter", "Quarter (1/4)", "u-md-size1of4", string.Empty, "epi-icon__layout--one-fourth");
                 });
+            #endregion
+
+            #region Optimizely: TinyMCE Configuration
+            services.Configure<TinyMceConfiguration>(config =>
+            {
+                config
+                    .Default()
+                    .AddSettingsTransform("tinymce-webadmin-only-features", (settings, content, propertyName) => {
+                        var httpContext = ServiceLocator.Current.GetInstance<IHttpContextAccessor>().HttpContext;
+                        var user = httpContext?.User;
+
+                        if (user is ClaimsPrincipal principal && principal.IsInRole("WebAdmins"))
+                        {
+                            settings.AddPlugin("code");
+                            settings.AppendToolbar("| code");
+                        }
+                    })
+                    .AppendToolbar("| alignnone alignleft aligncenter alignright alignjustify");
+            });
             #endregion
 
             #region Optimizely: Authentication (OpenID Connect)
@@ -134,22 +153,6 @@ namespace HeadlessCms
             #endregion
 
             #region Optimizely Labs: Content Manager / Grid view / Out-of-context editing / etc..
-            // Add Content Manager
-            services.AddContentManager(options =>
-            {
-                options.IsContentManagerEnabled = true;
-                options.IsBlocksProviderEnabled = true;
-                options.AutocompleteEnabled = true;
-                options.NotificationReceiversRoles = new[] { "WebEditors" };
-                options.CustomViewsFolderName = "CustomExternalViews";
-                options.AvailableGadgets = new[]
-                {
-                    ExternalDashboardGadgetType.Starred,
-                    ExternalDashboardGadgetType.Rejected,
-                    ExternalDashboardGadgetType.Tasks
-                };
-            });
-
             // Add Gridview
             services.AddGridView(options =>
             {
@@ -162,8 +165,8 @@ namespace HeadlessCms
             // Add Block Enhancements
             services.AddBlockEnhancements(options =>
             {
-                options.InlineTranslate = true;
-                options.AllowQuickEditOnSharedBlocks = true;
+                options.StatusIndicator = true;
+                options.PublishPageWithBlocks = true;
             });
 
             // Add Project Enhancements
@@ -191,14 +194,14 @@ namespace HeadlessCms
             // Setup Response compression and caching
             services
                 .AddResponseCompression();
-                //.AddResponseCaching();
+            //.AddResponseCaching();
             #endregion
 
             #region Headless.CMS Extensions & Services
             services
                 .AddJsonConversionStandard()        // Ensure that all JSON responses align with the ContentDeliveryAPI
                 .AddFoundationSettings()            // Add settings extension
-                .ApplyContentApiExtensions(OpenIDConnectOptionsDefaults.AuthenticationScheme)        // Add extensions for the ContentDeliveryAPI to fully support OPE
+                .ApplyContentApiExtensions()        // Add extensions for the ContentDeliveryAPI to fully support OPE
                 .AddContentActionApi()              // Add Content Actions API
                 .AddApiExplorer(options => {        // Add & Configure API Explorer
                     options.DefaultAuthScopes.Add(ContentDefinitionsApiOptionsDefaults.Scope);

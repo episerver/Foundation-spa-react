@@ -8,8 +8,9 @@ const factory_1 = tslib_1.__importDefault(require("../content-delivery/factory")
 const factory_2 = tslib_1.__importDefault(require("../loader/factory"));
 const DEFAULT_CMS_BRANCH = 'en';
 const DEFAULT_SITE_ID = '00000000-0000-0000-0000-000000000000';
-const DEBUG = process.env.NODE_ENV != 'production';
+const NODE_DEBUG = process.env.NODE_ENV != 'production';
 const DXP_DEBUG = ((_a = process.env.OPTIMIZELY_DXP_DEBUG) === null || _a === void 0 ? void 0 : _a.toLowerCase()) === 'true' || process.env.OPTIMIZELY_DXP_DEBUG === '1';
+const DEBUG = NODE_DEBUG && DXP_DEBUG;
 exports.OptimizelyCmsContext = react_1.default.createContext({
     cmsDomain: 'http://localhost:8000',
     defaultBranch: DEFAULT_CMS_BRANCH,

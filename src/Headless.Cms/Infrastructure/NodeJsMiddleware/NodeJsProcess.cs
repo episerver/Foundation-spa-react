@@ -1,13 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 
 #nullable enable
@@ -209,7 +203,7 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
             arguments.Add(Path.Join(frontedPath, Options.ScriptName));
             arguments.Add(Options.Port.ToString());
 
-            var args = String.Join(" ", arguments);
+            var args = string.Join(" ", arguments);
             return new()
             {
                 UseShellExecute = false,

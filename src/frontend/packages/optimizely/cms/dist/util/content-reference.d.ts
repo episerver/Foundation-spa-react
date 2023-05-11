@@ -24,4 +24,4 @@ export declare function createLanguageId(reference: ContentReference, languageCo
  * @returns The API key for the provided content reference
  */
 export declare function createApiId(id: ContentReference, preferGuid?: boolean, inEditMode?: boolean): ContentApiId;
-export declare function createContentUrl(id: ContentReference): string | undefined;
+export declare function createContentUrl(id: ContentReference, rebase?: boolean): string | undefined;

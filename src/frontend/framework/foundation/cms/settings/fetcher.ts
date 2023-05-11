@@ -3,7 +3,7 @@ import fetch from 'cross-fetch'
 import { IContent, IContentData } from '@optimizely/cms/models';
 
 const apiUrl = process.env.OPTIMIZELY_DXP_URL || 'http://localhost'
-const debug = process.env.NODE_ENV != 'production'
+const debug = false //process.env?.OPTIMIZELY_DXP_DEBUG != "0" && process.env.NODE_ENV != 'production'
 const defaultBranch = process.env.OPTIMIZELY_DXP_DEFAULT_BRANCH || 'en'
 
 export const SETTINGS_URI = 'foundation-settings:'

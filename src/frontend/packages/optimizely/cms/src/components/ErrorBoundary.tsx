@@ -43,7 +43,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         // logErrorToMyService(error, errorInfo);
     }
   
-    render() {
+    render() : ReactNode {
         if (this.state.hasError) {
             return this.props.fallback ? 
                 this.props.fallback : 
@@ -53,11 +53,10 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     }
 }
 
-export function withErrorBoundary<P>(BaseComponent: ComponentType<P>, fallback?: ReactNode) : ComponentType<P>
-{
-    const wrapped : FunctionComponent<P> = (props) => <ErrorBoundary componentName={ BaseComponent.displayName } fallback={ fallback }>
-        <BaseComponent {...props as JSX.IntrinsicAttributes & P} />
-    </ErrorBoundary>
+export type ErrorBoundaryWrapper = <P>(BaseComponent: ComponentType<P>, fallback?: ReactNode) => FunctionComponent<P>
+
+export const withErrorBoundary : ErrorBoundaryWrapper = function <P>(BaseComponent: ComponentType<P>, fallback?: ReactNode) {
+    const wrapped : FunctionComponent<P> = (props) => <ErrorBoundary componentName={ BaseComponent.displayName } fallback={ fallback }><BaseComponent { ...props as JSX.IntrinsicAttributes & P }/></ErrorBoundary>
     wrapped.displayName = `${BaseComponent.displayName ?? 'Component'} with error boundary`
     return wrapped
 }

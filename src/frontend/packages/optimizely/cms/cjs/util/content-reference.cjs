@@ -1,7 +1,9 @@
 "use strict";
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createContentUrl = exports.createApiId = exports.createLanguageId = exports.contentApiIdIsGuid = exports.referenceIsString = exports.referenceIsContentLink = exports.referenceIsIContent = void 0;
 const content_link_1 = require("./content-link");
+const DXP_URL = (_a = process.env.OPTIMIZELY_DXP_URL) !== null && _a !== void 0 ? _a : 'http://localhost:8000/';
 function referenceIsIContent(ref) {
     if (typeof (ref) !== 'object' || ref === null)
         return false;
@@ -84,13 +86,29 @@ function createApiId(id, preferGuid = true, inEditMode = false) {
     throw new Error("Unable to generate an Optimizely Content Delivery API ID [02]");
 }
 exports.createApiId = createApiId;
-function createContentUrl(id) {
+function createContentUrl(id, rebase = true) {
+    let urlString = undefined;
     if (referenceIsString(id))
-        return id;
+        urlString = id;
     if (referenceIsIContent(id))
-        return id.contentLink.url;
+        urlString = id.contentLink.url;
     if (referenceIsContentLink(id))
-        return id.url;
+        urlString = id.url;
+    if (rebase && urlString) {
+        try {
+            const url = new URL(urlString, DXP_URL);
+            const du = new URL(DXP_URL);
+            if (url.host != du.host)
+                url.host = du.host;
+            if (url.protocol != du.protocol)
+                url.protocol = du.protocol;
+            return url.href;
+        }
+        catch (_a) {
+            return undefined;
+        }
+    }
+    return urlString;
 }
 exports.createContentUrl = createContentUrl;
 //# sourceMappingURL=content-reference.js.map
