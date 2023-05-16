@@ -25,3 +25,4 @@ export declare function createLanguageId(reference: ContentReference, languageCo
  */
 export declare function createApiId(id: ContentReference, preferGuid?: boolean, inEditMode?: boolean): ContentApiId;
 export declare function createContentUrl(id: ContentReference, rebase?: boolean): string | undefined;
+export declare function createContentPath(id: ContentReference): string | undefined;

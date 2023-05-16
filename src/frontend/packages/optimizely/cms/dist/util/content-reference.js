@@ -99,4 +99,11 @@ export function createContentUrl(id, rebase = true) {
     }
     return urlString;
 }
+export function createContentPath(id) {
+    let urlString = createContentUrl(id);
+    if (!urlString)
+        return undefined;
+    const url = new URL(urlString, DXP_URL);
+    return url.pathname;
+}
 //# sourceMappingURL=content-reference.js.map

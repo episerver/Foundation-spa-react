@@ -1,6 +1,3 @@
-using EPiServer.Core;
-using EPiServer.DataAbstraction;
-using EPiServer.DataAnnotations;
 using EPiServer.PlugIn;
 using EPiServer.SpecializedProperties;
 using Newtonsoft.Json;

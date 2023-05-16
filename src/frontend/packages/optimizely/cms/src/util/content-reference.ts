@@ -120,3 +120,12 @@ export function createContentUrl(id: ContentReference, rebase: boolean = true) :
     }
     return urlString
 }
+
+export function createContentPath(id: ContentReference) : string | undefined
+{
+    let urlString = createContentUrl(id)
+    if (!urlString)
+        return undefined
+    const url = new URL(urlString, DXP_URL)
+    return url.pathname
+}

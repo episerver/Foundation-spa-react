@@ -124,6 +124,7 @@ namespace HeadlessCms
             // Add different Content Delivery API Options
             services.AddContentSearchApi(OpenIDConnectOptionsDefaults.AuthenticationScheme, options => {
                 options.MaximumSearchResults = maxSearchResults;
+                options.SearchCacheDuration = TimeSpan.FromSeconds(30);
             });
             services.AddFormsApi();
             services.AddContentManagementApi(OpenIDConnectOptionsDefaults.AuthenticationScheme, options => { });

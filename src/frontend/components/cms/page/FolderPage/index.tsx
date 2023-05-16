@@ -4,7 +4,7 @@ import React, { useState, useEffect, startTransition } from 'react'
 import Link from 'next/link'
 import { useOptimizelyCms, useContentEditMode } from '@optimizely/cms/context'
 import { EditableField } from '@optimizely/cms/components'
-import { readValue as pv, createApiId } from '@optimizely/cms/utils'
+import { readValue as pv, createApiId, ContentReference } from '@optimizely/cms/utils'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import List from '@mui/material/List'
@@ -52,7 +52,7 @@ export const Component : IContentComponent<FolderPage> = ({ content, locale }) =
                         icon = <Folder />
                         break;
                 }
-            return <Link key={ `folder-${ id }-item-${ childId }` } passHref href={ child.url ?? '#'} legacyBehavior>
+            return <Link key={ `folder-${ id }-item-${ childId }` } passHref href={ ContentReference.createContentPath(child) ?? '#'} legacyBehavior>
                 <ListItemButton component="a">
                     <ListItemIcon>{ icon }</ListItemIcon>
                     <ListItemText primary={ pv(child, "name") ?? "Unnamed item"} secondary={ child.contentType?.join(' > ') ?? "Unknown type"} />

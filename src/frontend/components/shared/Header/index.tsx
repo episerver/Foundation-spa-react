@@ -14,7 +14,8 @@ import { Menu as MenuIcon } from '@mui/icons-material'
 import Logo from './Logo'
 import LanguageMenu from './LanguageMenu'
 import UserMenu from './UserMenu'
-import { alpha, styled } from '@mui/material/styles'
+import SiteSearch from './SiteSearch'
+import { styled } from '@mui/material/styles'
 
 import type { AppTheme } from '../Layout/theme'
 
@@ -95,6 +96,7 @@ export const Header : FunctionComponent<HeaderProps> = props =>
                         ))}
                     </Box>
                     <Box className="optiReact__top-buttons" sx={{ flexGrow: 0, order: 3 }}>
+                        <SiteSearch />
                         <LanguageMenu />
                         <UserMenu />
                     </Box>

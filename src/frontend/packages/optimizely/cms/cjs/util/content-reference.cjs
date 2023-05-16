@@ -1,7 +1,7 @@
 "use strict";
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createContentUrl = exports.createApiId = exports.createLanguageId = exports.contentApiIdIsGuid = exports.referenceIsString = exports.referenceIsContentLink = exports.referenceIsIContent = void 0;
+exports.createContentPath = exports.createContentUrl = exports.createApiId = exports.createLanguageId = exports.contentApiIdIsGuid = exports.referenceIsString = exports.referenceIsContentLink = exports.referenceIsIContent = void 0;
 const content_link_1 = require("./content-link");
 const DXP_URL = (_a = process.env.OPTIMIZELY_DXP_URL) !== null && _a !== void 0 ? _a : 'http://localhost:8000/';
 function referenceIsIContent(ref) {
@@ -111,4 +111,12 @@ function createContentUrl(id, rebase = true) {
     return urlString;
 }
 exports.createContentUrl = createContentUrl;
+function createContentPath(id) {
+    let urlString = createContentUrl(id);
+    if (!urlString)
+        return undefined;
+    const url = new URL(urlString, DXP_URL);
+    return url.pathname;
+}
+exports.createContentPath = createContentPath;
 //# sourceMappingURL=content-reference.js.map
