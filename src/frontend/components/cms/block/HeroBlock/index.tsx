@@ -28,7 +28,7 @@ HeroBlockComponent.displayName = "CMS-Component: HeroBlock"
 export default HeroBlockComponent
 
 export const HeroBlockCalloutComponent : FunctionComponent<{ content?: HeroBlockCallout }> = ({ content }) => {
-    return <Box sx={{ opacity: pv(content, "calloutOpacity"), m: { xs: 1, md: 2, lg: 3 }, color: pv(content, "calloutTextColor") }}>
+    return <Box sx={{ opacity: pv(content, "calloutOpacity"), m: { xs: 1, md: 2, lg: 3 }, color: pv(content, "calloutTextColor") }} className="optiReact__hero">
         <StructuredHtml propertyData={ content?.calloutContent } componentFactory={ componentFactory } />
     </Box>
 }
