@@ -14,10 +14,10 @@ export const Layout : FunctionComponent<PropsWithChildren<LayoutProps>> = props 
 {
     // Automatic theme switcher
     let themeMode : PaletteMode = 'light'
-    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-    startTransition(() => {
-        themeMode = prefersDarkMode ? 'dark' : 'light'
-    })
+    // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+    // startTransition(() => {
+    //     themeMode = prefersDarkMode ? 'dark' : 'light'
+    // })
 
     //<Header />
     //<Footer />
