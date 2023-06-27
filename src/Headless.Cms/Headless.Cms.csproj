@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>HeadlessCms</RootNamespace>
@@ -98,7 +98,7 @@
         <PackageReference Include="UNRVLD.ODP.VisitorGroups" Version="1.3.0" />
 		
         <!-- Reverse proxy to communicate with Next.JS running on the same server-->
-        <PackageReference Include="Yarp.ReverseProxy" Version="2.0.0" />
+        <PackageReference Include="Yarp.ReverseProxy" Version="2.0.1" />
 		
         <!-- Fix Dependency graph by explicitly stating package versions -->
         <PackageReference Include="EPiServer.Hosting" Version="12.14.0" />
