@@ -4,7 +4,6 @@ exports.createInstance = void 0;
 const tslib_1 = require("tslib");
 const content_delivery_api_1 = tslib_1.__importDefault(require("./content-delivery-api"));
 const config_1 = require("./config");
-const DEBUG = process.env.NODE_ENV != 'production';
 function createInstance(config, ApiClient) {
     var _a;
     // Read configuration from environment
@@ -19,8 +18,6 @@ function createInstance(config, ApiClient) {
     if (!(0, config_1.validateConfig)(instanceConfig))
         throw new Error("Optimizely - CMS: Invalid ContentDelivery API Configuration");
     const Client = ApiClient !== null && ApiClient !== void 0 ? ApiClient : content_delivery_api_1.default;
-    if (DEBUG)
-        console.log("Optimizely - CMS: ContentDelivery Factory", Client, instanceConfig);
     return new Client(instanceConfig);
 }
 exports.createInstance = createInstance;

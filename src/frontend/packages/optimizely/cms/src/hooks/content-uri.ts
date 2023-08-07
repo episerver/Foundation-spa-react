@@ -3,6 +3,7 @@ import type { IContent, IContentData } from '../models/icontent'
 import { createApiId } from '../util/content-reference'
 
 export const CMS_CONTENT_PROTOCOL = 'opti-cms:'
+export const CMS_LOCAL_CONTENT_PATH = '__local_content__'
 
 export const enum CONTENT_PARAMS {
     Select = "select",
@@ -23,19 +24,22 @@ export type ContentUriData<T extends IContent = IContentData> = {
     visitorGroup?: string
 }
 
+function convertId(ref: ContentReference, inEditMode: boolean = false) 
+{
+    const apiId = createApiId(ref, true, inEditMode)
+    if (apiId == '0' || apiId == '0_-1')
+        return CMS_LOCAL_CONTENT_PATH
+    return apiId
+}
+
 export function buildContentURI(contentReference: ContentReference | ContentReference[], select?: string[], expand ?: string[], branch ?: string, inEditMode: boolean = false, scope?: string, visitorGroup ?: string) : URL
 {
     //console.log("Building contentURI with branch", branch)
     const path = Array.isArray(contentReference) ? 
-            contentReference.map(r => createApiId(r, true, inEditMode)).join('/') : 
-            createApiId(contentReference, true, inEditMode)
+            contentReference.map(r => convertId(r, inEditMode)).join('/') : 
+            convertId(contentReference, inEditMode)
+    
     const contentRef = new URL(CMS_CONTENT_PROTOCOL + "/" + path)
-
-    if (!visitorGroup) try {
-        visitorGroup = (new URL(window.location.href)).searchParams.get("visitorgroupsByID") ?? undefined
-    } catch (e) {
-        //Ignored on purpose
-    }
 
     if (select)
         contentRef.searchParams.set(CONTENT_PARAMS.Select, select.map(x => encodeURIComponent(x)).join(','))

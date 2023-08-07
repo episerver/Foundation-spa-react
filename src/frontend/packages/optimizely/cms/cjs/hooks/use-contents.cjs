@@ -15,7 +15,8 @@ function useContents(contentReferences, select, expand, branch, scope, inEditMod
     const editMode = (0, edit_mode_1.useEditMode)();
     const contentBranch = branch || opti.defaultBranch;
     const loadInEditMode = inEditMode === undefined ? editMode.inEditMode : inEditMode;
-    const contentIds = (0, react_1.useMemo)(() => (0, content_uri_1.buildContentURI)(contentReferences, select, expand, contentBranch, loadInEditMode, scope), [contentReferences, select, expand, contentBranch, loadInEditMode, scope]);
+    const visitorGroupsById = editMode.visitorgroupsById;
+    const contentIds = (0, react_1.useMemo)(() => (0, content_uri_1.buildContentURI)(contentReferences, select, expand, contentBranch, loadInEditMode, scope, visitorGroupsById), [contentReferences, select, expand, contentBranch, loadInEditMode, scope, visitorGroupsById]);
     const fetchContents = (cUri) => (0, exports.contentsFetcher)(cUri, opti.api);
     return (0, swr_1.default)(contentIds.href, fetchContents, {
         onError(err, key, config) {
@@ -26,9 +27,10 @@ function useContents(contentReferences, select, expand, branch, scope, inEditMod
 exports.useContents = useContents;
 const contentsFetcher = (contentUri, api) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     api = api !== null && api !== void 0 ? api : (0, factory_1.default)({ debug: false });
-    const { contentIds, select, expand, editMode, branch, scope } = (0, content_uri_1.parseContentURI)(contentUri);
+    const { contentIds, select, expand, editMode, branch, scope, visitorGroup } = (0, content_uri_1.parseContentURI)(contentUri);
     const loadableContentIds = contentIds.filter(x => x.trim().length > 0 && x.trim() != "-");
-    const data = yield api.getContents(loadableContentIds, { select, expand, editMode, branch }).catch(e => {
+    const urlParams = visitorGroup ? { visitorgroupsByID: visitorGroup } : undefined;
+    const data = yield api.getContents(loadableContentIds, { select, expand, editMode, branch, urlParams }).catch(e => {
         if ((0, NetworkError_1.isNetworkError)(e)) {
             let type = "Generic";
             const code = e.status;

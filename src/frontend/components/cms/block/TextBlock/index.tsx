@@ -8,7 +8,9 @@ import { useContentEditMode } from '@optimizely/cms/context'
 
 export const TextBlockComponent : IContentComponent<TextBlock> = props => { 
     const { contentEditable } = useContentEditMode(props.content)
-    return <EditableField field='mainBody' contentEditable={ contentEditable }><StructuredHtml propertyData={ props.content?.mainBody } componentFactory={ componentFactory } /></EditableField>
+    return <EditableField field='mainBody' contentEditable={ contentEditable }>
+        <StructuredHtml propertyData={ props.content?.mainBody } componentFactory={ componentFactory } />
+    </EditableField>
     
 }
 

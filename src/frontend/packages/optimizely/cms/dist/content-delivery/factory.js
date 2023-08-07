@@ -1,6 +1,5 @@
 import ContentDeliveryAPI from "./content-delivery-api";
 import { validateConfig, DefaultConfig } from './config';
-const DEBUG = process.env.NODE_ENV != 'production';
 export function createInstance(config, ApiClient) {
     // Read configuration from environment
     const envConfig = {
@@ -18,8 +17,6 @@ export function createInstance(config, ApiClient) {
     if (!validateConfig(instanceConfig))
         throw new Error("Optimizely - CMS: Invalid ContentDelivery API Configuration");
     const Client = ApiClient ?? ContentDeliveryAPI;
-    if (DEBUG)
-        console.log("Optimizely - CMS: ContentDelivery Factory", Client, instanceConfig);
     return new Client(instanceConfig);
 }
 export default createInstance;

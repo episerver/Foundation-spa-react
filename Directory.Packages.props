@@ -1,0 +1,56 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>false</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Optimizely CMS -->
+    <PackageVersion Include="EPiServer.CloudPlatform.Cms" Version="1.3.2" />
+    <PackageVersion Include="EPiServer.CMS" Version="12.22.0" />
+    <PackageVersion Include="EPiServer.CMS.AspNetCore" Version="12.15.1" />
+    <PackageVersion Include="EPiServer.CMS.AspNetCore.HtmlHelpers" Version="12.15.1" />
+    <PackageVersion Include="EPiServer.CMS.AspNetCore.Mvc" Version="12.15.1" />
+    <PackageVersion Include="EPiServer.CMS.AspNetCore.Routing" Version="12.15.1" />
+    <PackageVersion Include="EPiServer.CMS.AspNetCore.TagHelpers" Version="12.15.1" />
+    <PackageVersion Include="EPiServer.CMS.AspNetCore.Templating" Version="12.15.1" />
+    <PackageVersion Include="EPiServer.CMS.Core" Version="12.15.1" />
+    <PackageVersion Include="EPiServer.CMS.UI.Core" Version="12.21.0" />
+    <PackageVersion Include="EPiServer.Framework" Version="12.15.1" />
+    <PackageVersion Include="EPiServer.Hosting" Version="12.15.1" />
+    <!-- Optimizely ContentApi -->
+    <PackageVersion Include="EPiServer.ContentDefinitionsApi" Version="3.8.1" />
+    <PackageVersion Include="EPiServer.ContentDeliveryApi.Cms" Version="3.8.1" />
+    <PackageVersion Include="EPiServer.ContentDeliveryApi.Core" Version="3.8.1" />
+    <PackageVersion Include="EPiServer.ContentDeliveryApi.Search" Version="3.8.1" />
+    <PackageVersion Include="EPiServer.ContentManagementApi" Version="3.8.1" />
+    <PackageVersion Include="EPiServer.OpenIDConnect" Version="3.8.1" />
+    <PackageVersion Include="EPiServer.OpenIDConnect.UI" Version="3.8.1" />
+    <!-- Optimizely Search & Navigation -->
+    <PackageVersion Include="EPiServer.Find.Cms" Version="14.2.4" />
+    <PackageVersion Include="EPiServer.Find.Personalization" Version="14.2.4" />
+    <!-- Optimizely Content Graph -->
+    <PackageVersion Include="Optimizely.ContentGraph.Cms" Version="3.1.1" />
+    <!-- Optimizely Labs: Productivity enhancements -->
+    <PackageVersion Include="EPiServer.Labs.GridView" Version="1.1.0" />
+    <PackageVersion Include="EPiServer.Labs.LanguageManager" Version="5.1.3" />
+    <!-- Optimizely Forms & Marketing Automation Connection Framework -->
+    <PackageVersion Include="EPiServer.Forms" Version="5.5.1" />
+    <PackageVersion Include="EPiServer.ConnectForMarketingAutomation" Version="6.1.2" />
+    <PackageVersion Include="EPiServer.Marketing.Automation.Forms" Version="3.1.2" />
+    <!-- Optimizely Marketing Automation Connectors -->
+    <PackageVersion Include="EPiServer.ConnectForCampaign" Version="4.2.0" />
+    <PackageVersion Include="Optimizely.Labs.MarketingAutomationIntegration.ODP" Version="1.0.2" />
+    <!-- AspNet -->
+    <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="6.0.18" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.18" />
+    <!-- 3rd Party Libraries -->
+    <PackageVersion Include="Baaijte.Optimizely.ImageSharp.Web" Version="2.1.3" />
+    <PackageVersion Include="HtmlAgilityPack" Version="1.11.49" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="SixLabors.ImageSharp.Web.Providers.Azure" Version="2.*" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageVersion Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.5.0" />
+    <PackageVersion Include="UNRVLD.ODP.VisitorGroups" Version="1.4.0.33" />
+    <PackageVersion Include="Yarp.ReverseProxy" Version="2.0.1" />
+  </ItemGroup>
+</Project>

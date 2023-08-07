@@ -5,22 +5,12 @@ import { useRouter } from 'next/router';
 const { createLanguageId } = ContentReferenceUtils;
 const DEBUG_ENABLED = process.env.NODE_ENV != "production";
 export function usePageContent(ref, inEditMode, locale) {
-    if (DEBUG_ENABLED) {
-        console.groupCollapsed("Optimizely - Next.JS: usePageContent");
-        console.log("Optimizely - Next.JS: usePageContent - Reference:", ref);
-    }
     const opti = useOptimizelyCms();
     const editModeInfo = useEditMode();
     const router = useRouter();
     const editMode = inEditMode ?? editModeInfo.isEditable;
     const contentId = ref ? createApiId(ref, true, editMode) : '#';
     const pageLocale = locale ?? router.locale ?? router.defaultLocale;
-    if (DEBUG_ENABLED) {
-        console.log("Optimizely - Next.JS: usePageContent - Content ID:", contentId);
-        console.log("Optimizely - Next.JS: usePageContent - Edit Mode:", editMode);
-        console.log("Optimizely - Next.JS: usePageContent - Locale:", pageLocale);
-        console.groupEnd();
-    }
     const api = opti.api;
     if (!api)
         throw new Error("Optimizely not initialized");
@@ -40,8 +30,6 @@ export function usePageContent(ref, inEditMode, locale) {
     });
 }
 async function fetchPageContent(ref, api, locale, inEditMode = false) {
-    if (DEBUG_ENABLED)
-        console.log("usePageContent.fetcher: Fetching page data", ref, locale, inEditMode);
     if (!ref || ref === '#')
         return undefined;
     const contentId = createApiId(ref, true, inEditMode);
@@ -54,8 +42,6 @@ async function fetchPageContent(ref, api, locale, inEditMode = false) {
             console.error("usePageContent.fetcher: Error while communicating with Content Cloud", e);
         throw e;
     });
-    if (DEBUG_ENABLED)
-        console.log("usePageContent.fetcher: Received page data", content);
     if (!content)
         return undefined;
     return content;

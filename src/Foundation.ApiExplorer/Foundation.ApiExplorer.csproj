@@ -18,20 +18,27 @@
 	<PropertyGroup>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 	</PropertyGroup>
+	
+	<ItemGroup>
+	  <Content Remove="nuget.config" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Include="nuget.config" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<SupportedPlatform Include="browser" />
 	</ItemGroup>
 
     <ItemGroup>
-		<PackageReference Include="EPiServer.CMS.UI.Core" Version="12.19.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.16" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.5.0" />
+		<PackageReference Include="EPiServer.CMS.UI.Core" Version="12.22.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.*" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.*" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.*" />
     </ItemGroup>
 
     <ItemGroup>
-	  <None Include="*.config" PackageCopyToOutput="True" />
 
 		<None Update="modules\*.*">
 			<Pack>True</Pack>

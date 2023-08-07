@@ -8,10 +8,9 @@ import useSWR from 'swr'
 import { useOptimizelyCms } from '../provider/cms'
 import { useEditMode } from '../provider/edit-mode'
 import createInstance from '../content-delivery/factory'
-import { buildContentURI, parseContentURI } from './content-uri'
+import { CMS_LOCAL_CONTENT_PATH, buildContentURI, parseContentURI } from './content-uri'
 import { createErrorContent, isIContent } from '../util/icontent'
 import { createLanguageId } from '../util/content-reference'
-//import { processValue } from '../util/property'
 import { useMemo } from 'react'
 
 const ERROR_URL = 'error:/empty-id'
@@ -25,20 +24,25 @@ export function useContent<T extends IContent = IContentData>(contentReference: 
     const editMode = useEditMode()
     const contentBranch = branch || opti.defaultBranch
     const loadInEditMode = inEditMode === undefined ? editMode.inEditMode : inEditMode
+    const vg = editMode.visitorgroupsById
 
     // Create memoized values so we're preventing over-fetching as much as possible
     const contentId = useMemo<string>(() => {
         if (contentReference)
-            return buildContentURI(contentReference, select as string[], expand as string[], contentBranch, loadInEditMode, scope).href 
+            return buildContentURI(contentReference, select as string[], expand as string[], contentBranch, loadInEditMode, scope, vg).href 
         return ERROR_URL
-    }, [ contentReference, select, expand, contentBranch, loadInEditMode, scope ])
+    }, [ contentReference, select, expand, contentBranch, loadInEditMode, scope, vg ])
     const fallbackData = useMemo<T | undefined>(() => isIContent(contentReference) ? contentReference as T : undefined, [ contentReference ])
 
     // Define fetcher
-    const fetchContent = (cUri: string | URL) => {
-        if (cUri == ERROR_URL)
+    const fetchContent : CmsContentFetcher = <D extends IContent = IContentData>(cUri : string | URL) => {
+        if (cUri.toString() == ERROR_URL)
             return null
-        return contentFetcher<T>(cUri, opti.api)
+        const { contentIds } = parseContentURI<D>(cUri)
+        //console.log("fetchContent", contentIds, fallbackData)
+        if (contentIds.length == 1 && contentIds[0] == CMS_LOCAL_CONTENT_PATH)
+            return fallbackData as unknown as D ?? null
+        return contentFetcher<D>(cUri, opti.api)
     }
 
     // Define SWR content
@@ -59,19 +63,24 @@ export function useContent<T extends IContent = IContentData>(contentReference: 
     return content
 }
 
+
+
 export const contentFetcher : CmsContentFetcher = async <T extends IContent = IContentData>(contentURI: Parameters<Fetcher<T | null, string | URL>>[0], api?: IContentDeliveryAPI) : Promise<T | null> => {
-    if (DEBUG_ENABLED) console.log("Optimizely - CMS: useContent > fetcher:", contentURI)
+    //if (DEBUG_ENABLED) console.log("Optimizely - CMS: useContent > fetcher:", contentURI)
     api = api ?? createInstance({ debug: false })
-    const { contentIds, select, expand, editMode, branch, scope } = parseContentURI<T>(contentURI)
+    const { contentIds, select, expand, editMode, branch, scope, visitorGroup } = parseContentURI<T>(contentURI)
     if (contentIds.length != 1) throw createErrorContent("Generic", 500, `useContent requires a single content item to be specified, you have provided ${ contentIds.length } items`, contentIds?.join("; "))
     if (editMode && !api.hasAccessToken()) console.warn("Trying to retrieve edit mode content without being authenticated - this will not work.")
     if (!contentIds[0]) return null
+    if (contentIds[0] == CMS_LOCAL_CONTENT_PATH) return null
     if (contentIds[0] == "-") {
         if (DEBUG_ENABLED) console.error("Optimizely - CMS: useContent > trying to load an invalid contentId!", new Error().stack)
         throw createErrorContent("NotFound", 404, "Not Found", contentIds?.join("; "), (new Error()).stack)
     }
-         
-    const data = await api.getContent<T>(contentIds[0], { select, expand, editMode, branch }).catch(e => {
+    const urlParams = visitorGroup ? {
+        visitorgroupsByID: visitorGroup
+    } : undefined
+    const data = await api.getContent<T>(contentIds[0], { select, expand, editMode, branch, urlParams }).catch(e => {
         if (isNetworkError(e)) {
             let type : ErrorType = "Generic"
             let message : string = `HTTP ${ e.status }: ${ e.statusText }`

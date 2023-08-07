@@ -7,6 +7,7 @@ const property_1 = require("../util/property");
 const ContentAreaItem_1 = tslib_1.__importDefault(require("./ContentAreaItem"));
 const edit_mode_1 = require("../provider/edit-mode");
 const index_1 = require("../provider/index");
+const ErrorBoundary_1 = tslib_1.__importDefault(require("./ErrorBoundary"));
 const DEBUG = process.env.NODE_ENV != 'production';
 function ContentArea(props) {
     var _a, _b, _c, _d, _e, _f, _g;
@@ -41,7 +42,11 @@ function ContentArea(props) {
     const ContainerElement = props.container;
     const ItemContainerElement = props.itemContainer;
     const items = value.map((item, idx) => {
-        return <ContentAreaItem_1.default item={item} key={`${myId}-${propName}-item-${idx}`} itemContainer={ItemContainerElement} language={language} scope={contentScope} passEpiData={props.passEpiData} isEditable={isEditable}/>;
+        const itemKey = `${myId}-${propName}-item-${idx}`;
+        // Isolate Blocks within a ContentArea so an error within a block will not break the entire page render
+        return <ErrorBoundary_1.default key={itemKey}> 
+            <ContentAreaItem_1.default item={item} itemContainer={ItemContainerElement} language={language} scope={contentScope} passEpiData={props.passEpiData} isEditable={isEditable}/>
+        </ErrorBoundary_1.default>;
     });
     if (!isEditable)
         return <ContainerElement>{items}</ContainerElement>;

@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isContentURI = exports.parseContentURI = exports.buildContentURI = exports.CONTENT_PARAMS = exports.CMS_CONTENT_PROTOCOL = void 0;
+exports.isContentURI = exports.parseContentURI = exports.buildContentURI = exports.CONTENT_PARAMS = exports.CMS_LOCAL_CONTENT_PATH = exports.CMS_CONTENT_PROTOCOL = void 0;
 const content_reference_1 = require("../util/content-reference");
 exports.CMS_CONTENT_PROTOCOL = 'opti-cms:';
+exports.CMS_LOCAL_CONTENT_PATH = '__local_content__';
 var CONTENT_PARAMS;
 (function (CONTENT_PARAMS) {
     CONTENT_PARAMS["Select"] = "select";
@@ -11,21 +12,19 @@ var CONTENT_PARAMS;
     CONTENT_PARAMS["Language"] = "branch";
     CONTENT_PARAMS["Scope"] = "scope";
     CONTENT_PARAMS["VisitorGroup"] = "vg";
-})(CONTENT_PARAMS = exports.CONTENT_PARAMS || (exports.CONTENT_PARAMS = {}));
+})(CONTENT_PARAMS || (exports.CONTENT_PARAMS = CONTENT_PARAMS = {}));
+function convertId(ref, inEditMode = false) {
+    const apiId = (0, content_reference_1.createApiId)(ref, true, inEditMode);
+    if (apiId == '0' || apiId == '0_-1')
+        return exports.CMS_LOCAL_CONTENT_PATH;
+    return apiId;
+}
 function buildContentURI(contentReference, select, expand, branch, inEditMode = false, scope, visitorGroup) {
-    var _a;
     //console.log("Building contentURI with branch", branch)
     const path = Array.isArray(contentReference) ?
-        contentReference.map(r => (0, content_reference_1.createApiId)(r, true, inEditMode)).join('/') :
-        (0, content_reference_1.createApiId)(contentReference, true, inEditMode);
+        contentReference.map(r => convertId(r, inEditMode)).join('/') :
+        convertId(contentReference, inEditMode);
     const contentRef = new URL(exports.CMS_CONTENT_PROTOCOL + "/" + path);
-    if (!visitorGroup)
-        try {
-            visitorGroup = (_a = (new URL(window.location.href)).searchParams.get("visitorgroupsByID")) !== null && _a !== void 0 ? _a : undefined;
-        }
-        catch (e) {
-            //Ignored on purpose
-        }
     if (select)
         contentRef.searchParams.set(CONTENT_PARAMS.Select, select.map(x => encodeURIComponent(x)).join(','));
     if (expand)

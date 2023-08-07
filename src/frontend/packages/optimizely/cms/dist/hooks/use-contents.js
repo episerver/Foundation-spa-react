@@ -11,7 +11,8 @@ export function useContents(contentReferences, select, expand, branch, scope, in
     const editMode = useEditMode();
     const contentBranch = branch || opti.defaultBranch;
     const loadInEditMode = inEditMode === undefined ? editMode.inEditMode : inEditMode;
-    const contentIds = useMemo(() => buildContentURI(contentReferences, select, expand, contentBranch, loadInEditMode, scope), [contentReferences, select, expand, contentBranch, loadInEditMode, scope]);
+    const visitorGroupsById = editMode.visitorgroupsById;
+    const contentIds = useMemo(() => buildContentURI(contentReferences, select, expand, contentBranch, loadInEditMode, scope, visitorGroupsById), [contentReferences, select, expand, contentBranch, loadInEditMode, scope, visitorGroupsById]);
     const fetchContents = (cUri) => contentsFetcher(cUri, opti.api);
     return useSWR(contentIds.href, fetchContents, {
         onError(err, key, config) {
@@ -21,9 +22,10 @@ export function useContents(contentReferences, select, expand, branch, scope, in
 }
 export const contentsFetcher = async (contentUri, api) => {
     api = api ?? createApiClient({ debug: false });
-    const { contentIds, select, expand, editMode, branch, scope } = parseContentURI(contentUri);
+    const { contentIds, select, expand, editMode, branch, scope, visitorGroup } = parseContentURI(contentUri);
     const loadableContentIds = contentIds.filter(x => x.trim().length > 0 && x.trim() != "-");
-    const data = await api.getContents(loadableContentIds, { select, expand, editMode, branch }).catch(e => {
+    const urlParams = visitorGroup ? { visitorgroupsByID: visitorGroup } : undefined;
+    const data = await api.getContents(loadableContentIds, { select, expand, editMode, branch, urlParams }).catch(e => {
         if (isNetworkError(e)) {
             let type = "Generic";
             const code = e.status;

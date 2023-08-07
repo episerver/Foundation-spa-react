@@ -8,7 +8,7 @@ export function referenceIsIContent(ref ?: ContentReference | null | undefined):
         return false
     if (isContentLink(ref))
         return false
-    return (ref && Array.isArray(ref.contentType) && ref.name) ? true : false;
+    return (ref && Array.isArray(ref.contentType)) ? true : false;
 }
 
 export function referenceIsContentLink(ref ?: ContentReference | null | undefined): ref is ContentLink {
@@ -66,7 +66,10 @@ export function createApiId(id: ContentReference, preferGuid : boolean = true, i
         return id
 
     if (referenceIsIContent(id))
-        link = id.contentLink
+        link = id.contentLink ?? {
+            id: 0,
+            workId: -1
+        }
 
     if (referenceIsContentLink(id))
         link = id
@@ -84,7 +87,7 @@ export function createApiId(id: ContentReference, preferGuid : boolean = true, i
         return link.guidValue
 
     // Build the Content identifier if the link is known
-    } else if (link.id) {
+    } else if (link.id || link.id == 0) {
         let out: string = link.id.toString()
 
         if (inEditMode && link.workId)
@@ -95,7 +98,6 @@ export function createApiId(id: ContentReference, preferGuid : boolean = true, i
         
         return out
     }
-
     throw new Error("Unable to generate an Optimizely Content Delivery API ID [02]")
 }
 

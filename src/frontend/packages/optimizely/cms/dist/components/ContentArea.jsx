@@ -3,6 +3,7 @@ import { readValue, processValue } from '../util/property';
 import ContentAreaItem from './ContentAreaItem';
 import { useEditMode } from '../provider/edit-mode';
 import { useOptimizelyCms } from '../provider/index';
+import ErrorBoundary from './ErrorBoundary';
 const DEBUG = process.env.NODE_ENV != 'production';
 export function ContentArea(props) {
     const cms = useOptimizelyCms();
@@ -36,7 +37,11 @@ export function ContentArea(props) {
     const ContainerElement = props.container;
     const ItemContainerElement = props.itemContainer;
     const items = value.map((item, idx) => {
-        return <ContentAreaItem item={item} key={`${myId}-${propName}-item-${idx}`} itemContainer={ItemContainerElement} language={language} scope={contentScope} passEpiData={props.passEpiData} isEditable={isEditable}/>;
+        const itemKey = `${myId}-${propName}-item-${idx}`;
+        // Isolate Blocks within a ContentArea so an error within a block will not break the entire page render
+        return <ErrorBoundary key={itemKey}> 
+            <ContentAreaItem item={item} itemContainer={ItemContainerElement} language={language} scope={contentScope} passEpiData={props.passEpiData} isEditable={isEditable}/>
+        </ErrorBoundary>;
     });
     if (!isEditable)
         return <ContainerElement>{items}</ContainerElement>;

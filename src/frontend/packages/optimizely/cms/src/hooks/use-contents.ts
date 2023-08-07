@@ -20,7 +20,11 @@ export function useContents<T extends IContent = IContentData>(contentReferences
     const editMode = useEditMode()
     const contentBranch = branch || opti.defaultBranch
     const loadInEditMode = inEditMode === undefined ? editMode.inEditMode : inEditMode
-    const contentIds = useMemo(() => buildContentURI(contentReferences, select as string[], expand as string[], contentBranch, loadInEditMode, scope), [ contentReferences, select, expand, contentBranch, loadInEditMode, scope ])
+    const visitorGroupsById = editMode.visitorgroupsById
+    const contentIds = useMemo(
+        () => buildContentURI(contentReferences, select as string[], expand as string[], contentBranch, loadInEditMode, scope, visitorGroupsById), 
+        [ contentReferences, select, expand, contentBranch, loadInEditMode, scope, visitorGroupsById ]
+    )
     const fetchContents = (cUri: string | URL) => contentsFetcher<T[]>(cUri, opti.api)
     return useSWR<T[], ErrorContent>(contentIds.href, fetchContents, {
         onError(err, key, config) {
@@ -33,9 +37,10 @@ export const contentsFetcher : CmsContentBulkFetcher = async <T extends IContent
 {
     api = api ?? createApiClient({ debug: false })
     type IContentType = T extends Array<infer R> ? R : T
-    const { contentIds, select, expand, editMode, branch, scope } = parseContentURI<IContentType>(contentUri)
+    const { contentIds, select, expand, editMode, branch, scope, visitorGroup } = parseContentURI<IContentType>(contentUri)
     const loadableContentIds = contentIds.filter(x => x.trim().length > 0 && x.trim() != "-")
-    const data : T = await api.getContents<T>(loadableContentIds, { select, expand, editMode, branch }).catch(e => {
+    const urlParams = visitorGroup ? { visitorgroupsByID: visitorGroup } : undefined
+    const data : T = await api.getContents<T>(loadableContentIds, { select, expand, editMode, branch, urlParams }).catch(e => {
         if (isNetworkError(e)) {
             let type : ErrorType = "Generic"
             const code = e.status

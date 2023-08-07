@@ -1,10 +1,8 @@
 ﻿using EPiServer.ContentApi.Core.Serialization;
 using EPiServer.ContentApi.Core.Serialization.Models;
-using EPiServer.Core;
 using EPiServer.SpecializedProperties;
 using Foundation.ContentApi.Extensions.Conversion.StructuredHtml;
 using Microsoft.AspNetCore.Http;
-using System;
 
 namespace Foundation.ContentApi.Extensions.Conversion
 {

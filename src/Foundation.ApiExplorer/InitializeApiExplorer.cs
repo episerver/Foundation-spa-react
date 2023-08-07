@@ -53,6 +53,7 @@ namespace EPiServer.DependencyInjection
                 swaggerOptions.SwaggerDoc(options.DocumentName, options.CreateApiInfo());
                 swaggerOptions.ResolveConflictingActions(OptimizelyConflictResolver.Resolve);
                 swaggerOptions.AddSecurityDefinition(AuthName, securityDefinition);
+                swaggerOptions.CustomSchemaIds(x => x.FullName?.Contains(".Models.") ?? false ? x.FullName[(x.FullName.IndexOf(".Models.") + 8)..] : x.Name);
 
                 if (options.GlobalAuthScopes != null && options.GlobalAuthScopes.Count > 0)
                 {

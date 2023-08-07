@@ -10,12 +10,16 @@ export declare class ContentDeliveryAPI implements IContentDeliveryAPI {
     protected readonly _frontendUrl: URL;
     protected _accessToken?: string;
     protected readonly _customHeaders: Record<string, string>;
+    protected readonly _customQuery: Record<string, string>;
     constructor(config: Partial<Config>);
     setHeader(header: string, value: string): void;
+    getHeader(headerName: string): string | undefined;
+    setQueryParam(paramName: string, paramValue: string): void;
+    getQueryParam(paramName: string): string | undefined;
     login(username: string, password: string, client_id?: "Default"): Promise<AuthResponse>;
     refresh(refresh_token: string, client_id?: "Default"): Promise<AuthResponse>;
     setAccessToken(newToken: string | undefined): void;
-    hasAccessToken(): boolean;
+    hasAccessToken(token?: string): boolean;
     getWebsites(): Promise<WebsiteList>;
     getWebsite(hostname?: string | URL): Promise<Website | undefined>;
     resolveRoute<C extends IContent = IContent>(path: string, config: ContentRequest<C>): Promise<C | undefined>;

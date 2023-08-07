@@ -3,10 +3,9 @@ import useSWR from 'swr';
 import { useOptimizelyCms } from '../provider/cms';
 import { useEditMode } from '../provider/edit-mode';
 import createInstance from '../content-delivery/factory';
-import { buildContentURI, parseContentURI } from './content-uri';
+import { CMS_LOCAL_CONTENT_PATH, buildContentURI, parseContentURI } from './content-uri';
 import { createErrorContent, isIContent } from '../util/icontent';
 import { createLanguageId } from '../util/content-reference';
-//import { processValue } from '../util/property'
 import { useMemo } from 'react';
 const ERROR_URL = 'error:/empty-id';
 const DEBUG_ENABLED = process.env.NODE_ENV != 'production';
@@ -15,17 +14,22 @@ export function useContent(contentReference, select, expand, branch, scope, inEd
     const editMode = useEditMode();
     const contentBranch = branch || opti.defaultBranch;
     const loadInEditMode = inEditMode === undefined ? editMode.inEditMode : inEditMode;
+    const vg = editMode.visitorgroupsById;
     // Create memoized values so we're preventing over-fetching as much as possible
     const contentId = useMemo(() => {
         if (contentReference)
-            return buildContentURI(contentReference, select, expand, contentBranch, loadInEditMode, scope).href;
+            return buildContentURI(contentReference, select, expand, contentBranch, loadInEditMode, scope, vg).href;
         return ERROR_URL;
-    }, [contentReference, select, expand, contentBranch, loadInEditMode, scope]);
+    }, [contentReference, select, expand, contentBranch, loadInEditMode, scope, vg]);
     const fallbackData = useMemo(() => isIContent(contentReference) ? contentReference : undefined, [contentReference]);
     // Define fetcher
     const fetchContent = (cUri) => {
-        if (cUri == ERROR_URL)
+        if (cUri.toString() == ERROR_URL)
             return null;
+        const { contentIds } = parseContentURI(cUri);
+        //console.log("fetchContent", contentIds, fallbackData)
+        if (contentIds.length == 1 && contentIds[0] == CMS_LOCAL_CONTENT_PATH)
+            return fallbackData ?? null;
         return contentFetcher(cUri, opti.api);
     };
     // Define SWR content
@@ -46,22 +50,26 @@ export function useContent(contentReference, select, expand, branch, scope, inEd
     return content;
 }
 export const contentFetcher = async (contentURI, api) => {
-    if (DEBUG_ENABLED)
-        console.log("Optimizely - CMS: useContent > fetcher:", contentURI);
+    //if (DEBUG_ENABLED) console.log("Optimizely - CMS: useContent > fetcher:", contentURI)
     api = api ?? createInstance({ debug: false });
-    const { contentIds, select, expand, editMode, branch, scope } = parseContentURI(contentURI);
+    const { contentIds, select, expand, editMode, branch, scope, visitorGroup } = parseContentURI(contentURI);
     if (contentIds.length != 1)
         throw createErrorContent("Generic", 500, `useContent requires a single content item to be specified, you have provided ${contentIds.length} items`, contentIds?.join("; "));
     if (editMode && !api.hasAccessToken())
         console.warn("Trying to retrieve edit mode content without being authenticated - this will not work.");
     if (!contentIds[0])
         return null;
+    if (contentIds[0] == CMS_LOCAL_CONTENT_PATH)
+        return null;
     if (contentIds[0] == "-") {
         if (DEBUG_ENABLED)
             console.error("Optimizely - CMS: useContent > trying to load an invalid contentId!", new Error().stack);
         throw createErrorContent("NotFound", 404, "Not Found", contentIds?.join("; "), (new Error()).stack);
     }
-    const data = await api.getContent(contentIds[0], { select, expand, editMode, branch }).catch(e => {
+    const urlParams = visitorGroup ? {
+        visitorgroupsByID: visitorGroup
+    } : undefined;
+    const data = await api.getContent(contentIds[0], { select, expand, editMode, branch, urlParams }).catch(e => {
         if (isNetworkError(e)) {
             let type = "Generic";
             let message = `HTTP ${e.status}: ${e.statusText}`;

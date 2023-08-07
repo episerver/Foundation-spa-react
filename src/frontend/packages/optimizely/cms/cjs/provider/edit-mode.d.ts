@@ -8,6 +8,8 @@ export type EditModeContextData = {
     contentWorkId?: number;
     contentGuid?: string;
     contentReference?: string;
+    visitorgroupsById?: string;
+    visitorGroupsByName?: string;
 };
 export type OptimizelyEditModeProps = {
     currentUrl?: URL | string | null;

@@ -1,3 +1,4 @@
+using EPiServer.ServiceLocation;
 using EPiServer.Web;
 using EPiServer.Web.Routing;
 using HeadlessCms.Infrastructure;
@@ -73,7 +74,8 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
         public static IServiceCollection AddUrlResolver(this IServiceCollection services)
         {
             return services.Intercept<UrlResolver>((c, b) => {
-                return new DecoupledCmsUrlResolver(b);
+                var projectRepository = c.GetInstance<ProjectRepository>();
+                return new DecoupledCmsUrlResolver(b, projectRepository);
             });
         }
     }

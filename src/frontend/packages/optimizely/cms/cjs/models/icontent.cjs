@@ -5,5 +5,5 @@ var ContentStatus;
 (function (ContentStatus) {
     ContentStatus["Published"] = "Published";
     ContentStatus["Draft"] = "Draft";
-})(ContentStatus = exports.ContentStatus || (exports.ContentStatus = {}));
+})(ContentStatus || (exports.ContentStatus = ContentStatus = {}));
 //# sourceMappingURL=icontent.js.map

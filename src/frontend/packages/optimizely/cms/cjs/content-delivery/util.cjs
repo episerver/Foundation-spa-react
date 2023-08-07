@@ -10,7 +10,7 @@ var OptiEndpoints;
     OptiEndpoints["Site"] = "api/episerver/v{ $version }/site/{ $siteId }";
     OptiEndpoints["Search"] = "api/episerver/v{ $version }/search/content/";
     OptiEndpoints["OAuth"] = "api/episerver/auth/token";
-})(OptiEndpoints = exports.OptiEndpoints || (exports.OptiEndpoints = {}));
+})(OptiEndpoints || (exports.OptiEndpoints = OptiEndpoints = {}));
 var OptiQueryParams;
 (function (OptiQueryParams) {
     OptiQueryParams["EditMode"] = "epieditmode";
@@ -18,12 +18,12 @@ var OptiQueryParams;
     OptiQueryParams["Channel"] = "epichannel";
     OptiQueryParams["VisitorGroup"] = "visitorgroupsByID";
     OptiQueryParams["CommonDrafts"] = "commondrafts";
-})(OptiQueryParams = exports.OptiQueryParams || (exports.OptiQueryParams = {}));
+})(OptiQueryParams || (exports.OptiQueryParams = OptiQueryParams = {}));
 var OptiContentMode;
 (function (OptiContentMode) {
     OptiContentMode["Delivery"] = "content";
     OptiContentMode["Edit"] = "contentmanagement";
-})(OptiContentMode = exports.OptiContentMode || (exports.OptiContentMode = {}));
+})(OptiContentMode || (exports.OptiContentMode = OptiContentMode = {}));
 exports.DEFAULT_VERSION = '3.0';
 function getEndpoint(endpoint, version = exports.DEFAULT_VERSION) {
     const vars = { version };

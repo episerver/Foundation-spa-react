@@ -65,8 +65,7 @@ namespace Foundation.ContentApi.Extensions.Conversion
 
         private void ResolverEvents_TemplateResolved(object? sender, TemplateResolverEventArgs e)
         {
-            if (e.SelectedTemplate is null)
-                e.SelectedTemplate = new()
+            e.SelectedTemplate ??= new()
                 {
                     Name = "DefaultBlockTemplate",
                     DisplayName = "Default Block Template",

@@ -30,8 +30,8 @@ const OptimizelyCms = ({ children, cmsDomain, defaultBranch, defaultSiteId, Comp
         const componentLoader = (0, factory_2.default)({ loaderType: ComponentLoaderClass, args: [components] });
         const api = (0, factory_1.default)({ apiUrl: cmsDomain, defaultBranch: defaultBranch !== null && defaultBranch !== void 0 ? defaultBranch : DEFAULT_CMS_BRANCH, debug: DXP_DEBUG });
         if (DEBUG) {
-            console.log("Optimizely - CMS: Context > Component Loader:", componentLoader);
-            console.log("Optimizely - CMS: Context > API Client:", api);
+            //console.log("Optimizely - CMS: Context > Component Loader:", componentLoader)
+            //console.log("Optimizely - CMS: Context > API Client:", api)
             console.timeEnd("Optimizely - CMS: Context");
             console.groupEnd();
         }

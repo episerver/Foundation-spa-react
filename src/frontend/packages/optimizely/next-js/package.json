@@ -10,6 +10,7 @@
     "prebuild": "yarn shx rm -rf ./dist ./cjs ./.*.tsbuildinfo",
     "build": "yarn tsc --build ./tsconfig.json ./tsconfig.cjs.json",
     "postbuild": "yarn renamer --find .js --replace .cjs --path-element ext ./cjs/**/*.js && yarn opti-cjsUpdate ./cjs/**/*.cjs",
+    "rebuild": "yarn prebuild && yarn build && yarn postbuild",
     "watch": "yarn tsc --build ./tsconfig.json --watch"
   },
   "keywords": [
@@ -21,17 +22,17 @@
   "devDependencies": {
     "@optimizely/build-tools": "workspace:*",
     "@optimizely/cms": "workspace:^",
-    "@types/react": "^18.2.6",
-    "cross-fetch": "^3.1.6",
-    "next": "^13.4.2",
-    "next-auth": "^4.22.1",
+    "@types/react": "^18.2.18",
+    "cross-fetch": "^4.0.0",
+    "next": "13.4.7",
+    "next-auth": "^4.22.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "renamer": "^4.0.0",
     "shx": "^0.3.4",
-    "swr": "^2.1.5",
-    "tslib": "^2.5.0",
-    "typescript": "^5.0.4"
+    "swr": "^2.2.0",
+    "tslib": "^2.6.1",
+    "typescript": "^5.1.6"
   },
   "peerDependencies": {
     "@optimizely/cms": "workspace:*",

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using EPiServer.ContentApi.Core.Serialization.Models;
-using EPiServer.Core;
+﻿using EPiServer.ContentApi.Core.Serialization.Models;
 using EPiServer.Find.Helpers;
 using HtmlAgilityPack;
+using System.Web;
 
 namespace Foundation.ContentApi.Extensions.Conversion.StructuredHtml
 {
@@ -77,7 +73,9 @@ namespace Foundation.ContentApi.Extensions.Conversion.StructuredHtml
             // Insert text
             if (node.IsOfType("#text"))
             {
-                Text = node.GetDirectInnerText();
+                // Make sure all HTML Entity encoded characters are restored to their original value, so the Frontend does not need to
+                // perform the entity decoding
+                Text = HttpUtility.HtmlDecode(node.GetDirectInnerText());
             }
         }
 

@@ -23,6 +23,7 @@ export const getServerSideProps : GetServerSideProps<EditPageServerProps> = asyn
     // Get Edit Mode information, return "Not Found" if no information present
     const editContext = EditMode.getEditModeInfo(req.url)
     if (!editContext) return { notFound: true }
+    if (editContext.isPreviewActive) return { notFound: true }
 
     // Get Authentication information, redirect to login if there's no session
     const session = (await getServerSession(req, res))

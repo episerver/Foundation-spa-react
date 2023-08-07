@@ -30,6 +30,15 @@ export type EditModeContentInfo = ContentLink & {
      * The content reference, which includes the version number as well if specified
      */
     contentReference?: string;
+    /**
+     * The VisitorGroup Preview Identifier
+     */
+    visitorGroupsById?: string;
+    /**
+     * The VisitorGroup Preview Identifier
+     */
+    visitorGroupsByName?: string;
+    locale?: string;
 };
 export declare function isEditModeUrl(currentUrl?: URL | string | null): boolean;
 export declare function getEditModeInfo(currentUrl?: URL | string | null): EditModeContentInfo | undefined;

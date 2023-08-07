@@ -83,7 +83,8 @@ namespace Microsoft.Extensions.DependencyInjection
             // needed due to ContentApi.Commerce providing a new content-loader and this extension should be operational
             // regardless of the commerce being installed
             return services
-                .AddTransient<ContentApiContentLoaderService, EnhancedContentLoaderService>();
+                .AddTransient<ContentApiContentLoaderService, EnhancedContentLoaderService>()
+                .AddHttpContextOrThreadScoped<IContentFilter, VisitorGroupPreviewContentFilter>();
         }
     }
 }

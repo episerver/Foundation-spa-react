@@ -25,8 +25,8 @@ export const OptimizelyCms = ({ children, cmsDomain, defaultBranch, defaultSiteI
         const componentLoader = createComponentLoader({ loaderType: ComponentLoaderClass, args: [components] });
         const api = createContentDeliveryApi({ apiUrl: cmsDomain, defaultBranch: defaultBranch ?? DEFAULT_CMS_BRANCH, debug: DXP_DEBUG });
         if (DEBUG) {
-            console.log("Optimizely - CMS: Context > Component Loader:", componentLoader);
-            console.log("Optimizely - CMS: Context > API Client:", api);
+            //console.log("Optimizely - CMS: Context > Component Loader:", componentLoader)
+            //console.log("Optimizely - CMS: Context > API Client:", api)
             console.timeEnd("Optimizely - CMS: Context");
             console.groupEnd();
         }

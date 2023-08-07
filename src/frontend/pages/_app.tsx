@@ -48,12 +48,7 @@ const MyApp : OptimizelyCmsApp<MyAppProps> = ({ Component, emotionCache = client
         suspense: false,
         onError(err, key, config) {
             console.error("SWR Caught Error", err, key, config)
-        }, 
-        shouldRetryOnError(err) {
-            const is404 = (err as any)?.errorData?.code == 404
-            return !is404
-        }/*,
-        provider: browserCacheProviderFactory()*/
+        }
     }
 
     // Create the application, using the following structure CMS > Error Boundary > Settings > Resolved Content > 

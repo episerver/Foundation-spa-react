@@ -3,7 +3,6 @@ import type { JWT } from 'next-auth/jwt'
 import type {} from 'next-auth'
 import { CMS12OIDC as OptimizelyProvider } from './provider'
 import { isRefreshTokenError, refreshToken } from './helpers'
-import { AdapterUser } from 'next-auth/adapters'
 
 const OptimizelyHost = process.env.OPTIMIZELY_DXP_URL ?? ''
 const OptimizelyClientId = process.env.OPTIMIZELY_DXP_WEB_CLIENT_ID ?? process.env.OPTIMIZELY_DXP_CLIENT_ID ?? 'frontend'

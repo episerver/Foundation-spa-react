@@ -39,7 +39,9 @@ const OptimizelyEditMode = ({ children, currentUrl, cmsDomain, cmsPath, cmsVersi
             contentId: info === null || info === void 0 ? void 0 : info.id,
             contentWorkId: info === null || info === void 0 ? void 0 : info.workId,
             contentReference: info === null || info === void 0 ? void 0 : info.contentReference,
-            contentGuid: info === null || info === void 0 ? void 0 : info.guidValue
+            contentGuid: info === null || info === void 0 ? void 0 : info.guidValue,
+            visitorgroupsById: info === null || info === void 0 ? void 0 : info.visitorGroupsById,
+            visitorGroupsByName: info === null || info === void 0 ? void 0 : info.visitorGroupsByName
         };
         if (DEBUG) {
             console.groupCollapsed("Optimizely - CMS: Edit Mode > Context");
@@ -52,6 +54,8 @@ const OptimizelyEditMode = ({ children, currentUrl, cmsDomain, cmsPath, cmsVersi
             console.log("Optimizely - CMS: Edit Mode > Context > contentWorkId", editModeContext.contentWorkId);
             console.log("Optimizely - CMS: Edit Mode > Context > contentReference", editModeContext.contentReference);
             console.log("Optimizely - CMS: Edit Mode > Context > contentGuid", editModeContext.contentGuid);
+            console.log("Optimizely - CMS: Edit Mode > Context > visitorGroupIds", editModeContext.visitorgroupsById);
+            console.log("Optimizely - CMS: Edit Mode > Context > visitorGroupNames", editModeContext.visitorGroupsByName);
             console.groupEnd();
         }
         return editModeContext;
