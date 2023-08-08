@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System.Linq;
 using UNRVLD.ODP;
 using UNRVLD.ODP.VisitorGroups;
 
@@ -11,6 +10,7 @@ namespace HeadlessCms.Infrastructure
         private readonly OdpVisitorGroupOptions _optionValues;
 
         protected virtual string OdpHeaderName => "x-" + _optionValues.OdpCookieName;
+        protected virtual string OdpQueryParam => _optionValues.OdpCookieName;
         protected virtual string OdpCookieName => _optionValues.OdpCookieName;
 
         public ODPUserProfile(OdpVisitorGroupOptions optionValues)
@@ -36,7 +36,16 @@ namespace HeadlessCms.Infrastructure
 
             // Allow Header based identification second
             var headers = httpContext.Request.Headers[OdpHeaderName];
-            return headers.FirstOrDefault();
+            if (!string.IsNullOrWhiteSpace(headers))
+               return headers.FirstOrDefault();
+
+            // Allow Query based identification third
+            var queryValue = httpContext.Request.Query[OdpQueryParam];
+            if (!string.IsNullOrWhiteSpace(queryValue))
+                return queryValue.FirstOrDefault();
+
+            // Everything failed...
+            return null;
         }
 
         protected virtual string? VuidToDeviceId(string? vuidValue)
@@ -45,9 +54,9 @@ namespace HeadlessCms.Infrastructure
                 return null;
             if (vuidValue.Length == 32)
                 return vuidValue;
-            if (vuidValue.Length < 36)
+            if (vuidValue.Length < 32)
                 return null;
-            return vuidValue[..36].Replace("-", string.Empty);
+            return vuidValue.Replace("-", string.Empty)[..32];
         }
     }
 }

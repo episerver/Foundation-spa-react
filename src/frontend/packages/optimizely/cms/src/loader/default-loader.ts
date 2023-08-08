@@ -22,8 +22,6 @@ export class DefaultComponentLoader implements ComponentLoader
     public constructor(cache ?: ComponentsCache)
     {
         this.cache = cache ?? {}
-        if (debug)
-            console.log("Optimizely - CMS: DefaultComponentLoader.newInstance")
     }
 
     public buildComponentImport(path: string[], prefix ?: string, tag : string = "") 

@@ -3,8 +3,8 @@ import type { PropertyXhtmlString } from '@optimizely/cms/models'
 import type { StructuredHtmlData, ParsedStructuredHtmlData, StructuredHtmlNode, StructuredHtmlElement, StructuredHtmlComponentFactory, StructuredHtemlElementComponents } from './types'
 import { ContentComponent } from '@optimizely/cms/components'
 import { Property } from '@optimizely/cms/utils'
-import React, { createElement, Fragment, Suspense } from 'react'
-import { isStructuredHtml, parseStructuredHtmlData } from './utils'
+import React, { createElement, Fragment, Suspense, useMemo } from 'react'
+import { isStructuredHtml, parseStructuredHtmlData, tryParseStructuredHtmlData } from './utils'
 import { decode as htmlDecode } from 'html-entities'
 
 export type StructuredHtmlProps = {
@@ -29,27 +29,31 @@ export type StructuredHtmlProps = {
 }
 
 export const StructuredHtml : FunctionComponent<StructuredHtmlProps> = ({ propertyData, component, componentFactory }) => {
-    const data = propertyData ? Property.processValue(propertyData) : null
-    if (!data)
+    const parsed = useMemo<ParsedStructuredHtmlData | string | null>(() => {
+        const data : StructuredHtmlData | undefined | null = propertyData ? Property.processValue(propertyData) : null
+        if (!data)
+            return null
+
+        const parsed = isStructuredHtml(data) ? tryParseStructuredHtmlData(data) : null
+        return parsed ? parsed : (typeof data == 'string' ? data : null)
+    }, [ propertyData ])
+    
+    if (!parsed)
         return null
 
-    if (typeof propertyData == 'string') {
+    if (typeof parsed == 'string') {
         const c = component ?? 'div'
         const resolvedComponent = componentFactory ? componentFactory(c, {}) ?? { component: "div", props: {}} : { component: "div", props: {}}
         return createElement(resolvedComponent?.component ?? c, {
             ...resolvedComponent?.props,
-            dangerouslySetInnerHTML: { __html: data }
+            dangerouslySetInnerHTML: { __html: parsed }
         })
     }
 
-    if (isStructuredHtml(data)) {
-        const s : ParsedStructuredHtmlData = parseStructuredHtmlData(data)
-        let idx = 0
-        const pfx = Math.floor(Math.random() * 1000)
-        return <Suspense>{ s.components.map(node => <HtmlRenderNode node={node} key={ `${ pfx }-structured-html-${ idx++ }`} componentFactory={ componentFactory } />) }</Suspense>
-    }
-
-    return null
+    const { components } = parsed
+    let idx = 0
+    const pfx = Math.floor(Math.random() * 1000)
+    return <Suspense>{ components.map(node => <HtmlRenderNode node={node} key={ `${ pfx }-structured-html-${ idx++ }`} componentFactory={ componentFactory } />) }</Suspense>
 }
 StructuredHtml.displayName = "Structured HTML Renderer"
 StructuredHtml.defaultProps = {

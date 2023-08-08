@@ -87,7 +87,7 @@ export const ContentComponent : FunctionComponent<PropsWithChildren<ContentCompo
     // Property extraction & processing
     const { content, contentType, loader, locale, prefix, tag, children } = props
     const { api } = useOptimizelyCms()
-    const { inEditMode } = useEditMode()
+    const { inEditMode, visitorgroupsById } = useEditMode()
     const data = useContent(content, undefined, undefined, locale)
     const iContentData = data?.data
     const contentTypePath : ContentTypePath = useMemo<ContentTypePath>(() => referenceIsIContent(content) ? content.contentType : (iContentData ? iContentData.contentType : contentType), [content, iContentData, contentType])
@@ -95,7 +95,7 @@ export const ContentComponent : FunctionComponent<PropsWithChildren<ContentCompo
     const RenderComponent = component.data
 
     // Generate a "stable" contentId
-    const contentId = useMemo(() => buildContentURI(content, undefined, undefined, locale, inEditMode)?.href || 'undefined', [ content, locale, inEditMode ])
+    const contentId = useMemo(() => buildContentURI(content, undefined, undefined, locale, inEditMode, undefined, visitorgroupsById)?.href || 'undefined', [ content, locale, inEditMode, visitorgroupsById ])
 
     // Load dynamic properties in the client
     const [ additionalProps, setAdditionalProps] = useState<DynamicPropsContainer>({ contentId, data: {} })
@@ -118,7 +118,7 @@ export const ContentComponent : FunctionComponent<PropsWithChildren<ContentCompo
         return () => { isCancelled = true; }
     }, [ api, RenderComponent, iContentData, inEditMode, locale, contentId ])
 
-    if (DEBUG_ENABLED) console.log("Optimizely - CMS: ContentComponent > render (id, component):", contentId, `@components/cms/${ component.importPath }`)
+    //if (DEBUG_ENABLED) console.log("Optimizely - CMS: ContentComponent > render (id, component):", contentId, `@components/cms/${ component.importPath }`)
 
     // Handle the "No Component" Scenario
     if (!RenderComponent){
@@ -134,7 +134,7 @@ export const ContentComponent : FunctionComponent<PropsWithChildren<ContentCompo
     // Handle the "No Data" Scenario
     if (!iContentData) {
         if (DEBUG_ENABLED) 
-            console.warn("Optimizely - CMS: ContentComponent: No data (yet), asynchronous loading required", content)
+            console.info("Optimizely - CMS: ContentComponent: No data (yet), asynchronous loading required", content)
         return loader ?? <>{ children }</>
     }
 

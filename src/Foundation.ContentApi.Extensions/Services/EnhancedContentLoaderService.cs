@@ -1,11 +1,7 @@
-﻿using EPiServer.Cms.Shell;
-using EPiServer.ContentApi.Core.Configuration;
-using EPiServer.ContentApi.Core.Internal;
+﻿using EPiServer.ContentApi.Core.Configuration;
 using EPiServer.Core;
-using EPiServer.Security;
 using EPiServer.Web;
 using Microsoft.AspNetCore.Http;
-using System.Globalization;
 using BaseContentLoaderService = EPiServer.ContentApi.Core.Internal.ContentLoaderService;
 using WebContextModeResolver = EPiServer.Web.IContextModeResolver;
 
@@ -22,23 +18,26 @@ namespace Foundation.ContentApi.Extensions.Services
     public class EnhancedContentLoaderService : BaseContentLoaderService
     {
         protected readonly WebContextModeResolver contextModeResolver;
-        protected readonly IProjectResolver projectResolver;
         protected readonly IContentLoader contentLoader;
         protected readonly ContentApiOptions contentApiOptions;
+        protected readonly IHttpContextAccessor httpContextAccessor;
+        protected readonly IContentVersionRepository contentVersionRepository;
 
         public EnhancedContentLoaderService(
               IContentLoader contentLoader,
               IPermanentLinkMapper permanentLinkMapper,
               IContentProviderManager providerManager,
               WebContextModeResolver contextModeResolver,
-              IProjectResolver projectResolver,
-              ContentApiOptions contentApiOptions
+              ContentApiOptions contentApiOptions,
+              IHttpContextAccessor httpContextAccessor,
+              IContentVersionRepository contentVersionRepository
         ) : base(contentLoader, permanentLinkMapper, providerManager)
         {
             this.contextModeResolver = contextModeResolver;
-            this.projectResolver = projectResolver;
             this.contentLoader = contentLoader;
             this.contentApiOptions = contentApiOptions;
+            this.httpContextAccessor = httpContextAccessor;
+            this.contentVersionRepository = contentVersionRepository;
         }
 
         public override IContent? Get(Guid guid, string language, bool fallbackToMaster)
@@ -46,11 +45,11 @@ namespace Foundation.ContentApi.Extensions.Services
             if (!contextModeResolver.CurrentMode.EditOrPreview())
                 return base.Get(guid, language, fallbackToMaster);
 
-            if (guid == Guid.Empty)
-                return null;
-            LanguageSelector loaderOptions = CreateLoaderOptions(language, fallbackToMaster);
+            if (guid == Guid.Empty) return default;
+            var loaderOptions = CreateLoaderOptions(language, fallbackToMaster);
             var content = SelectVersion(contentLoader.Get<IContent>(guid, loaderOptions), loaderOptions);
-            return content is null || !ShouldContentBeExposed(content) ? null : content;
+            if (content is null || !ShouldContentBeExposed(content)) return default;
+            return content;
         }
 
         public override IContent? Get(
@@ -58,14 +57,16 @@ namespace Foundation.ContentApi.Extensions.Services
             string language,
             bool fallbackToMaster = false)
         {
+            // Return the base value if we're not in edit or preview mode, return default if there's no ContentReference
             if (!contextModeResolver.CurrentMode.EditOrPreview())
                 return base.Get(contentReference, language, fallbackToMaster);
 
-            if (ContentReference.IsNullOrEmpty(contentReference))
-                return null;
+            if (ContentReference.IsNullOrEmpty(contentReference)) return default;
+
             var loaderOptions = CreateLoaderOptions(language, fallbackToMaster);
             var content = SelectVersion(contentLoader.Get<IContent>(contentReference, loaderOptions), loaderOptions);
-            return content is null || !ShouldContentBeExposed(content) ? null : content;
+            if (content is null || !ShouldContentBeExposed(content)) return default;
+            return content;
         }
 
         /// <summary>
@@ -79,25 +80,20 @@ namespace Foundation.ContentApi.Extensions.Services
             var options = base.CreateLoaderOptions(language, shouldUseMasterIfFallbackNotExist);
             if (!contextModeResolver.CurrentMode.EditOrPreview())
                 return options;
-
-            var currentProjects = projectResolver.GetCurrentProjects();
-            if (currentProjects.Any())
-                options.Setup<ProjectLoaderOption>(x => x.ProjectIds = currentProjects);
             return options;
         }
 
-        protected virtual IContent? SelectVersion(IContent content, LanguageSelector loaderOptions)
+        protected virtual IContent? SelectVersion(IContent? content, LanguageSelector loaderOptions)
         {
             // Only continue if we have content and we're in edit or preview mode, if not just return the content
-            if (content == null || !contextModeResolver.CurrentMode.EditOrPreview())
+            if (content is null || !contextModeResolver.CurrentMode.EditOrPreview())
                 return content;
 
             // If the content is versionable, not the root page and no version has yet been selected, select the Common Draft version
             if (content is IVersionable && content.ContentLink != ContentReference.RootPage && (content.ContentLink.GetPublishedOrLatest || content.ContentLink.WorkID == 0))
             {
-                var repo = ServiceLocator.Current.GetInstance<IContentVersionRepository>();
                 var language = (content is ILocalizable localizable ? localizable.Language : loaderOptions.Language).TwoLetterISOLanguageName;
-                var contentVersion = repo.LoadCommonDraft(content.ContentLink, language);
+                var contentVersion = contentVersionRepository.LoadCommonDraft(content.ContentLink, language);
                 content = contentLoader.Get<IContent>(contentVersion.ContentLink, loaderOptions);
             }
 

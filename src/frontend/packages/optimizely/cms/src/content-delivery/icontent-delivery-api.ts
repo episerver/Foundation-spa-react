@@ -103,12 +103,22 @@ export type IContentDeliveryAPIStatic = {
 export type IContentDeliveryAPI = {
 
     /**
+     * Set a query parameter for all outgoing requests through the ContentDeliveryAPI
+     * 
+     * @param   header      The name of the header to set
+     * @param   value       The value of the header
+     */
+    setQueryParam(paramName: string, paramValue: string) : void
+    getQueryParam(paramName: string): string | undefined
+
+    /**
      * Set a header for all outgoing requests through the ContentDeliveryAPI
      * 
      * @param   header      The name of the header to set
      * @param   value       The value of the header
      */
     setHeader(header: string, value: string) : void
+    getHeader(headerName: string): string | undefined
 
     /**
      * Perform a login call against the OAuth endpoint of the ContentDeliveryAPI 
@@ -143,9 +153,10 @@ export type IContentDeliveryAPI = {
     setAccessToken: (newToken: string) => void
 
     /**
-     * Verify if the current ContentDelivery API instance has an access token configured
+     * Verify if the current ContentDelivery API instance has an access token configured,
+     * if a token is provided it will also validate if that token is used.
      */
-    hasAccessToken: () => boolean
+    hasAccessToken: (token?: string) => boolean
 
     /**
      * Retrieve the list of all websites registered within Optimizely CMS CMS

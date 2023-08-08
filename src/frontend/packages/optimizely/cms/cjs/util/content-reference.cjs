@@ -9,7 +9,7 @@ function referenceIsIContent(ref) {
         return false;
     if ((0, content_link_1.isContentLink)(ref))
         return false;
-    return (ref && Array.isArray(ref.contentType) && ref.name) ? true : false;
+    return (ref && Array.isArray(ref.contentType)) ? true : false;
 }
 exports.referenceIsIContent = referenceIsIContent;
 function referenceIsContentLink(ref) {
@@ -55,12 +55,16 @@ exports.createLanguageId = createLanguageId;
  * @returns The API key for the provided content reference
  */
 function createApiId(id, preferGuid = true, inEditMode = false) {
+    var _a;
     const useGuid = preferGuid && !inEditMode; // Do not use GUID in edit mode
     let link = undefined;
     if (referenceIsString(id))
         return id;
     if (referenceIsIContent(id))
-        link = id.contentLink;
+        link = (_a = id.contentLink) !== null && _a !== void 0 ? _a : {
+            id: 0,
+            workId: -1
+        };
     if (referenceIsContentLink(id))
         link = id;
     if (!link) {
@@ -75,7 +79,7 @@ function createApiId(id, preferGuid = true, inEditMode = false) {
         return link.guidValue;
         // Build the Content identifier if the link is known
     }
-    else if (link.id) {
+    else if (link.id || link.id == 0) {
         let out = link.id.toString();
         if (inEditMode && link.workId)
             out = `${out}_${link.workId}`;

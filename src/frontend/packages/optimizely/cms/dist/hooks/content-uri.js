@@ -1,5 +1,6 @@
 import { createApiId } from '../util/content-reference';
 export const CMS_CONTENT_PROTOCOL = 'opti-cms:';
+export const CMS_LOCAL_CONTENT_PATH = '__local_content__';
 export var CONTENT_PARAMS;
 (function (CONTENT_PARAMS) {
     CONTENT_PARAMS["Select"] = "select";
@@ -9,19 +10,18 @@ export var CONTENT_PARAMS;
     CONTENT_PARAMS["Scope"] = "scope";
     CONTENT_PARAMS["VisitorGroup"] = "vg";
 })(CONTENT_PARAMS || (CONTENT_PARAMS = {}));
+function convertId(ref, inEditMode = false) {
+    const apiId = createApiId(ref, true, inEditMode);
+    if (apiId == '0' || apiId == '0_-1')
+        return CMS_LOCAL_CONTENT_PATH;
+    return apiId;
+}
 export function buildContentURI(contentReference, select, expand, branch, inEditMode = false, scope, visitorGroup) {
     //console.log("Building contentURI with branch", branch)
     const path = Array.isArray(contentReference) ?
-        contentReference.map(r => createApiId(r, true, inEditMode)).join('/') :
-        createApiId(contentReference, true, inEditMode);
+        contentReference.map(r => convertId(r, inEditMode)).join('/') :
+        convertId(contentReference, inEditMode);
     const contentRef = new URL(CMS_CONTENT_PROTOCOL + "/" + path);
-    if (!visitorGroup)
-        try {
-            visitorGroup = (new URL(window.location.href)).searchParams.get("visitorgroupsByID") ?? undefined;
-        }
-        catch (e) {
-            //Ignored on purpose
-        }
     if (select)
         contentRef.searchParams.set(CONTENT_PARAMS.Select, select.map(x => encodeURIComponent(x)).join(','));
     if (expand)

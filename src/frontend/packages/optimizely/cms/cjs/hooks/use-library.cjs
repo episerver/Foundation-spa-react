@@ -10,7 +10,7 @@ var UseLibraryStatus;
     UseLibraryStatus["Loading"] = "ULS-LOADING";
     UseLibraryStatus["Ready"] = "ULS-READY";
     UseLibraryStatus["NotAvailable"] = "ULS-NOTAVAILABLE";
-})(UseLibraryStatus = exports.UseLibraryStatus || (exports.UseLibraryStatus = {}));
+})(UseLibraryStatus || (exports.UseLibraryStatus = UseLibraryStatus = {}));
 /**
  * React Hook to load an external script into the browser (if it's not already
  * available) and return the loaded script.

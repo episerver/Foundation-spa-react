@@ -1,8 +1,6 @@
 import { ContentLink } from '../models'
 import Guid from './guid'
 
-const DEBUG = process.env.NODE_ENV != 'production'
-
 /**
  * Define the admin prefix needed to process the URLs, allowing the scripts to 
  * cope with different CMS configurations
@@ -72,6 +70,18 @@ export type EditModeContentInfo = ContentLink & {
      * The content reference, which includes the version number as well if specified
      */
     contentReference?: string
+
+    /**
+     * The VisitorGroup Preview Identifier
+     */
+    visitorGroupsById?: string
+
+    /**
+     * The VisitorGroup Preview Identifier
+     */
+    visitorGroupsByName?: string
+
+    locale?: string
 }
 
 export function isEditModeUrl(currentUrl ?: URL | string | null) : boolean
@@ -94,10 +104,8 @@ export function getEditModeInfo(currentUrl ?: URL | string | null) : EditModeCon
 {
     try {
         const url = getUrl(currentUrl);
-        if (!isEditModeUrl(url)) {
-            if (DEBUG) console.log('getEditModeInfo: No edit mode', url.toString(), url.pathname)
+        if (!isEditModeUrl(url))
             return undefined
-        }
 
         const isPreviewActive = url.searchParams.get('epieditmode') === 'false'
         const contentPath = url.searchParams.get('path') ?? '/'
@@ -107,6 +115,9 @@ export function getEditModeInfo(currentUrl ?: URL | string | null) : EditModeCon
         const workId = parseInt(contentFullId[1] ?? '0') || undefined
         const projectId = parseInt(url.searchParams.get('epiprojects') ?? '0') || undefined
         const contentReference = `${id}${ workId ? "_" + workId : ""}`
+        const visitorGroupsById = url.searchParams.get("visitorgroupsByID") ?? undefined
+        const visitorGroupsByName = url.searchParams.get("visitorgroupsByName") ?? undefined
+        const locale = url.searchParams.get('epibranch') ?? undefined
 
         return {
             guidValue: Guid.Empty,
@@ -116,7 +127,10 @@ export function getEditModeInfo(currentUrl ?: URL | string | null) : EditModeCon
             isPreviewActive,
             contentPath,
             projectId,
-            contentReference
+            contentReference,
+            visitorGroupsById,
+            visitorGroupsByName,
+            locale
         }
     } catch {
         return undefined

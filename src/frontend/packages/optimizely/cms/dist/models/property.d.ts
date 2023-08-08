@@ -1,4 +1,4 @@
-import type { IContent } from './icontent';
+import type { IContent, LocalIContent } from './icontent';
 import type { ContentLink } from './content-link';
 export type Weblink = {
     href: string;
@@ -76,10 +76,11 @@ export type ContentAreaPropertyValue = ContentAreaPropertyItem[];
  * A single item within an ContentArea, as returned by the ContentDelivery API
  */
 export type ContentAreaPropertyItem<T extends IContent = IContent> = {
-    contentLink: ContentLink;
+    contentLink: ContentLink<T>;
     displayOption: string;
-    tag: string;
+    tag?: string;
     expandedValue?: T;
+    inlineBlock?: LocalIContent & Omit<T, keyof IContent>;
 };
 /** API Property types */
 export type PropertyLongString = Property<string>;

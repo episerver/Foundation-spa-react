@@ -5,7 +5,7 @@ export function referenceIsIContent(ref) {
         return false;
     if (isContentLink(ref))
         return false;
-    return (ref && Array.isArray(ref.contentType) && ref.name) ? true : false;
+    return (ref && Array.isArray(ref.contentType)) ? true : false;
 }
 export function referenceIsContentLink(ref) {
     return isContentLink(ref);
@@ -50,7 +50,10 @@ export function createApiId(id, preferGuid = true, inEditMode = false) {
     if (referenceIsString(id))
         return id;
     if (referenceIsIContent(id))
-        link = id.contentLink;
+        link = id.contentLink ?? {
+            id: 0,
+            workId: -1
+        };
     if (referenceIsContentLink(id))
         link = id;
     if (!link) {
@@ -65,7 +68,7 @@ export function createApiId(id, preferGuid = true, inEditMode = false) {
         return link.guidValue;
         // Build the Content identifier if the link is known
     }
-    else if (link.id) {
+    else if (link.id || link.id == 0) {
         let out = link.id.toString();
         if (inEditMode && link.workId)
             out = `${out}_${link.workId}`;

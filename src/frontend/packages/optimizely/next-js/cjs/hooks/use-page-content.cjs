@@ -10,22 +10,12 @@ const { createLanguageId } = utils_1.ContentReference;
 const DEBUG_ENABLED = process.env.NODE_ENV != "production";
 function usePageContent(ref, inEditMode, locale) {
     var _a;
-    if (DEBUG_ENABLED) {
-        console.groupCollapsed("Optimizely - Next.JS: usePageContent");
-        console.log("Optimizely - Next.JS: usePageContent - Reference:", ref);
-    }
     const opti = (0, context_1.useOptimizelyCms)();
     const editModeInfo = (0, context_1.useEditMode)();
     const router = (0, router_1.useRouter)();
     const editMode = inEditMode !== null && inEditMode !== void 0 ? inEditMode : editModeInfo.isEditable;
     const contentId = ref ? (0, utils_1.createApiId)(ref, true, editMode) : '#';
     const pageLocale = (_a = locale !== null && locale !== void 0 ? locale : router.locale) !== null && _a !== void 0 ? _a : router.defaultLocale;
-    if (DEBUG_ENABLED) {
-        console.log("Optimizely - Next.JS: usePageContent - Content ID:", contentId);
-        console.log("Optimizely - Next.JS: usePageContent - Edit Mode:", editMode);
-        console.log("Optimizely - Next.JS: usePageContent - Locale:", pageLocale);
-        console.groupEnd();
-    }
     const api = opti.api;
     if (!api)
         throw new Error("Optimizely not initialized");
@@ -47,8 +37,6 @@ function usePageContent(ref, inEditMode, locale) {
 exports.usePageContent = usePageContent;
 function fetchPageContent(ref, api, locale, inEditMode = false) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
-        if (DEBUG_ENABLED)
-            console.log("usePageContent.fetcher: Fetching page data", ref, locale, inEditMode);
         if (!ref || ref === '#')
             return undefined;
         const contentId = (0, utils_1.createApiId)(ref, true, inEditMode);
@@ -61,8 +49,6 @@ function fetchPageContent(ref, api, locale, inEditMode = false) {
                 console.error("usePageContent.fetcher: Error while communicating with Content Cloud", e);
             throw e;
         });
-        if (DEBUG_ENABLED)
-            console.log("usePageContent.fetcher: Received page data", content);
         if (!content)
             return undefined;
         return content;

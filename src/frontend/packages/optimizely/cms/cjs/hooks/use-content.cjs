@@ -10,7 +10,6 @@ const factory_1 = tslib_1.__importDefault(require("../content-delivery/factory")
 const content_uri_1 = require("./content-uri");
 const icontent_1 = require("../util/icontent");
 const content_reference_1 = require("../util/content-reference");
-//import { processValue } from '../util/property'
 const react_1 = require("react");
 const ERROR_URL = 'error:/empty-id';
 const DEBUG_ENABLED = process.env.NODE_ENV != 'production';
@@ -19,17 +18,23 @@ function useContent(contentReference, select, expand, branch, scope, inEditMode)
     const editMode = (0, edit_mode_1.useEditMode)();
     const contentBranch = branch || opti.defaultBranch;
     const loadInEditMode = inEditMode === undefined ? editMode.inEditMode : inEditMode;
+    const vg = editMode.visitorgroupsById;
     // Create memoized values so we're preventing over-fetching as much as possible
     const contentId = (0, react_1.useMemo)(() => {
         if (contentReference)
-            return (0, content_uri_1.buildContentURI)(contentReference, select, expand, contentBranch, loadInEditMode, scope).href;
+            return (0, content_uri_1.buildContentURI)(contentReference, select, expand, contentBranch, loadInEditMode, scope, vg).href;
         return ERROR_URL;
-    }, [contentReference, select, expand, contentBranch, loadInEditMode, scope]);
+    }, [contentReference, select, expand, contentBranch, loadInEditMode, scope, vg]);
     const fallbackData = (0, react_1.useMemo)(() => (0, icontent_1.isIContent)(contentReference) ? contentReference : undefined, [contentReference]);
     // Define fetcher
     const fetchContent = (cUri) => {
-        if (cUri == ERROR_URL)
+        var _a;
+        if (cUri.toString() == ERROR_URL)
             return null;
+        const { contentIds } = (0, content_uri_1.parseContentURI)(cUri);
+        //console.log("fetchContent", contentIds, fallbackData)
+        if (contentIds.length == 1 && contentIds[0] == content_uri_1.CMS_LOCAL_CONTENT_PATH)
+            return (_a = fallbackData) !== null && _a !== void 0 ? _a : null;
         return (0, exports.contentFetcher)(cUri, opti.api);
     };
     // Define SWR content
@@ -51,22 +56,26 @@ function useContent(contentReference, select, expand, branch, scope, inEditMode)
 }
 exports.useContent = useContent;
 const contentFetcher = (contentURI, api) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    if (DEBUG_ENABLED)
-        console.log("Optimizely - CMS: useContent > fetcher:", contentURI);
+    //if (DEBUG_ENABLED) console.log("Optimizely - CMS: useContent > fetcher:", contentURI)
     api = api !== null && api !== void 0 ? api : (0, factory_1.default)({ debug: false });
-    const { contentIds, select, expand, editMode, branch, scope } = (0, content_uri_1.parseContentURI)(contentURI);
+    const { contentIds, select, expand, editMode, branch, scope, visitorGroup } = (0, content_uri_1.parseContentURI)(contentURI);
     if (contentIds.length != 1)
         throw (0, icontent_1.createErrorContent)("Generic", 500, `useContent requires a single content item to be specified, you have provided ${contentIds.length} items`, contentIds === null || contentIds === void 0 ? void 0 : contentIds.join("; "));
     if (editMode && !api.hasAccessToken())
         console.warn("Trying to retrieve edit mode content without being authenticated - this will not work.");
     if (!contentIds[0])
         return null;
+    if (contentIds[0] == content_uri_1.CMS_LOCAL_CONTENT_PATH)
+        return null;
     if (contentIds[0] == "-") {
         if (DEBUG_ENABLED)
             console.error("Optimizely - CMS: useContent > trying to load an invalid contentId!", new Error().stack);
         throw (0, icontent_1.createErrorContent)("NotFound", 404, "Not Found", contentIds === null || contentIds === void 0 ? void 0 : contentIds.join("; "), (new Error()).stack);
     }
-    const data = yield api.getContent(contentIds[0], { select, expand, editMode, branch }).catch(e => {
+    const urlParams = visitorGroup ? {
+        visitorgroupsByID: visitorGroup
+    } : undefined;
+    const data = yield api.getContent(contentIds[0], { select, expand, editMode, branch, urlParams }).catch(e => {
         if ((0, NetworkError_1.isNetworkError)(e)) {
             let type = "Generic";
             let message = `HTTP ${e.status}: ${e.statusText}`;

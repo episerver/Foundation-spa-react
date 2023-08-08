@@ -28,6 +28,7 @@ export class ContentDeliveryAPI implements IContentDeliveryAPI
     protected readonly _frontendUrl: URL
     protected _accessToken ?: string
     protected readonly _customHeaders : Record<string, string> = {}
+    protected readonly _customQuery : Record<string, string> = {}
 
     public constructor(config : Partial<Config>)
     {
@@ -41,6 +42,21 @@ export class ContentDeliveryAPI implements IContentDeliveryAPI
 
     public setHeader(header: string, value: string): void {
         this._customHeaders[header] = value
+    }
+
+    public getHeader(headerName: string): string | undefined
+    {
+        return this._customHeaders[headerName]
+    }
+
+    public setQueryParam(paramName: string, paramValue: string) : void
+    {
+        this._customQuery[paramName] = paramValue
+    }
+
+    public getQueryParam(paramName: string): string | undefined
+    {
+        return this._customQuery[paramName]
     }
 
     public async login(username: string, password: string, client_id: "Default" = "Default") : Promise<AuthResponse>
@@ -83,9 +99,12 @@ export class ContentDeliveryAPI implements IContentDeliveryAPI
         this._accessToken = newToken
     }
 
-    public hasAccessToken() : boolean 
+    public hasAccessToken(token?: string) : boolean 
     {
-        return this._accessToken ? true : false
+        if (!this._accessToken)
+            return false
+        
+        return token ? token == this._accessToken : true
     }
 
     public async getWebsites() : Promise<WebsiteList>
@@ -294,7 +313,7 @@ export class ContentDeliveryAPI implements IContentDeliveryAPI
         const opts = this.resolveRequestOptions(options)
         if (this._config.debug) console.debug("Processed request configuration", opts)
         
-        const url = buildUrl(this._baseUrl, service, { contentMode: opts.editMode ? OptiContentMode.Edit : OptiContentMode.Delivery, ...opts.urlParams })
+        const url = buildUrl(this._baseUrl, service, { contentMode: opts.editMode ? OptiContentMode.Edit : OptiContentMode.Delivery, ...this._customQuery, ...opts.urlParams })
         if (this._config.debug) console.log("Request URL", url.href)
 
         return this.getResponse(url, opts)
@@ -386,6 +405,7 @@ export class ContentDeliveryAPI implements IContentDeliveryAPI
 
         if(config?.editMode) {
             defaultHeaders["X-PreviewMode"] = "edit"
+            defaultHeaders["Cookie"] = ""
         }
 
         const requestHeaders = { ...defaultHeaders, ...this._customHeaders, ...config?.headers }

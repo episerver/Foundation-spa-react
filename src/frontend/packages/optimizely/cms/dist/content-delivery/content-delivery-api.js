@@ -17,6 +17,7 @@ export const DefaultRequestConfig = {
 export class ContentDeliveryAPI {
     constructor(config) {
         this._customHeaders = {};
+        this._customQuery = {};
         this._config = { ...DefaultConfig, ...config };
         if (!validateConfig(this._config))
             throw new Error("Invalid Content Delivery API Configuration");
@@ -26,6 +27,15 @@ export class ContentDeliveryAPI {
     }
     setHeader(header, value) {
         this._customHeaders[header] = value;
+    }
+    getHeader(headerName) {
+        return this._customHeaders[headerName];
+    }
+    setQueryParam(paramName, paramValue) {
+        this._customQuery[paramName] = paramValue;
+    }
+    getQueryParam(paramName) {
+        return this._customQuery[paramName];
     }
     async login(username, password, client_id = "Default") {
         const request_data = { client_id, grant_type: "password", username, password };
@@ -61,8 +71,10 @@ export class ContentDeliveryAPI {
     setAccessToken(newToken) {
         this._accessToken = newToken;
     }
-    hasAccessToken() {
-        return this._accessToken ? true : false;
+    hasAccessToken(token) {
+        if (!this._accessToken)
+            return false;
+        return token ? token == this._accessToken : true;
     }
     async getWebsites() {
         if (this._config.debug)
@@ -258,7 +270,7 @@ export class ContentDeliveryAPI {
         const opts = this.resolveRequestOptions(options);
         if (this._config.debug)
             console.debug("Processed request configuration", opts);
-        const url = buildUrl(this._baseUrl, service, { contentMode: opts.editMode ? OptiContentMode.Edit : OptiContentMode.Delivery, ...opts.urlParams });
+        const url = buildUrl(this._baseUrl, service, { contentMode: opts.editMode ? OptiContentMode.Edit : OptiContentMode.Delivery, ...this._customQuery, ...opts.urlParams });
         if (this._config.debug)
             console.log("Request URL", url.href);
         return this.getResponse(url, opts);

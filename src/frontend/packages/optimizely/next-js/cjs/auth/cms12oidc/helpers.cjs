@@ -16,6 +16,7 @@ function refreshToken(host, refresh_token, client_id, client_secret) {
     var _a;
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const wellKnownUrl = wellKnownEndpointFor(host);
+        console.log("CMS12OIDC.refreshToken: Fetching schema");
         const wellKnownInfo = yield (0, cross_fetch_1.default)(wellKnownUrl).then(r => r.json()).catch(() => Promise.resolve(undefined));
         if (!wellKnownInfo)
             return { error: "Unable to retrieve OIDC Service Descriptor", error_type: "no_service" };
@@ -31,6 +32,7 @@ function refreshToken(host, refresh_token, client_id, client_secret) {
         });
         if (client_secret)
             refresh_data.set('client_secret', client_secret);
+        console.log("CMS12OIDC.refreshToken: Refreshing schema");
         const refreshResponse = yield (0, cross_fetch_1.default)(tokenEndpoint, {
             method: 'POST',
             body: refresh_data.toString(),
@@ -49,12 +51,14 @@ exports.refreshToken = refreshToken;
 function loadProfile(wellKnownEndpoint, profile, token) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const wellKnown = wellKnownEndpoint;
+        console.log("CMS12OIDC.loadProfile: Fetching schema");
         const wellKnownInfo = yield (0, cross_fetch_1.default)(wellKnown).then(r => r.json()).catch(() => Promise.resolve(undefined));
         if (!wellKnownInfo)
             return { id: profile.sub, name: '', image: '', role: exports.OptiCms12DefaultRole };
         const userEndpoint = wellKnownInfo.userinfo_endpoint;
         if (!userEndpoint)
             return { id: profile.sub, name: '', image: '', role: exports.OptiCms12DefaultRole };
+        console.log("CMS12OIDC.loadProfile: Fetching profile");
         const profileInfo = yield (0, cross_fetch_1.default)(userEndpoint, {
             headers: {
                 "Authorization": `Bearer ${token.access_token}`

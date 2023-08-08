@@ -4,13 +4,16 @@ import ContentTypePath from './content-type-path';
 import Language from './language';
 import LanguageList from './language-list';
 
-export type IContent = {
+export type LocalIContent = {
+  contentType: ContentTypePath
+}
+
+export type IContent = LocalIContent & {
   contentLink: ContentLink
   name: PropertyLongString
   language: Language
   existingLanguages?: LanguageList
   masterLanguage?: Language
-  contentType: ContentTypePath
   parentLink?: ContentLink
   routeSegment?: string | null
   url?: string | null
@@ -27,7 +30,8 @@ export const enum ContentStatus  {
   Draft = "Draft"
 } 
 
-export type IContentData = IContent & Record<string, Property<any>>;
+export type IContentData = IContent & Record<string, Property<any>>
+export type LocalIContentData = LocalIContent & Record<string, Property<any>>
 
 export type CatalogContent = IContent & {
   code: Property<string | null | undefined, never, 'PropertyLongString'>

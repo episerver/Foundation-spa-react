@@ -23,14 +23,14 @@ const ContentComponent = props => {
     // Property extraction & processing
     const { content, contentType, loader, locale, prefix, tag, children } = props;
     const { api } = (0, index_1.useOptimizelyCms)();
-    const { inEditMode } = (0, edit_mode_1.useEditMode)();
+    const { inEditMode, visitorgroupsById } = (0, edit_mode_1.useEditMode)();
     const data = (0, use_content_1.useContent)(content, undefined, undefined, locale);
     const iContentData = data === null || data === void 0 ? void 0 : data.data;
     const contentTypePath = (0, react_1.useMemo)(() => (0, content_reference_1.referenceIsIContent)(content) ? content.contentType : (iContentData ? iContentData.contentType : contentType), [content, iContentData, contentType]);
     const component = (0, use_content_component_1.useContentComponent)(contentTypePath, prefix, tag);
     const RenderComponent = component.data;
     // Generate a "stable" contentId
-    const contentId = (0, react_1.useMemo)(() => { var _a; return ((_a = (0, content_uri_1.buildContentURI)(content, undefined, undefined, locale, inEditMode)) === null || _a === void 0 ? void 0 : _a.href) || 'undefined'; }, [content, locale, inEditMode]);
+    const contentId = (0, react_1.useMemo)(() => { var _a; return ((_a = (0, content_uri_1.buildContentURI)(content, undefined, undefined, locale, inEditMode, undefined, visitorgroupsById)) === null || _a === void 0 ? void 0 : _a.href) || 'undefined'; }, [content, locale, inEditMode, visitorgroupsById]);
     // Load dynamic properties in the client
     const [additionalProps, setAdditionalProps] = (0, react_1.useState)({ contentId, data: {} });
     (0, react_1.useEffect)(() => {
@@ -49,8 +49,7 @@ const ContentComponent = props => {
         });
         return () => { isCancelled = true; };
     }, [api, RenderComponent, iContentData, inEditMode, locale, contentId]);
-    if (DEBUG_ENABLED)
-        console.log("Optimizely - CMS: ContentComponent > render (id, component):", contentId, `@components/cms/${component.importPath}`);
+    //if (DEBUG_ENABLED) console.log("Optimizely - CMS: ContentComponent > render (id, component):", contentId, `@components/cms/${ component.importPath }`)
     // Handle the "No Component" Scenario
     if (!RenderComponent) {
         if (DEBUG_ENABLED) {
@@ -64,7 +63,7 @@ const ContentComponent = props => {
     // Handle the "No Data" Scenario
     if (!iContentData) {
         if (DEBUG_ENABLED)
-            console.warn("Optimizely - CMS: ContentComponent: No data (yet), asynchronous loading required", content);
+            console.info("Optimizely - CMS: ContentComponent: No data (yet), asynchronous loading required", content);
         return loader !== null && loader !== void 0 ? loader : <>{children}</>;
     }
     // Perform the actual rendering

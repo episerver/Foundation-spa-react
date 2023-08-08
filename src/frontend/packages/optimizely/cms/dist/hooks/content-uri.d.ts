@@ -1,6 +1,7 @@
 import type { ContentReference } from '../models/content-link';
 import type { IContent, IContentData } from '../models/icontent';
 export declare const CMS_CONTENT_PROTOCOL = "opti-cms:";
+export declare const CMS_LOCAL_CONTENT_PATH = "__local_content__";
 export declare const enum CONTENT_PARAMS {
     Select = "select",
     Expand = "expand",

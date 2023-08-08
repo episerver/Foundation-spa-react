@@ -1,5 +1,4 @@
 import Guid from './guid';
-const DEBUG = process.env.NODE_ENV != 'production';
 /**
  * Define the admin prefix needed to process the URLs, allowing the scripts to
  * cope with different CMS configurations
@@ -59,11 +58,8 @@ export function isEditModeUrl(currentUrl) {
 export function getEditModeInfo(currentUrl) {
     try {
         const url = getUrl(currentUrl);
-        if (!isEditModeUrl(url)) {
-            if (DEBUG)
-                console.log('getEditModeInfo: No edit mode', url.toString(), url.pathname);
+        if (!isEditModeUrl(url))
             return undefined;
-        }
         const isPreviewActive = url.searchParams.get('epieditmode') === 'false';
         const contentPath = url.searchParams.get('path') ?? '/';
         const contentFullId = (url.searchParams.get('id') ?? '0').split('_');
@@ -72,6 +68,9 @@ export function getEditModeInfo(currentUrl) {
         const workId = parseInt(contentFullId[1] ?? '0') || undefined;
         const projectId = parseInt(url.searchParams.get('epiprojects') ?? '0') || undefined;
         const contentReference = `${id}${workId ? "_" + workId : ""}`;
+        const visitorGroupsById = url.searchParams.get("visitorgroupsByID") ?? undefined;
+        const visitorGroupsByName = url.searchParams.get("visitorgroupsByName") ?? undefined;
+        const locale = url.searchParams.get('epibranch') ?? undefined;
         return {
             guidValue: Guid.Empty,
             id,
@@ -80,7 +79,10 @@ export function getEditModeInfo(currentUrl) {
             isPreviewActive,
             contentPath,
             projectId,
-            contentReference
+            contentReference,
+            visitorGroupsById,
+            visitorGroupsByName,
+            locale
         };
     }
     catch {

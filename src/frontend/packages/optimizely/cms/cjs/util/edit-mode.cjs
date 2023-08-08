@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getEditModeInfo = exports.isEditModeUrl = exports.tryGetWindowUrl = exports.getCurrentUrl = void 0;
 const tslib_1 = require("tslib");
 const guid_1 = tslib_1.__importDefault(require("./guid"));
-const DEBUG = process.env.NODE_ENV != 'production';
 /**
  * Define the admin prefix needed to process the URLs, allowing the scripts to
  * cope with different CMS configurations
@@ -66,14 +65,11 @@ function isEditModeUrl(currentUrl) {
 }
 exports.isEditModeUrl = isEditModeUrl;
 function getEditModeInfo(currentUrl) {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f, _g, _h;
     try {
         const url = getUrl(currentUrl);
-        if (!isEditModeUrl(url)) {
-            if (DEBUG)
-                console.log('getEditModeInfo: No edit mode', url.toString(), url.pathname);
+        if (!isEditModeUrl(url))
             return undefined;
-        }
         const isPreviewActive = url.searchParams.get('epieditmode') === 'false';
         const contentPath = (_a = url.searchParams.get('path')) !== null && _a !== void 0 ? _a : '/';
         const contentFullId = ((_b = url.searchParams.get('id')) !== null && _b !== void 0 ? _b : '0').split('_');
@@ -82,6 +78,9 @@ function getEditModeInfo(currentUrl) {
         const workId = parseInt((_d = contentFullId[1]) !== null && _d !== void 0 ? _d : '0') || undefined;
         const projectId = parseInt((_e = url.searchParams.get('epiprojects')) !== null && _e !== void 0 ? _e : '0') || undefined;
         const contentReference = `${id}${workId ? "_" + workId : ""}`;
+        const visitorGroupsById = (_f = url.searchParams.get("visitorgroupsByID")) !== null && _f !== void 0 ? _f : undefined;
+        const visitorGroupsByName = (_g = url.searchParams.get("visitorgroupsByName")) !== null && _g !== void 0 ? _g : undefined;
+        const locale = (_h = url.searchParams.get('epibranch')) !== null && _h !== void 0 ? _h : undefined;
         return {
             guidValue: guid_1.default.Empty,
             id,
@@ -90,10 +89,13 @@ function getEditModeInfo(currentUrl) {
             isPreviewActive,
             contentPath,
             projectId,
-            contentReference
+            contentReference,
+            visitorGroupsById,
+            visitorGroupsByName,
+            locale
         };
     }
-    catch (_f) {
+    catch (_j) {
         return undefined;
     }
 }

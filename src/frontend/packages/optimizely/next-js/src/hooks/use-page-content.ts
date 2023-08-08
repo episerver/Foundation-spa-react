@@ -46,22 +46,12 @@ export type PageRenderingProps = {
 
 export function usePageContent(ref: ContentReference, inEditMode ?: boolean, locale ?: string)
 {
-    if (DEBUG_ENABLED) {
-        console.groupCollapsed("Optimizely - Next.JS: usePageContent")
-        console.log("Optimizely - Next.JS: usePageContent - Reference:", ref)
-    }
     const opti = useOptimizelyCms()
     const editModeInfo = useEditMode()
     const router = useRouter()
     const editMode = inEditMode ?? editModeInfo.isEditable
     const contentId = ref ? createApiId(ref, true, editMode) : '#'
     const pageLocale = locale ?? router.locale ?? router.defaultLocale
-    if (DEBUG_ENABLED) {
-        console.log("Optimizely - Next.JS: usePageContent - Content ID:", contentId)
-        console.log("Optimizely - Next.JS: usePageContent - Edit Mode:", editMode)
-        console.log("Optimizely - Next.JS: usePageContent - Locale:", pageLocale)
-        console.groupEnd()
-    }
 
     const api = opti.api
     if (!api)
@@ -86,9 +76,6 @@ export function usePageContent(ref: ContentReference, inEditMode ?: boolean, loc
 
 async function fetchPageContent(ref: ContentReference, api: IContentDeliveryAPI, locale?: string, inEditMode: boolean = false) : Promise<IContentData | undefined>
 {
-    if (DEBUG_ENABLED)
-        console.log("usePageContent.fetcher: Fetching page data", ref, locale, inEditMode)
-
     if (!ref || ref === '#') 
         return undefined
 
@@ -103,9 +90,6 @@ async function fetchPageContent(ref: ContentReference, api: IContentDeliveryAPI,
         throw e
         //return undefined
     })
-
-    if (DEBUG_ENABLED)
-        console.log("usePageContent.fetcher: Received page data", content)
 
     if (!content)
         return undefined

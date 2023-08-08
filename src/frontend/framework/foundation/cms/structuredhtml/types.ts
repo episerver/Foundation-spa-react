@@ -1,16 +1,16 @@
 import type { ComponentType, ComponentPropsWithoutRef as ComponentProps } from 'react'
 import type { ContentLink } from '@optimizely/cms'
 
-export type StructuredHtmlData = {
+export type BaseStructuredHtmlData = {
     contents?: ContentLink[]
     data: string
     errors?: string[]
 }
 
-export type ParsedStructuredHtmlData = {
-    contents?: ContentLink[]
+export type StructuredHtmlData = string | BaseStructuredHtmlData
+
+export type ParsedStructuredHtmlData = BaseStructuredHtmlData & {
     components: StructuredHtmlNode[]
-    errors?: string[]
 }
 
 export type StructuredHtmlNode = StructuredHtmlElement | StructuredHtmlText | StructuredHtmlComponent

@@ -19,9 +19,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Foundation.ContentActionsApi;
-using EPiServer.Labs.BlockEnhancements;
-using EPiServer.Labs.ProjectEnhancements;
-using EPiServer.Labs.LinkItemProperty;
 using UNRVLD.ODP.VisitorGroups.Initilization;
 using UNRVLD.ODP.VisitorGroups;
 using EPiServer.ServiceLocation;
@@ -29,6 +26,7 @@ using ODPApiUserProfile = HeadlessCms.Infrastructure.ODPUserProfile;
 using EPiServer.Cms.TinyMce.Core;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+//using System.Net.Http;
 
 namespace HeadlessCms
 {
@@ -150,7 +148,10 @@ namespace HeadlessCms
 
             #region Optimizely: ContentGraph - GraphQL Service
             // Add ContentGraph - GraphQL Service
-            //services.AddContentGraph(_configuration);
+            services.AddContentGraph(_configuration, OpenIDConnectOptionsDefaults.AuthenticationScheme, opts =>
+            {
+                opts.ContentVersionSyncMode = Optimizely.ContentGraph.Cms.Configuration.ContentVersionSyncMode.All;
+            });
             #endregion
 
             #region Optimizely Labs: Content Manager / Grid view / Out-of-context editing / etc..
@@ -160,30 +161,8 @@ namespace HeadlessCms
                 options.IsComponentEnabled = true;
                 options.IsViewEnabled = true;
                 options.HideChildrenOfContainersInPageTree = true;
-                options.ChildrenConvertCommandEnabled = true;
+                options.ChildrenConvertCommandEnabled = false;
             });
-
-            // Add Block Enhancements
-            services.AddBlockEnhancements(options =>
-            {
-                options.StatusIndicator = true;
-                options.PublishPageWithBlocks = true;
-            });
-
-            // Add Project Enhancements
-            services.AddProjectEnhancements(options =>
-            {
-                options.ShowCategories = true;
-                options.ShowDescription = true;
-                options.ShowLastEditInfo = true;
-                options.ShowNotificationTooltip = true;
-                options.ShowPageTreeIndicator = true;
-                options.ShowSelectedProjectPopup = true;
-                options.ShowVisibleTo = true;
-            });
-
-            // Add Link Items 
-            services.AddLinkItemProperty();
             #endregion
 
             #region Optimizely Data Platform

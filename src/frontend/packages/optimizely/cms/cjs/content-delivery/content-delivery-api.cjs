@@ -22,6 +22,7 @@ class ContentDeliveryAPI {
     constructor(config) {
         var _a;
         this._customHeaders = {};
+        this._customQuery = {};
         this._config = Object.assign(Object.assign({}, config_1.DefaultConfig), config);
         if (!(0, config_1.validateConfig)(this._config))
             throw new Error("Invalid Content Delivery API Configuration");
@@ -31,6 +32,15 @@ class ContentDeliveryAPI {
     }
     setHeader(header, value) {
         this._customHeaders[header] = value;
+    }
+    getHeader(headerName) {
+        return this._customHeaders[headerName];
+    }
+    setQueryParam(paramName, paramValue) {
+        this._customQuery[paramName] = paramValue;
+    }
+    getQueryParam(paramName) {
+        return this._customQuery[paramName];
     }
     login(username, password, client_id = "Default") {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -70,8 +80,10 @@ class ContentDeliveryAPI {
     setAccessToken(newToken) {
         this._accessToken = newToken;
     }
-    hasAccessToken() {
-        return this._accessToken ? true : false;
+    hasAccessToken(token) {
+        if (!this._accessToken)
+            return false;
+        return token ? token == this._accessToken : true;
     }
     getWebsites() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -284,7 +296,7 @@ class ContentDeliveryAPI {
         const opts = this.resolveRequestOptions(options);
         if (this._config.debug)
             console.debug("Processed request configuration", opts);
-        const url = (0, util_1.buildUrl)(this._baseUrl, service, Object.assign({ contentMode: opts.editMode ? util_1.OptiContentMode.Edit : util_1.OptiContentMode.Delivery }, opts.urlParams));
+        const url = (0, util_1.buildUrl)(this._baseUrl, service, Object.assign(Object.assign({ contentMode: opts.editMode ? util_1.OptiContentMode.Edit : util_1.OptiContentMode.Delivery }, this._customQuery), opts.urlParams));
         if (this._config.debug)
             console.log("Request URL", url.href);
         return this.getResponse(url, opts);

@@ -20,6 +20,8 @@ export type EditModeContextData = {
     contentWorkId?: number
     contentGuid?: string
     contentReference?: string
+    visitorgroupsById?: string
+    visitorGroupsByName?: string
 }
 
 export type OptimizelyEditModeProps = {
@@ -60,7 +62,9 @@ export const OptimizelyEditMode : FunctionComponent<PropsWithChildren<Optimizely
             contentId: info?.id,
             contentWorkId: info?.workId,
             contentReference: info?.contentReference,
-            contentGuid: info?.guidValue
+            contentGuid: info?.guidValue,
+            visitorgroupsById: info?.visitorGroupsById,
+            visitorGroupsByName: info?.visitorGroupsByName
         }
         if (DEBUG) {
             console.groupCollapsed("Optimizely - CMS: Edit Mode > Context")
@@ -73,6 +77,8 @@ export const OptimizelyEditMode : FunctionComponent<PropsWithChildren<Optimizely
             console.log("Optimizely - CMS: Edit Mode > Context > contentWorkId", editModeContext.contentWorkId)
             console.log("Optimizely - CMS: Edit Mode > Context > contentReference", editModeContext.contentReference)
             console.log("Optimizely - CMS: Edit Mode > Context > contentGuid", editModeContext.contentGuid)
+            console.log("Optimizely - CMS: Edit Mode > Context > visitorGroupIds", editModeContext.visitorgroupsById)
+            console.log("Optimizely - CMS: Edit Mode > Context > visitorGroupNames", editModeContext.visitorGroupsByName)
             console.groupEnd()
         }
         return editModeContext

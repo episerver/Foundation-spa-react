@@ -1,5 +1,5 @@
 import type { ComponentType, FunctionComponent, PropsWithChildren } from 'react'
-import type {  ContentAreaPropertyItem, IContent, IContentData, ErrorContent } from '../models'
+import type {  ContentAreaPropertyItem, IContent, IContentData, ErrorContent, LocalIContentData } from '../models'
 import React from 'react'
 import { useContent } from '../hooks'
 import ContentComponent from './ContentComponent'
@@ -23,14 +23,21 @@ export type ContentAreaItemProps<T extends IContent = IContentData> = {
 
 export const ContentAreaItem : FunctionComponent<ContentAreaItemProps> = props => {    
     const ItemContainerElement = props.itemContainer
+
     const ct = useContent(props.item.contentLink, undefined, undefined, props.language, undefined, props.isEditable)
-    const data = ct?.data
-    const error = ct?.error
-    const itemData : IContentData | ErrorContent | undefined = data ?? error;
+    const data = props.item.contentLink.id == 0 ? props.item.inlineBlock : ct?.data
+    const error = props.item.contentLink.id == 0 ? undefined : ct?.error
+    const itemData : LocalIContentData | IContentData | ErrorContent | undefined = data ?? error;
     const contentTypePath = itemData?.contentType
-    const dataIsLoading = data == undefined
-    const bodyFactory = () => dataIsLoading ?  <>Loading...</> : <ContentComponent content={ data } contentType={ contentTypePath } locale={ props.language } prefix="block" />
-    const contentId = dataIsLoading ? props.item.contentLink.id : data.contentLink.id;
+    const dataIsLoading = itemData == undefined
+
+    if (itemData && itemData.contentLink == undefined)
+        itemData.contentLink = { id: 0, workId: -1 }
+
+    //console.log('ContentAreaItem', itemData, contentTypePath,  dataIsLoading)
+
+    const bodyFactory = () => dataIsLoading ?  <>Loading...</> : <ContentComponent content={ itemData as IContentData } contentType={ contentTypePath } locale={ props.language } prefix="block" />
+    const contentId = dataIsLoading ? props.item.contentLink.id : (itemData.contentLink?.id ?? props.item.contentLink.id);
 
     //console.log('LIB ContentAreaItem:', props.isEditable, props.passEpiData, contentId)
     if (!props.isEditable)

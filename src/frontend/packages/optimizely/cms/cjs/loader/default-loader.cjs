@@ -16,8 +16,6 @@ class DefaultComponentLoader {
     constructor(cache) {
         this.prefix = "@components/cms";
         this.cache = cache !== null && cache !== void 0 ? cache : {};
-        if (debug)
-            console.log("Optimizely - CMS: DefaultComponentLoader.newInstance");
     }
     buildComponentImport(path, prefix, tag = "") {
         // Process the path

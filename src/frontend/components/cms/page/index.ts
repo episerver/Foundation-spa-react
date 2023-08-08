@@ -11,6 +11,7 @@ export const CmsPageComponents : Record<string, ComponentType> = {
     "page/LocationListPage":    dynamic(() => import("./LocationListPage"), { ssr: true }),
     "page/StandardPage":        dynamic(() => import("./StandardPage"), { ssr: true }),
     "page/TagPage":             dynamic(() => import("./TagPage"), { ssr: true }),
+    "page/UnknownTypePage":     dynamic(() => import("./UnknownTypePage"), { ssr: true })
 }
 
 export default CmsPageComponents
