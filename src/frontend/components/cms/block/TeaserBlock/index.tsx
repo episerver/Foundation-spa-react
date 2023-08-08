@@ -23,10 +23,10 @@ export const TeaserBlockComponent : IContentComponent<TeaserBlock> = props => {
 
     if (imageUrl) {
         let imgUrl = new URL(imageUrl)
-        imgUrl.searchParams.set('height', '90')
-        imgUrl.searchParams.set('width', '450')
-        imgUrl.searchParams.set('quality', '80')
-        imgUrl.searchParams.set('rmode', 'pad')
+        // imgUrl.searchParams.set('height', '90')
+        // imgUrl.searchParams.set('width', '450')
+        // imgUrl.searchParams.set('quality', '80')
+        // imgUrl.searchParams.set('rmode', 'pad')
         imageUrl = imgUrl.href
     }
 
