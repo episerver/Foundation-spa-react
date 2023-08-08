@@ -85,6 +85,7 @@ export const handler = async (args) => {
 function writeSchema(data, schemaFile) {
     const cwd = process.cwd();
     const fullOutputFile = path.resolve(cwd, schemaFile);
+    data.sort((a, b) => (a.name > b.name) ? 1 : ((a.name < b.name) ? -1 : 0));
     fs.writeFileSync(fullOutputFile, JSON.stringify(data, undefined, 4));
     process.stderr.write(`${chalk.greenBright("SUCCESS:")} Written schema data to ${fullOutputFile}\n`);
 }
@@ -99,7 +100,9 @@ function writeTypes(data, typesFile) {
  **/
 import type { IContent, ${BuiltInProps.join(', ')} } from '@optimizely/cms/models'
 \n\n`);
-    data.forEach(ct => {
+    data
+        .sort((a, b) => (a.name > b.name) ? 1 : ((a.name < b.name) ? -1 : 0))
+        .forEach(ct => {
         let properties = (ct.properties ?? []).map(prop => {
             return `    /**
      * ${prop.editSettings?.displayName ?? prop.name}
