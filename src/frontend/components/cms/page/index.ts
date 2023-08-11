@@ -8,6 +8,7 @@ export const CmsPageComponents : Record<string, ComponentType> = {
     "page/HomePage":            dynamic(() => import("./HomePage"), { ssr: true }),
     "page/LandingPage":         dynamic(() => import("./LandingPage"), { ssr: true }),
 	"page/TwoColumnLandingPage":dynamic(() => import("./TwoColumnLandingPage"), { ssr: true }),
+    "page/ThreeColumnLandingPage":dynamic(() => import("./ThreeColumnLandingPage"), { ssr: true }),    
     "page/LocationItemPage":    dynamic(() => import("./LocationItemPage"), { ssr: true }),
     "page/LocationListPage":    dynamic(() => import("./LocationListPage"), { ssr: true }),
     "page/StandardPage":        dynamic(() => import("./StandardPage"), { ssr: true }),
