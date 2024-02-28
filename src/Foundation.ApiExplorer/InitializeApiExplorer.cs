@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +50,8 @@ namespace EPiServer.DependencyInjection
             services.AddSingleton(options);
 
             //Add Swagger
-            services.AddSwaggerGen(swaggerOptions => {
+            services.AddSwaggerGen(swaggerOptions =>
+            {
                 swaggerOptions.SwaggerDoc(options.DocumentName, options.CreateApiInfo());
                 swaggerOptions.ResolveConflictingActions(OptimizelyConflictResolver.Resolve);
                 swaggerOptions.AddSecurityDefinition(AuthName, securityDefinition);
@@ -72,7 +74,9 @@ namespace EPiServer.DependencyInjection
             return services;
         }
 
-        public static IApplicationBuilder UseApiExplorer(this IApplicationBuilder app, bool mapEndpoints = true)
+        public static IApplicationBuilder UseApiExplorer(this IApplicationBuilder app, Action<SwaggerUIOptions> setupUI) => UseApiExplorer(app, true, setupUI);
+
+        public static IApplicationBuilder UseApiExplorer(this IApplicationBuilder app, bool mapEndpoints = true, Action<SwaggerUIOptions>? setupUI = null)
         {
             // Make sure we have the options
             var options = app.ApplicationServices.GetService<ApiExplorerOptions>();
@@ -92,6 +96,8 @@ namespace EPiServer.DependencyInjection
                 c.OAuthClientSecret(options.OAuthClientSecret);
                 c.OAuthAppName("Foundation.ApiExplorer");
                 c.OAuthScopes(options.DefaultAuthScopes.ToArray());
+                if (setupUI is not null)
+                    setupUI(c);
             });
 
             // Map endpoints if needed

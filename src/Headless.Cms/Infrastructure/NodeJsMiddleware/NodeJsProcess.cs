@@ -135,8 +135,8 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
                 Logger.LogCritical("Not restarting Node.JS - disabled frontend");
         }
 
-        protected void NodeJsProcess_ErrorDataReceived(object sender, DataReceivedEventArgs e) => Logger.LogError(e.Data);
-        protected void NodeJsProcess_OutputDataReceived(object sender, DataReceivedEventArgs e) => Logger.LogInformation(e.Data);
+        protected void NodeJsProcess_ErrorDataReceived(object sender, DataReceivedEventArgs e) => Logger.LogError("{Data}", e.Data);
+        protected void NodeJsProcess_OutputDataReceived(object sender, DataReceivedEventArgs e) => Logger.LogInformation("{Data}", e.Data);
 
         public async ValueTask DisposeAsync()
         {
@@ -250,9 +250,7 @@ namespace HeadlessCms.Infrastructure.NodeJsMiddleware
                 RedirectStandardInput = true,
                 FileName = "node",
                 Arguments = "--version"
-            });
-            if (process is null)
-                throw new ApplicationException("Unable to start the Node.JS Process");
+            }) ?? throw new ApplicationException("Unable to start the Node.JS Process");
             process.WaitForExit();
             if (process.ExitCode != 0)
                 throw new ApplicationException("Node.JS was unable to report a version");

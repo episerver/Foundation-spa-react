@@ -51,9 +51,13 @@ namespace HeadlessCms
                 })
                 .AddCms()
                 .AddEmbeddedLocalization<Startup>()
-                //.Configure<ExternalApplicationOptions>(options => {
-                //    options.OptimizeForDelivery = true; // This partially disables VG personalization, hmm, not sure...
-                //})
+                .Configure<ExternalApplicationOptions>(options => {
+                    /**
+                     * Set to true when Optimizely Data Platform isn't used, this will restore On-Page-Edit for
+                     * Content-Areas. However it will also remove personalization options from interface.
+                     */
+                    options.OptimizeForDelivery = false;
+                })
                 .Configure<DisplayOptions>(options => {
                     options
                         .Add("displaymode-screen", "Screen", "u-md-sizeScreen", string.Empty, "epi-icon__layout--full")
@@ -148,7 +152,7 @@ namespace HeadlessCms
 
             #region Optimizely: ContentGraph - GraphQL Service
             // Add ContentGraph - GraphQL Service
-            services.AddContentGraph(_configuration, OpenIDConnectOptionsDefaults.AuthenticationScheme, opts =>
+            services.AddContentGraph(OpenIDConnectOptionsDefaults.AuthenticationScheme, opts =>
             {
                 opts.ContentVersionSyncMode = Optimizely.ContentGraph.Cms.Configuration.ContentVersionSyncMode.All;
             });

@@ -23,11 +23,11 @@
 		<Using Include="EPiServer.DataAnnotations" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="3.*" />
-		<PackageReference Include="EPiServer.ContentDeliveryApi.Search" Version="3.*" />
-		<PackageReference Include="EPiServer.Find.Cms" Version="14.*">
+		<PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="3.10.2" />
+		<PackageReference Include="EPiServer.ContentDeliveryApi.Search" Version="3.10.2" />
+		<PackageReference Include="EPiServer.Find.Cms" Version="16.1.0">
 			<ExcludeAssets>contentFiles</ExcludeAssets>
 		</PackageReference>
-		<PackageReference Include="HtmlAgilityPack" Version="1.11.51" />
+		<PackageReference Include="HtmlAgilityPack" Version="1.11.59" />
 	</ItemGroup>
 </Project>
