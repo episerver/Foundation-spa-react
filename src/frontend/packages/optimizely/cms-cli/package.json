@@ -24,7 +24,7 @@
   "license": "Apache-2.0",
   "private": true,
   "devDependencies": {
-    "@babel/core": "^7.23.9",
+    "@babel/core": "^7.24.0",
     "@optimizely/cms": "workspace:^",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-node-resolve": "^15.2.3",
