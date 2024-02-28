@@ -30,10 +30,6 @@ const nextConfig = withBundleAnalyzer(withOptimizelyConfig({
     },
     swcMinify: true,
 
-    // Somehow not having this causes issues with SWR when running on a custom server
-    experimental: {
-      appDir: false,
-    },
 }, optiWebsite))
 
 if (optiWebsite.localeDomains?.length > 0) {

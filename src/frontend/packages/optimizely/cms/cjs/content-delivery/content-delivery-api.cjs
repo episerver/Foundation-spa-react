@@ -367,7 +367,7 @@ class ContentDeliveryAPI {
     getHeaders(path, config) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const defaultHeaders = {
-                'Accept': 'application/json',
+                'Accept': 'application/json', // Requested response data format
                 'Content-Type': 'application/json', // Request data format
             };
             // Add Authorization if needed
@@ -388,6 +388,7 @@ class ContentDeliveryAPI {
             }
             if (config === null || config === void 0 ? void 0 : config.editMode) {
                 defaultHeaders["X-PreviewMode"] = "edit";
+                defaultHeaders["Cookie"] = "";
             }
             const requestHeaders = Object.assign(Object.assign(Object.assign({}, defaultHeaders), this._customHeaders), config === null || config === void 0 ? void 0 : config.headers);
             //console.log("Request Headers", requestHeaders)

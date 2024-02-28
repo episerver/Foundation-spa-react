@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv'
 import * as dotenvExpand from 'dotenv-expand'
-import * as path from 'path'
+import * as path from 'node:path'
 import type { GlobalArgs } from '../types/arguments'
 import { ApiVersions } from '../types/arguments'
 

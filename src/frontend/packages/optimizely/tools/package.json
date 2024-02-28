@@ -9,7 +9,7 @@
   "author": "Remko Jantzen",
   "license": "Apache-2.0",
   "devDependencies": {
-    "glob": "^10.3.3"
+    "glob": "^10.3.10"
   },
   "peerDependencies": {
     "glob": "*"

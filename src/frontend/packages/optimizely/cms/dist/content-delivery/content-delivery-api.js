@@ -335,7 +335,7 @@ export class ContentDeliveryAPI {
      */
     async getHeaders(path, config) {
         const defaultHeaders = {
-            'Accept': 'application/json',
+            'Accept': 'application/json', // Requested response data format
             'Content-Type': 'application/json', // Request data format
         };
         // Add Authorization if needed
@@ -356,6 +356,7 @@ export class ContentDeliveryAPI {
         }
         if (config?.editMode) {
             defaultHeaders["X-PreviewMode"] = "edit";
+            defaultHeaders["Cookie"] = "";
         }
         const requestHeaders = { ...defaultHeaders, ...this._customHeaders, ...config?.headers };
         //console.log("Request Headers", requestHeaders)

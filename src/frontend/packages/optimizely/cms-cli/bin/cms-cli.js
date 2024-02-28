@@ -2,14 +2,14 @@
 
 import * as dotenv from 'dotenv';
 import * as dotenvExpand from 'dotenv-expand';
-import * as path from 'path';
+import * as path from 'node:path';
+import path__default from 'node:path';
 import fetch from 'node-fetch';
 import { Issuer, generators } from 'openid-client';
 import open from 'open';
 import http from 'node:http';
 import chalk from 'chalk';
 import Table from 'cli-table3';
-import path$1 from 'node:path';
 import fs from 'node:fs';
 import yargs from 'yargs';
 
@@ -342,7 +342,7 @@ const handler$1 = async (args) => {
 };
 async function exportAction(args, api) {
     const cwd = process.cwd();
-    const fullOutputFile = path$1.resolve(cwd, args.output ?? defaults$2.output);
+    const fullOutputFile = path__default.resolve(cwd, args.output ?? defaults$2.output);
     const siteId = args.dxp_site_id;
     if (!siteId) {
         process.stderr.write(`${chalk.red("ERROR:")} The Website identifier is mandatory to create an export\n`);
@@ -492,14 +492,14 @@ const handler = async (args) => {
 };
 function writeSchema(data, schemaFile) {
     const cwd = process.cwd();
-    const fullOutputFile = path$1.resolve(cwd, schemaFile);
+    const fullOutputFile = path__default.resolve(cwd, schemaFile);
     data.sort((a, b) => (a.name > b.name) ? 1 : ((a.name < b.name) ? -1 : 0));
     fs.writeFileSync(fullOutputFile, JSON.stringify(data, undefined, 4));
     process.stderr.write(`${chalk.greenBright("SUCCESS:")} Written schema data to ${fullOutputFile}\n`);
 }
 function writeTypes(data, typesFile) {
     const cwd = process.cwd();
-    const fullOutputFile = path$1.resolve(cwd, typesFile);
+    const fullOutputFile = path__default.resolve(cwd, typesFile);
     fs.writeFileSync(fullOutputFile, `/**
  * This is an automatically generated schema file based upon the Content Types
  * within the referenced Optimizely Content Cloud instance.
