@@ -14,7 +14,6 @@ const port = Number.parseInt(process.argv[2]) || 3080 // Pick any user space por
 // Start Next.JS
 process.stdout.write("Creating frontend application\n")
 const app = next({ dev, hostname, port })
-const handle = app.getRequestHandler()
 app.prepare().then(async () =>
 {
     // Set configuration if missing
@@ -25,23 +24,8 @@ app.prepare().then(async () =>
 
     // Create server
     process.stdout.write("Creating HTTP Server\n")
-    const server = new HttpServer({ }, async (req, res) => {
-        try {
-            const reqUrl = new URL(req.url, `http://${req.headers.host}`);
-            const parsedUrl = parse(reqUrl.href, true)
-            const { query } = parsedUrl
-
-            await handle(req, res, parsedUrl, query)
-            
-        } catch (err) {
-            console.error('Error occurred handling', req.url, err)
-            res.statusCode = 500
-            res.end('internal server error')
-        }
-    })
-    server.on('clientError', e => {
-        console.error("Client error", e)
-    })
+    const server = new HttpServer({ }, app.getRequestHandler())
+    server.on('clientError', e => console.error("Client error", e))
     process.stdout.write(`Opening ${ hostname }:${ port } in ${ dev ? "development" : "production" } mode\n`)
     server.listen(port, hostname, () => {
         process.stdout.write(`Listening on http://${ hostname }:${ port } in ${ dev ? "development" : "production" } mode.\n`)
