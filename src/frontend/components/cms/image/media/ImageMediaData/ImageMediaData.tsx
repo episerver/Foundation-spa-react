@@ -17,7 +17,7 @@ export const ImageMediaDataComponent : IContentComponent<ImageMediaData> = props
     if (!imageUrl || imageUrl == "")
         return <></>
 
-    return <Image src={imageUrl} alt={altText} placeholder="empty" width="640" height="375" />
+    return <Image src={imageUrl} alt={altText} placeholder="empty" sx={{ width: 1 }}/>
 }
 
 ImageMediaDataComponent.displayName = "Image from CMS"
