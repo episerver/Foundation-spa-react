@@ -97,7 +97,7 @@
 		
         <!-- ImageSharp wrapper for Optimizely CMS -->
         <PackageReference Include="Baaijte.Optimizely.ImageSharp.Web" Version="2.2.2" />
-        <PackageReference Include="SixLabors.ImageSharp.Web.Providers.Azure" Version="3.1.0" />
+        <PackageReference Include="SixLabors.ImageSharp.Web.Providers.Azure" Version="3.1.1" />
 		
         <!-- Visitor group criterion for ODP -->
         <PackageReference Include="UNRVLD.ODP.VisitorGroups" Version="1.4.0.33" />

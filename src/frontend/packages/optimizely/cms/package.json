@@ -30,8 +30,8 @@
   },
   "devDependencies": {
     "@optimizely/build-tools": "workspace:*",
-    "@types/node": "^20.11.21",
-    "@types/react": "^18.2.60",
+    "@types/node": "^20.11.25",
+    "@types/react": "^18.2.64",
     "cross-fetch": "^4.0.0",
     "encoding": "^0.1.13",
     "react": "^18.2.0",
@@ -39,6 +39,6 @@
     "shx": "^0.3.4",
     "swr": "^2.2.5",
     "tslib": "^2.6.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.2"
   }
 }
