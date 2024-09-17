@@ -1,7 +1,7 @@
-# Foundation Spa React <!-- omit in toc -->
-
 > [!WARNING]
 > This example is intended for demonstration purposes only and is not supported for production applications in Optimizely's Content and Commerce Cloud. The approach launches a NodeJS server and proxies requests to a frontend application, which can result in performance and stability issues.
+
+# Foundation Spa React <!-- omit in toc -->
 
 :warning: There is no backwards code compatibility between the "old" CMS 11 version and the new CMS 12 version.
 
