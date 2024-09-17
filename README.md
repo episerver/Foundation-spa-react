@@ -1,5 +1,8 @@
 # Foundation Spa React <!-- omit in toc -->
 
+> [!WARNING]
+> This example is intended for demonstration purposes only and is not supported for production applications in Optimizely's Content and Commerce Cloud. The approach launches a NodeJS server and proxies requests to a frontend application, which can result in performance and stability issues.
+
 :warning: There is no backwards code compatibility between the "old" CMS 11 version and the new CMS 12 version.
 
 This is an example project showing a decoupled backend (Optimizely Content Cloud) and frontend (Next.JS), which retains the editor experience and capability of a "traditional" Optimizely Content Cloud implementation.
