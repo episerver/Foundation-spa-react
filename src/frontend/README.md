@@ -1,3 +1,6 @@
+> [!WARNING]
+> This example is intended for demonstration purposes only and is not supported for production applications in Optimizely's Content and Commerce Cloud. The approach launches a NodeJS server and proxies requests to a frontend application, which can result in performance and stability issues.
+
 # Foundation Spa React - Frontend <!-- omit in toc -->
 
 ## Contents <!-- omit in toc -->

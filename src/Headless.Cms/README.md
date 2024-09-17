@@ -1,3 +1,6 @@
+> [!WARNING]
+> This example is intended for demonstration purposes only and is not supported for production applications in Optimizely's Content and Commerce Cloud. The approach launches a NodeJS server and proxies requests to a frontend application, which can result in performance and stability issues.
+
 # Foundation Headless CMS <!-- omit in toc -->
 This is an example of a CMS Build, capable of running the demo content of Foundation MVC CMS, for a decoupled headless build.
 
