@@ -1,5 +1,5 @@
 > [!WARNING]
-> This example is intended for demonstration purposes only and is not supported for production applications in Optimizely's Content and Commerce Cloud. The approach launches a NodeJS server and proxies requests to a frontend application, which can result in performance and stability issues.
+> This example is intended for demonstration purposes only and is not supported for production applications in Optimizely's Content and Commerce Cloud. The approach launches a NodeJS server and proxies requests to a frontend application, which can result in performance and stability issues. **Use [Optimizely's front-end hosting](https://docs.developers.optimizely.com/content-management-system/v1.0.0-CMS-SaaS/docs/host-a-front-end-with-optimizely) for production scenarios.**
 
 # Foundation Spa React <!-- omit in toc -->
 
