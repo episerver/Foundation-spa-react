@@ -35,6 +35,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import StructuredHtml from '@framework/foundation/cms/structuredhtml'
+
 
 function isBlogPost(content: IContent) : content is BlogItemPage
 {
@@ -90,7 +92,9 @@ export const Component : IContentComponent<BlogListPage> = ({ content, locale })
         <Head><title>{metaTitle}</title></Head>
         <Breadcrumbs />
         <Typography variant="h1" component="h1" sx={{ textAlign: "center" }}><Editable field="heading" inline>{ title }</Editable></Typography>
-        <Typography variant='body1' component="div"><Editable field="mainIntro" html={ pv(content, "mainBody" ) ?? ""} inline/></Typography>
+        
+        <Editable field='mainBody'><StructuredHtml propertyData={ pv(content, "mainBody" ) ?? "" } /></Editable>
+
         <ContentArea content={ content } name="mainContentArea" />
         <Grid container spacing={2} sx={{ mt: 3 }}>
             <Grid item xs={12} md={4} lg={3}>
