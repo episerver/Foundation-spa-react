@@ -5675,10 +5675,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["jose", [\
-      ["npm:4.15.4", {\
-        "packageLocation": "./.yarn/cache/jose-npm-4.15.4-c518ec3da8-20fa941597.zip/node_modules/jose/",\
+      ["npm:4.15.5", {\
+        "packageLocation": "./.yarn/cache/jose-npm-4.15.5-15e487a3a1-17944fcc0d.zip/node_modules/jose/",\
         "packageDependencies": [\
-          ["jose", "npm:4.15.4"]\
+          ["jose", "npm:4.15.5"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -6301,7 +6301,7 @@ const RAW_RUNTIME_STATE =
           ["@types/react", "npm:18.2.6"],\
           ["@types/react-dom", null],\
           ["cookie", "npm:0.5.0"],\
-          ["jose", "npm:4.15.4"],\
+          ["jose", "npm:4.15.5"],\
           ["next", "virtual:6e6fb9fd4327ad3d09f3a6a4262e278d5f6b808c0a16ba7d1ae8f883338270d13a316a76d401225fe57eecb827784fa0eadc5fb0f083489206b29e0063b2f9a3#npm:14.1.3"],\
           ["nodemailer", null],\
           ["oauth", "npm:0.9.15"],\
@@ -6335,7 +6335,7 @@ const RAW_RUNTIME_STATE =
           ["@types/react", "npm:18.2.6"],\
           ["@types/react-dom", null],\
           ["cookie", "npm:0.5.0"],\
-          ["jose", "npm:4.15.4"],\
+          ["jose", "npm:4.15.5"],\
           ["next", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:14.1.3"],\
           ["nodemailer", null],\
           ["oauth", "npm:0.9.15"],\
@@ -6678,7 +6678,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/openid-client-npm-5.6.4-9b740f7bb0-ab9b1ec59b.zip/node_modules/openid-client/",\
         "packageDependencies": [\
           ["openid-client", "npm:5.6.4"],\
-          ["jose", "npm:4.15.4"],\
+          ["jose", "npm:4.15.5"],\
           ["lru-cache", "npm:6.0.0"],\
           ["object-hash", "npm:2.2.0"],\
           ["oidc-token-hash", "npm:5.0.3"]\
